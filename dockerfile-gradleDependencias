@@ -1,0 +1,17 @@
+# Etapa de compilación, un docker especifico, que se etiqueta como build
+FROM gradle:jdk25-alpine AS dependencias
+
+# Directorio donde trabajará
+WORKDIR /app
+
+# Copiar solo archivos necesarios para resolver dependencias
+
+COPY build.gradle.kts .
+COPY gradlew .
+COPY gradle gradle
+
+# Ejecutar para descargar todas las dependencias
+RUN ./gradlew dependencies --no-daemon || true
+
+# Dejar una imagen lista para ser usada como base
+CMD ["bash"]
