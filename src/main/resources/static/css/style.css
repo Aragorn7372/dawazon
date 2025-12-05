@@ -1,0 +1,287 @@
+header {
+    width: 100%;
+    position: relative;
+    z-index: 1030;
+    /* asegura que el header esté por encima del contenido */
+}
+
+/* Estilos personalizados para afinar el diseño oscuro */
+.bg-custom-dark {
+    background-color: #131921;
+    /* Un tono oscuro tipo Amazon */
+}
+
+.bg-custom-secondary {
+    background-color: #232f3e;
+    /* Un tono ligeramente más claro para la segunda barra */
+}
+
+.search-input:focus {
+    box-shadow: none;
+    border-color: #ff9900;
+}
+
+.btn-search {
+    background-color: #ff9900;
+    border-color: #ff9900;
+    color: black;
+}
+
+.btn-search:hover {
+    background-color: #e68a00;
+}
+
+.nav-link {
+    color: white !important;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+    color: #ccc !important;
+}
+
+/* Ajuste para la imagen de perfil */
+.profile-img {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    border: 1px solid #fff;
+}
+
+/* === Cambios solicitados: sólo CSS en el body y contenedor del producto === */
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* permite que header/footer sean full-width */
+    /* quitado justify-content: center para evitar espacio arriba */
+}
+
+/* Simular 'tarjeta' alrededor del producto sin tocar HTML */
+.container.col-12 {
+    /* limitada a max-width para que no ocupe todo el ancho de la página */
+    width: 100%;
+    max-width: 1200px;
+    margin: 28px auto; /* separa del header y centra la "tarjeta" */
+    padding: 22px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.product-title {
+    font-size: 1.8rem;
+    margin: 0 0 1.4rem 0;
+    color: #111;
+}
+
+/* Reducir espacio entre carrusel y descripción */
+.product-main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem; /* espacio más pequeño entre columnas */
+    margin-bottom: 1.8rem;
+    align-items: start; /* alinear al tope para evitar desplazamientos verticales */
+}
+
+/* Hacer que la imagen ocupe el área completa de su celda sin padding extra */
+.carousel-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #333;
+    border-radius: 8px;
+    height: 300px;
+    overflow: hidden;
+    padding: 15px; /* pequeño padding para que no pegue al borde */
+}
+
+.product-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: none;
+}
+
+.product-img.active {
+    display: block;
+}
+
+.product-info {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* menos gap para que el texto quede más compacto */
+    color: #333;
+    padding: 15px 8px; /* padding ligero para que quede unido al carrusel */
+}
+
+.price-tag {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #000;
+}
+
+.features-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+.seller-info {
+    margin-top: 6px;
+    font-size: 0.9rem;
+}
+
+/* Botones dentro de la misma tarjeta — sin cambiar estructura HTML */
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 28px;
+}
+
+.btn-gradient {
+    border: none;
+    color: white;
+    padding: 12px 0;
+    border-radius: 8px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: calc(50% - 6px); /* se ve balanceado respecto al gap */
+    text-transform: lowercase;
+    background-color: #FFD814;
+    transition: transform 0.15s, opacity 0.15s;
+}
+
+.btn-gradient:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(255, 216, 20, 0.18);
+}
+
+/* Mantener responsive sin tocar header/footer */
+@media (max-width: 768px) {
+    .product-main-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .product-info {
+        text-align: left;
+        padding: 8px 0;
+    }
+
+    .carousel-container {
+        height: 250px;
+    }
+
+    .btn-gradient {
+        width: 48%;
+    }
+}
+
+/* mantener resto de estilos originales (flechas, etc.) */
+.carousel-arrow {
+    background: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    position: absolute;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: background 0.2s;
+}
+
+.carousel-arrow:hover {
+    background: #eee;
+}
+
+.left {
+    left: 10px;
+}
+
+.right {
+    right: 10px;
+}
+
+/* comentarios (sin cambios funcionales) */
+.comments-section {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.comments-section h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.comment-card {
+    color: #000000;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.user-name {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.badge-verified {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+}
+.badge-verified {
+    background-color: rgba(255, 255, 255, 0.951);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+}
+
+.recommendation {
+    font-weight: bold;
+}
+
+.positive {
+    color: #90ee90;
+}
+
+.negative {
+    color: #ff9999;
+}
