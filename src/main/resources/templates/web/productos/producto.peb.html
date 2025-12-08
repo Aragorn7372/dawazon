@@ -1,4 +1,4 @@
-<div class="container col-12">
+    <div class="container col-12">
 
         <h1 class="product-title">{{producto.getName}}</h1>
 
@@ -16,7 +16,7 @@
                 <div class="price-tag">{{producto.getPrice}}</div>
 
                 <ul id="description" class="features-list">
-                   {{producto.getDescription}}
+                    {{producto.getDescription}}
                 </ul>
 
                 <div class="seller-info">
@@ -24,65 +24,237 @@
                 </div>
             </div>
         </div>
-
+        {% if isUser %}
         <div class="action-buttons">
-            <button onclick="añadirAlCarrito(this)" class="btn-gradient">añadir al carrito</button>
-            <button class="btn-gradient">fav</button>
+            <button onclick="añadirAlCarrito(this, {{ producto.getId }})"
+                class="{% if isCart %}btn btn-danger{% else %}btn btn-gradient{% endif %}">
+                {% if isCart %}
+                Quitar del carrito
+                {% else %}
+                Añadir al carrito
+                {% endif %}</button>
+            <button onclick="añadirAFav(this, {{ producto.getId }})"
+                class="{% if isFav %}btn btn-danger{% else %}btn btn-gradient{% endif %}"
+                data-fav="{% if isFav %}true{% else %}false{% endif %}">
+                {% if isFav %}
+                no fav
+                {% else %}
+                fav
+                {% endif %}
+            </button>
         </div>
-
+        {% endif %}
+        {% if isManager and isMine %}
+        <div class="action-buttons">
+            <button onclick="edit(this,{{ producto.getId }})" class="btn btn-gradient">editar</button>
+            <button onclick="eliminar(this,{{ producto.getId }})" class="btn btn-danger">eliminar</button>
+        </div>
+        {% endif %}
+        {% if isAdmin %}
+        <div class="action-buttons">
+            <button onclick="eliminar(this,{{ producto.getId }})" class="btn btn-danger">eliminar</button>
+        </div>
+        {% endif %}
         <section class="comments-section">
+
             <h3>comentarios:</h3>
+            {% if isUser %}
+            <form id="ratingForm" onsubmit="event.preventDefault(); submitRating({{ producto.getId }});">
+                <input type="hidden" name="{{ csrfParamName }}" value="{{ csrfToken }}" />
+
+                <div class="comment-card">
+                    <div class="d-block">
+                        <label class="form-label col-12" for="comment">comentario:</label>
+                        <textarea class="form-control col-12" name="comment" id="comment" rows="4"></textarea>
+
+                        <div class="mt-3">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="recomended" id="recomended"
+                                    value="true" required />
+                                <label class="form-check-label recommendation positive"
+                                    for="recomended">recomendado</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="recomended" id="noRecomended"
+                                    value="false" required />
+                                <label class="form-check-label recommendation negative" for="noRecomended">no
+                                    recomendado</label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary text-light mt-3">enviar</button>
+                    </div>
+                </div>
+            </form>
+            {% endif %}
+
             {% for comment in producto.getComments %}
             <div class="comment-card">
                 <div class="comment-header">
                     <div>
-                        <span class="user-name">comment.getUserName</span>
-                        {% if comment.getShopVerified %}
+                        <span class="user-name">{{ comment.getUserName }}</span>
+                        {% if comment.getVerified %}
                         <span class="badge-verified">compra verificada</span>
-                        {% endif %}
-                        {% if not comment.getShopVerified %}
+                        {% else %}
                         <span class="badge-">compra no verificada</span>
                         {% endif %}
                     </div>
-                    {% if comment.getIsRecomendation %}
+                    {% if comment.getRecomended %}
                     <span class="recommendation positive">recomendado</span>
-                    {% endid %}
-                    {% if not comment.getIsRecomendation %}
+                    {% else %}
                     <span class="recommendation negative">no recomendado</span>
                     {% endif %}
                 </div>
                 <div class="comment-body">
-                    <p>{{comment.getOpinion}}</p>
+                    <p>{{ comment.getContent }}</p>
                 </div>
                 <hr>
             </div>
             {% endfor %}
-        </section>
-        
-        <script>
-            document.addEventListener("DOMContentLoaded", function(){
-                const lista= document.getElementById("description");
-                if(lista){
-                    const json= lista.textContent;
-                    cargarLista(json,lista);
-                }
-            })
-            function cargarLista(json,element){
-                var contenedor= element
-                contenedor.innerHTML=""
-                const lista= JSON.stringify(json).replace("{","").replace("}","").trim.split(",");
-                var contenido=`<li>Caracteristicas.</li>\n`;
-                for(i=0; i<lista;i++){
-                    contenido+=`<li>${lista[i]}</li>`;
-                }
-                contenedor.innerHTML=contenido;
-            }
-            function añadirAlCarrito(element){
-                if(element.textContent=="añadir al carrito"){
-                    
-                }else{
+            <!-- Toast para notificaciones -->
+            <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                <div id="notificationToast" class="toast" role="alert">
+                    <div class="toast-header">
+                        <strong class="me-auto">Notificación</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                    </div>
+                    <div class="toast-body text-white" id="toastMessage">
+                        <!-- Mensaje dinámico -->
+                    </div>
+                </div>
+            </div>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const lista = document.getElementById("description");
+                    if (lista) {
+                        const json = lista.textContent;
+                        cargarLista(json, lista);
+                    }
+                });
 
+                function cargarLista(json, element) {
+                    var contenedor = element;
+                    contenedor.innerHTML = "";
+                    const lista = JSON.parse(json); // Usa JSON.parse en lugar de stringify
+                    var contenido = `<li>Caracteristicas.</li>\n`;
+                    for (let i = 0; i < lista.length; i++) { // Agrega . length
+                        contenido += `<li>${lista[i]}</li>`;
+                    }
+                    contenedor.innerHTML = contenido;
                 }
-            }
-        </script>
+
+                function showNotification(message, type = 'success') {
+                    const toast = document.getElementById('notificationToast');
+                    const toastMessage = document.getElementById('toastMessage');
+
+                    toastMessage.textContent = message;
+
+                    toast.classList.remove('bg-success', 'bg-danger', 'bg-warning', 'bg-info');
+                    if (type === 'success') {
+                        toast.classList.add('bg-success');
+                    } else if (type === 'error') {
+                        toast.classList.add('bg-danger');
+                    } else if (type === 'warning') {
+                        toast.classList.add('bg-warning');
+                    } else {
+                        toast.classList.add('bg-info');
+                    }
+
+                    const bsToast = new bootstrap.Toast(toast);
+                    bsToast.show();
+                }
+
+                // Funciones CSRF
+                function getCsrfToken() {
+                    return document.querySelector('meta[name="_csrf"]').getAttribute('content');
+                }
+
+                function getCsrfParamName() {
+                    return document.querySelector('meta[name="_csrf_param"]').getAttribute('content');
+                }
+            </script>
+
+            {% if isUser %}
+            <script>
+                function añadirAlCarrito(element, productoId) {
+                    if (element.textContent.trim() === "Añadir al carrito") {
+                        element.textContent = "Quitar del carrito";
+                        element.classList.remove("btn-gradient");
+                        element.classList.add("btn-danger");
+                        window.location.href = `/carrito/add/${productoId}`;
+                    } else {
+                        element.textContent = "Añadir al carrito";
+                        element.classList.add("btn-gradient");
+                        element.classList.remove("btn-danger");
+                        window.location.href = `/carrito/remove/${productoId}`;
+                    }
+                }
+
+                function añadirAFav(element, productoId) {
+                    if (element.textContent.trim() === "fav") {
+                        element.textContent = "no fav";
+                        element.classList.remove("btn-gradient");
+                        element.classList.add("btn-danger");
+                        window.location.href = `/auth/me/fav/add/${productoId}`;
+                    } else {
+                        element.textContent = "fav";
+                        element.classList.add("btn-gradient");
+                        element.classList.remove("btn-danger");
+                        window.location.href = `/auth/me/fav/remove/${productoId}`;
+                    }
+                }
+
+                function submitRating(productoId) {
+                    const rating = document.querySelector('input[name="recomended"]:checked');
+                    const comentario = document.getElementById('comment').value;
+
+                    if (!rating) {
+                        showNotification('Por favor, seleccione si recomienda o no el producto', 'warning');
+                        return;
+                    }
+
+                    const formData = new FormData();
+                    formData.append('recomended', rating.value);
+                    formData.append('comment', comentario);
+                    formData.append(getCsrfParamName(), getCsrfToken());
+
+                    fetch(`/productos/${productoId}/comentarios`, {
+                        method: 'POST',
+                        body: formData
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                showNotification('¡Comentario enviado correctamente!', 'success');
+                                document.getElementById('ratingForm').reset();
+                                setTimeout(() => location.reload(), 2000);
+                            } else {
+                                showNotification('Error: ' + data.message, 'error');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            showNotification('Error al enviar el comentario', 'error');
+                        });
+                }
+            </script>
+            {% endif %}
+            {% endif %}
+            {% if isManager and isMine %}
+            <script>
+                function edit(element, productoId) {
+                    window.location.href = `/auth/me/products/edit/${productoId}`;
+                }
+                function eliminar(element, productoId) {
+                    window.location.href = `/auth/me/products/remove/${productoId}`;
+                }
+            </script>
+            {% endif %}
+            {% if isAdmin %}
+            <script>
+                function eliminar(element, productoId) {
+                    window.location.href = `/auth/products/remove/${productoId}`;
+                }
+            </script>
+            {% endif %}
     </div>

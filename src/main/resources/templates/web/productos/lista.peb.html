@@ -1,0 +1,30 @@
+<div class="container my-5">
+    <h2 class="mb-4">Resultados</h2>
+    <div id="grid-productos" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% if not productos %}
+        <div class="alert alert-warning">No se encontraron productos.</div>
+        {% endif %}
+        {% for product in productos %}
+        <div class="col">
+            <div class="card h-100 p-3 bg-white">
+                <div class="img-container">
+                    <img src="{{product.getImages[0]}}" alt="${producto.nombre}">
+                </div>
+                <div class="card-body px-0 pb-0">
+                    <div class="product-title">{{product.getName}}</div>
+
+                    <div class="price-container mt-2">
+                        <span class="price-symbol">{{product.getPrice}}€</span>
+                    </div>
+                    {% if product.getStock>0 %}
+                    </span><br>Stock: ${producto.stock}
+                    {% else %}
+                    <span class="badge bg-danger">AGOTADO</span><br><span style="font-size: 0.8rem">No disponible</span>
+                    {% endif %}
+                    <a href="/productos/${producto.id}" class="btn btn-amazon">Ver detalles</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
