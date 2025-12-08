@@ -1,88 +1,88 @@
 <div class="container col-12">
 
-    <h1 class="product-title">{{producto.getName}}</h1>
+        <h1 class="product-title">{{producto.getName}}</h1>
 
-    <div class="product-main-grid">
+        <div class="product-main-grid">
 
-        <div class="carousel-container">
-            <button class="carousel-arrow left">&#10094;</button>
-            {% for image in producto.getImages %}
-            <img src="{{image}}" class="product-img">
-            {% endfor %}
-            <button class="carousel-arrow right">&#10095;</button>
-        </div>
+            <div class="carousel-container">
+                <button class="carousel-arrow left">&#10094;</button>
+                {% for image in producto.getImages %}
+                <img src="{{image}}" class="product-img">
+                {% endfor %}
+                <button class="carousel-arrow right">&#10095;</button>
+            </div>
 
-        <div class="product-info">
-            <div class="price-tag">{{producto.getPrice}}</div>
+            <div class="product-info">
+                <div class="price-tag">{{producto.getPrice}}</div>
 
-            <ul id="description" class="features-list">
-                {{producto.getDescription}}
-            </ul>
+                <ul id="description" class="features-list">
+                   {{producto.getDescription}}
+                </ul>
 
-            <div class="seller-info">
-                vendedor: <strong>{{producto.getSelter}}</strong>
+                <div class="seller-info">
+                    vendedor: <strong>{{producto.getSelter}}</strong>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="action-buttons">
-        <button onclick="añadirAlCarrito(this)" class="btn-gradient">añadir al carrito</button>
-        <button class="btn-gradient">fav</button>
-    </div>
+        <div class="action-buttons">
+            <button onclick="añadirAlCarrito(this)" class="btn-gradient">añadir al carrito</button>
+            <button class="btn-gradient">fav</button>
+        </div>
 
-    <section class="comments-section">
-        <h3>comentarios:</h3>
-        {% for comment in producto.getComments %}
-        <div class="comment-card">
-            <div class="comment-header">
-                <div>
-                    <span class="user-name">comment.getUserName</span>
-                    {% if comment.getShopVerified %}
-                    <span class="badge-verified">compra verificada</span>
-                    {% endif %}
-                    {% if not comment.getShopVerified %}
-                    <span class="badge-">compra no verificada</span>
+        <section class="comments-section">
+            <h3>comentarios:</h3>
+            {% for comment in producto.getComments %}
+            <div class="comment-card">
+                <div class="comment-header">
+                    <div>
+                        <span class="user-name">comment.getUserName</span>
+                        {% if comment.getShopVerified %}
+                        <span class="badge-verified">compra verificada</span>
+                        {% endif %}
+                        {% if not comment.getShopVerified %}
+                        <span class="badge-">compra no verificada</span>
+                        {% endif %}
+                    </div>
+                    {% if comment.getIsRecomendation %}
+                    <span class="recommendation positive">recomendado</span>
+                    {% endid %}
+                    {% if not comment.getIsRecomendation %}
+                    <span class="recommendation negative">no recomendado</span>
                     {% endif %}
                 </div>
-                {% if comment.getIsRecomendation %}
-                <span class="recommendation positive">recomendado</span>
-                {% endid %}
-                {% if not comment.getIsRecomendation %}
-                <span class="recommendation negative">no recomendado</span>
-                {% endif %}
+                <div class="comment-body">
+                    <p>{{comment.getOpinion}}</p>
+                </div>
+                <hr>
             </div>
-            <div class="comment-body">
-                <p>{{comment.getOpinion}}</p>
-            </div>
-            <hr>
-        </div>
-        {% endfor %}
-    </section>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function(){
-            const lista= document.getElementById("description");
-            if(lista){
-                const json= lista.textContent;
-                cargarLista(json,lista);
+            {% endfor %}
+        </section>
+        
+        <script>
+            document.addEventListener("DOMContentLoaded", function(){
+                const lista= document.getElementById("description");
+                if(lista){
+                    const json= lista.textContent;
+                    cargarLista(json,lista);
+                }
+            })
+            function cargarLista(json,element){
+                var contenedor= element
+                contenedor.innerHTML=""
+                const lista= JSON.stringify(json).replace("{","").replace("}","").trim.split(",");
+                var contenido=`<li>Caracteristicas.</li>\n`;
+                for(i=0; i<lista;i++){
+                    contenido+=`<li>${lista[i]}</li>`;
+                }
+                contenedor.innerHTML=contenido;
             }
-        })
-        function cargarLista(json,element){
-            var contenedor= element
-            contenedor.innerHTML=""
-            const lista= JSON.stringify(json).replace("{","").replace("}","").trim.split(",");
-            var contenido=`<li>Caracteristicas.</li>\n`;
-            for(i=0; i<lista;i++){
-                contenido+=`<li>${lista[i]}</li>`;
-            }
-            contenedor.innerHTML=contenido;
-        }
-        function añadirAlCarrito(element){
-            if(element.textContent=="añadir al carrito"){
+            function añadirAlCarrito(element){
+                if(element.textContent=="añadir al carrito"){
+                    
+                }else{
 
-            }else{
-
+                }
             }
-        }
-    </script>
-</div>
+        </script>
+    </div>
