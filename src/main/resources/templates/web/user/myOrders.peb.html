@@ -1,0 +1,79 @@
+<main class="container my-4">
+  <div class="row">
+    <div class="col-12 mb-3">
+      <h2 class="fw-bold">Mis pedidos</h2>
+    </div>
+
+    <div class="col-12">
+      {% if orders is empty %}
+      <div class="cart-card bg-white p-5 rounded shadow-sm border text-center">
+        <i class="bi bi-box-seam fs-1 text-muted mb-3"></i>
+        <h3>No has realizado pedidos aún</h3>
+        <p class="text-muted">
+          Explora nuestro catálogo para encontrar lo que buscas.
+        </p>
+        <a href="/" class="btn btn-gradient mt-3 px-4 shadow-sm"
+          >Seguir comprando</a
+        >
+      </div>
+      {% else %}
+      <div class="cart-card bg-white rounded shadow-sm border overflow-hidden">
+        <div
+          class="d-none d-md-flex bg-light border-bottom p-3 text-muted fw-bold small text-uppercase"
+        >
+          <div class="col-md-3">PEDIDO REALIZADO / ID</div>
+          <div class="col-md-4">ENVIAR A</div>
+          <div class="col-md-2 text-end">TOTAL</div>
+          <div class="col-md-3 text-end">DETALLES DEL PEDIDO</div>
+        </div>
+
+        {% for order in orders %}
+        <div class="p-3 border-bottom d-flex flex-wrap align-items-center">
+          <div class="col-12 col-md-3 mb-3 mb-md-0">
+            <div class="d-flex flex-column">
+              <span class="small text-muted mb-1">
+                <i class="bi bi-calendar3 me-1"></i> {{ order.createdAt |
+                date("d 'de' MMMM 'de' yyyy") }}
+              </span>
+              <span class="small text-muted">ID del pedido:</span>
+              <span class="text-truncate fw-bold" title="{{ order.id }}"
+                >{{ order.id }}</span
+              >
+            </div>
+          </div>
+
+          <div class="col-12 col-md-4 mb-3 mb-md-0">
+            <div class="small">
+              <span class="d-md-none text-muted fw-bold">Enviado a:</span>
+              <div class="text-muted">
+                {{ order.client.address.street }}<br />
+                {{ order.client.address.city }}, {{
+                order.client.address.province }} {{
+                order.client.address.postalCode }}
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-2 text-md-end mb-1 mb-md-0">
+            <div class="d-flex flex-column align-items-md-end">
+              <span class="fw-bold fs-5 text-dark">
+                {{ order.total | numberformat("#,##0.00") }} €
+              </span>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3 text-end">
+            <a
+              href="/orders/{{ cart.id }}"
+              class="btn btn-gradient btn-sm shadow-sm px-4 rounded-pill"
+            >
+              Detalles
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</main>
