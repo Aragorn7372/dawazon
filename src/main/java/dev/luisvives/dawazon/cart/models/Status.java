@@ -1,5 +1,5 @@
 package dev.luisvives.dawazon.cart.models;
 
 public enum Status {
-    PREPARED, DELIVERED, RECEIVED, CANCELLED;
+    EN_CARRITO, PREPARADO, ENVIADO, RECIBIDO, CANCELADO;
 }
