@@ -12,10 +12,10 @@
                     <!-- Ocultamos el texto 'Dawazon' solo en pantallas muy muy pequeñas (<576px) para dar espacio al buscador -->
                     <span class="fw-bold fs-5 d-none d-sm-block">Dawazon</span>
                 </a>
-                <form class="d-flex flex-grow-1" role="search">
+                <form class="d-flex flex-grow-1" action="/" method="get" role="search">
                     <div class="input-group">
-                        <input class="form-control search-input" type="search" placeholder="Buscar..."
-                            aria-label="Search">
+                        <input class="form-control search-input" name="name" type="search" placeholder="Buscar..."
+                            aria-label="Search" value="{{name | default('')}}">
                         <button class="btn btn-search" type="submit">
                             <i class="bi bi-search"></i>
                         </button>
