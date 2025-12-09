@@ -1,5 +1,13 @@
+{% set currentPath = request.servletPath %}
+{% set isMyProductos= currentPath equals '/auth/me/products' %}
 <div class="container my-5">
-    <h2 class="mb-4">Resultados</h2>
+    <div class="row">
+        <h2 class="mb-4 col-9">Resultados</h2>
+        {% if isMyProductos %}
+        <button class="col-3 btn btn-gradient" onclick="save(this)">
+            añadir produto
+        </button>
+    </div>
     <div id="grid-productos" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         {% if not productos %}
         <div class="alert alert-warning">No se encontraron productos.</div>
@@ -27,4 +35,9 @@
         </div>
         {% endfor %}
     </div>
+    <script>
+        function save(element) {
+            window.location.href = `/auth/me/products/save`;
+        }
+    </script>
 </div>
