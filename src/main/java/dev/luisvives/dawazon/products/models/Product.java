@@ -23,7 +23,7 @@ public class Product {
     @GeneratedValue(generator = "custom-id")
     @GenericGenerator(
             name = "custom-id",
-            strategy = "dev.luisvives.dawazon.common.IdGenerator"
+            strategy = "dev.luisvives.dawazon.common.utils.IdGenerator"
     )
     private String id;
     @Column(nullable = false)

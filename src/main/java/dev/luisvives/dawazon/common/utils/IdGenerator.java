@@ -1,9 +1,8 @@
-package dev.luisvives.dawazon.common;
+package dev.luisvives.dawazon.common.utils;
 
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.util.Random;
 
