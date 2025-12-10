@@ -544,3 +544,90 @@ body {
         width: 160px;
     }
 }
+.sales-summary {
+    margin-top: 12px;
+    font-size: 0.95rem;
+}
+
+/* Personalización de estado por tipo (complementa status-badge) */
+.status-completada {
+    background: linear-gradient(90deg,#e9f7ef,#e0f6e6);
+    color: #0f5132;
+    border: 1px solid #d1f2dc;
+}
+
+.status-pendiente {
+    background: linear-gradient(90deg,#fff7e6,#fff4dc);
+    color: #7a5a00;
+    border: 1px solid #ffecb5;
+}
+
+.status-cancelada {
+    background: linear-gradient(90deg,#fff0f0,#ffecec);
+    color: #7a0000;
+    border: 1px solid #ffcccc;
+}
+
+/* Iconos de acción más compactos */
+.btn-action {
+    min-width: 44px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Botón editar que sigue el estilo del gradiente amarillo pero adaptado para tablas */
+.btn-edit {
+    background: #ffd814;
+    border: 1px solid #f0c200;
+    color: #0f1111;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.btn-edit:hover {
+    background: #f7ca00;
+}
+
+/* Botón eliminar */
+.btn-delete {
+    background: rgba(177,39,4,0.06);
+    color: #b12704;
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+
+.btn-delete:hover {
+    background: rgba(177,39,4,0.12);
+}
+
+/* Fila de totales */
+.total-row td {
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(0,0,0,0.01));
+    border-top: 2px solid #eaeaea;
+}
+
+/* Pequeños ajustes responsivos para la tabla */
+@media (max-width: 576px) {
+    .profile-img { display: none; }
+    #globalSearch { width: 100%; }
+}
+
+/* Paginación compacta */
+.pagination-sm .page-link {
+    padding: 4px 8px;
+}
+
+/* Indicador de número de filas */
+#shownCount, #totalCount {
+    font-weight: 700;
+}
+
+/* Columna cliente: nombre y email pequeño */
+.client-name { font-weight: 600; display:block;}
+.client-email { font-size: 0.82rem; color: #6b6b6b; display:block; margin-top:2px; }
