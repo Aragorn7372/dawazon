@@ -1,0 +1,94 @@
+<div class="container col-12">
+
+    <h2 class="product-title" style="text-align: center; margin-bottom: 20px;
+        border-bottom: 1px solid #eee; padding-bottom: 15px;">
+        Editar Pedido #{{ cart.id }}
+    </h2>
+
+    <form action="/admin/orders/update/{{order.id}}" method="POST">
+        <input type="hidden" name="id" value="{{ cart.id }}">
+        <input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}" />
+
+        <div class="product-main-grid">
+
+            <div class="product-info">
+                <div class="form-group">
+                    <label class="form-label">Cliente Nombre</label>
+                    <input type="text" name="clientName" class="form-input" value="{{ cart.client.name }}" disabled
+                           readonly>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Cliente Email</label>
+                    <input type="email" name="clientEmail" class="form-input" value="{{ cart.client.email }}"
+                           disabled readonly>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Total Pedido (€)</label>
+                    <input type="number" step="0.01" name="total" class="form-input" value="{{ cart.total }}"
+                           disabled readonly>
+                </div>
+            </div>
+
+            <div class="product-info">
+                <div class="form-group">
+                    <label class="form-label">Fecha Creación</label>
+                    <input type="text" class="form-input readonly-field"
+                           value="{{ cart.createdAt | date('yyyy-MM-dd HH:mm') }}" disabled readonly>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Fecha Actualización</label>
+                    <input type="text" class="form-input readonly-field" value="fecha de actualización" disabled
+                           readonly>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Estado (Simulado)</label>
+                    <select name="status" class="form-input">
+                        <option value="PENDING" selected>Pendiente</option>
+                        <option value="SHIPPED">Enviado</option>
+                        <option value="DELIVERED">Entregado</option>
+                        <option value="CANCELLED">Cancelado</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" style="border-bottom: 1px solid #ddd;">Contenido del Pedido ({{
+                    cart.totalItems }} items)</label>
+                {% for line in cart.cartLines %}
+                <p><strong>x{{ line.quantity }}</strong> - Producto ID: {{ line.productId }}</p>
+                <p>{{ line.productName }}</p>
+                <p>{{ line.totalPrice | numberformat("#,##0.00") }} €</p>
+                {% else %}
+                <div class="small text-muted">Carro vacío</div>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" style="border-bottom: 1px solid #ddd;">Dirección de Envío</label>
+                <p>{{ cart.client.address.street }} </p>
+                <p>Nº {{ cart.client.address.number }} </p>
+                <p>{{ cart.client.address.city }}</p>
+                <p>{{ cart.client.address.province }}</p>
+                <p> CP: {{ cart.client.address.postalCode }}</p>
+            </div>
+
+        </div>
+
+        <div class="action-buttons admin-actions">
+            <button type="submit" class="btn-gradient" style="width: auto; min-width: 150px;">
+                guardar cambios
+            </button>
+
+            <button type="submit" formaction="/admin/orders/delete" class="btn-gradient btn-delete"
+                    style="width: auto; min-width: 150px;"
+                    onclick="return confirm('¿Desea eliminar este pedido permanentemente?');">
+                Eliminar pedido
+            </button>
+        </div>
+
+    </form>
+</div>

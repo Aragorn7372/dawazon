@@ -1,0 +1,199 @@
+<main class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h2 class="fw-bold mb-0">Editar Producto</h2>
+                <a href="/auth/me/productos" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-arrow-left"></i> Volver al detalle
+                </a>
+            </div>
+
+            <form action="/products/edit/{{ product.id }}" method="POST" enctype="multipart/form-data" class="bg-white p-4 rounded shadow-sm border">
+
+                <input type="hidden" name="id" value="{{ product.id }}">
+
+                <div class="row g-3">
+
+                    <div class="col-12">
+                        <h5 class="fw-bold border-bottom pb-2 mb-3">Información General</h5>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="name" class="form-label fw-bold">Nombre del producto</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ product.name }}" required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="price" class="form-label fw-bold">Precio (€)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">€</span>
+                            <input type="number" step="0.01" min="0" class="form-control" id="price" name="price" value="{{ product.price }}" required>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="stock" class="form-label fw-bold">Stock disponible</label>
+                        <input type="number" min="0" class="form-control" id="stock" name="stock" value="{{ product.stock }}" required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="category" class="form-label fw-bold">Categoría</label>
+                        <select class="form-select" id="category" name="categoryId" required>
+                            <option value="" disabled>Seleccionar...</option>
+                            {% for cat in categories %}
+                            <option value="{{ cat.id }}" {% if product.category.id == cat.id %}selected{% endif %}>
+                                {{ cat.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="description" class="form-label fw-bold">Descripción detallada</label>
+                        <textarea class="form-control" id="description" name="description" rows="5" required>{{ product.description }}</textarea>
+                    </div>
+
+                    <div class="col-12 mt-4">
+                        <h5 class="fw-bold border-bottom pb-2 mb-3">Galería de Imágenes</h5>
+
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Imágenes actuales (Pulsa la X para eliminar)</label>
+
+                            <div class="row row-cols-2 row-cols-md-4 g-3" id="currentImagesContainer">
+                                {% if product.images is empty %}
+                                <p class="text-muted fst-italic ms-2 small">No hay imágenes cargadas.</p>
+                                {% else %}
+                                {% for imgUrl in product.images %}
+                                <div class="col image-card-wrapper">
+                                    <div class="card h-100 border position-relative shadow-sm">
+
+                                        <button type="button"
+                                                class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 rounded-circle p-0 d-flex align-items-center justify-content-center shadow"
+                                                style="width: 28px; height: 28px; z-index: 10;"
+                                                onclick="removeExistingImage(this)"
+                                                title="Eliminar imagen">
+                                            <i class="bi bi-trash-fill" style="font-size: 0.8rem;"></i>
+                                        </button>
+
+                                        <div class="ratio ratio-1x1 bg-light rounded overflow-hidden">
+                                            <img src="{{ imgUrl }}" class="object-fit-contain w-100 h-100" alt="Producto">
+                                        </div>
+
+                                        <input type="hidden" name="keptImages" value="{{ imgUrl }}">
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="bg-light p-3 rounded border border-dashed">
+                            <label for="newImages" class="form-label fw-bold mb-1">
+                                <i class="bi bi-cloud-upload me-2"></i>Añadir nuevas imágenes
+                            </label>
+                            <input class="form-control" type="file" id="newImages" name="newImages" multiple accept="image/*">
+                            <div class="form-text small">
+                                Puedes seleccionar varios archivos a la vez (mantén pulsado Ctrl/Cmd). Las imágenes anteriores se borrarán de la vista previa si seleccionas de nuevo.
+                            </div>
+
+                            <div class="row row-cols-2 row-cols-md-5 g-3 mt-3" id="newImagesPreview"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-5 pt-3 border-top">
+                    <a href="/products/{{ product.id }}" class="btn btn-light border px-4">Cancelar</a>
+
+                    <button type="submit" class="btn btn-gradient px-4 shadow-sm fw-bold">
+                        <i class="bi bi-save me-2"></i>Guardar cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<script>
+
+    function removeExistingImage(btn) {
+
+        const cardWrapper = btn.closest('.image-card-wrapper');
+        if (cardWrapper) {
+            // Animación de salida
+            cardWrapper.style.transition = 'all 0.3s ease';
+            cardWrapper.style.opacity = '0';
+            cardWrapper.style.transform = 'scale(0.8)';
+
+            setTimeout(() => {
+                cardWrapper.remove();
+            }, 300);
+        }
+    }
+
+    /**
+     * 2. Previsualizar nuevas imágenes
+     * Lee los archivos seleccionados en el input file y crea miniaturas
+     */
+    document.getElementById('newImages').addEventListener('change', function(event) {
+        const container = document.getElementById('newImagesPreview');
+
+        // Limpiamos previsualizaciones anteriores (comportamiento estándar de input file)
+        container.innerHTML = '';
+
+        const files = Array.from(event.target.files);
+
+        if(files.length > 0) {
+            files.forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        const col = document.createElement('div');
+                        col.className = 'col fade-in'; // Clase para animación opcional
+
+                        col.innerHTML = `
+                            <div class="card h-100 border border-success shadow-sm">
+                                <div class="ratio ratio-1x1 bg-white rounded-top overflow-hidden position-relative">
+                                    <img src="${e.target.result}" class="object-fit-contain w-100 h-100">
+                                    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-success bg-opacity-10">
+                                        <span class="badge bg-success shadow-sm">NUEVA</span>
+                                    </div>
+                                </div>
+                                <div class="card-footer p-1 text-center small text-truncate bg-success bg-opacity-10 text-success fw-bold" title="${file.name}">
+                                    ${file.name}
+                                </div>
+                            </div>
+                        `;
+                        container.appendChild(col);
+                    }
+
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+    });
+</script>
+
+<style>
+    /* Asegurar que las imágenes no se deformen */
+    .object-fit-contain {
+        object-fit: contain;
+    }
+
+    /* Borde punteado para la zona de subida */
+    .border-dashed {
+        border-style: dashed !important;
+        border-width: 2px !important;
+    }
+
+    /* Animación simple */
+    .fade-in {
+        animation: fadeIn 0.4s ease-in;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
