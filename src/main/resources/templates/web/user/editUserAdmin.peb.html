@@ -1,11 +1,9 @@
-<h2 class="product-title" style="text-align: center; margin-top: 20px;">Detalles User by admin view</h2>
-
 <div class="container col-12">
 
     <form action="/admin/users/save" method="POST">
         <input type="hidden" name="id" value="{{ user.id }}">
 
-        <div class="admin-header">
+        <div class="admin-header" style="text-align: center; display: flex; flex-direction: column; align-items: center;">
             <div class="admin-avatar">
                 {% if user.avatarUrl %}
                 <img src="{{ user.avatarUrl }}" alt="Avatar">
@@ -18,49 +16,62 @@
 
             <div class="product-info" style="text-align: left; align-items: stretch;">
                 <div class="form-group">
-                    <label class="form-label">nombre</label>
+                    <label class="form-label">Nombre</label>
                     <input type="text" name="nombre" class="form-input" value="{{ user.nombre }}" readonly>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">email</label>
+                    <label class="form-label">Email</label>
                     <input type="email" name="email" class="form-input" value="{{ user.email }}" readonly>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">telefono</label>
+                    <label class="form-label">Teléfono</label>
                     <input type="text" name="telefono" class="form-input" value="{{ user.telefono }}" readonly>
                 </div>
             </div>
 
+            {% if isHimSelf %}
             <div class="product-info" style="text-align: left; align-items: stretch;">
-                <label class="form-label">roles</label>
+                <label class="form-label">Roles</label>
                 <div class="roles-list">
                     {% for role in user.getRoles %}
                     <div style="margin-bottom: 8px;">
                         <label style="cursor: pointer; display: flex; align-items: center; gap: 10px;">
-                            <input type="checkbox" name="roles" value="{{ role.name }}" {% if user.roles contains
-                                   role %} checked {% endif %}>
+                            <input type="checkbox" name="roles" value="{{ role.name }}" {% if user.roles contains role %} checked {% endif %}>
                             {{ role }}
                         </label>
                     </div>
                     {% endfor %}
                 </div>
             </div>
+            {% endif %}
 
         </div>
 
         <div class="action-buttons admin-actions" style="margin-top: 20px;">
-            <button type="submit" formaction="/admin/users/update" class="btn-gradient">
-                guardar
+            {% if isUser %}
+            <a href="/auth/me/favs" class="btn-gradient" style="text-decoration: none; display: flex; justify-content: center; align-items: center;">
+                Favs
+            </a>
+            {% endif %}
+
+            <button type="submit" 
+                formaction="{% if isHimSelf %}/admin/users/update/{{user.id}}{% else %}/auth/me/update/{{user.id}}{% endif %}" 
+                class="btn-gradient">
+                Guardar
             </button>
 
-            <button type="submit" formaction="/admin/users/delete" class="btn-gradient btn-delete">
-                eliminar cuenta
+            <button type="submit" 
+                formaction="{% if isHimSelf %}/admin/users/delete/{{user.id}}{% else %}/auth/me/delete/{{user.id}}{% endif %}" 
+                class="btn-gradient btn-delete">
+                Eliminar cuenta
             </button>
 
-            <button type="submit" formaction="/admin/users/reset-password" class="btn-gradient btn-reset">
-                restablecer contraseña
+            <button type="submit" 
+                formaction="{% if isHimSelf %}/admin/users/reset-password/{{user.id}}{% else %}/auth/me/reset-password/{{user.id}}{% endif %}" 
+                class="btn-gradient btn-reset">
+                Restablecer contraseña
             </button>
         </div>
 
