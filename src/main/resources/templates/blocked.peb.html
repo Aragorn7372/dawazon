@@ -4,20 +4,130 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{error.title}}</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min. css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="/error.css">
 </head>
 <body>
-<div class="container">
-    <div class="icon">🔒</div>
-    <div class="error-code">{{error.status}}</div>
-    <h1>{{error.title}}</h1>
-    <p>
-        {{error.mensage}}
-    </p>
-    <a href="/" class="btn">Ir al sitio principal</a>
-    <div class="info-box">
-        <p>Si crees que esto es un error, contacta al administrador del sistema.</p>
+
+<!-- Navbar superior estilo Amazon -->
+<nav class="top-nav">
+    <div class="nav-container">
+        <a href="/" class="logo">
+            <img src="./Dawazon.png"
+                 class="bg-white text-dark rounded-circle d-flex justify-content-center align-items-center me-2"
+                 style="width: 35px; height: 35px; font-weight: bold;">
+            <span class="logo-text">Dawazon</span>
+        </a>
+        <div class="nav-links">
+            <a href="/ayuda" class="nav-link">Ayuda</a>
+            <a href="/contacto" class="nav-link">Contacto</a>
+        </div>
+    </div>
+</nav>
+
+<div class="error-container">
+    <div class="content-wrapper">
+
+        <!-- Icono con efecto -->
+        <div class="error-icon-wrapper">
+            <div class="icon-circle">
+                <span class="error-icon">🔒</span>
+            </div>
+            <div class="icon-glow"></div>
+        </div>
+
+        <!-- Código de error con badge -->
+        <div class="error-badge">
+            <span>ERROR {{error.status}}</span>
+        </div>
+
+        <!-- Título -->
+        <h1 class="error-title">{{error.title}}</h1>
+
+        <!-- Mensaje -->
+        <p class="error-message">
+            {{error. mensage}}
+        </p>
+
+        <!-- Botones de acción -->
+        <div class="action-buttons">
+            <a href="/" class="btn-primary-custom">
+                <i class="bi bi-house-door"></i>
+                Volver al inicio
+            </a>
+            <a href="/ayuda" class="btn-secondary-custom">
+                <i class="bi bi-question-circle"></i>
+                Centro de ayuda
+            </a>
+        </div>
+
+        <!-- Información adicional mejorada -->
+        <div class="info-card">
+            <div class="info-header">
+                <i class="bi bi-info-circle"></i>
+                <span>¿Necesitas asistencia?</span>
+            </div>
+            <p>Si crees que esto es un error, contacta al administrador del sistema o visita nuestro centro de ayuda.</p>
+            <div class="contact-options">
+                <a href="mailto:soporte@mitienda. com" class="contact-link">
+                    <i class="bi bi-envelope"></i> soporte@mitienda.com
+                </a>
+                <span class="separator">•</span>
+                <a href="tel:+34900123456" class="contact-link">
+                    <i class="bi bi-telephone"></i> 900 123 456
+                </a>
+            </div>
+        </div>
+
+        <!-- Sugerencias adicionales -->
+        <div class="suggestions">
+            <p class="suggestions-title">También podrías:</p>
+            <div class="suggestion-links">
+                <a href="/" class="suggestion-item">
+                    <i class="bi bi-arrow-left-circle"></i>
+                    <span>Ir a la página anterior</span>
+                </a>
+                <a href="/productos" class="suggestion-item">
+                    <i class="bi bi-grid"></i>
+                    <span>Ver nuestros productos</span>
+                </a>
+                <a href="/cuenta" class="suggestion-item">
+                    <i class="bi bi-person-circle"></i>
+                    <span>Ir a mi cuenta</span>
+                </a>
+            </div>
+        </div>
+
     </div>
 </div>
+
+<!-- Footer minimalista -->
+<footer class="footer">
+    <p>&copy; 2025 MiTienda.  Todos los derechos reservados. </p>
+</footer>
+
+<script>
+    // Efecto de partículas en el fondo (sutil)
+    document.addEventListener('DOMContentLoaded', function() {
+        const container = document.querySelector('.error-container');
+
+        for(let i = 0; i < 15; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle. style.animationDelay = Math.random() * 3 + 's';
+            particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            container.appendChild(particle);
+        }
+    });
+</script>
+
 </body>
 </html>

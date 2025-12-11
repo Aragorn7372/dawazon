@@ -1,3 +1,5 @@
+{% include "common/header" %}
+{% include "common/navbar" %}
 {% set currentPath = request.servletPath %}
 {% set isMyProductos= currentPath equals '/auth/me/products' %}
 <div class="container my-5">
@@ -41,3 +43,4 @@
         }
     </script>
 </div>
+{% include "common/footer" %}

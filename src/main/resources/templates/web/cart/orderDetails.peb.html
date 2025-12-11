@@ -1,4 +1,5 @@
-
+{% include "common/header" %}
+{% include "common/navbar" %}
 <main class="container my-4">
     <div class="row">
         <div class="col-12 mb-4">
@@ -14,7 +15,8 @@
 
             <div class="cart-card bg-white p-4 rounded shadow-sm border mb-4">
                 <div class="row border-bottom pb-2 mb-3 d-none d-md-flex text-muted small fw-bold text-uppercase">
-                    <div class="col-md-6">Producto</div> <div class="col-md-2 text-center">Cantidad</div>
+                    <div class="col-md-6">Producto</div>
+                    <div class="col-md-2 text-center">Cantidad</div>
                     <div class="col-md-2 text-center">Estado</div>
                     <div class="col-md-2 text-end">Precio</div>
                 </div>
@@ -137,3 +139,4 @@
         </div>
     </div>
 </main>
+{% include "common/footer" %}

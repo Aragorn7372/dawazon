@@ -1,9 +1,12 @@
+{% include "common/header" %}
+{% include "common/navbar" %}
 <div class="container col-12">
 
     <form action="/admin/users/save" method="POST">
         <input type="hidden" name="id" value="{{ user.id }}">
 
-        <div class="admin-header" style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+        <div class="admin-header"
+             style="text-align: center; display: flex; flex-direction: column; align-items: center;">
             <div class="admin-avatar">
                 {% if user.avatarUrl %}
                 <img src="{{ user.avatarUrl }}" alt="Avatar">
@@ -38,7 +41,8 @@
                     {% for role in user.getRoles %}
                     <div style="margin-bottom: 8px;">
                         <label style="cursor: pointer; display: flex; align-items: center; gap: 10px;">
-                            <input type="checkbox" name="roles" value="{{ role.name }}" {% if user.roles contains role %} checked {% endif %}>
+                            <input type="checkbox" name="roles" value="{{ role.name }}" {% if user.roles contains role
+                                   %} checked {% endif %}>
                             {{ role }}
                         </label>
                     </div>
@@ -51,29 +55,30 @@
 
         <div class="action-buttons admin-actions" style="margin-top: 20px;">
             {% if isUser %}
-            <a href="/auth/me/favs" class="btn-gradient" style="text-decoration: none; display: flex; justify-content: center; align-items: center;">
+            <a href="/auth/me/favs" class="btn-gradient"
+               style="text-decoration: none; display: flex; justify-content: center; align-items: center;">
                 Favs
             </a>
             {% endif %}
 
-            <button type="submit" 
-                formaction="{% if isHimSelf %}/admin/users/update/{{user.id}}{% else %}/auth/me/update/{{user.id}}{% endif %}" 
-                class="btn-gradient">
+            <button type="submit"
+                    formaction="{% if isHimSelf %}/admin/users/update/{{user.id}}{% else %}/auth/me/update/{{user.id}}{% endif %}"
+                    class="btn-gradient">
                 Guardar
             </button>
 
-            <button type="submit" 
-                formaction="{% if isHimSelf %}/admin/users/delete/{{user.id}}{% else %}/auth/me/delete/{{user.id}}{% endif %}" 
-                class="btn-gradient btn-delete">
+            <button type="submit"
+                    formaction="{% if isHimSelf %}/admin/users/delete/{{user.id}}{% else %}/auth/me/delete/{{user.id}}{% endif %}"
+                    class="btn-gradient btn-delete">
                 Eliminar cuenta
             </button>
 
-            <button type="submit" 
-                formaction="{% if isHimSelf %}/admin/users/reset-password/{{user.id}}{% else %}/auth/me/reset-password/{{user.id}}{% endif %}" 
-                class="btn-gradient btn-reset">
+            <button type="submit"
+                    formaction="{% if isHimSelf %}/admin/users/reset-password/{{user.id}}{% else %}/auth/me/reset-password/{{user.id}}{% endif %}"
+                    class="btn-gradient btn-reset">
                 Restablecer contraseña
             </button>
         </div>
-
     </form>
 </div>
+{% include "common/footer" %}

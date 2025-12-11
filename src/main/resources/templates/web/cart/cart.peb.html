@@ -1,339 +1,120 @@
-<!DOCTYPE html>
+{% include "common/header" %}
+{% include "common/navbar" %}
 
-<head>
-    <title>{{ appName }} - {{ appDescription }}</title>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1" name="viewport">
-    <meta content="{{ csrfToken }}" name="_csrf" />
-    <meta content="{{ csrfParamName }}" name="_csrf_param" />
-    <meta content="{{ csrfHeaderName }}" name="_csrf_header" />
-    <link href="/Dawazon.ico" rel="icon" type="image/x-icon">
-    <link href="/Dawazon.ico" rel="shortcut icon" type="image/x-icon">
-    <link href="/Dawazon.ico" rel="icon" type="image/x-icon">
-    <link href="/Dawazon.ico" rel="icon" sizes="32x32" type="image/png">
-    <!-- Bootstrap 5.3 CSS via CDN -->
-    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" rel="stylesheet">
+<main class="container my-4">
+    {% if stockAdjustmentMessage is not empty %}
+    <div class="alert alert-warning alert-dismissible fade show mb-4 shadow-sm" role="alert">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
+            <div>
+                <strong>¡Atención!</strong>
+                {{ stockAdjustmentMessage }}
+            </div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-12 mb-3">
+            <h2 class="fw-bold">Tu carrito de Dawazon</h2>
+        </div>
 
-    <!-- Custom styles -->
-    <link rel="stylesheet" href="css/style.css">
-    <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-</head>
-
-<body>
-    <header>
-        <!-- PRIMERA LINEA: Siempre visible (Logo - Buscador - Usuario) -->
-        <div class="bg-custom-dark py-2">
-            <div class="d-flex align-items-center gap-2 gap-md-3">
-
-                <!-- 1. LOGO -->
-                <a class="text-decoration-none d-flex align-items-center text-white me-1" href="#">
-                    <img src="./Dawazon.png"
-                        class="bg-white text-dark rounded-circle d-flex justify-content-center align-items-center me-2"
-                        style="width: 35px; height: 35px; font-weight: bold;">
-                    <!-- Ocultamos el texto 'Dawazon' solo en pantallas muy muy pequeñas (<576px) para dar espacio al buscador -->
-                    <span class="fw-bold fs-5 d-none d-sm-block">Dawazon</span>
-                </a>
-                <form class="d-flex flex-grow-1" role="search">
-                    <div class="input-group">
-                        <input class="form-control search-input" type="search" placeholder="Buscar..."
-                            aria-label="Search">
-                        <button class="btn btn-search" type="submit">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </div>
-                </form>
-
-                {% if isAuthenticated %}
-                <div class="d-flex align-items-center gap-3 ms-1">
-                    {{% if isUser %}}
-                    <a href="#" class="text-white position-relative d-none d-md-block">
-                        <i class="bi bi-cart3 fs-4"></i>
-                    </a>
-                    {{% endif %}}
-                    <!-- Dropdown de Usuario -->
-                    <div class="dropdown">
-                        <a href="#" class="d-flex align-items-center text-white text-decoration-none"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="img/defaultImg.png" alt="user" class="rounded-circle profile-img">
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end shadow">
-                            <li><a class="dropdown-item" href="#">Mi Cuenta</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
-                        </ul>
-                    </div>
+        <div class="col-lg-9">
+            <div class="cart-card bg-white p-4 rounded shadow-sm border">
+                <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
+                    <h4 class="mb-0">Carrito de compra</h4>
+                    <span class="text-muted align-self-end small">Precio</span>
                 </div>
-                {% endif %}
-                {% if not isAuthenticated %}
-                <div class="d-flex align-items-center gap-3 ms-1">
 
-                    <div class="dropdown">
-                        <a href="/auth/singin" class="d-flex align-items-center text-white text-decoration-none"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="defaultImg.png" alt="user" class="rounded-circle profile-img">
-                        </a>
-                    </div>
-                </div>
-                {% endif %}
-            </div>
-        </div>
-        {% if isAdmin %}
-        <div class="bg-custom-secondary text-white py-1 shadow-sm">
-            <nav class="d-flex gap-3 overflow-auto ms-6" style="white-space: nowrap; scrollbar-width: none;">
-                <a class="nav-link text-white small" href="#">Usuarios:</a>
-                <a class="nav-link text-white small" href="#">Ventas y envios:</a>
-            </nav>
-        </div>
-        {% endif %}
-        {% if isUser %}
-        <div class="bg-custom-secondary text-white py-1 shadow-sm">
-            <nav class="d-flex gap-3 overflow-auto ms-6" style="white-space: nowrap; scrollbar-width: none;">
-                <a class="nav-link text-white small" href="#">Pedidos:</a>
-            </nav>
-        </div>
-        {% endif %}
-        {% if isManager %}
-        <div class="bg-custom-secondary text-white py-1 shadow-sm">
-            <nav class="d-flex gap-3 overflow-auto ms-6" style="white-space: nowrap; scrollbar-width: none;">
-                <a class="nav-link text-white small" href="#">Mis productos:</a>
-                <a class="nav-link text-white small" href="#">Ventas y envios:</a>
-            </nav>
-        </div>
-        {% endif %}
-        <div class="bg-custom-secondary text-white py-1 shadow-sm">
-            <div class="container-fluid d-flex align-items-center">
+                {% if cart.cartLines is empty %}
+                {% else %}
+                {% for line in cart.cartLines %}
 
-                <button
-                    class="btn btn-link text-white text-decoration-none d-flex align-items-center me-3 px-0 fw-bold border-0"
-                    type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCategories">
-                    <i class="bi bi-list fs-3 me-1"></i>
-                    <span class="d-none d-sm-inline">Categorías</span>
-                </button>
+                <div class="cart-item row py-3 border-bottom align-items-center
+                            {% if line.stockStatus == 'ADJUSTED' or line.stockStatus == 'LOW' %} item-stock-warning {% endif %}">
 
-                <nav class="d-flex gap-3 overflow-auto ms-2" style="white-space: nowrap; scrollbar-width: none;">
-                    {% for categoria in categorias | slice(0, 5) %}
-                    <a class="nav-link text-white small" href="/productos?categoria={{ categoria.getName }}">{{
-                        categoria.getName }}</a>
-                    {% endfor %}
-                </nav>
-            </div>
-        </div>
-    </header>
-    
-    <main class="container my-4">
-        {% if stockAdjustmentMessage is not empty %}
-        <div class="alert alert-warning alert-dismissible fade show mb-4 shadow-sm" role="alert">
-            <div class="d-flex align-items-center">
-                <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
-                <div>
-                    <strong>¡Atención!</strong>
-                    {{ stockAdjustmentMessage }}
-                </div>
-            </div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        {% endif %}
-        <div class="row">
-            <div class="col-12 mb-3">
-                <h2 class="fw-bold">Tu carrito de Dawazon</h2>
-            </div>
-
-            <div class="col-lg-9">
-                <div class="cart-card bg-white p-4 rounded shadow-sm border">
-                    <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
-                        <h4 class="mb-0">Carrito de compra</h4>
-                        <span class="text-muted align-self-end small">Precio</span>
-                    </div>
-
-                    {% if cart.cartLines is empty %}
+                    <div class="col-3 col-md-2">
+                        {% if line.product.imageUrls is not empty %}
+                        <img src="{{ line.product.imageUrls[0] }}"
+                             alt="Imagen de producto"
+                             class="cart-product-img rounded">
                         {% else %}
-                        {% for line in cart.cartLines %}
-                        
-                        <div class="cart-item row py-3 border-bottom align-items-center 
-                            {% if line.stockStatus == 'ADJUSTED' or line.stockStatus == 'LOW' %} item-stock-warning {% endif %}"> 
-                            
-                            <div class="col-3 col-md-2">
-                                {% if line.product.imageUrls is not empty %}
-                                    <img src="{{ line.product.imageUrls[0] }}" 
-                                        alt="Imagen de producto" 
-                                        class="cart-product-img rounded">
-                                {% else %}
-                                    <div class="img-placeholder rounded d-flex align-items-center justify-content-center text-white">
-                                        <i class="bi bi-image-fill fs-3"></i>
-                                    </div>
-                                {% endif %}
-                            </div>
+                        <div class="img-placeholder rounded d-flex align-items-center justify-content-center text-white">
+                            <i class="bi bi-image-fill fs-3"></i>
+                        </div>
+                        {% endif %}
+                    </div>
 
-                            <div class="col-6 col-md-8">
-                                <h5 class="product-link mb-1">Producto ID: {{ line.productId }}</h5>
-                                
-                                {% if line.stockStatus == 'ADJUSTED' %}
-                                    <div class="small text-danger mb-1 fw-bold">
-                                        <i class="bi bi-patch-exclamation-fill"></i> Cantidad ajustada por stock limitado.
-                                    </div>
-                                {% elseif line.stockStatus == 'LOW' %}
-                                    <div class="small text-warning mb-1 fw-bold">
-                                        <i class="bi bi-info-circle-fill"></i> Últimas unidades disponibles.
-                                    </div>
-                                {% else %}
-                                    <div class="small text-success mb-1">En stock</div>
-                                {% endif %}
-                                
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="quantity-control d-flex align-items-center border rounded px-2">
-                                        <span class="small text-muted me-2">Cant:</span>
-                                        <span class="fw-bold">{{ line.quantity }}</span>
-                                    </div>
-                                    <span class="text-muted">|</span>
-                                    <form action="/cart/remove" method="post" class="m-0">
-                                        <input type="hidden" name="productId" value="{{ line.productId }}">
-                                        <button type="submit" class="btn btn-link text-decoration-none text-danger p-0 delete-btn">
-                                            <i class="bi bi-trash"></i> Eliminar
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
+                    <div class="col-6 col-md-8">
+                        <h5 class="product-link mb-1">Producto ID: {{ line.productId }}</h5>
 
-                            <div class="col-3 col-md-2 text-end">
+                        {% if line.stockStatus == 'ADJUSTED' %}
+                        <div class="small text-danger mb-1 fw-bold">
+                            <i class="bi bi-patch-exclamation-fill"></i> Cantidad ajustada por stock limitado.
+                        </div>
+                        {% elseif line.stockStatus == 'LOW' %}
+                        <div class="small text-warning mb-1 fw-bold">
+                            <i class="bi bi-info-circle-fill"></i> Últimas unidades disponibles.
+                        </div>
+                        {% else %}
+                        <div class="small text-success mb-1">En stock</div>
+                        {% endif %}
+
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="quantity-control d-flex align-items-center border rounded px-2">
+                                <span class="small text-muted me-2">Cant:</span>
+                                <span class="fw-bold">{{ line.quantity }}</span>
+                            </div>
+                            <span class="text-muted">|</span>
+                            <form action="/cart/remove" method="post" class="m-0">
+                                <input type="hidden" name="productId" value="{{ line.productId }}">
+                                <button type="submit"
+                                        class="btn btn-link text-decoration-none text-danger p-0 delete-btn">
+                                    <i class="bi bi-trash"></i> Eliminar
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="col-3 col-md-2 text-end">
                                 <span class="fw-bold fs-5">
                                     {{ line.totalPrice | numberformat("#,##0.00") }} €
                                 </span>
-                            </div>
-                        </div>
-                        {% endfor %}
-
-                        <div class="text-end py-3">
-                            <span class="fs-5">Subtotal ({{ cart.totalItems }} productos): </span>
-                            <span class="fw-bold fs-4">{{ cart.total | numberformat("#,##0.00") }} €</span>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-
-            <div class="col-lg-3 mt-4 mt-lg-0">
-                <div class="cart-summary bg-white p-3 rounded shadow-sm border">
-                    
-                    {% if cart.total > 29 %}
-                    <div class="d-flex align-items-start gap-2 mb-3 text-success">
-                        <i class="bi bi-check-circle-fill mt-1"></i>
-                        <span class="small">Tu pedido es elegible para envío GRATIS.</span>
                     </div>
-                    {% endif %}
-
-                    <div class="mb-3">
-                        <span class="fs-5">Subtotal ({{ cart.totalItems }} productos):</span>
-                        <div class="fw-bold fs-4 text-end">{{ cart.total | numberformat("#,##0.00") }} €</div>
-                    </div>
-
-                    <form action="/checkout" method="get">
-                        <button type="submit" class="btn btn-gradient w-100 shadow-sm" {{ cart.cartLines is empty ? 'disabled' : '' }}>
-                            Continuar con el pago
-                        </button>
-                    </form>
                 </div>
+                {% endfor %}
+
+                <div class="text-end py-3">
+                    <span class="fs-5">Subtotal ({{ cart.totalItems }} productos): </span>
+                    <span class="fw-bold fs-4">{{ cart.total | numberformat("#,##0.00") }} €</span>
+                </div>
+                {% endif %}
             </div>
         </div>
-    </main>
 
-    <footer>
-        <div class="border border-light rounded overflow-hidden bg-dark text-light">
-            <!-- Fila superior: logo + marca + nav -->
-            <div class="d-flex align-items-center px-3 py-2">
-                <!-- Logo y nombre (lado izquierdo) -->
-                <div class="d-flex align-items-center pe-3 border-end border-light">
-                    <div class="logo-circle d-flex align-items-center justify-content-center me-2">
-                        <span class="small fw-bold text-dark">logo</span>
-                    </div>
-                    <span class="fw-semibold">Dawazon</span>
+        <div class="col-lg-3 mt-4 mt-lg-0">
+            <div class="cart-summary bg-white p-3 rounded shadow-sm border">
+
+                {% if cart.total > 29 %}
+                <div class="d-flex align-items-start gap-2 mb-3 text-success">
+                    <i class="bi bi-check-circle-fill mt-1"></i>
+                    <span class="small">Tu pedido es elegible para envío GRATIS.</span>
+                </div>
+                {% endif %}
+
+                <div class="mb-3">
+                    <span class="fs-5">Subtotal ({{ cart.totalItems }} productos):</span>
+                    <div class="fw-bold fs-4 text-end">{{ cart.total | numberformat("#,##0.00") }} €</div>
                 </div>
 
-                <!-- Navegación centrada / distribuida -->
-                <nav class="d-flex flex-fill justify-content-around align-items-center flex-wrap">
-                    <a href="#contacto" class="text-light text-decoration-none px-3 py-1">Contacto</a>
-                    <a href="#quienes-somos" class="text-light text-decoration-none px-3 py-1">Quiénes somos</a>
-                    <a href="#legal" class="text-light text-decoration-none px-3 py-1">Legal</a>
-                </nav>
-            </div>
-
-            <div class="px-3 py-3 border-top border-light">
-                <div class="row text-light small">
-                    <!-- Contacto -->
-                    <div class="col-12 col-md-4 mb-3 mb-md-0" id="contacto">
-                        <h6 class="fw-semibold text-white">Contacto</h6>
-                        <p class="mb-1">Dawazon S.L.</p>
-                        <p class="mb-1">C/ Falsa 123, 4ºB, 28000 Madrid, España</p>
-                        <p class="mb-1">Tel: +34 912 345 678</p>
-                        <p class="mb-1">Email: <a href="mailto:info@dawazon.example"
-                                class="link-light">info@dawazon.example</a></p>
-                        <p class="mb-0">Horario: Lun-Vie 09:00–18:00</p>
-                    </div>
-
-                    <!-- Quiénes somos -->
-                    <div class="col-12 col-md-4 mb-3 mb-md-0" id="quienes-somos">
-                        <h6 class="fw-semibold text-white">Quiénes somos</h6>
-                        <p class="mb-1">Dawazon es una empresa tecnológica fundada en 2020 dedicada a desarrollar
-                            soluciones de comercio electrónico y analítica para pymes.</p>
-                        <p class="mb-1">Nuestra misión es facilitar el acceso a herramientas de venta online con una
-                            plataforma intuitiva y soporte cercano.</p>
-                        <p class="mb-0">Equipo formado por desarrolladores, diseñadores y especialistas en operaciones.
-                        </p>
-                    </div>
-
-                    <!-- Legal -->
-                    <div class="col-12 col-md-4" id="legal">
-                        <h6 class="fw-semibold text-white">Legal</h6>
-                        <ul class="list-unstyled mb-1">
-                            <li><a href="#" class="link-light">Aviso legal</a></li>
-                            <li><a href="#" class="link-light">Política de privacidad</a></li>
-                            <li><a href="#" class="link-light">Términos y condiciones</a></li>
-                        </ul>
-                        <p class="mb-1 small">Razón social: Dawazon S.L. | CIF: B12345678</p>
-                        <p class="mb-0 small">Registro Mercantil de Madrid. Tomo 1234, Folio 56, Hoja M-123456.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Fila inferior: copia (año dinámico) -->
-            <div class="border-top border-light text-center py-2 small">
-                © <span id="currentYear"></span> Dawazon S.L. Todos los derechos reservados.
+                <form action="/checkout" method="get">
+                    <button type="submit" class="btn btn-gradient w-100 shadow-sm" {{ cart.cartLines is empty ?
+                    'disabled' : '' }}>
+                    Continuar con el pago
+                    </button>
+                </form>
             </div>
         </div>
-    </footer>
-
-    <!-- Bootstrap JS (opcional) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Script pequeño para poner el año actual automáticamente -->
-    <script>
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
-        document.addEventListener('DOMContentLoaded', function () {
-            const images = document.querySelectorAll('.product-img');
-            const btnNext = document.querySelector('.carousel-arrow.right');
-            const btnPrev = document.querySelector('.carousel-arrow.left');
-            let currentIndex = 0;
-
-            function updateCarousel() {
-                images.forEach(img => img.classList.remove('active'));
-                images[currentIndex].classList.add('active');
-            }
-
-            btnNext.addEventListener('click', () => {
-                currentIndex++;
-                if (currentIndex >= images.length) currentIndex = 0;
-                updateCarousel();
-            });
-
-            btnPrev.addEventListener('click', () => {
-                currentIndex--;
-                if (currentIndex < 0) currentIndex = images.length - 1;
-                updateCarousel();
-            });
-        });
-    </script>
-</body>
-
-</html>
+    </div>
+</main>
+{% include "common/footer" %}
