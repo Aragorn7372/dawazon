@@ -37,16 +37,6 @@ public interface Service<R, ID, P > {
     R save(P entity);
 
     /**
-     * Actualiza completamente un recurso existente.
-     *
-     * @param id Identificador del recurso a actualizar.
-     * @param entity Objeto completo con los nuevos valores.
-     * @return El recurso actualizado.
-     */
-    R update(ID id, P entity);
-
-
-    /**
      * Elimina un recurso por su identificador.
      *
      * @param id Identificador del recurso a eliminar.

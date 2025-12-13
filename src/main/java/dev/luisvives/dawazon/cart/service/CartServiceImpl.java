@@ -1,36 +1,29 @@
 package dev.luisvives.dawazon.cart.service;
 
+import dev.luisvives.dawazon.cart.dto.LineRequestDto;
 import dev.luisvives.dawazon.cart.exceptions.CartException;
 import dev.luisvives.dawazon.cart.models.Cart;
 import dev.luisvives.dawazon.cart.models.CartLine;
 import dev.luisvives.dawazon.cart.models.Status;
 import dev.luisvives.dawazon.cart.repository.CartRepository;
-import dev.luisvives.dawazon.common.dto.PageResponseDTO;
 import dev.luisvives.dawazon.products.exception.ProductException;
-import dev.luisvives.dawazon.products.models.Category;
 import dev.luisvives.dawazon.products.models.Product;
 import dev.luisvives.dawazon.products.repository.ProductRepository;
 import dev.luisvives.dawazon.stripe.service.StripeService;
 import dev.luisvives.dawazon.users.repository.UserRepository;
-import jakarta.persistence.criteria.Join;
-import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-
 import org.bson.types.ObjectId;
-import org.hibernate.query.criteria.CriteriaDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -153,10 +146,12 @@ public class CartServiceImpl implements CartService {
         return cartRepository.save(cart);
     }
 
-    @Override
     @Transactional
-    public Cart update(ObjectId id, Cart entity) {
-
+    public Cart update(LineRequestDto line) {
+        return cartRepository.updateCartLineStatus(line.getCartId(), line.getProductId(), line.getStatus()).orElseThrow(() -> {
+            log.warn("Cart no encontrado con id: " + line.getCartId());
+            return new CartException.NotFoundException("Cart no encontrado con id: " + line.getCartId());
+        });
     }
 
 

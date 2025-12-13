@@ -55,4 +55,13 @@ public interface ProductService extends Service<
      * @return DTO con los datos del producto actualizado.
      */
     GenericProductResponseDto updateImage(String id, List<MultipartFile> image);
+
+    /**
+     * Actualiza completamente un recurso existente.
+     *
+     * @param id Identificador del recurso a actualizar.
+     * @param entity Objeto completo con los nuevos valores.
+     * @return El recurso actualizado.
+     */
+    GenericProductResponseDto update(String id, PostProductRequestDto entity);
 }
