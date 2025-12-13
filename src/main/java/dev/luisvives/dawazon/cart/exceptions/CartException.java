@@ -1,6 +1,6 @@
 package dev.luisvives.dawazon.cart.exceptions;
 
-public class CartException extends RuntimeException {
+public abstract class CartException extends RuntimeException {
     public CartException(String message) {
         super(message);
     }
@@ -13,7 +13,12 @@ public class CartException extends RuntimeException {
 
     public static class ProductQuantityExceededException extends CartException {
         public ProductQuantityExceededException() {
-            super("La cantidad de producto supera el stock o el producto no existe.");
+            super("La cantidad de producto supera el stock");
+        }
+    }
+    public static class AttemptAmountExceededException extends CartException {
+        public AttemptAmountExceededException() {
+            super("La cantidad de tries supera el stock");
         }
     }
 }

@@ -16,9 +16,9 @@ import java.util.Optional;
 
 @Repository
 public interface CartRepository extends MongoRepository<Cart, ObjectId> {
-    @Query("{ '_id' : ?0 }")
-    @Update("{ '$set' : { 'status' : ?1 } }")
-    Optional<Cart> updateCartStatus(ObjectId id, Status status);
+    @Query("{ '_id' : ?0, 'cartLines.productId' : ?1 }")
+    @Update("{ '$set' : { 'status' : ?2 } }")
+    Optional<Cart> updateCartLineStatus(ObjectId id,String productId ,Status status);
 
     Page<Cart> findByUserId(Long id, Pageable pageable);
 
@@ -31,4 +31,5 @@ public interface CartRepository extends MongoRepository<Cart, ObjectId> {
     @Query("{ '_id' : ?0 }")
     @Update("{ '$pull' : { 'cartLines' : ?1 } }")
     Optional<Cart> removeCartLine(ObjectId cartId, CartLine lineToRemove);
+
 }

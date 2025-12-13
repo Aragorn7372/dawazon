@@ -1,5 +1,6 @@
 package dev.luisvives.dawazon.users.models;
 
+import dev.luisvives.dawazon.cart.models.Client;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,6 +32,8 @@ public class User implements UserDetails {
     private String email;
     @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
+    private Client client;
 
     @Column(nullable = false)
     @ElementCollection(fetch = FetchType.EAGER) // Pocos datos, tipo eaguer para ir mas rapido

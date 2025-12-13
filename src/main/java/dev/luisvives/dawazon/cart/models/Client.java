@@ -1,6 +1,6 @@
 package dev.luisvives.dawazon.cart.models;
 
-import com.stripe.model.PaymentMethod;
+import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Embeddable
 public class Client {
     @NotEmpty
     private String name;
@@ -22,6 +23,4 @@ public class Client {
     private String phone;
     @NotNull
     private Address address;
-    @NotNull
-    private PaymentMethod paymentMethod; // Clase de Stripe
 }

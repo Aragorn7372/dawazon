@@ -21,8 +21,8 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     List<Product> findAllByFechaCreacionBetween(LocalDateTime ultimaEjecucion, LocalDateTime ahora);
 
     @Modifying
-    @Query("UPDATE Product p SET p.stock = p.stock - :amount WHERE p.id = :id AND p.stock >= :amount AND p.isDeleted = FALSE ")
-    Optional<Product> substractStock(String id, int amount);
+    @Query("UPDATE Product p SET p.stock = p.stock - :amount WHERE p.id = :id AND p.stock >= :amount AND p.isDeleted = FALSE AND p.version= :version")
+    Optional<Product> substractStock(String id, int amount, Long version);
 
 
 }

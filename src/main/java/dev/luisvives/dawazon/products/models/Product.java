@@ -64,4 +64,6 @@ public class Product {
     @LastModifiedDate
     @Builder.Default
     private LocalDateTime updatedAt = LocalDateTime.now();
+    @Version
+    private Long version;
 }
