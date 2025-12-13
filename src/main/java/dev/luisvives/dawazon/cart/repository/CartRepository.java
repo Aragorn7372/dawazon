@@ -31,5 +31,4 @@ public interface CartRepository extends MongoRepository<Cart, ObjectId> {
     @Query("{ '_id' : ?0 }")
     @Update("{ '$pull' : { 'cartLines' : ?1 } }")
     Optional<Cart> removeCartLine(ObjectId cartId, CartLine lineToRemove);
-
 }
