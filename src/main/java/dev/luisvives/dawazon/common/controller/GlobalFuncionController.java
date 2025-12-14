@@ -1,13 +1,20 @@
 package dev.luisvives.dawazon.common.controller;
 
+import dev.luisvives.dawazon.products.models.Product;
 import dev.luisvives.dawazon.users.models.User;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestControllerAdvice
 public class GlobalFuncionController {
-    /*
+
     @ModelAttribute("currentUser")
     public User getCurrentUser(Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()
@@ -57,7 +64,7 @@ public class GlobalFuncionController {
         if (authentication != null && authentication.isAuthenticated()
                 && !(authentication.getPrincipal() instanceof String)) {
             User user = (User) authentication.getPrincipal();
-            return user.getNombre() + " " + user.getApellidos();
+            return user.getUsername();
         }
         return null;
     }
@@ -123,30 +130,10 @@ public class GlobalFuncionController {
         return count > 0 ? Integer.toString(count) : "";
     }
 
-    // ⭐ GLOBAL VARIABLES FOR TEMPLATES ⭐
-    @ModelAttribute("defaultImage")
-    public String getDefaultImage() {
-        return Product.DEFAULT_IMAGE_URL;
-    }
 
     @ModelAttribute("filesPath")
     public String getFilesPath() {
         return "/files/";
-    }
-
-    @ModelAttribute("appName")
-    public String getAppName() {
-        return AppConstants.APP_NAME;
-    }
-
-    @ModelAttribute("appDescription")
-    public String getAppDescription() {
-        return AppConstants.APP_DESCRIPTION;
-    }
-
-    @ModelAttribute("appVersion")
-    public String getAppVersion() {
-        return AppConstants.APP_VERSION;
     }
 
     @ModelAttribute("currentDateTime")
@@ -180,6 +167,6 @@ public class GlobalFuncionController {
         }
         return null;
     }
-    */
+
 
 }
