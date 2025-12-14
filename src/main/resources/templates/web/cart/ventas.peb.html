@@ -5,13 +5,6 @@
         <div class="d-flex align-items-center gap-3">
             <h5 class="mb-0 text-white">Mi servicio — Ventas</h5>
         </div>
-        <form class="d-flex flex-grow-1" action="/" method="get" role="search">
-            <div class="d-flex align-items-center gap-2">
-                <input id="globalSearch" class="form-control search-input" name="codigo" type="search"
-                       placeholder="Buscar código" value="{{ codigo | default('')}}" style="width: 300px;">
-                <button id="btnSearch" type="submit" class="btn btn-search">Buscar</button>
-            </div>
-        </form>
     </div>
 </header>
 <main class="container col-12">
@@ -20,16 +13,17 @@
     <!-- Filtros rápidos y acciones -->
     <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
         <div class="d-flex gap-2 align-items-center">
-            <select id="filterState" class="form-select form-select-sm" style="width: 200px;">
-                <option value="">Filtro: Todos los estados</option>
-                <option value="completada">Completada</option>
-                <option value="pendiente">Pendiente</option>
-                <option value="cancelada">Cancelada</option>
+            <select id="filterState" class="form-select form-select-sm" style="width: 200px;" onchange="filterByStatus(this.value)">
+                <option value="">Filtro:  Todos los estados</option>
+                <option value="PREPARADO">Preparado</option>
+                <option value="ENVIADO">Enviado</option>
+                <option value="ENTREGADO">Entregado</option>
+                <option value="CANCELADO">Cancelado</option>
             </select>
         </div>
 
         <div class="text-end text-muted-small">
-            Mostrando <span id="shownCount">0</span> de <span id="totalCount">0</span> ventas
+            Mostrando <span id="shownCount">{{ ventas.size }}</span> de <span id="totalCount">{{ totalVentas }}</span> ventas
         </div>
     </div>
 
@@ -38,185 +32,106 @@
         <table id="salesTable" class="table users-table align-middle">
             <thead>
             <tr>
-                <th scope="col">Código</th>
+                <th scope="col">ID Venta</th>
+                <th scope="col">Código Producto</th>
+                <th scope="col">Producto</th>
                 <th scope="col">Cliente</th>
+                <th scope="col">Cantidad</th>
                 <th scope="col">Estado</th>
-                <th scope="col">Precio</th>
+                <th scope="col">Precio Unit.</th>
+                <th scope="col">Total</th>
                 <th scope="col" class="text-end">Acciones</th>
             </tr>
             </thead>
             <tbody id="salesTbody">
             {% for venta in ventas %}
-
-            <tr data-index="0">
-                <td class="align-middle"><a class="text-decoration-none text-black" href="/ventas/{{venta.getId}}">{{venta.getId}}</a>
+            <tr data-status="{{venta.status}}">
+                <td class="align-middle">
+                    <small class="text-muted">{{venta.saleId | slice(0, 8)}}...</small>
                 </td>
+                <td class="align-middle">
+                    <a class="text-decoration-none text-black" href="/products/{{venta.productId}}">
+                        {{venta. productId}}
+                    </a>
+                </td>
+                <td class="align-middle">{{venta.productName}}</td>
                 <td>
                     <div class="d-flex align-items-center gap-2">
-                        <img class="avatar-small" src="{{venta.UserAvatar}}" alt="">
                         <div>
-                            <span class="client-name">{{venta.getUserName}}</span>
-                            <span class="client-email">{{venta.getUserEmail}}</span>
+                            <div class="client-name">{{venta.getUserName()}}</div>
+                            <small class="client-email">{{venta.getUserEmail()}}</small>
                         </div>
                     </div>
                 </td>
+                <td class="align-middle">{{venta.quantity}}</td>
                 <td>
-                    <span class="status-badge status-{{venta.getStatus}}">{{venta.getStatus}}</span>
+                    <span class="status-badge status-{{venta. status | lower}}">{{venta.status}}</span>
                 </td>
-                <td class="align-middle">{{venta.getPrice}}</td>
+                <td class="align-middle">{{venta.productPrice}}€</td>
+                <td class="align-middle"><strong>{{venta.totalPrice}}€</strong></td>
                 <td class="text-end align-middle actions-cell">
-                    <button class="btn-action btn-edit me-2" onclick="edit({{isAdmin}},{{venta.getId}})"
-                            data-action="edit" title="Editar"
-                            data-index="0">
-                        <i class="fa-solid fa-pen-to-square">Editar</i>
+                    {% if venta.status != 'CANCELADO' and venta.status != 'ENTREGADO' %}
+                    <button class="btn-action btn-edit me-2"
+                            onclick="editSale('{{venta.saleId}}', '{{venta.productId}}')"
+                            data-action="edit" title="Cambiar estado">
+                        <i class="fa-solid fa-pen-to-square"></i> Editar
                     </button>
-                    <button class="btn-action btn-delete" onclick="cancelVenta({{isAdmin}},{{venta.getId}})"
-                            data-action="delete" title="Eliminar" data-index="0">
-                        <i class="fa-solid bi bi-trash"></i>
+                    <button class="btn-action btn-delete"
+                            onclick="cancelSale('{{venta.saleId}}', '{{venta. productId}}')"
+                            data-action="cancel" title="Cancelar venta">
+                        <i class="fa-solid bi bi-trash"></i> Cancelar
                     </button>
+                    {% endif %}
                 </td>
             </tr>
-
             {% endfor %}
             </tbody>
             <tfoot>
             <tr class="total-row">
-                <td colspan="3" class="text-end fw-bold">Ganancias totales:</td>
-                <td id="totalAmount" class="fw-bold">{{ganancias}}</td>
+                <td colspan="7" class="text-end fw-bold">Ganancias totales: </td>
+                <td colspan="2" id="totalAmount" class="fw-bold">{{ganancias}}€</td>
             </tr>
             </tfoot>
         </table>
     </div>
-    <nav aria-label="Paginación ventas" class="mt-3">
-        <ul id="pagination" class="pagination pagination-sm justify-content-end mb-0"></ul>
-    </nav>
+
+    {% if ventas.size == 0 %}
+    <div class="alert alert-info text-center">
+        No se encontraron ventas con los filtros aplicados.
+    </div>
+    {% endif %}
+
 </main>
 
 <script>
-    function cancelVenta(boolean, ventaId) {
-        if (boolean == false) {
-            window.location.href = `/auth/me/ventas/cancel/${ventaId}`;
-        } else {
-            window.location.href = `/ventas/cancel/${ventaId}`;
+    function cancelSale(saleId, productId) {
+        if (!confirm('¿Estás seguro de que deseas cancelar esta venta?  Se restaurará el stock del producto.')) {
+            return;
         }
+
+        {% if isAdmin %}
+        window.location.href = `/ventas/cancel/${saleId}/${productId}`;
+        {% else %}
+        window.location.href = `/auth/me/ventas/cancel/${saleId}/${productId}`;
+        {% endif %}
     }
 
-    function edit(boolean, ventaId) {
-        if (boolean == false) {
-            window.location.href = `/auth/me/ventas/edit/${ventaId}`;
-        } else {
-            window.location.href = `/ventas/edit/${ventaId}`;
-        }
+    function editSale(saleId, productId) {
+        {% if isAdmin %}
+        window.location.href = `/ventas/edit/${saleId}/${productId}`;
+        {% else %}
+        window.location. href = `/auth/me/ventas/edit/${saleId}/${productId}`;
+        {% endif %}
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const tbody = document.getElementById('salesTbody');
-        const shownEl = document.getElementById('shownCount');
-        const totalEl = document.getElementById('totalCount');
-        const filterEl = document.getElementById('filterState');
-        const searchEl = document.getElementById('globalSearch'); // si existe en tu layout
-
-        if (!tbody || !shownEl || !totalEl) return;
-
-        // Devuelve todas las filas TR actualmente en el tbody
-        function allRows() {
-            return Array.from(tbody.querySelectorAll('tr'));
+    function filterByStatus(status) {
+        const url = new URL(window.location);
+        if (status) {
+            url.searchParams. set('status', status);
+        } else {
+            url.searchParams.delete('status');
         }
-
-        // Cuenta las filas que están visibles (no display: none)
-        function countVisibleRows() {
-            const rows = allRows();
-            const visible = rows.filter(r => {
-                // offsetParent es null cuando el elemento o alguno de sus ancestros tiene display:none
-                if (r.offsetParent === null) return false;
-                const cs = getComputedStyle(r);
-                return cs.display !== 'none' && cs.visibility !== 'hidden' && cs.opacity !== '0';
-            }).length;
-            shownEl.textContent = visible;
-            totalEl.textContent = rows.length;
-        }
-
-        // Filtrado simple por estado usando el contenido textual de .status-badge
-        function applyStateFilter() {
-            const val = filterEl ? filterEl.value.trim().toLowerCase() : '';
-            allRows().forEach(row => {
-                const statusEl = row.querySelector('.status-badge');
-                const statusText = statusEl ? statusEl.textContent.trim().toLowerCase() : '';
-                // Si no hay filtro o la fila coincide con el filtro, se muestra; si no, se oculta
-                if (!val || statusText === val) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-            countVisibleRows();
-        }
-
-        // Filtrado de búsqueda (si existe un input #globalSearch); busca en el texto de la fila
-        function applySearchFilter() {
-            if (!searchEl) return;
-            const q = searchEl.value.trim().toLowerCase();
-            allRows().forEach(row => {
-                const text = row.textContent.toLowerCase();
-                // Mantener la fila solo si contiene la query
-                if (!q || text.includes(q)) {
-                    // No forzamos mostrar aquí; dejamos que el filtro de estado decida finalmente.
-                    row.dataset._matchesSearch = '1';
-                } else {
-                    row.dataset._matchesSearch = '0';
-                }
-            });
-            // Aplicar la combinación: mostrar solo si matchesSearch === '1' y estado coincide
-            const val = filterEl ? filterEl.value.trim().toLowerCase() : '';
-            allRows().forEach(row => {
-                const matchesSearch = row.dataset._matchesSearch !== '0';
-                const statusEl = row.querySelector('.status-badge');
-                const statusText = statusEl ? statusEl.textContent.trim().toLowerCase() : '';
-                const matchesState = !val || statusText === val;
-                row.style.display = (matchesSearch && matchesState) ? '' : 'none';
-            });
-            countVisibleRows();
-        }
-
-        // Debounce util
-        function debounce(fn, wait = 200) {
-            let t;
-            return (...args) => {
-                clearTimeout(t);
-                t = setTimeout(() => fn.apply(this, args), wait);
-            };
-        }
-
-        // Inicial: si el servidor ya ha renderizado filas, ajustar contadores
-        countVisibleRows();
-
-        // Listeners
-        if (filterEl) {
-            filterEl.addEventListener('change', () => {
-                // si existe búsqueda activa, la tendremos en cuenta
-                if (searchEl && searchEl.value.trim().length > 0) {
-                    applySearchFilter();
-                } else {
-                    applyStateFilter();
-                }
-            });
-        }
-
-        if (searchEl) {
-            searchEl.addEventListener('input', debounce(() => {
-                applySearchFilter();
-            }, 180));
-        }
-
-        // Si el tbody cambia (rows añadidas/eliminadas o cambio de contenido), actualizar contador
-        const mo = new MutationObserver(mutations => {
-            // pequeña protección: si cambian atributos de estilo, también recuenta
-            countVisibleRows();
-        });
-        mo.observe(tbody, {childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class']});
-
-        // Exponer función en window por si la necesitas desde otro script
-        window.updateVentasCounters = countVisibleRows;
-    });
+        window.location.href = url.toString();
+    }
 </script>
 {% include "common/footer" %}

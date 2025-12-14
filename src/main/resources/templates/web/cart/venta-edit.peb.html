@@ -1,0 +1,161 @@
+{% include "common/header" %}
+{% include "common/navbar" %}
+
+<header class="bg-custom-dark p-2">
+  <div class="container d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center gap-3">
+      <a href="{% if isAdmin %}/admin/ventas/detalle/{{venta.saleId}}/{{venta.productId}}{% else %}/manager/ventas/detalle/{{venta. saleId}}/{{venta.productId}}{% endif %}"
+         class="btn btn-sm btn-outline-light">
+        <i class="fa-solid fa-arrow-left"></i> Volver
+      </a>
+      <h5 class="mb-0 text-white">Editar Estado de Venta</h5>
+    </div>
+  </div>
+</header>
+
+<main class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <!-- Resumen del pedido -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light">
+          <h6 class="mb-0 text-muted">Resumen del Pedido</h6>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <p class="mb-2">
+                <strong>Producto:</strong> {{venta.productName}}
+              </p>
+              <p class="mb-2">
+                <strong>Cliente:</strong> {{venta.client.name}}
+              </p>
+            </div>
+            <div class="col-md-6">
+              <p class="mb-2">
+                <strong>Cantidad:</strong> {{venta.quantity}} unidades
+              </p>
+              <p class="mb-2">
+                <strong>Total:</strong> <span class="text-success fw-bold">{{venta.totalPrice}}€</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulario de edición -->
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">
+            <i class="fa-solid fa-edit"></i>
+            Cambiar Estado del Pedido
+          </h5>
+        </div>
+        <div class="card-body">
+          <form method="POST" action="{% if isAdmin %}/admin/ventas/update/{{venta.saleId}}/{{venta.productId}}{% else %}/manager/ventas/update/{{venta. saleId}}/{{venta.productId}}{% endif %}">
+
+            <!-- Estado actual -->
+            <div class="alert alert-info">
+              <strong>Estado actual:</strong>
+              <span class="status-badge status-{{venta. status | lower}}">{{venta.status}}</span>
+            </div>
+
+            <!-- Selector de nuevo estado -->
+            <div class="mb-4">
+              <label for="status" class="form-label fw-bold">Nuevo Estado *</label>
+              <select class="form-select form-select-lg" id="status" name="status" required>
+                <option value="">-- Selecciona un estado --</option>
+                <option value="PREPARADO" {% if venta.status == 'PREPARADO' %}selected{% endif %}>
+                📦 Preparado
+                </option>
+                <option value="ENVIADO" {% if venta. status == 'ENVIADO' %}selected{% endif %}>
+                🚚 Enviado
+                </option>
+                <option value="ENTREGADO" {% if venta. status == 'ENTREGADO' %}selected{% endif %}>
+                ✅ Entregado
+                </option>
+                <option value="CANCELADO" {% if venta.status == 'CANCELADO' %}selected{% endif %}>
+                ❌ Cancelado
+                </option>
+              </select>
+              <div class="form-text">
+                Selecciona el nuevo estado para este pedido
+              </div>
+            </div>
+
+            <!-- Información sobre estados -->
+            <div class="card bg-light mb-4">
+              <div class="card-body">
+                <h6 class="card-title">Información sobre estados: </h6>
+                <ul class="mb-0 small">
+                  <li><strong>PREPARADO:</strong> El pedido está listo para enviar</li>
+                  <li><strong>ENVIADO: </strong> El pedido está en camino al cliente</li>
+                  <li><strong>ENTREGADO:</strong> El pedido fue entregado exitosamente</li>
+                  <li><strong>CANCELADO:</strong> El pedido fue cancelado (se restaurará el stock)</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Notas adicionales (opcional) -->
+            <div class="mb-4">
+              <label for="notes" class="form-label fw-bold">Notas adicionales (opcional)</label>
+              <textarea class="form-control" id="notes" name="notes" rows="3"
+                        placeholder="Añade cualquier comentario sobre el cambio de estado..."></textarea>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="d-flex gap-2 justify-content-end">
+              <a href="{% if isAdmin %}/admin/ventas/detalle/{{venta.saleId}}/{{venta.productId}}{% else %}/manager/ventas/detalle/{{venta.saleId}}/{{venta.productId}}{% endif %}"
+                 class="btn btn-secondary">
+                <i class="fa-solid fa-times"></i> Cancelar
+              </a>
+              <button type="submit" class="btn btn-primary">
+                <i class="fa-solid fa-save"></i> Guardar Cambios
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Advertencia para cancelación -->
+      <div class="alert alert-warning mt-3" id="cancelWarning" style="display: none;">
+        <i class="fa-solid fa-exclamation-triangle"></i>
+        <strong>Atención:</strong> Al cambiar el estado a "CANCELADO", se restaurará automáticamente
+        el stock del producto ({{venta.quantity}} unidades).
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+  // Mostrar advertencia si se selecciona CANCELADO
+  document.getElementById('status').addEventListener('change', function() {
+    const warning = document.getElementById('cancelWarning');
+    if (this.value === 'CANCELADO') {
+      warning.style.display = 'block';
+    } else {
+      warning.style.display = 'none';
+    }
+  });
+
+  // Confirmación antes de enviar si es cancelación
+  document.querySelector('form').addEventListener('submit', function(e) {
+    const status = document.getElementById('status').value;
+
+    if (status === 'CANCELADO') {
+      if (! confirm('¿Estás seguro de que deseas CANCELAR esta venta? Se restaurará el stock del producto.')) {
+        e.preventDefault();
+        return false;
+      }
+    }
+
+    if (status === 'ENTREGADO') {
+      if (!confirm('¿Confirmas que el pedido ha sido ENTREGADO al cliente?')) {
+        e. preventDefault();
+        return false;
+      }
+    }
+  });
+</script>
+
+{% include "common/footer" %}

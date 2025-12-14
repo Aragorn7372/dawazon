@@ -1,0 +1,190 @@
+{% include "common/header" %}
+{% include "common/navbar" %}
+
+<header class="bg-custom-dark p-2">
+    <div class="container d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+            <a href="{% if isAdmin %}/admin/ventas{% else %}/manager/ventas{% endif %}"
+               class="btn btn-sm btn-outline-light">
+                <i class="fa-solid fa-arrow-left"></i> Volver
+            </a>
+            <h5 class="mb-0 text-white">Detalle de Venta</h5>
+        </div>
+    </div>
+</header>
+
+<main class="container mt-4">
+    <div class="row">
+        <!-- Card principal del pedido -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fa-solid fa-box"></i>
+                        Información del Pedido
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <!-- Información del producto -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6 class="text-muted mb-3">PRODUCTO</h6>
+                            <p class="mb-2">
+                                <strong>Nombre:</strong>
+                                <a href="/products/{{venta.productId}}" class="text-decoration-none">
+                                    {{venta.productName}}
+                                </a>
+                            </p>
+                            <p class="mb-2">
+                                <strong>Código:</strong>
+                                <code>{{venta.productId}}</code>
+                            </p>
+                            <p class="mb-2">
+                                <strong>Cantidad:</strong>
+                                <span class="badge bg-secondary">{{venta.quantity}} unidades</span>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-muted mb-3">PRECIOS</h6>
+                            <p class="mb-2">
+                                <strong>Precio unitario:</strong>
+                                {{venta.productPrice}}€
+                            </p>
+                            <p class="mb-2">
+                                <strong>Total:</strong>
+                                <span class="fs-5 text-success fw-bold">{{venta.totalPrice}}€</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- Estado y fechas -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <h6 class="text-muted mb-3">ESTADO</h6>
+                            <p>
+                                <span class="status-badge status-{{venta. status | lower}} fs-6">
+                                    {{venta.status}}
+                                </span>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-muted mb-3">FECHAS</h6>
+                            <p class="mb-2">
+                                <strong>Creado:</strong>
+                                {{venta.createdAt | date('dd/MM/yyyy HH:mm')}}
+                            </p>
+                            <p class="mb-2">
+                                <strong>Actualizado:</strong>
+                                {{venta.updatedAt | date('dd/MM/yyyy HH:mm')}}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Acciones -->
+                    {% if venta.status != 'CANCELADO' and venta.status != 'ENTREGADO' %}
+                    <div class="d-flex gap-2 mt-4">
+                        <a href="{% if isAdmin %}/admin/ventas/edit/{{venta.saleId}}/{{venta.productId}}{% else %}/manager/ventas/edit/{{venta.saleId}}/{{venta.productId}}{% endif %}"
+                           class="btn btn-primary">
+                            <i class="fa-solid fa-pen-to-square"></i> Editar Estado
+                        </a>
+                        <button onclick="cancelSale()" class="btn btn-danger">
+                            <i class="fa-solid fa-ban"></i> Cancelar Venta
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar con información del cliente -->
+        <div class="col-lg-4">
+            <!-- Cliente -->
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-info text-white">
+                    <h6 class="mb-0">
+                        <i class="fa-solid fa-user"></i>
+                        Cliente
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <p class="mb-2">
+                        <strong>Nombre:</strong><br>
+                        {{venta.client.name}}
+                    </p>
+                    <p class="mb-2">
+                        <strong>Email:</strong><br>
+                        <a href="mailto:{{venta.client.email}}">{{venta.client.email}}</a>
+                    </p>
+                    <p class="mb-2">
+                        <strong>Teléfono:</strong><br>
+                        <a href="tel:{{venta.client.phone}}">{{venta.client.phone}}</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Dirección de envío -->
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-secondary text-white">
+                    <h6 class="mb-0">
+                        <i class="fa-solid fa-location-dot"></i>
+                        Dirección de Envío
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <address class="mb-0">
+                        {{venta.client.address. street}}, {{venta.client.address.number}}<br>
+                        {{venta.client.address.postalCode}} {{venta.client.address.city}}<br>
+                        {{venta.client.address.province}}<br>
+                        {{venta.client.address.country}}
+                    </address>
+                </div>
+            </div>
+
+            <!-- Información del manager (solo para admin) -->
+            {% if isAdmin %}
+            <div class="card shadow-sm">
+                <div class="card-header bg-warning">
+                    <h6 class="mb-0">
+                        <i class="fa-solid fa-user-tie"></i>
+                        Manager Responsable
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <p class="mb-1">
+                        <strong>{{venta.managerName}}</strong>
+                    </p>
+                    <p class="mb-0 text-muted small">
+                        ID: {{venta.managerId}}
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- ID de venta -->
+            <div class="card shadow-sm mt-3">
+                <div class="card-body bg-light">
+                    <p class="mb-1 text-muted small">ID de Venta:</p>
+                    <code class="small">{{venta.saleId}}</code>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    function cancelSale() {
+        if (! confirm('¿Estás seguro de que deseas cancelar esta venta?  Se restaurará el stock del producto.')) {
+            return;
+        }
+
+        {% if isAdmin %}
+        window.location.href = '/admin/ventas/cancel/{{venta.saleId}}/{{venta.productId}}';
+        {% else %}
+        window.location.href = '/manager/ventas/cancel/{{venta.saleId}}/{{venta.productId}}';
+        {% endif %}
+    }
+</script>
+
+{% include "common/footer" %}

@@ -21,4 +21,9 @@ public abstract class CartException extends RuntimeException {
             super("La cantidad de tries supera el stock");
         }
     }
+    public static class UnauthorizedException extends RuntimeException {
+        public UnauthorizedException(String message) {
+            super(message);
+        }
+    }
 }

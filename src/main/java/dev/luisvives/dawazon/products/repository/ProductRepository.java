@@ -25,4 +25,5 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     Optional<Product> substractStock(String id, int amount, Long version);
 
 
+    List<Product> findAllByCreatorId(Long userId);
 }

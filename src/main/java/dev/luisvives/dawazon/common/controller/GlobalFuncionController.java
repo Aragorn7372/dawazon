@@ -1,10 +1,13 @@
 package dev.luisvives.dawazon.common.controller;
 
 import dev.luisvives.dawazon.products.models.Product;
+import dev.luisvives.dawazon.products.service.ProductService;
 import dev.luisvives.dawazon.users.models.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -14,6 +17,11 @@ import java.util.List;
 
 @RestControllerAdvice
 public class GlobalFuncionController {
+    private ProductService productService;
+    @Autowired
+    public GlobalFuncionController(ProductService productService) {
+        this.productService = productService;
+    }
 
     @ModelAttribute("currentUser")
     public User getCurrentUser(Authentication authentication) {
@@ -36,25 +44,25 @@ public class GlobalFuncionController {
         if (authentication != null && authentication.isAuthenticated()
                 && !(authentication.getPrincipal() instanceof String)) {
             User user = (User) authentication.getPrincipal();
-            return "ADMIN".equals(user.getRol());
+            return "ADMIN".equals(user.getRoles());
         }
         return false;
     }
      @ModelAttribute("isManager")
-    public boolean isAdmin(Authentication authentication) {
+    public boolean isManager(Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()
                 && !(authentication.getPrincipal() instanceof String)) {
             User user = (User) authentication.getPrincipal();
-            return "MANAGER".equals(user.getRol());
+            return "MANAGER".equals(user.getRoles());
         }
         return false;
     }
     @ModelAttribute("isUser")
-    public boolean isAdmin(Authentication authentication) {
+    public boolean isUser(Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()
                 && !(authentication.getPrincipal() instanceof String)) {
             User user = (User) authentication.getPrincipal();
-            return "USER".equals(user.getRol());
+            return "USER".equals(user.getRoles());
         }
         return false;
     }
@@ -68,7 +76,7 @@ public class GlobalFuncionController {
         }
         return null;
     }
-    ModelAttribute("csrfToken")
+    @ModelAttribute("csrfToken")
     public String getCsrfToken(HttpServletRequest request) {
         CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
         return csrfToken != null ? csrfToken.getToken() : "";
@@ -85,7 +93,15 @@ public class GlobalFuncionController {
         CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
         return csrfToken != null ? csrfToken.getHeaderName() : "X-CSRF-TOKEN";
     }
-
+    @ModelAttribute("currentUserId")
+    public Long getCurrentUserId(Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()
+                && !(authentication.getPrincipal() instanceof String)) {
+            User user = (User) authentication.getPrincipal();
+            return user.getId();
+        }
+        return null;
+    }
     @ModelAttribute("carrito")
     public List<Product> productosCarrito(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
