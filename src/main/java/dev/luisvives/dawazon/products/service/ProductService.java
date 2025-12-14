@@ -37,14 +37,10 @@ public interface ProductService extends Service<
      * Obtiene una página de productos aplicando filtros opcionales.
      *
      * @param name     Filtro opcional por nombre del producto.
-     * @param maxPrice Filtro opcional por precio máximo.
-     * @param category Filtro opcional por categoría.
      * @param pageable Información de paginación y ordenación.
      * @return Página de productos que cumplen los filtros.
      */
     Page<Product> findAll(Optional<String> name,
-                          Optional<Double> maxPrice,
-                          Optional<String> category,
                           Pageable pageable);
 
     /**

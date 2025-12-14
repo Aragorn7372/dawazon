@@ -1,10 +1,12 @@
 package dev.luisvives.dawazon.products.mapper;
 
+import dev.luisvives.dawazon.common.dto.PageResponseDTO;
 import dev.luisvives.dawazon.products.dto.CommentDto;
 import dev.luisvives.dawazon.products.dto.GenericProductResponseDto;
 import dev.luisvives.dawazon.products.dto.PostProductRequestDto;
 import dev.luisvives.dawazon.products.models.Comment;
 import dev.luisvives.dawazon.products.models.Product;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -42,5 +44,24 @@ public class ProductMapper {
                 .verified(comment.isVerified())
                 .recommended(comment.isRecommended())
                 .build();
+    }
+
+    public PageResponseDTO<Product> pageToDTO (Page<Product> page, String sortBy, String direction) {
+        return new PageResponseDTO<>(
+                page.getContent()
+                        .stream()
+                        .map(it -> it)
+                        .toList(),
+                page.getTotalPages(),
+                page.getTotalElements(),
+                page.getSize(),
+                page.getNumber(),
+                page.getNumberOfElements(),
+                page.isEmpty(),
+                page.isFirst(),
+                page.isLast(),
+                sortBy,
+                direction
+        );
     }
 }

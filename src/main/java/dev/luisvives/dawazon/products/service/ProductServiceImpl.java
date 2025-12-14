@@ -111,8 +111,6 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public Page<Product> findAll(Optional<String> name,
-                                 Optional<Double> maxPrice,
-                                 Optional<String> category,
                                  Pageable pageable) {
 
         Specification<Product> specNameProducto = (root, query, criteriaBuilder) ->
@@ -120,21 +118,8 @@ public class ProductServiceImpl implements ProductService {
                                 "%" + n.toLowerCase() + "%"))
                         .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
 
-        Specification<Product> specMaxPriceProducto = (root, query, criteriaBuilder) ->
-                maxPrice.map(p -> criteriaBuilder.lessThanOrEqualTo(root.get("price"), p))
-                        .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
-
-        Specification<Product> specCategoryProducto = (root, query, criteriaBuilder) ->
-                category.map(c -> {
-                    Join<Product, Category> categoriaJoin = root.join("category");
-                    return criteriaBuilder.like(criteriaBuilder.lower(categoriaJoin.get("name")),
-                            "%" + c.toLowerCase() + "%");
-                }).orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
-
         Specification<Product> criterio = Specification.allOf(
-                specNameProducto,
-                specMaxPriceProducto,
-                specCategoryProducto
+                specNameProducto
         );
 
         return repository.findAll(criterio, pageable);
@@ -158,7 +143,7 @@ public class ProductServiceImpl implements ProductService {
         Product productoFound = repository.findById(id)
                 .orElseThrow(() -> {
                     log.warning("SERVICE: No se encontró Producto con id: " + id);
-                    return new ProductException.NotFoundException("SERVICE: No se encontró Producto con id: " + id);
+                    return new ProductException.NotFoundException("No se encontró Producto con id: " + id);
                 });
         val commentsDto= mapearComentarios(productoFound);
 
