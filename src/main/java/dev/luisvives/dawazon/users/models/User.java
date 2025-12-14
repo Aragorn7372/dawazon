@@ -54,6 +54,9 @@ public class User implements UserDetails {
     @Builder.Default
     private LocalDateTime updatedAt = LocalDateTime.now();
 
+    @Column(nullable = false)
+    @Builder.Default
+    private boolean isDeleted = false;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
