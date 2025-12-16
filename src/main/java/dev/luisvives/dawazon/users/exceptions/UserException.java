@@ -9,4 +9,9 @@ public abstract class UserException extends RuntimeException{
             super(message);
         }
     }
+    public static class UserPasswordNotMatchException extends UserException{
+        public UserPasswordNotMatchException(String message){
+            super(message);
+        }
+    }
 }

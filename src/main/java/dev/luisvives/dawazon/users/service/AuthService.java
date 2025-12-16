@@ -1,5 +1,6 @@
 package dev.luisvives.dawazon.users.service;
 
+import dev.luisvives.dawazon.users.dto.UserChangePasswordDto;
 import dev.luisvives.dawazon.users.models.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,4 +19,5 @@ public interface AuthService {
     User findByIdOptional(Long id);
     void softDelete(Long id);
     Page<User> findAllPaginated(Optional<String> userNameOrEmail,Pageable pageable);
+    User changePassword(UserChangePasswordDto userDto, Long id);
 }

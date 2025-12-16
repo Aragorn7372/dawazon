@@ -57,7 +57,7 @@ public class ProductsController {
         return "/web/productos/producto";
     }
 
-    @PreAuthorize("ADMIN")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/products/edit/{id}")
     public String editProduct(Model model, @PathVariable String id) {
         log.info("Editando el producto con id: " + id);
@@ -69,7 +69,7 @@ public class ProductsController {
         return "/web/productos/productSaveEdit";
     }
 
-    @PreAuthorize("ADMIN")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/products/edit/")
     public String editProduct(@Valid @ModelAttribute("producto") PostProductRequestDto product,
                               @RequestParam("files") List<MultipartFile> files,
@@ -79,7 +79,7 @@ public class ProductsController {
         return "redirect:/products/"+productoEdit.getId();
     }
 
-    @PreAuthorize("ADMIN")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/products/delete/{id}")
     public String deleteProduct(Model model, @PathVariable String id) {
         productService.deleteById(id);

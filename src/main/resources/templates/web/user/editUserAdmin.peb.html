@@ -1,8 +1,13 @@
 {% include "common/header" %}
 {% include "common/navbar" %}
+{% set currentPath = request.servletPath %}
+{% set isUserView = currentPath equals '/auth/me' %}
+{% set isUserEdit = currentPath equals '/auth/me/edit' %}
+{% set isEditAdmin = currentPath equals 'auth/me/user/edit/{{user.getId}}' %}
+{% set isAdminView= currentPath equals 'auth/me/user/{{user.getId}}' %}
 <div class="container col-12">
 
-    <form action="/admin/users/save" method="POST">
+    <form action="{% if isEditAdmin %}/admin/users/edit {% elseif isUserEdit %}/auth/me/edit{% endif %}" method="{% if isEditAdmin %}POST {% elseif isUserEdit %}POST{% else %} GET {% endif %}">
         <input type="hidden" name="id" value="{{ user.id }}">
 
         <div class="admin-header"
@@ -20,36 +25,40 @@
             <div class="product-info" style="text-align: left; align-items: stretch;">
                 <div class="form-group">
                     <label class="form-label">Nombre</label>
-                    <input type="text" name="nombre" class="form-input" value="{{ user.nombre }}" readonly>
+                    <input type="text" name="nombre" class="form-input" value="{{ user.nombre }}" {% if isUserView or isAdminView %}readonly{% endif %}}>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Email</label>
-                    <input type="email" name="email" class="form-input" value="{{ user.email }}" readonly>
+                    <input type="email" name="email" class="form-input" value="{{ user.email }}" {% if isUserView or isAdminView %}readonly{% endif %}}>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Teléfono</label>
-                    <input type="text" name="telefono" class="form-input" value="{{ user.telefono }}" readonly>
+                    <input type="text" name="telefono" class="form-input" value="{{ user.telefono }}" {% if isUserView or isAdminView %}readonly{% endif %}}>
                 </div>
             </div>
 
-            {% if isHimSelf %}
+            {% if isNotHimSelf %}
+            {% if isAdmin %}
             <div class="product-info" style="text-align: left; align-items: stretch;">
                 <label class="form-label">Roles</label>
                 <div class="roles-list">
-                    {% for role in user.getRoles %}
+
                     <div style="margin-bottom: 8px;">
                         <label style="cursor: pointer; display: flex; align-items: center; gap: 10px;">
-                            <input type="checkbox" name="roles" value="{{ role.name }}" {% if user.roles contains role
-                                   %} checked {% endif %}>
-                            {{ role }}
+                        <select name="roles" id="roles" >
+                        {% for role in user.getRoles %}
+                        <option value="{{role.getName}}">{{role}}</option>
+                        {% endfor %}
+                        </select>
                         </label>
                     </div>
-                    {% endfor %}
+
                 </div>
             </div>
             {% endif %}
+{% endif %}
 
         </div>
 
@@ -60,12 +69,18 @@
                 Favs
             </a>
             {% endif %}
-
+            {% if isUserEdit or isEditAdmin %}
             <button type="submit"
-                    formaction="{% if isHimSelf %}/admin/users/update/{{user.id}}{% else %}/auth/me/update/{{user.id}}{% endif %}"
                     class="btn-gradient">
                 Guardar
             </button>
+            {% else%}
+            <button type="submit"
+                    formaction="{% if isNotHimSelf %}/auth/me/user/edit/{{user.getId}}{% else %}/auth/me/edit{% endif %} "
+                    class="btn-gradient">
+                Editar
+            </button>
+            {% endif %}
 
             <button type="submit"
                     formaction="{% if isHimSelf %}/admin/users/delete/{{user.id}}{% else %}/auth/me/delete/{{user.id}}{% endif %}"
@@ -74,7 +89,7 @@
             </button>
 
             <button type="submit"
-                    formaction="{% if isHimSelf %}/admin/users/reset-password/{{user.id}}{% else %}/auth/me/reset-password/{{user.id}}{% endif %}"
+                    formaction="{% if isHimSelf %}/auth/me/changepassword{% else %}/auth/me/reset-password/{{user.id}}{% endif %}"
                     class="btn-gradient btn-reset">
                 Restablecer contraseña
             </button>

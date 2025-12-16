@@ -1,28 +1,23 @@
 package dev.luisvives.dawazon.cart.controller;
 
 import dev.luisvives.dawazon.cart.dto.LineRequestDto;
-import dev.luisvives.dawazon.cart.models.CartLine;
 import dev.luisvives.dawazon.cart.service.CartServiceImpl;
-import dev.luisvives.dawazon.users.models.User;
 import jakarta.validation.Valid;
 import lombok.val;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
 @Controller
-@PreAuthorize("ADMIN")
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminPurchasedController {
     CartServiceImpl cartService;
     @Autowired

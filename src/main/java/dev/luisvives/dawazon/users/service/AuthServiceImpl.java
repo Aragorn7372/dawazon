@@ -1,8 +1,11 @@
 package dev.luisvives.dawazon.users.service;
 
+import dev.luisvives.dawazon.users.dto.UserChangePasswordDto;
+import dev.luisvives.dawazon.users.exceptions.UserException;
 import dev.luisvives.dawazon.users.models.User;
 import dev.luisvives.dawazon.users.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -11,7 +14,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +35,18 @@ public class AuthServiceImpl implements AuthService {
     public User register(User u) {
         u.setPassword(passwordEncoder.encode(u.getPassword()));
         return userRepository.save(u);
+    }
+
+    @CacheEvict(value = "usuarios", allEntries = true)
+    @Override
+    public User changePassword(UserChangePasswordDto userDto, Long id) {
+        val user=userRepository.findById(id).orElseThrow(()->new UsernameNotFoundException("User not found"));
+        if(passwordEncoder.matches(userDto.getOldPassword(), user.getPassword()) && passwordEncoder.matches(userDto.getNewPassword(), user.getPassword()) && userDto.getNewPassword().equals(userDto.getConfirmPassword())){
+                    user.setPassword(passwordEncoder.encode(userDto.getNewPassword()));
+                    return userRepository.save(user);
+        }else {
+            throw new UserException.UserPasswordNotMatchException("contraseña incorrecta");
+        }
     }
 
     @Cacheable(value = "usuarios", key = "#id")
@@ -115,4 +129,5 @@ public class AuthServiceImpl implements AuthService {
         }
         return userRepository.findAll(pageable);
     }
+
 }
