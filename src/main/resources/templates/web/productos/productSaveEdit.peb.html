@@ -11,7 +11,7 @@
                 </a>
             </div>
 
-            <form action="/products/edit/{{ product.id }}" method="POST" enctype="multipart/form-data"
+            <form action="{% if product.id == null %}/products/save{% else %}/products/edit/{{ product.id }} {% endif %} " method="POST" enctype="multipart/form-data"
                   class="bg-white p-4 rounded shadow-sm border">
 
                 <input type="hidden" name="id" value="{{ product.id }}">

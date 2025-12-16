@@ -88,11 +88,11 @@ public class PostProductRequestDto {
      * Nombre o ruta de la imagen asociada al producto.
      * Inicialmente vacío y se asigna tras guardar la imagen.
      */
+    @NotNull
     private List<String> images;
 
     @Min(value = 0, message = "La cantidad no puede ser inferior a 0")
     private Integer stock;
 
-    @NotNull
     private Long creatorId;
 }

@@ -1,5 +1,6 @@
 package dev.luisvives.dawazon.common.controller;
 
+import dev.luisvives.dawazon.cart.service.CartService;
 import dev.luisvives.dawazon.products.models.Product;
 import dev.luisvives.dawazon.products.service.ProductService;
 import dev.luisvives.dawazon.users.models.User;
@@ -18,9 +19,11 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalFuncionController {
     private ProductService productService;
+    private CartService cartService;
     @Autowired
-    public GlobalFuncionController(ProductService productService) {
+    public GlobalFuncionController(ProductService productService, CartService cartService) {
         this.productService = productService;
+        this.cartService = cartService;
     }
 
     @ModelAttribute("currentUser")
@@ -102,11 +105,12 @@ public class GlobalFuncionController {
         }
         return null;
     }
+
     @ModelAttribute("carrito")
     public List<Product> productosCarrito(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        List<Long> contenido = (List<Long>) session.getAttribute("carrito");
-        return (contenido == null) ? new ArrayList<>() : productService.variosPorId(contenido);
+        List<String> productIds = (List<String>) session.getAttribute("carrito");
+        return (productIds == null) ? new ArrayList<>() : cartService.variosPorId(productIds);
     }
 
     // ⭐ SHOPPING CART INFORMATION - FOR ALL PAGES ⭐
@@ -120,21 +124,6 @@ public class GlobalFuncionController {
         return 0;
     }
 
-    @ModelAttribute("cartTotal")
-    public Double getCartTotal(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            List<Long> carrito = (List<Long>) session.getAttribute("carrito");
-            if (carrito != null && !carrito.isEmpty()) {
-                List<Product> productos = productService.variosPorId(carrito);
-                return productos.stream()
-                        .mapToDouble(Product::getPrecio)
-                        .sum();
-            }
-        }
-        return 0.0;
-    }
-
     @ModelAttribute("hasCartItems")
     public boolean hasCartItems(HttpServletRequest request) {
         return getCartItemCount(request) > 0;
@@ -145,7 +134,6 @@ public class GlobalFuncionController {
         int count = getCartItemCount(request);
         return count > 0 ? Integer.toString(count) : "";
     }
-
 
     @ModelAttribute("filesPath")
     public String getFilesPath() {
@@ -183,6 +171,5 @@ public class GlobalFuncionController {
         }
         return null;
     }
-
 
 }

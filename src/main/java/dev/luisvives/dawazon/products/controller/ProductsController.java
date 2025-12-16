@@ -75,7 +75,7 @@ public class ProductsController {
                               @RequestParam("files") List<MultipartFile> files,
                               BindingResult bindingResult) {
         val productoEdit= productService.update(product.getId(),product);
-        val productSaveImg=productService.updateImage(product.getId(),files);
+        val productSaveImg=productService.updateOrSaveImage(product.getId(),files);
         return "redirect:/products/"+productoEdit.getId();
     }
 

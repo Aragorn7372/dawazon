@@ -50,7 +50,7 @@ public interface ProductService extends Service<
      * @param image Imagen enviada en formato MultipartFile.
      * @return DTO con los datos del producto actualizado.
      */
-    GenericProductResponseDto updateImage(String id, List<MultipartFile> image);
+    GenericProductResponseDto updateOrSaveImage(String id, List<MultipartFile> image);
 
     /**
      * Actualiza completamente un recurso existente.

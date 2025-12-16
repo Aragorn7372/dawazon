@@ -1,6 +1,12 @@
 package dev.luisvives.dawazon.users.service;
 
+import dev.luisvives.dawazon.common.storage.service.FileSystemStorageService;
+import dev.luisvives.dawazon.common.storage.service.StorageService;
+import dev.luisvives.dawazon.products.dto.GenericProductResponseDto;
+import dev.luisvives.dawazon.products.exception.ProductException;
+import dev.luisvives.dawazon.products.models.Product;
 import dev.luisvives.dawazon.users.dto.UserChangePasswordDto;
+import dev.luisvives.dawazon.users.dto.UserRequestDto;
 import dev.luisvives.dawazon.users.exceptions.UserException;
 import dev.luisvives.dawazon.users.models.User;
 import dev.luisvives.dawazon.users.repository.UserRepository;
@@ -15,6 +21,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -22,12 +30,17 @@ import java.util.Optional;
 @Slf4j
 public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
+    private final StorageService storage;
     BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthServiceImpl(UserRepository repositorio, BCryptPasswordEncoder passwordEncoder,  UserRepository userRepository) {
+    public AuthServiceImpl(UserRepository repositorio,
+                           BCryptPasswordEncoder passwordEncoder,
+                           UserRepository userRepository,
+                           FileSystemStorageService storage) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
+        this.storage = storage;
     }
 
     @CacheEvict(value = "usuarios", allEntries = true)
@@ -47,6 +60,46 @@ public class AuthServiceImpl implements AuthService {
         }else {
             throw new UserException.UserPasswordNotMatchException("contraseña incorrecta");
         }
+    }
+
+    @Override
+    public User updateCurrentUser(Long id, UserRequestDto updateUser) {
+        var user=userRepository.findById(id).orElseThrow(()->new UsernameNotFoundException("User not found"));
+        user.setUserName(updateUser.getNombre());
+        user.setEmail(updateUser.getEmail());
+        user.setAvatar(updateUser.getAvatar());
+        user.setTelefono(updateUser.getTelefono());
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User updateImage(Long id, MultipartFile image) {
+        val user = userRepository.findById(id)
+                .orElseThrow(() -> new ProductException.NotFoundException("Producto no encontrado con id: " + id));
+        log.info("Actualizando imagen de producto por id: " + id);
+
+        if (user.getAvatar() != user.getIMAGE_DEFAULT()) {
+            storage.delete(user.getAvatar());
+        }
+
+        String imageStored = storage.store(image);
+
+        User userUpdated = User.builder()
+                .id(user.getId())
+                .userName(user.getUsername())
+                .email(user.getEmail())
+                .telefono(user.getTelefono())
+                .client(user.getClient())
+                .password(user.getPassword())
+                .roles(user.getRoles())
+                .avatar(imageStored)
+                .createdAt(user.getCreatedAt())
+                .updatedAt(user.getUpdatedAt())
+                .build();
+
+        return userRepository.save(userUpdated);
+
+
     }
 
     @Cacheable(value = "usuarios", key = "#id")
@@ -91,6 +144,10 @@ public class AuthServiceImpl implements AuthService {
         userRepository.deleteById(id);
     }
 
+    public void deleteLogical(Long id) {
+        userRepository.softDelete(id);
+    }
+
     @Override
     public User findByIdOptional(Long id) {
         return userRepository.findActiveById(id);
@@ -129,5 +186,4 @@ public class AuthServiceImpl implements AuthService {
         }
         return userRepository.findAll(pageable);
     }
-
 }

@@ -104,8 +104,6 @@ public class ProductServiceImpl implements ProductService {
      * Busca productos aplicando filtros opcionales por nombre, precio máximo y categoría.
      *
      * @param name     Filtro opcional por nombre
-     * @param maxPrice Filtro opcional por precio máximo
-     * @param category Filtro opcional por nombre de categoría
      * @param pageable Paginación y ordenación
      * @return Página de productos que cumplen los filtros
      */
@@ -254,7 +252,7 @@ public class ProductServiceImpl implements ProductService {
      * @throws ProductException.NotFoundException si no existe el producto
      */
     @Override
-    public GenericProductResponseDto updateImage(String id, List<MultipartFile> image) {
+    public GenericProductResponseDto updateOrSaveImage(String id, List<MultipartFile> image) {
         val foundProducto = repository.findById(id)
                 .orElseThrow(() -> new ProductException.NotFoundException("Producto no encontrado con id: " + id));
         log.info("Actualizando imagen de producto por id: " + id);
