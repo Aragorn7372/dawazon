@@ -83,7 +83,7 @@
             {% endif %}
 
             <button type="submit"
-                    formaction="{% if isHimSelf %}/admin/users/delete/{{user.id}}{% else %}/auth/me/delete/{{user.id}}{% endif %}"
+                    formaction="{% if isHimSelf %}/auth/me/delete{% else %}/admin/users/delete/{{user.id}}{% endif %}"
                     class="btn-gradient btn-delete">
                 Eliminar cuenta
             </button>

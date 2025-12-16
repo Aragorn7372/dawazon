@@ -321,7 +321,6 @@ public class CartServiceImpl implements CartService {
         }
     }
 
-
     @Override
     @Transactional
     public void deleteById(ObjectId id) {
@@ -331,5 +330,20 @@ public class CartServiceImpl implements CartService {
         });
         cartToEmpty.setCartLines(List.of());
         cartRepository.save(cartToEmpty);
+    }
+
+    @Override
+    public List<Product> variosPorId(List<String> productsIds){
+
+        List<Product> products = new ArrayList<>();
+
+        productsIds.forEach(id -> {
+            val product = productRepository.findById(id)
+                    .orElseThrow(() -> new ProductException.NotFoundException("No se encontró el producto con id: " +id) {
+                    });
+            products.add(product);
+        });
+
+        return products;
     }
 }

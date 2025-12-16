@@ -32,13 +32,17 @@ public class User implements UserDetails {
     private String email;
     @Column(nullable = false)
     private String password;
-    @Column(nullable = false)
+    @Column()
     private Client client;
+    @Column()
+    @Builder.Default
+    private String telefono="";
 
     @Column(nullable = false)
     @ElementCollection(fetch = FetchType.EAGER) // Pocos datos, tipo eaguer para ir mas rapido
     @Enumerated(EnumType.STRING) // Guardar el nombre del enum en lugar de el "indice" del valor Ej.: Tipo[0] = ADMIN / Tipo[1] = USER
-    private List<Role> roles;
+    @Builder.Default
+    private List<Role> roles=List.of(Role.USER);
 
     @Column(nullable = false)
     @Builder.Default

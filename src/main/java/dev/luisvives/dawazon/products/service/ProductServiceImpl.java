@@ -104,22 +104,23 @@ public class ProductServiceImpl implements ProductService {
      * Busca productos aplicando filtros opcionales por nombre, precio máximo y categoría.
      *
      * @param name     Filtro opcional por nombre
-     * @param maxPrice Filtro opcional por precio máximo
-     * @param category Filtro opcional por nombre de categoría
      * @param pageable Paginación y ordenación
      * @return Página de productos que cumplen los filtros
      */
     @Override
     public Page<Product> findAll(Optional<String> name,
                                  Pageable pageable) {
-
+        var isDeleted=true;
         Specification<Product> specNameProducto = (root, query, criteriaBuilder) ->
                 name.map(n -> criteriaBuilder.like(criteriaBuilder.lower(root.get("name")),
                                 "%" + n.toLowerCase() + "%"))
                         .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
+        Specification<Product> specIsDeleted = (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("isDeleted"), isDeleted);
 
         Specification<Product> criterio = Specification.allOf(
-                specNameProducto
+                specNameProducto,
+                specIsDeleted
         );
 
         return repository.findAll(criterio, pageable);
@@ -148,6 +149,17 @@ public class ProductServiceImpl implements ProductService {
         val commentsDto= mapearComentarios(productoFound);
 
         return mapper.modelToGenericResponseDTO(productoFound, commentsDto);
+    }
+    public Long getUserProductId(String id) {
+        log.info("SERVICE: Buscando Producto con id: " + id);
+
+        Product productoFound = repository.findById(id)
+                .orElseThrow(() -> {
+                    log.warning("SERVICE: No se encontró Producto con id: " + id);
+                    return new ProductException.NotFoundException("No se encontró Producto con id: " + id);
+                });
+
+        return productoFound.getCreatorId();
     }
 
     /**
@@ -241,8 +253,7 @@ public class ProductServiceImpl implements ProductService {
             log.warning("SERVICE: No se encontró Producto con id: " + id);
             throw new ProductException.NotFoundException("SERVICE: No se encontró Producto con id: " + id);
         }
-
-        repository.delete(foundProducto.get());
+        repository.deleteByIdLogical(id);
     }
 
     /**
@@ -254,7 +265,7 @@ public class ProductServiceImpl implements ProductService {
      * @throws ProductException.NotFoundException si no existe el producto
      */
     @Override
-    public GenericProductResponseDto updateImage(String id, List<MultipartFile> image) {
+    public GenericProductResponseDto updateOrSaveImage(String id, List<MultipartFile> image) {
         val foundProducto = repository.findById(id)
                 .orElseThrow(() -> new ProductException.NotFoundException("Producto no encontrado con id: " + id));
         log.info("Actualizando imagen de producto por id: " + id);
