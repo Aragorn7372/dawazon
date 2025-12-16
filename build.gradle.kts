@@ -42,6 +42,7 @@ dependencies {
     testImplementation("org.testcontainers:postgresql")
     testImplementation("org.testcontainers:mongodb")
     testImplementation("org.springframework.security:spring-security-test")
+
     // pebble
     implementation("io.pebbletemplates:pebble-spring-boot-starter:3.2.2")
     implementation("io.pebbletemplates:pebble:3.2.2")

@@ -18,7 +18,7 @@ public class UserDetailsServiceImpl implements UserService {
             }
 
             // Si no es email → es username
-            return repositorio.findByUsername(value)
+            return repositorio.findByUserName(value)
                     .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + value));
         }
 }

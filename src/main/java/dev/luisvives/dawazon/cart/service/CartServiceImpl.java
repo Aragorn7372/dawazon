@@ -182,7 +182,8 @@ public class CartServiceImpl implements CartService {
                 .productId(productId)
                 .status(Status.EN_CARRITO)
                 .build();
-        return cartRepository.addCartLine(id,line).orElseThrow(()->{
+        cartRepository.addCartLine(id,line);
+        return cartRepository.findById(id).orElseThrow(()->{
             log.warn("Cart no encontrado con id: " + id);
             return new CartException.NotFoundException("Cart no encontrado con id: " + id);
         });
@@ -226,7 +227,8 @@ public class CartServiceImpl implements CartService {
                 .productId(productId)
                 .status(Status.EN_CARRITO)
                 .build();
-        return cartRepository.removeCartLine(id,line).orElseThrow(()->{
+        cartRepository.removeCartLine(id,line);
+        return cartRepository.findById(id).orElseThrow(()->{
             log.warn("Cart no encontrado con id: " + id);
             return new CartException.NotFoundException("Cart no encontrado con id: " + id);
         });
@@ -260,7 +262,8 @@ public class CartServiceImpl implements CartService {
 
     @Transactional
     public Cart update(LineRequestDto line) {
-        return cartRepository.updateCartLineStatus(line.getCartId(), line.getProductId(), line.getStatus()).orElseThrow(() -> {
+        cartRepository.updateCartLineStatus(line.getCartId(), line.getProductId(), line.getStatus());
+        return cartRepository.findById(line.getCartId()).orElseThrow(() -> {
             log.warn("Cart no encontrado con id: " + line.getCartId());
             return new CartException.NotFoundException("Cart no encontrado con id: " + line.getCartId());
         });

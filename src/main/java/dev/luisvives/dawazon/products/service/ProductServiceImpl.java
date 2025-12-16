@@ -7,12 +7,10 @@ import dev.luisvives.dawazon.products.dto.CommentDto;
 import dev.luisvives.dawazon.products.dto.GenericProductResponseDto;
 import dev.luisvives.dawazon.products.dto.PostProductRequestDto;
 import dev.luisvives.dawazon.products.mapper.ProductMapper;
-import dev.luisvives.dawazon.products.models.Category;
 import dev.luisvives.dawazon.products.models.Product;
 import dev.luisvives.dawazon.products.repository.CategoryRepository;
 import dev.luisvives.dawazon.products.repository.ProductRepository;
 import dev.luisvives.dawazon.users.repository.UserRepository;
-import jakarta.persistence.criteria.Join;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -295,6 +293,6 @@ public class ProductServiceImpl implements ProductService {
 
 
     public List<Product> findByCreatedAtBetween(LocalDateTime ultimaEjecucion, LocalDateTime ahora) {
-        return repository.findAllByFechaCreacionBetween(ultimaEjecucion, ahora);
+        return repository.findAllBycreatedAtBetween(ultimaEjecucion, ahora);
     }
 }

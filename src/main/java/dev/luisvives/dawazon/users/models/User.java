@@ -22,7 +22,7 @@ import java.util.List;
 @Builder
 @Entity
 public class User implements UserDetails {
-    final String IMAGE_DEFAULT = "default.png";
+    public final static String IMAGE_DEFAULT = "default.png";
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -32,7 +32,19 @@ public class User implements UserDetails {
     private String email;
     @Column(nullable = false)
     private String password;
-    @Column()
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "name", column = @Column(name = "client_name")),
+            @AttributeOverride(name = "email", column = @Column(name = "client_email")),
+            @AttributeOverride(name = "phone", column = @Column(name = "client_phone")),
+            // Address anidado dentro de Client
+            @AttributeOverride(name = "address. number", column = @Column(name = "client_address_number")),
+            @AttributeOverride(name = "address.street", column = @Column(name = "client_address_street")),
+            @AttributeOverride(name = "address.city", column = @Column(name = "client_address_city")),
+            @AttributeOverride(name = "address.province", column = @Column(name = "client_address_province")),
+            @AttributeOverride(name = "address. country", column = @Column(name = "client_address_country")),
+            @AttributeOverride(name = "address.postalCode", column = @Column(name = "client_address_postal_code"))
+    })
     private Client client;
     @Column()
     @Builder.Default

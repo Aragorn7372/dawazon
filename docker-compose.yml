@@ -48,11 +48,11 @@ services:
       - jacoco
       - webtest
       - documentacion
-      - api
+      - app
     networks:
       - webnet # red de contenedores
 
-  api:
+  app:
     build:
       context: .
       dockerfile: dockerfile

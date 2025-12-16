@@ -2,9 +2,7 @@ package dev.luisvives.dawazon.users.service;
 
 import dev.luisvives.dawazon.common.storage.service.FileSystemStorageService;
 import dev.luisvives.dawazon.common.storage.service.StorageService;
-import dev.luisvives.dawazon.products.dto.GenericProductResponseDto;
 import dev.luisvives.dawazon.products.exception.ProductException;
-import dev.luisvives.dawazon.products.models.Product;
 import dev.luisvives.dawazon.users.dto.UserChangePasswordDto;
 import dev.luisvives.dawazon.users.dto.UserRequestDto;
 import dev.luisvives.dawazon.users.exceptions.UserException;
@@ -25,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
+
+import static dev.luisvives.dawazon.users.models.User.IMAGE_DEFAULT;
 
 @Service
 @Slf4j
@@ -78,7 +78,7 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new ProductException.NotFoundException("Producto no encontrado con id: " + id));
         log.info("Actualizando imagen de producto por id: " + id);
 
-        if (user.getAvatar() != user.getIMAGE_DEFAULT()) {
+        if (user.getAvatar() != IMAGE_DEFAULT) {
             storage.delete(user.getAvatar());
         }
 
@@ -119,7 +119,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Cacheable(value = "usuarios", key = "#email")
     public User findByUsername(String userName) {
-        return userRepository.findByUsername(userName).orElseThrow(() -> {
+        return userRepository.findByUserName(userName).orElseThrow(() -> {
             log.error("Usuario no encontrado");
             return new  UsernameNotFoundException("Usuario no encontrado");
         });
