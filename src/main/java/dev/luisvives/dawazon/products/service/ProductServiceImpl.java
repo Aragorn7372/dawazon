@@ -110,14 +110,17 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<Product> findAll(Optional<String> name,
                                  Pageable pageable) {
-
+        var isDeleted=true;
         Specification<Product> specNameProducto = (root, query, criteriaBuilder) ->
                 name.map(n -> criteriaBuilder.like(criteriaBuilder.lower(root.get("name")),
                                 "%" + n.toLowerCase() + "%"))
                         .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
+        Specification<Product> specIsDeleted = (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("isDeleted"), isDeleted);
 
         Specification<Product> criterio = Specification.allOf(
-                specNameProducto
+                specNameProducto,
+                specIsDeleted
         );
 
         return repository.findAll(criterio, pageable);
@@ -146,6 +149,17 @@ public class ProductServiceImpl implements ProductService {
         val commentsDto= mapearComentarios(productoFound);
 
         return mapper.modelToGenericResponseDTO(productoFound, commentsDto);
+    }
+    public Long getUserProductId(String id) {
+        log.info("SERVICE: Buscando Producto con id: " + id);
+
+        Product productoFound = repository.findById(id)
+                .orElseThrow(() -> {
+                    log.warning("SERVICE: No se encontró Producto con id: " + id);
+                    return new ProductException.NotFoundException("No se encontró Producto con id: " + id);
+                });
+
+        return productoFound.getCreatorId();
     }
 
     /**
@@ -239,8 +253,7 @@ public class ProductServiceImpl implements ProductService {
             log.warning("SERVICE: No se encontró Producto con id: " + id);
             throw new ProductException.NotFoundException("SERVICE: No se encontró Producto con id: " + id);
         }
-
-        repository.delete(foundProducto.get());
+        repository.deleteByIdLogical(id);
     }
 
     /**

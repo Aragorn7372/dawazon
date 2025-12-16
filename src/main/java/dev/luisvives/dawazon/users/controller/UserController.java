@@ -2,7 +2,9 @@ package dev.luisvives.dawazon.users.controller;
 
 import dev.luisvives.dawazon.products.dto.PostProductRequestDto;
 import dev.luisvives.dawazon.products.service.ProductService;
+import dev.luisvives.dawazon.products.service.ProductServiceImpl;
 import dev.luisvives.dawazon.users.dto.UserRequestDto;
+import dev.luisvives.dawazon.users.exceptions.UserException;
 import dev.luisvives.dawazon.users.models.User;
 import dev.luisvives.dawazon.users.service.AuthService;
 import jakarta.validation.Valid;
@@ -25,10 +27,10 @@ import java.util.List;
 @PreAuthorize("hasAnyAuthority()")
 public class UserController {
     private final AuthService authService;
-    private final ProductService productService;
+    private final ProductServiceImpl productService;
 
     @Autowired
-    public UserController(AuthService authService, ProductService productService) {
+    public UserController(AuthService authService, ProductServiceImpl productService) {
         this.authService = authService;
         this.productService = productService;
     }
@@ -108,9 +110,9 @@ public class UserController {
         model.addAttribute("product", product);
         return "/web/productos/productoSaveEdit";
     }
-    // esto esta en proceso
+
     @PreAuthorize("hasRole('MANAGER')")
-    @PostMapping({"/products/save", "/products/save/"})
+    @PostMapping({"/products/edit", "/products/edit/"})
     public String updateProduct(@Valid @ModelAttribute("producto") PostProductRequestDto product,
                               BindingResult bindingResult, Model model,
                               @RequestParam("file") List<MultipartFile> file) {
@@ -121,8 +123,25 @@ public class UserController {
             return "/web/productos/productoSaveEdit";
         }
         product.setCreatorId((Long) model.getAttribute("currentUserId"));
+        val userId = productService.getUserProductId(product.getId());
+        if (userId != product.getCreatorId()) {
+            throw new UserException.UserPermisionDeclined("No puedes editar el producto de otro usuario");
+        }
         val savedProduct = productService.update(product.getId(),product);
         productService.updateOrSaveImage(savedProduct.getId(), file);
         return "redirect:/products/" + savedProduct.getId();
+    }
+    @PreAuthorize("hasRole('MANAGER')")
+    @GetMapping("/products/delete/{id}")
+    public String delete(Model model, @PathVariable String id) {
+        log.info("");
+        val product= productService.getById(id);
+        val productId=model.getAttribute("currentUserId");
+        val userId = productService.getUserProductId(product.getId());
+        if(userId!=productId){
+            throw new UserException.UserPermisionDeclined("No puedes eliminar el producto de otro usuario");
+        }
+        productService.deleteById(id);
+        return "redirect:/products/" + id;
     }
 }
