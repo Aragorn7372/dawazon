@@ -1,5 +1,11 @@
 package dev.luisvives.dawazon.users.controller;
 
+import dev.luisvives.dawazon.cart.dto.CartStockRequestDto;
+import dev.luisvives.dawazon.cart.dto.LineRequestDto;
+import dev.luisvives.dawazon.cart.models.Cart;
+import dev.luisvives.dawazon.cart.models.Status;
+import dev.luisvives.dawazon.cart.service.CartService;
+import dev.luisvives.dawazon.cart.service.CartServiceImpl;
 import dev.luisvives.dawazon.products.dto.PostProductRequestDto;
 
 import dev.luisvives.dawazon.products.service.ProductServiceImpl;
@@ -11,6 +17,7 @@ import dev.luisvives.dawazon.users.service.FavService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.PageRequest;
@@ -24,21 +31,24 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @Slf4j
-@RequestMapping("auth/me")
+@RequestMapping("/auth/me")
 @PreAuthorize("hasAnyAuthority()")
 public class UserController {
     private final AuthService authService;
     private final ProductServiceImpl productService;
     private final FavService favService;
+    private final CartServiceImpl cartService;
 
     @Autowired
-    public UserController(AuthService authService, ProductServiceImpl productService, FavService favService) {
+    public UserController(AuthService authService, ProductServiceImpl productService, FavService favService,CartServiceImpl cartService) {
         this.authService = authService;
         this.productService = productService;
         this.favService = favService;
+        this.cartService = cartService;
     }
 
     @GetMapping({"", "/"})
@@ -152,6 +162,7 @@ public class UserController {
         productService.updateOrSaveImage(savedProduct.getId(), file);
         return "redirect:/products/" + savedProduct.getId();
     }
+
     @PreAuthorize("hasRole('MANAGER')")
     @GetMapping("/products/delete/{id}")
     public String delete(Model model, @PathVariable String id) {
@@ -165,6 +176,7 @@ public class UserController {
         productService.deleteById(id);
         return "redirect:/products/" + id;
     }
+
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/fav/add/{id}")
     public String addFav(Model model, @PathVariable String id) {
@@ -172,6 +184,7 @@ public class UserController {
         favService.addFav(id,userId);
         return "redirect:/products/" + id;
     }
+
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/fav/remove/{id}")
     public String removeFav(Model model, @PathVariable String id) {
@@ -179,8 +192,9 @@ public class UserController {
         favService.addFav(id,userId);
         return "redirect:/products/" + id;
     }
+
     @PreAuthorize("hasRole('USER')")
-    @GetMapping("fav")
+    @GetMapping("/fav")
     public String fav(Model model,
                       @RequestParam(defaultValue = "0") int page,
                       @RequestParam(defaultValue = "10") int size,
@@ -193,5 +207,128 @@ public class UserController {
         val userId=(Long) model.getAttribute("currentUserId");
         model.addAttribute("productos", favService.getFavs(userId,pageable));
         return "web/productos/lista";
+    }
+
+    @PreAuthorize("hasrole('USER')")
+    @GetMapping("/carrito/add/{id}")
+    public String addToCart(Model model, @PathVariable String id) {
+        val userId= (Long) model.getAttribute("currentUserId");
+        val cart = (Cart) model.getAttribute("cart");
+        val ultimateCart=cartService.addProduct(new ObjectId(cart.getId()), id);
+        model.addAttribute("carrito",ultimateCart);
+        return "redirect:/products/" + id;
+    }
+
+    @PreAuthorize("hasrole('USER')")
+    @GetMapping("/carrito/remove/{id}")
+    public String removeToCart(Model model, @PathVariable String id) {
+        val cart = (Cart) model.getAttribute("cart");
+        val ultimateCart=cartService.removeProduct(new ObjectId(cart.getId()), id);
+        model.addAttribute("carrito",ultimateCart);
+        return "redirect:/products/" + id;
+    }
+
+    @PreAuthorize("hasrole('USER')")
+    @GetMapping("/cart")
+    public String getCart(Model model){
+        return "web/cart/cart";
+    }
+
+    @PreAuthorize(("hasrole('USER')"))
+    @PostMapping("cart/stock")
+    public String updateCartStock(@Valid @ModelAttribute("line") CartStockRequestDto line, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("error.status", 400);
+            model.addAttribute("error.title", "El producto no es válido");
+            model.addAttribute("error.message", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage));
+            return "web/cart/cart";
+        }
+
+        Cart cart=cartService.updateStock(line);
+        model.addAttribute("carrito",cart);
+        return "redirect:/auth/me/cart";
+    }
+
+    @PreAuthorize("hasrole('USER')")
+    @GetMapping({"/pedidos", "/pedidos/"})
+    public String getPedidos(Model model,
+                             @RequestParam(defaultValue = "0") int page,
+                             @RequestParam(defaultValue = "10") int size,
+                             @RequestParam(defaultValue = "id") String sortBy,
+                             @RequestParam(defaultValue = "asc") String direction){
+        Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Long userId= (Long) model.getAttribute("currentUserId");
+        val pedidos = cartService.findAll(Optional.of(userId), Optional.of("true"), pageable);
+        model.addAttribute("pedidos",pedidos);
+        return "web/cart/myOrders";
+    }
+
+    @PreAuthorize("hasrole('USER')")
+    @GetMapping({"/pedidos/{id}", "/pedidos/{id}/"})
+    public String getOrderDetail(Model model,
+            @PathVariable String id) {
+        val existingCart = cartService.getById(new ObjectId(id));
+        val userId= (Long) model.getAttribute("currentUserId");
+        if(!userId.equals(existingCart.getUserId())) {
+            throw new UserException.UserPermisionDeclined("El usuario con ID: " + userId + " ha intentado acceder al carrito del usuario con ID: " +  existingCart.getUserId());
+        }
+        model.addAttribute("cart",existingCart);
+        return "web/cart/orderDetail";
+    }
+
+    @PreAuthorize("hasrole('MANAGER')")
+    @GetMapping({"/ventas", "/ventas/"})
+    public String getVentas(Model model,
+                            @RequestParam(defaultValue = "0") int page,
+                            @RequestParam(defaultValue = "10") int size,
+                            @RequestParam(defaultValue = "id") String sortBy,
+                            @RequestParam(defaultValue = "asc") String direction){
+        Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        val userId= (Long) model.getAttribute("currentUserId");
+        val venta=cartService.findAllSalesAsLines(Optional.of(userId),false,pageable);
+        model.addAttribute("ventas",venta);
+        return "web/cart/ventas";
+    }
+
+    @PreAuthorize("hasrole('MANAGER')")
+    @GetMapping( "/ventas/{cartId}/{productId}")
+    public String getVentas(Model model, @PathVariable String cartId, @PathVariable String productId){
+        val userId= (Long) model.getAttribute("currentUserId");
+        val line= cartService.getSaleLineByIds(cartId,productId,userId,false);
+        model.addAttribute("venta",line);
+        return "web/cart/ventas";
+    }
+
+    @PreAuthorize("hasrole('MANAGER')")
+    @GetMapping( "/ventas/edit/{cartId}/{productId}")
+    public String getVentaEdit(Model model, @PathVariable String cartId, @PathVariable String productId){
+        val userId= (Long) model.getAttribute("currentUserId");
+        val line= cartService.getSaleLineByIds(cartId,productId,userId,false);
+        model.addAttribute("venta",line);
+        return "web/cart/ventas-edit";
+    }
+
+
+    @PreAuthorize("hasrole('MANAGER')")
+    @PostMapping("/venta/edit")
+    public String postVentaEdit(Model model, @Valid @ModelAttribute("line") LineRequestDto lineRequestDto){
+        val userId= (Long) model.getAttribute("currentUserId");
+        val line= cartService.update(lineRequestDto);
+        model.addAttribute("line",line);
+        return "redirect:auth/me/ventas/"+lineRequestDto.getCartId()+"/"+lineRequestDto.getProductId();
+    }
+
+    @PreAuthorize("hasrole('MANAGER')")
+    @GetMapping("/ventas/cancel/{cartId}/{productId}")
+    public String postVentaCancel(Model model, @PathVariable String cartId, @PathVariable String productId){
+        val userId= (Long) model.getAttribute("currentUserId");
+        val line= cartService.getSaleLineByIds(cartId,productId,userId,false);
+        LineRequestDto lineRequestDto= LineRequestDto.builder()
+                .cartId(new ObjectId(cartId)).productId(productId).status(Status.CANCELADO).build();
+        val lineFinal= cartService.update(lineRequestDto);
+        model.addAttribute("line",lineFinal);
+        return "redirect:auth/me/ventas";
     }
 }

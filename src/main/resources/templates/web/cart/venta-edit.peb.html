@@ -68,10 +68,10 @@
                 <option value="PREPARADO" {% if venta.status == 'PREPARADO' %}selected{% endif %}>
                 📦 Preparado
                 </option>
-                <option value="ENVIADO" {% if venta. status == 'ENVIADO' %}selected{% endif %}>
+                <option value="ENVIADO" {% if venta.status == 'ENVIADO' %}selected{% endif %}>
                 🚚 Enviado
                 </option>
-                <option value="ENTREGADO" {% if venta. status == 'ENTREGADO' %}selected{% endif %}>
+                <option value="ENTREGADO" {% if venta.status == 'ENTREGADO' %}selected{% endif %}>
                 ✅ Entregado
                 </option>
                 <option value="CANCELADO" {% if venta.status == 'CANCELADO' %}selected{% endif %}>
@@ -151,7 +151,7 @@
 
     if (status === 'ENTREGADO') {
       if (!confirm('¿Confirmas que el pedido ha sido ENTREGADO al cliente?')) {
-        e. preventDefault();
+        e.preventDefault();
         return false;
       }
     }

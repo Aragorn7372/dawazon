@@ -51,7 +51,7 @@
                 </td>
                 <td class="align-middle">
                     <a class="text-decoration-none text-black" href="/products/{{venta.productId}}">
-                        {{venta. productId}}
+                        {{venta.productId}}
                     </a>
                 </td>
                 <td class="align-middle">{{venta.productName}}</td>
@@ -65,7 +65,7 @@
                 </td>
                 <td class="align-middle">{{venta.quantity}}</td>
                 <td>
-                    <span class="status-badge status-{{venta. status | lower}}">{{venta.status}}</span>
+                    <span class="status-badge status-{{venta.status | lower}}">{{venta.status}}</span>
                 </td>
                 <td class="align-middle">{{venta.productPrice}}€</td>
                 <td class="align-middle"><strong>{{venta.totalPrice}}€</strong></td>
@@ -77,7 +77,7 @@
                         <i class="fa-solid fa-pen-to-square"></i> Editar
                     </button>
                     <button class="btn-action btn-delete"
-                            onclick="cancelSale('{{venta.saleId}}', '{{venta. productId}}')"
+                            onclick="cancelSale('{{venta.saleId}}', '{{venta.productId}}')"
                             data-action="cancel" title="Cancelar venta">
                         <i class="fa-solid bi bi-trash"></i> Cancelar
                     </button>
@@ -120,7 +120,7 @@
         {% if isAdmin %}
         window.location.href = `/ventas/edit/${saleId}/${productId}`;
         {% else %}
-        window.location. href = `/auth/me/ventas/edit/${saleId}/${productId}`;
+        window.location.href = `/auth/me/ventas/edit/${saleId}/${productId}`;
         {% endif %}
     }
 

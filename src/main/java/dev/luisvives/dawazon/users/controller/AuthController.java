@@ -44,7 +44,6 @@ public class AuthController {
         return "web/auth/auth";
     }
 
-
     @PostMapping("/auth/signup")
     public String register(@ModelAttribute User usuario,
                            @RequestParam("file") MultipartFile file) {

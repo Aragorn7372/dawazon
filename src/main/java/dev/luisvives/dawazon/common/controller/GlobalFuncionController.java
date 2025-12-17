@@ -1,5 +1,6 @@
 package dev.luisvives.dawazon.common.controller;
 
+import dev.luisvives.dawazon.cart.models.Cart;
 import dev.luisvives.dawazon.cart.service.CartService;
 import dev.luisvives.dawazon.products.models.Product;
 import dev.luisvives.dawazon.products.service.ProductService;
@@ -107,10 +108,11 @@ public class GlobalFuncionController {
     }
 
     @ModelAttribute("carrito")
-    public List<Product> productosCarrito(HttpServletRequest request) {
+    public Cart getCarrito(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        List<String> productIds = (List<String>) session.getAttribute("carrito");
-        return (productIds == null) ? new ArrayList<>() : cartService.variosPorId(productIds);
+        Cart cart = (Cart) session.getAttribute("carrito");
+        Long userId = (Long) session.getAttribute("currentUserId");
+        return (cart == null) ? new Cart() : cartService.getCartByUserId(userId);
     }
 
     // ⭐ SHOPPING CART INFORMATION - FOR ALL PAGES ⭐
@@ -118,8 +120,8 @@ public class GlobalFuncionController {
     public int getCartItemCount(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
-            List<Long> carrito = (List<Long>) session.getAttribute("carrito");
-            return (carrito != null) ? carrito.size() : 0;
+            Cart carrito = (Cart) session.getAttribute("carrito");
+            return (carrito != null) ? carrito.getCartLines().size() : 0;
         }
         return 0;
     }
