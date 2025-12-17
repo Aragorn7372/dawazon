@@ -14,8 +14,8 @@ public abstract class UserException extends RuntimeException{
             super(message);
         }
     }
-    public static class UserPermisionDeclined extends UserException{
-        public UserPermisionDeclined(String message){
+    public static class UserPermissionDeclined extends UserException{
+        public UserPermissionDeclined(String message){
             super(message);
         }
     }

@@ -6,7 +6,6 @@ import dev.luisvives.dawazon.cart.dto.LineRequestDto;
 import dev.luisvives.dawazon.cart.models.Cart;
 import dev.luisvives.dawazon.cart.models.Client;
 import dev.luisvives.dawazon.cart.models.Status;
-import dev.luisvives.dawazon.cart.service.CartService;
 import dev.luisvives.dawazon.cart.service.CartServiceImpl;
 import dev.luisvives.dawazon.products.dto.PostProductRequestDto;
 
@@ -166,7 +165,7 @@ public class UserController {
         product.setCreatorId((Long) model.getAttribute("currentUserId"));
         val userId = productService.getUserProductId(product.getId());
         if (userId != product.getCreatorId()) {
-            throw new UserException.UserPermisionDeclined("No puedes editar el producto de otro usuario");
+            throw new UserException.UserPermissionDeclined("No puedes editar el producto de otro usuario");
         }
         val savedProduct = productService.update(product.getId(),product);
         productService.updateOrSaveImage(savedProduct.getId(), file);
@@ -181,7 +180,7 @@ public class UserController {
         val productId=model.getAttribute("currentUserId");
         val userId = productService.getUserProductId(product.getId());
         if(userId!=productId){
-            throw new UserException.UserPermisionDeclined("No puedes eliminar el producto de otro usuario");
+            throw new UserException.UserPermissionDeclined("No puedes eliminar el producto de otro usuario");
         }
         productService.deleteById(id);
         return "redirect:/products/" + id;
@@ -281,7 +280,7 @@ public class UserController {
         val existingCart = cartService.getById(new ObjectId(id));
         val userId= (Long) model.getAttribute("currentUserId");
         if(!userId.equals(existingCart.getUserId())) {
-            throw new UserException.UserPermisionDeclined("El usuario con ID: " + userId + " ha intentado acceder al carrito del usuario con ID: " +  existingCart.getUserId());
+            throw new UserException.UserPermissionDeclined("El usuario con ID: " + userId + " ha intentado acceder al carrito del usuario con ID: " +  existingCart.getUserId());
         }
         model.addAttribute("order",existingCart);
         return "web/cart/orderDetail";

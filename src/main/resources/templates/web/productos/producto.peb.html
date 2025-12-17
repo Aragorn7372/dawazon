@@ -8,13 +8,9 @@
 
         <div class="carousel-container">
             <button class="carousel-arrow left">&#10094;</button>
-            {% if producto.image is not empty %}
-            {% for image in producto.image %}
-            <img src="{{image}}" class="product-img {% if loop.first %}active{% endif %}" alt="{{producto.name}}">
+            {% for image in producto.images %}
+            <img src="/files/{{image}}" class="product-img {% if loop.first %}active{% endif %}" alt="{{producto.name}}">
             {% endfor %}
-            {% else %}
-            <img src="/img/default-product.png" class="product-img active" alt="Producto sin imagen">
-            {% endif %}
             <button class="carousel-arrow right">&#10095;</button>
         </div>
 

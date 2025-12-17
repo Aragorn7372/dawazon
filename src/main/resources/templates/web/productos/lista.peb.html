@@ -19,8 +19,8 @@
         <div class="col">
             <div class="card h-100 p-3 bg-white">
                 <div class="img-container">
-                    {% if product.image is not empty %}
-                    <img src="{{product.image[0]}}" alt="{{product.name}}">
+                    {% if product.images is not empty %}
+                    <img src="/files/{{product.images[0]}}" alt="{{product.name}}">
                     {% endif %}
                 </div>
                 <div class="card-body px-0 pb-0">

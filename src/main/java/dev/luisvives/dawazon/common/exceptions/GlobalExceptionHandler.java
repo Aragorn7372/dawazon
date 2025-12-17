@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
         model.addAttribute("error.status", "404");
         model.addAttribute("error.message", ex.getMessage());
         model.addAttribute("error.title", "Not Found");
-        return "/blocked";
+        return "blocked";
     }
 
     @ExceptionHandler(ProductException.ValidationException.class)
@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
         model.addAttribute("error.status", "404");
         model.addAttribute("error.message", ex.getMessage());
         model.addAttribute("error.title", "Not Found");
-        return "/blocked";
+        return "blocked";
     }
 
     @ExceptionHandler(CartException.NotFoundException.class)
@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
         model.addAttribute("error.status", "404");
         model.addAttribute("error.message", ex.getMessage());
         model.addAttribute("error.title", "Not Found");
-        return "/blocked";
+        return "blocked";
     }
 
     @ExceptionHandler(CartException.ProductQuantityExceededException.class)
@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
         model.addAttribute("error.status", "404");
         model.addAttribute("error.message", ex.getMessage());
         model.addAttribute("error.title", "Not Found");
-        return "/blocked";
+        return "blocked";
     }
 
     @ExceptionHandler(CartException.AttemptAmountExceededException.class)
@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
         model.addAttribute("error.status", "404");
         model.addAttribute("error.message", ex.getMessage());
         model.addAttribute("error.title", "Not Found");
-        return "/blocked";
+        return "blocked";
     }
 
     @ExceptionHandler(CartException.UnauthorizedException.class)
@@ -54,7 +54,7 @@ public class GlobalExceptionHandler {
         model.addAttribute("error.status", "404");
         model.addAttribute("error.message", ex.getMessage());
         model.addAttribute("error.title", "Not Found");
-        return "/blocked";
+        return "blocked";
     }
 
 
@@ -63,15 +63,15 @@ public class GlobalExceptionHandler {
         model.addAttribute("error.status", "404");
         model.addAttribute("error.message", ex.getMessage());
         model.addAttribute("error.title", "Not Found");
-        return "/blocked";
+        return "blocked";
     }
 
-    @ExceptionHandler(UserException.UserPermisionDeclined.class)
+    @ExceptionHandler(UserException.UserPermissionDeclined.class)
     public String handleUserPermisionDeclined(UserException ex, Model model) {
         model.addAttribute("error.status", "404");
         model.addAttribute("error.message", ex.getMessage());
         model.addAttribute("error.title", "Not Found");
-        return "/blocked";
+        return "blocked";
     }
 
     @ExceptionHandler(UserException.UserHasThatFavProductException.class)
@@ -79,7 +79,7 @@ public class GlobalExceptionHandler {
         model.addAttribute("error.status", "404");
         model.addAttribute("error.message", ex.getMessage());
         model.addAttribute("error.title", "Not Found");
-        return "/blocked";
+        return "blocked";
     }
 
 

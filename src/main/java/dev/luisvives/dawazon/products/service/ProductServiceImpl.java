@@ -12,6 +12,7 @@ import dev.luisvives.dawazon.products.models.Product;
 import dev.luisvives.dawazon.products.repository.CategoryRepository;
 import dev.luisvives.dawazon.products.repository.ProductRepository;
 import dev.luisvives.dawazon.users.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -273,6 +274,7 @@ public class ProductServiceImpl implements ProductService {
      * @throws ProductException.NotFoundException si no existe el producto
      */
     @Override
+    @Transactional
     public GenericProductResponseDto updateOrSaveImage(String id, List<MultipartFile> image) {
         val foundProducto = repository.findById(id)
                 .orElseThrow(() -> new ProductException.NotFoundException("Producto no encontrado con id: " + id));

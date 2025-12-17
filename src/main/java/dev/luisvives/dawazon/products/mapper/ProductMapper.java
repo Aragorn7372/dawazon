@@ -19,7 +19,7 @@ public class ProductMapper {
                 .name(productoFound.getName())
                 .price(productoFound.getPrice())
                 .category(productoFound.getCategory().getName())
-                .image(productoFound.getImages().stream().map(it->{return "/files/"+it;}).toList())
+                .image(productoFound.getImages())
                 .stock(productoFound.getStock())
                 .comments(commentsFound)
                 .description(productoFound.getDescription()).build();

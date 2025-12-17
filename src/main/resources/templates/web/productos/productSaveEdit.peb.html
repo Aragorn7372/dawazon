@@ -67,12 +67,12 @@
                     <div class="col-12 mt-4">
                         <h5 class="fw-bold border-bottom pb-2 mb-3">Galería de Imágenes</h5>
 
-                        {% if product.id is not empty and product.image is not empty %}
+                        {% if product.id is not empty and product.images is not empty %}
                         <div class="mb-3">
                             <label class="form-label text-muted small">Imágenes actuales (Pulsa la X para eliminar)</label>
 
                             <div class="row row-cols-2 row-cols-md-4 g-3" id="currentImagesContainer">
-                                {% for imgUrl in product.image %}
+                                {% for imgUrl in product.images %}
                                 <div class="col image-card-wrapper">
                                     <div class="card h-100 border position-relative shadow-sm">
 
@@ -85,7 +85,7 @@
                                         </button>
 
                                         <div class="ratio ratio-1x1 bg-light rounded overflow-hidden">
-                                            <img src="{{ imgUrl }}" class="object-fit-contain w-100 h-100"
+                                            <img src="/files/{{ imgUrl }}" class="object-fit-contain w-100 h-100"
                                                  alt="Producto">
                                         </div>
 

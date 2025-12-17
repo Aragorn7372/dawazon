@@ -71,7 +71,7 @@ public class ProductsController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/products/edit/")
     public String editProduct(@Valid @ModelAttribute("producto") PostProductRequestDto product,
-                              @RequestParam("files") List<MultipartFile> files,
+                              @RequestParam("file") List<MultipartFile> files,
                               BindingResult bindingResult) {
         val productoEdit= productService.update(product.getId(),product);
         val productSaveImg=productService.updateOrSaveImage(product.getId(),files);

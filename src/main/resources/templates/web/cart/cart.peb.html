@@ -38,19 +38,6 @@
 
                 <div class="cart-item row py-3 border-bottom align-items-center
                             {% if line.stockStatus == 'ADJUSTED' or line.stockStatus == 'LOW' %} item-stock-warning {% endif %}">
-
-                    <div class="col-3 col-md-2">
-                        {% if line.product. imageUrls is not empty %}
-                        <img src="{{ line.product. imageUrls[0] }}"
-                             alt="Imagen de producto"
-                             class="cart-product-img rounded">
-                        {% else %}
-                        <div class="img-placeholder rounded d-flex align-items-center justify-content-center text-white">
-                            <i class="bi bi-image-fill fs-3"></i>
-                        </div>
-                        {% endif %}
-                    </div>
-
                     <div class="col-6 col-md-8">
                         <h5 class="product-link mb-1">Producto ID: {{ line.productId }}</h5>
 

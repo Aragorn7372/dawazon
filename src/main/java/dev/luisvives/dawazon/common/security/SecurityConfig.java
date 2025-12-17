@@ -53,21 +53,31 @@ public class SecurityConfig {
         http
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/productos/", "/**").permitAll() 
-                        .requestMatchers("/", "/images/**", "/css/**", "/js/**", "/static/**").permitAll()
-                        .requestMatchers("/auth/**", "/files/**").permitAll()
+                        .requestMatchers("/", "/productos/**", "/files/**").permitAll()
+                        .requestMatchers("/images/**", "/css/**", "/js/**", "/static/**").permitAll()
+                        .requestMatchers("/auth/signin", "/auth/signup").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/auth/signin")
-                        .defaultSuccessUrl("/", true)  // ← SIN /index
                         .loginProcessingUrl("/auth/signin-post")
+                        .usernameParameter("userName")  // ← IMPORTANTE: nombre del campo en el formulario
+                        .passwordParameter("password")   // ← IMPORTANTE: nombre del campo en el formulario
+                        .defaultSuccessUrl("/", true)
+                        .failureUrl("/auth/signin?error=true")  // ← Redirige en caso de error
                         .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/auth/logout")
-                        .logoutSuccessUrl("/")  // ← SIN /index
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)  // ← Invalida la sesión
+                        .deleteCookies("JSESSIONID")  // ← Elimina cookies
                         .permitAll()
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.IF_REQUIRED)
+                        .maximumSessions(1)  // ← Máximo de sesiones concurrentes
+                        .maxSessionsPreventsLogin(false)
                 );
 
         return http.build();

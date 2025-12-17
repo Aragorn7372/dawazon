@@ -122,7 +122,7 @@
             const particle = document.createElement('div');
             particle.className = 'particle';
             particle.style.left = Math.random() * 100 + '%';
-            particles.style.animationDelay = Math.random() * 3 + 's';
+            particle.style.animationDelay = Math.random() * 3 + 's';
             particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
             container.appendChild(particle);
         }

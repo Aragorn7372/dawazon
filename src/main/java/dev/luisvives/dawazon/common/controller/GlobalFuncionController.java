@@ -110,30 +110,44 @@ public class GlobalFuncionController {
         return null;
     }
 
-    @ModelAttribute("carrito")
-    public Cart getCarrito(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        Cart cart = (Cart) session.getAttribute("carrito");
-        Long userId = (Long) session.getAttribute("currentUserId");
-        return (cart == null) ? new Cart() : cartService.getCartByUserId(userId);
-    }
-
-    // ⭐ SHOPPING CART INFORMATION - FOR ALL PAGES ⭐
     @ModelAttribute("cartItemCount")
     public int getCartItemCount(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session != null) {
-            Cart carrito = (Cart) session.getAttribute("carrito");
-            return (carrito != null) ? carrito.getCartLines().size() : 0;
+        if (session == null) {
+            return 0;
         }
-        return 0;
+
+        Cart cart = (Cart) session.getAttribute("cart");
+
+
+        if (cart == null || cart.getCartLines() == null) {
+            return 0;
+        }
+
+        return cart.getCartLines().size();
     }
 
     @ModelAttribute("hasCartItems")
     public boolean hasCartItems(HttpServletRequest request) {
+        // ✅ Reutilizar el método anterior para evitar duplicación
         return getCartItemCount(request) > 0;
     }
 
+    @ModelAttribute("carrito")
+    public Cart getCarrito(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return new Cart();
+        }
+
+        Cart cart = (Cart) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new Cart();
+            cart.setCartLines(new ArrayList<>());
+        }
+
+        return cart;
+    }
     @ModelAttribute("items_carrito")
     public String itemsCarrito(HttpServletRequest request) {
         int count = getCartItemCount(request);
