@@ -9,6 +9,7 @@ import dev.luisvives.dawazon.cart.models.Cart;
 import dev.luisvives.dawazon.cart.models.CartLine;
 import dev.luisvives.dawazon.cart.models.Status;
 import dev.luisvives.dawazon.cart.repository.CartRepository;
+import dev.luisvives.dawazon.common.email.OrderEmailService;
 import dev.luisvives.dawazon.products.exception.ProductException;
 import dev.luisvives.dawazon.products.models.Product;
 import dev.luisvives.dawazon.products.repository.ProductRepository;
@@ -42,15 +43,17 @@ public class CartServiceImpl implements CartService {
     private final UserRepository userRepository;
     private final MongoTemplate mongoTemplate;
     private final CartMapper mapper;
+    private final OrderEmailService mailService;
 
     @Autowired
-    public CartServiceImpl(ProductRepository productRepository, CartRepository cartRepository, UserRepository userRepository, StripeService stripeService, MongoTemplate mongoTemplate, CartMapper cartMapper) {
+    public CartServiceImpl(ProductRepository productRepository, CartRepository cartRepository, UserRepository userRepository, StripeService stripeService, MongoTemplate mongoTemplate, CartMapper cartMapper, OrderEmailService mailservice) {
         this.productRepository = productRepository;
         this.cartRepository = cartRepository;
         this.userRepository = userRepository;
         this.stripeService = stripeService;
         this.mongoTemplate = mongoTemplate;
         this.mapper = cartMapper;
+        this.mailService = mailservice;
     }
 
     public Page<SaleLineDto> findAllSalesAsLines(
@@ -249,6 +252,43 @@ public class CartServiceImpl implements CartService {
         entity.setPurchased(true);
         cartRepository.save(entity);
         return createNewCart(entity.getUserId());
+    }
+
+    /**
+     * Envía email de confirmación en un hilo separado
+     * ¿Por qué asíncrono?
+     * - No bloquea la respuesta al usuario
+     * - Si falla el email, no afecta al pedido
+     * - Mejor experiencia de usuario
+     *
+     * @param pedido El {@link Cart} para el cual se enviará el email de confirmación.
+     */
+    public void sendConfirmationEmailAsync(Cart pedido) {
+        Thread emailThread = new Thread(() -> {
+            try {
+                log.info("🚀 Iniciando envío de email en hilo separado para pedido: {}", pedido.getId());
+
+                // Enviar el email (irá a Mailtrap en desarrollo)
+                mailService.enviarConfirmacionPedidoHtml(pedido);
+
+                log.info("✅ Email de confirmación enviado correctamente para pedido: {}", pedido.getId());
+
+            } catch (Exception e) {
+                log.warn("❌ Error enviando email de confirmación para pedido {}: {}",
+                        pedido.getId(), e.getMessage());
+
+                // El error no se propaga - el pedido ya está guardado
+            }
+        });
+
+        // Configurar el hilo
+        emailThread.setName("EmailSender-Pedido-" + pedido.getId());
+        emailThread.setDaemon(true); // No impide que la aplicación se cierre
+
+        // Iniciar el hilo (no bloqueante)
+        emailThread.start();
+
+        log.info("🧵 Hilo de email iniciado para pedido: {}", pedido.getId());
     }
 
     @Override

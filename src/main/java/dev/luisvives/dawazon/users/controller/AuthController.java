@@ -1,5 +1,4 @@
 package dev.luisvives.dawazon.users.controller;
-import dev.luisvives.dawazon.cart.service.CartService;
 import dev.luisvives.dawazon.cart.service.CartServiceImpl;
 import dev.luisvives.dawazon.common.storage.controller.StorageController;
 import dev.luisvives.dawazon.common.storage.service.StorageService;
@@ -30,6 +29,7 @@ public class AuthController {
         this.storageService = storageService;
         this.cartService = cartService;
     }
+
     @GetMapping("/auth/signin")
     public String login(Model model) {
         log.info("login");
@@ -38,6 +38,7 @@ public class AuthController {
         model.addAttribute("usuario", new User());
         return "web/auth/auth";
     }
+
     @GetMapping("/auth/signup")
     public String register(Model model) {
         log.info("register");
@@ -59,6 +60,7 @@ public class AuthController {
         cartService.createNewCart(user.getId());
         return "redirect:/";
     }
+
     @PreAuthorize("hasAnyAuthority()")
     @GetMapping("/auth/me/changepassword")
     public String change(Model model){
@@ -79,4 +81,8 @@ public class AuthController {
         model.addAttribute("usuario", user);
         return "redirect:/";
     }
+
+    // COMPRA DE CARRITO =>
+
+
 }

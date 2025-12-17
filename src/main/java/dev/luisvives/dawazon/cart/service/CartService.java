@@ -26,4 +26,6 @@ public interface CartService extends Service<Cart, ObjectId, Cart> {
     Cart getCartByUserId(Long userId);
 
     Cart updateStock(CartStockRequestDto entity);
+
+    void sendConfirmationEmailAsync(Cart pedido);
 }

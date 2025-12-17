@@ -3,9 +3,11 @@ package dev.luisvives.dawazon.users.service;
 import dev.luisvives.dawazon.common.storage.service.FileSystemStorageService;
 import dev.luisvives.dawazon.common.storage.service.StorageService;
 import dev.luisvives.dawazon.products.exception.ProductException;
+import dev.luisvives.dawazon.users.dto.UserAdminRequestDto;
 import dev.luisvives.dawazon.users.dto.UserChangePasswordDto;
 import dev.luisvives.dawazon.users.dto.UserRequestDto;
 import dev.luisvives.dawazon.users.exceptions.UserException;
+import dev.luisvives.dawazon.users.models.Role;
 import dev.luisvives.dawazon.users.models.User;
 import dev.luisvives.dawazon.users.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -68,6 +70,15 @@ public class AuthServiceImpl implements AuthService {
         user.setUserName(updateUser.getNombre());
         user.setEmail(updateUser.getEmail());
         user.setAvatar(updateUser.getAvatar());
+        user.setTelefono(updateUser.getTelefono());
+        return userRepository.save(user);
+    }
+    @Override
+    public User updateAdminCurrentUser(Long id, UserAdminRequestDto updateUser) {
+        var user=userRepository.findById(id).orElseThrow(()->new UsernameNotFoundException("User not found"));
+        user.setUserName(updateUser.getNombre());
+        user.setEmail(updateUser.getEmail());
+        user.setRoles(List.of(Role.valueOf(updateUser.getRoles())));
         user.setTelefono(updateUser.getTelefono());
         return userRepository.save(user);
     }

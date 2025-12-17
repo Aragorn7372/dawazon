@@ -47,8 +47,8 @@ public class StripeService {
             }
 
             // URL a la que vuelve si paga bien. Pasamos el ID del carrito para cerrarlo luego.
-            String successUrl = serverUrl + "/auth/me/cart/checkout/success/" + cart.getId();
-            String cancelUrl = serverUrl + "/auth/me/cart/checkout/cancel/" + cart.getId();
+            String successUrl = serverUrl + "/auth/me/cart/checkout/success/";
+            String cancelUrl = serverUrl + "/auth/me/cart/checkout/cancel/";
 
             SessionCreateParams params = SessionCreateParams.builder()
                     .setMode(SessionCreateParams.Mode.PAYMENT)

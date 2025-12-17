@@ -1,19 +1,24 @@
 package dev.luisvives.dawazon.users.controller;
 
 import dev.luisvives.dawazon.cart.dto.CartStockRequestDto;
+import dev.luisvives.dawazon.cart.dto.ClientDto;
 import dev.luisvives.dawazon.cart.dto.LineRequestDto;
 import dev.luisvives.dawazon.cart.models.Cart;
+import dev.luisvives.dawazon.cart.models.Client;
 import dev.luisvives.dawazon.cart.models.Status;
 import dev.luisvives.dawazon.cart.service.CartService;
 import dev.luisvives.dawazon.cart.service.CartServiceImpl;
 import dev.luisvives.dawazon.products.dto.PostProductRequestDto;
 
 import dev.luisvives.dawazon.products.service.ProductServiceImpl;
+import dev.luisvives.dawazon.users.dto.UserAdminRequestDto;
 import dev.luisvives.dawazon.users.dto.UserRequestDto;
 import dev.luisvives.dawazon.users.exceptions.UserException;
+import dev.luisvives.dawazon.users.mapper.UserMapper;
 import dev.luisvives.dawazon.users.models.User;
 import dev.luisvives.dawazon.users.service.AuthService;
 import dev.luisvives.dawazon.users.service.FavService;
+import dev.luisvives.dawazon.users.service.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -29,6 +34,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,13 +48,17 @@ public class UserController {
     private final ProductServiceImpl productService;
     private final FavService favService;
     private final CartServiceImpl cartService;
+    private final UserMapper userMapper;
+    private final UserService userService;
 
     @Autowired
-    public UserController(AuthService authService, ProductServiceImpl productService, FavService favService,CartServiceImpl cartService) {
+    public UserController(AuthService authService, ProductServiceImpl productService, FavService favService, CartServiceImpl cartService, UserMapper userMapper, UserService userService) {
         this.authService = authService;
         this.productService = productService;
         this.favService = favService;
         this.cartService = cartService;
+        this.userMapper = userMapper;
+        this.userService = userService;
     }
 
     @GetMapping({"", "/"})
@@ -310,7 +320,6 @@ public class UserController {
         return "web/cart/ventas-edit";
     }
 
-
     @PreAuthorize("hasrole('MANAGER')")
     @PostMapping("/venta/edit")
     public String postVentaEdit(Model model, @Valid @ModelAttribute("line") LineRequestDto lineRequestDto){
@@ -331,4 +340,191 @@ public class UserController {
         model.addAttribute("line",lineFinal);
         return "redirect:auth/me/ventas";
     }
+
+    @PreAuthorize("hasrole('ADMIN')")
+    @GetMapping("/users")
+    public String getUsers(Model model,
+                           @RequestParam(required = false) Optional<String> userNameOrEmail,
+                           @RequestParam(defaultValue = "0") int page,
+                           @RequestParam(defaultValue = "10") int size,
+                           @RequestParam(defaultValue = "id") String sortBy,
+                           @RequestParam(defaultValue = "asc") String direction){
+        Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        val users= authService.findAllPaginated(userNameOrEmail,pageable);
+        model.addAttribute("users",users);
+        return "web/user/users";
+    }
+
+    @PreAuthorize("hasrole('ADMIN')")
+    @GetMapping("/users/{id}")
+    public String getUsers(Model model,@PathVariable Long id){
+        val users= authService.findById(id);
+        model.addAttribute("user",users);
+        return "web/user/users";
+    }
+
+    @PreAuthorize("hasrole('ADMIN')")
+    @GetMapping("/users/edit/{id}")
+    public String getEditUsers(Model model,@PathVariable Long id){
+        val users= authService.findById(id);
+        model.addAttribute("user",users);
+        return "web/user/editUserAdmin";
+    }
+
+    @PreAuthorize("hasrole('ADMIN')")
+    @PostMapping("/users/edit/{id}")
+    public String getEditUsers(Model model, @Valid @ModelAttribute("user")UserAdminRequestDto user,BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            model.addAttribute("error.status", 400);
+            model.addAttribute("error.title", "El producto no es válido");
+            model.addAttribute("error.message", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage));
+            return "web/user/editUserAdmin";
+        }
+        val userEdit = authService.updateAdminCurrentUser(user.getId(),user);
+        model.addAttribute("user",userEdit);
+        return "redirect:web/user/users";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/users/ban/{id}")
+    public String banUser(Model model, @PathVariable Long id){
+        authService.softDelete(id);
+        return "redirect:/auth/me/users/";
+    }
+
+    @PreAuthorize("hasAnyRole()")
+    @GetMapping("/client")
+    public String getClients(Model model){
+        val userId=(Long)model.getAttribute("currentUserId");
+        val client=authService.findById(userId).getClient();
+        model.addAttribute("client",client);
+        return "web/user/clients";
+    }
+
+    @PreAuthorize("hasAnyAuthority()")
+    @PostMapping("/client/")
+    public String editClient(Model model, @Valid @ModelAttribute("client") ClientDto clientDto ){
+        Client client = userMapper.toClient(clientDto);
+        val currentUserId = (Long) model.getAttribute("currentUserId");
+        val existing = authService.findById(currentUserId);
+        existing.setClient(client);
+        return "redirect:/auth/me/";
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/cart/checkout")
+    public String checkout(Model model,RedirectAttributes redirectAttributes){
+        val user= (User)model.getAttribute("currentUser");
+        val cart = (Cart)model.getAttribute("cart");
+        if (cart.getTotal()<=0){
+            return "redirect:/";
+        }
+        if (user.getClient()==null){
+            redirectAttributes.addFlashAttribute("error.status", 301);
+            redirectAttributes.addFlashAttribute("error.title", "faltan los datos de cliente");
+            redirectAttributes.addFlashAttribute("error.message", "introduce tus datos");
+            return "redirect:/auth/me/client";
+        }
+        model.addAttribute("client",user.getClient());
+        return "web/user/checkout";
+    }
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/cart/checkout/pay")
+    public String checkoutPay(Model model, RedirectAttributes redirectAttributes){
+        val user= (User)model.getAttribute("currentUser");
+        val cart = (Cart)model.getAttribute("cart");
+        if (cart.getTotal()<=0){
+            return "redirect:/";
+        }
+        if (user.getClient()==null){
+            redirectAttributes.addFlashAttribute("error.status", 301);
+            redirectAttributes.addFlashAttribute("error.title", "faltan los datos de cliente");
+            redirectAttributes.addFlashAttribute("error.message", "introduce tus datos");
+            return "redirect:/auth/me/client";
+        }
+        model.addAttribute("client",user.getClient());
+        val stripe= cartService.checkout(new ObjectId(cart.getId()),cart);
+        return "redirect:"+stripe;
+    }
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/cart/checkout/success")
+    public String checkoutSuccess(
+            @RequestParam("session_id") String sessionId,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+
+        try {
+            val user = (User) model.getAttribute("currentUser");
+            val cart = (Cart) model.getAttribute("cart");
+
+            log.info("Procesando pago exitoso para usuario: {} - Session ID: {}",
+                    user.getId(), sessionId);
+
+            // Verificar que el carrito tenga items
+            if (cart.getCartLines().isEmpty()) {
+                redirectAttributes.addFlashAttribute("errorMessage",
+                        "El carrito está vacío");
+                return "redirect:/cart";
+            }
+
+            // Marcar el carrito como comprado y crear uno nuevo
+            Cart purchasedCart = cartService.save(cart);
+
+            // Enviar email de confirmación de forma asíncrona
+            cartService.sendConfirmationEmailAsync(purchasedCart);
+
+            // Pasar datos a la vista
+            model.addAttribute("order", purchasedCart);
+            model.addAttribute("client", user. getClient());
+            model.addAttribute("sessionId", sessionId);
+
+            log.info("✅ Pedido completado exitosamente:  {}", purchasedCart.getId());
+
+            return "cart/checkout-success"; // Vista de confirmación
+
+        } catch (Exception e) {
+            log.error("❌ Error procesando checkout success:  {}", e.getMessage(), e);
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Error procesando tu pedido:  " + e.getMessage());
+            return "redirect:/cart";
+        }
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/cart/checkout/cancel")
+    public String checkoutCancel(
+            @RequestParam(value = "session_id", required = false) String sessionId,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+
+        try {
+            val user = (User) model.getAttribute("currentUser");
+            val cart = (Cart) model.getAttribute("cart");
+
+            log.warn("⚠️ Pago cancelado por usuario: {} - Session ID: {}",
+                    user.getId(), sessionId);
+
+            // Restaurar el stock de los productos
+            cartService.restoreStock(new ObjectId(cart.getId()));
+
+            // Mensaje informativo
+            redirectAttributes.addFlashAttribute("warningMessage",
+                    "Pago cancelado.  Tu carrito sigue disponible.");
+            redirectAttributes.addFlashAttribute("infoMessage",
+                    "Los productos han sido devueltos al stock.");
+
+            log.info("🔄 Stock restaurado para carrito: {}", cart.getId());
+
+            return "redirect:/cart";
+
+        } catch (Exception e) {
+            log.error("❌ Error procesando cancelación:  {}", e.getMessage(), e);
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Error al cancelar el pago");
+            return "redirect:/cart";
+        }
+    }
+
+
 }

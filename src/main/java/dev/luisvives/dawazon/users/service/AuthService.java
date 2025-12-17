@@ -1,5 +1,6 @@
 package dev.luisvives.dawazon.users.service;
 
+import dev.luisvives.dawazon.users.dto.UserAdminRequestDto;
 import dev.luisvives.dawazon.users.dto.UserChangePasswordDto;
 import dev.luisvives.dawazon.users.dto.UserRequestDto;
 import dev.luisvives.dawazon.users.models.User;
@@ -25,6 +26,6 @@ public interface AuthService {
     User changePassword(UserChangePasswordDto userDto, Long id);
 
     User updateCurrentUser(Long id, @Valid UserRequestDto updateUser);
-
+    User updateAdminCurrentUser(Long id, UserAdminRequestDto updateUser);
     User updateImage(Long id,MultipartFile file);
 }

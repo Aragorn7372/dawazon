@@ -76,7 +76,7 @@
                         editar
                     </button>
                     <button onclick="deleted(this,{{user.getId}})" class="action-delete"
-                            title="Eliminar usuario"><i class="bi bi-trash"></i></button>
+                            title="Banear usuario"><i class="bi bi-hammer"></i></button>
                 </td>
             </tr>
             {% endfor %}
@@ -87,11 +87,11 @@
 <script>
 
     function edit(element, userId) {
-        window.location.href = `/users/edit/${productoId}`;
+        window.location.href = `/users/edit/${userId}`;
     }
 
     function deleted(element, userId) {
-        window.location.href = `/users/delete/${productoId}`;
+        window.location.href = `/users/delete/${userId}`;
     }
 
 </script>
