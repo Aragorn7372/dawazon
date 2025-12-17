@@ -21,6 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
+@Table(name = "users")
 public class User implements UserDetails {
     public final static String IMAGE_DEFAULT = "default.png";
     @Id

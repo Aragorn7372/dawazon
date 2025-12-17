@@ -1,7 +1,7 @@
 package dev.luisvives.dawazon.users.controller;
 
 import dev.luisvives.dawazon.products.dto.PostProductRequestDto;
-import dev.luisvives.dawazon.products.service.ProductService;
+
 import dev.luisvives.dawazon.products.service.ProductServiceImpl;
 import dev.luisvives.dawazon.users.dto.UserRequestDto;
 import dev.luisvives.dawazon.users.exceptions.UserException;

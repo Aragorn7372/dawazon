@@ -46,7 +46,7 @@ public class ProductsController {
         Pageable pageable = PageRequest.of(page, size, sort);
         val products = mapper.pageToDTO(productService.findAll(name,pageable) ,sortBy, direction);
         model.addAttribute("productos", products);
-        return "/web/productos/lista";
+        return "web/productos/lista";
     }
 
     @GetMapping("/products/{id}")
@@ -54,7 +54,7 @@ public class ProductsController {
         log.info("Buscando productos por id: " + id);
         val product= productService.getById(id);
         model.addAttribute("producto", product);
-        return "/web/productos/producto";
+        return "web/productos/producto";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -66,7 +66,7 @@ public class ProductsController {
 
         model.addAttribute("product", product);
 
-        return "/web/productos/productSaveEdit";
+        return "web/productos/productSaveEdit";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
