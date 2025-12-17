@@ -53,7 +53,6 @@ public class SecurityConfig {
         http
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(auth -> auth
-
                         .requestMatchers("/", "/productos/", "/**").permitAll() 
                         .requestMatchers("/", "/images/**", "/css/**", "/js/**", "/static/**").permitAll()
                         .requestMatchers("/auth/**", "/files/**").permitAll()

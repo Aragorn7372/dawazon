@@ -4,7 +4,7 @@
 <header class="bg-custom-dark p-2">
   <div class="container d-flex align-items-center justify-content-between">
     <div class="d-flex align-items-center gap-3">
-      <a href="{% if isAdmin %}/admin/ventas/detalle/{{venta.saleId}}/{{venta.productId}}{% else %}/manager/ventas/detalle/{{venta. saleId}}/{{venta.productId}}{% endif %}"
+      <a href="{% if isAdmin %}/ventas/detalle/{{venta.saleId}}/{{venta.productId}}{% else %}/auth/me/ventas/detalle/{{venta.saleId}}/{{venta.productId}}{% endif %}"
          class="btn btn-sm btn-outline-light">
         <i class="fa-solid fa-arrow-left"></i> Volver
       </a>
@@ -36,7 +36,7 @@
                 <strong>Cantidad:</strong> {{venta.quantity}} unidades
               </p>
               <p class="mb-2">
-                <strong>Total:</strong> <span class="text-success fw-bold">{{venta.totalPrice}}€</span>
+                <strong>Total: </strong> <span class="text-success fw-bold">{{venta.totalPrice}}€</span>
               </p>
             </div>
           </div>
@@ -52,12 +52,15 @@
           </h5>
         </div>
         <div class="card-body">
-          <form method="POST" action="{% if isAdmin %}/admin/ventas/update/{{venta.saleId}}/{{venta.productId}}{% else %}/manager/ventas/update/{{venta. saleId}}/{{venta.productId}}{% endif %}">
+          <form method="POST" action="{% if isAdmin %}/ventas/update/{{venta.saleId}}/{{venta.productId}}{% else %}/auth/me/venta/edit{% endif %}">
+            <input type="hidden" name="{{ csrfParamName }}" value="{{ csrfToken }}"/>
+            <input type="hidden" name="cartId" value="{{ venta.saleId }}"/>
+            <input type="hidden" name="productId" value="{{ venta.productId }}"/>
 
             <!-- Estado actual -->
             <div class="alert alert-info">
               <strong>Estado actual:</strong>
-              <span class="status-badge status-{{venta. status | lower}}">{{venta.status}}</span>
+              <span class="status-badge status-{{venta.status | lower}}">{{venta.status}}</span>
             </div>
 
             <!-- Selector de nuevo estado -->
@@ -66,16 +69,16 @@
               <select class="form-select form-select-lg" id="status" name="status" required>
                 <option value="">-- Selecciona un estado --</option>
                 <option value="PREPARADO" {% if venta.status == 'PREPARADO' %}selected{% endif %}>
-                📦 Preparado
+                 Preparado
                 </option>
                 <option value="ENVIADO" {% if venta.status == 'ENVIADO' %}selected{% endif %}>
-                🚚 Enviado
+                 Enviado
                 </option>
                 <option value="ENTREGADO" {% if venta.status == 'ENTREGADO' %}selected{% endif %}>
-                ✅ Entregado
+                 Entregado
                 </option>
                 <option value="CANCELADO" {% if venta.status == 'CANCELADO' %}selected{% endif %}>
-                ❌ Cancelado
+                 Cancelado
                 </option>
               </select>
               <div class="form-text">
@@ -89,8 +92,8 @@
                 <h6 class="card-title">Información sobre estados: </h6>
                 <ul class="mb-0 small">
                   <li><strong>PREPARADO:</strong> El pedido está listo para enviar</li>
-                  <li><strong>ENVIADO: </strong> El pedido está en camino al cliente</li>
-                  <li><strong>ENTREGADO:</strong> El pedido fue entregado exitosamente</li>
+                  <li><strong>ENVIADO:</strong> El pedido está en camino al cliente</li>
+                  <li><strong>ENTREGADO: </strong> El pedido fue entregado exitosamente</li>
                   <li><strong>CANCELADO:</strong> El pedido fue cancelado (se restaurará el stock)</li>
                 </ul>
               </div>
@@ -100,12 +103,12 @@
             <div class="mb-4">
               <label for="notes" class="form-label fw-bold">Notas adicionales (opcional)</label>
               <textarea class="form-control" id="notes" name="notes" rows="3"
-                        placeholder="Añade cualquier comentario sobre el cambio de estado..."></textarea>
+                        placeholder="Añade cualquier comentario sobre el cambio de estado... "></textarea>
             </div>
 
             <!-- Botones de acción -->
             <div class="d-flex gap-2 justify-content-end">
-              <a href="{% if isAdmin %}/admin/ventas/detalle/{{venta.saleId}}/{{venta.productId}}{% else %}/manager/ventas/detalle/{{venta.saleId}}/{{venta.productId}}{% endif %}"
+              <a href="{% if isAdmin %}/ventas/detalle/{{venta.saleId}}/{{venta.productId}}{% else %}/auth/me/ventas/detalle/{{venta.saleId}}/{{venta.productId}}{% endif %}"
                  class="btn btn-secondary">
                 <i class="fa-solid fa-times"></i> Cancelar
               </a>
@@ -143,7 +146,7 @@
     const status = document.getElementById('status').value;
 
     if (status === 'CANCELADO') {
-      if (! confirm('¿Estás seguro de que deseas CANCELAR esta venta? Se restaurará el stock del producto.')) {
+      if (!confirm('¿Estás seguro de que deseas CANCELAR esta venta? Se restaurará el stock del producto.')) {
         e.preventDefault();
         return false;
       }

@@ -26,16 +26,22 @@
                     <span class="text-muted align-self-end small">Precio</span>
                 </div>
 
-                {% if cart.cartLines is empty %}
+                {% if carrito.cartLines is empty %}
+                <div class="text-center py-5">
+                    <i class="bi bi-cart-x fs-1 text-muted mb-3"></i>
+                    <h3>Tu carrito está vacío</h3>
+                    <p class="text-muted">Añade productos para comenzar tu compra</p>
+                    <a href="/" class="btn btn-gradient mt-3">Ir a la tienda</a>
+                </div>
                 {% else %}
-                {% for line in cart.cartLines %}
+                {% for line in carrito.cartLines %}
 
                 <div class="cart-item row py-3 border-bottom align-items-center
                             {% if line.stockStatus == 'ADJUSTED' or line.stockStatus == 'LOW' %} item-stock-warning {% endif %}">
 
                     <div class="col-3 col-md-2">
-                        {% if line.product.imageUrls is not empty %}
-                        <img src="{{ line.product.imageUrls[0] }}"
+                        {% if line.product. imageUrls is not empty %}
+                        <img src="{{ line.product. imageUrls[0] }}"
                              alt="Imagen de producto"
                              class="cart-product-img rounded">
                         {% else %}
@@ -62,12 +68,11 @@
 
                         <div class="d-flex align-items-center gap-3">
                             <div class="quantity-control d-flex align-items-center border rounded px-2">
-                                <span class="small text-muted me-2">Cant:</span>
+                                <span class="small text-muted me-2">Cant: </span>
                                 <span class="fw-bold">{{ line.quantity }}</span>
                             </div>
                             <span class="text-muted">|</span>
-                            <form action="/cart/remove" method="post" class="m-0">
-                                <input type="hidden" name="productId" value="{{ line.productId }}">
+                            <form action="/auth/me/carrito/remove/{{ line.productId }}" method="get" class="m-0">
                                 <button type="submit"
                                         class="btn btn-link text-decoration-none text-danger p-0 delete-btn">
                                     <i class="bi bi-trash"></i> Eliminar
@@ -85,8 +90,8 @@
                 {% endfor %}
 
                 <div class="text-end py-3">
-                    <span class="fs-5">Subtotal ({{ cart.totalItems }} productos): </span>
-                    <span class="fw-bold fs-4">{{ cart.total | numberformat("#,##0.00") }} €</span>
+                    <span class="fs-5">Subtotal ({{ carrito.totalItems }} productos): </span>
+                    <span class="fw-bold fs-4">{{ carrito.total | numberformat("#,##0.00") }} €</span>
                 </div>
                 {% endif %}
             </div>
@@ -95,22 +100,21 @@
         <div class="col-lg-3 mt-4 mt-lg-0">
             <div class="cart-summary bg-white p-3 rounded shadow-sm border">
 
-                {% if cart.total > 29 %}
+                {% if carrito.total > 29 %}
                 <div class="d-flex align-items-start gap-2 mb-3 text-success">
                     <i class="bi bi-check-circle-fill mt-1"></i>
-                    <span class="small">Tu pedido es elegible para envío GRATIS.</span>
+                    <span class="small">Tu pedido es elegible para envío GRATIS. </span>
                 </div>
                 {% endif %}
 
                 <div class="mb-3">
-                    <span class="fs-5">Subtotal ({{ cart.totalItems }} productos):</span>
-                    <div class="fw-bold fs-4 text-end">{{ cart.total | numberformat("#,##0.00") }} €</div>
+                    <span class="fs-5">Subtotal ({{ carrito.totalItems }} productos):</span>
+                    <div class="fw-bold fs-4 text-end">{{ carrito.total | numberformat("#,##0.00") }} €</div>
                 </div>
 
-                <form action="/checkout" method="get">
-                    <button type="submit" class="btn btn-gradient w-100 shadow-sm" {{ cart.cartLines is empty ?
-                    'disabled' : '' }}>
-                    Continuar con el pago
+                <form action="/auth/me/cart/checkout" method="get">
+                    <button type="submit" class="btn btn-gradient w-100 shadow-sm" {% if carrito.cartLines is empty %}disabled{% endif %}>
+                        Continuar con el pago
                     </button>
                 </form>
             </div>

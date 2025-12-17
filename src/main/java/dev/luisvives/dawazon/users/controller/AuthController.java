@@ -1,19 +1,19 @@
 package dev.luisvives.dawazon.users.controller;
 import dev.luisvives.dawazon.cart.service.CartServiceImpl;
-import dev.luisvives.dawazon.common.storage.controller.StorageController;
 import dev.luisvives.dawazon.common.storage.service.StorageService;
 import dev.luisvives.dawazon.users.dto.UserChangePasswordDto;
+import dev.luisvives.dawazon.users.dto.UserRegisterDto;
 import dev.luisvives.dawazon.users.models.User;
 import dev.luisvives.dawazon.users.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 @Controller
 @Slf4j
@@ -35,7 +35,7 @@ public class AuthController {
         log.info("login");
         // CSRF token is handled by GlobalControllerAdvice
         // Para el formulario de registro
-        model.addAttribute("usuario", new User());
+
         return "web/auth/auth";
     }
 
@@ -46,19 +46,39 @@ public class AuthController {
     }
 
     @PostMapping("/auth/signup")
-    public String register(@ModelAttribute User usuario,
-                           @RequestParam("file") MultipartFile file) {
+    public String register(@Valid @ModelAttribute UserRegisterDto registerDto,
+                           BindingResult bindingResult,
+                           Model model) {
         log.info("register");
         // Subida de imágenes
-        if (!file.isEmpty()) {
-            String imagen = storageService.store(file);
-            usuario.setAvatar(MvcUriComponentsBuilder
-                    .fromMethodName(StorageController.class, "serveFile", imagen)
-                    .build().toUriString());
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("error", "Por favor corrige los errores del formulario");
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            return "web/auth/auth";
         }
-        val user=usuarioServicio.register(usuario);
-        cartService.createNewCart(user.getId());
-        return "redirect:/";
+        if (!registerDto.passwordsMatch()) {
+            model.addAttribute("error", "Las contraseñas no coinciden");
+            return "web/auth/auth";
+        }
+        try {
+            User usuario = User.builder()
+                    .userName(registerDto.getUserName())
+                    .email(registerDto.getEmail())
+                    .password(registerDto.getPassword())
+                    .telefono(registerDto. getTelefono())
+                    .build();
+            val user = usuarioServicio.register(usuario);
+            if (registerDto.getAvatar() != null && !registerDto.getAvatar().isEmpty()) {
+                usuarioServicio.updateImage(user.getId(), registerDto.getAvatar());
+            }
+            cartService.createNewCart(user.getId());
+            return "redirect:/auth/signin";
+        } catch (Exception e) {
+            log.error("Error al registrar usuario", e);
+            model.addAttribute("error", "Error al crear la cuenta:  " + e.getMessage());
+            return "web/auth/auth";
+        }
+
     }
 
     @PreAuthorize("hasAnyAuthority()")

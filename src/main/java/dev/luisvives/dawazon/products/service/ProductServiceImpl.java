@@ -7,6 +7,7 @@ import dev.luisvives.dawazon.products.dto.CommentDto;
 import dev.luisvives.dawazon.products.dto.GenericProductResponseDto;
 import dev.luisvives.dawazon.products.dto.PostProductRequestDto;
 import dev.luisvives.dawazon.products.mapper.ProductMapper;
+import dev.luisvives.dawazon.products.models.Category;
 import dev.luisvives.dawazon.products.models.Product;
 import dev.luisvives.dawazon.products.repository.CategoryRepository;
 import dev.luisvives.dawazon.products.repository.ProductRepository;
@@ -25,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Implementación del servicio de productos (Producto).
@@ -108,7 +110,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<Product> findAll(Optional<String> name,
                                  Pageable pageable) {
-        var isDeleted=true;
+        var isDeleted=false;
         Specification<Product> specNameProducto = (root, query, criteriaBuilder) ->
                 name.map(n -> criteriaBuilder.like(criteriaBuilder.lower(root.get("name")),
                                 "%" + n.toLowerCase() + "%"))
@@ -229,6 +231,11 @@ public class ProductServiceImpl implements ProductService {
         log.info("SERVICE: Producto con id " + updatedProductos.getId() + " actualizado correctamente");
         val commentsDto= mapearComentarios(updatedProductos);
         return mapper.modelToGenericResponseDTO(updatedProductos,commentsDto);
+    }
+
+    @Override
+    public List<String> getAllCategorias() {
+        return categoryRepository.findAll().stream().map(Category::getName).collect(Collectors.toList());
     }
 
     private List<CommentDto> mapearComentarios(Product producto) {

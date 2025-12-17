@@ -27,6 +27,11 @@
                     {% if isUser %}
                     <a href="/auth/me/cart" class="text-white position-relative d-none d-md-block">
                         <i class="bi bi-cart3 fs-4"></i>
+                        {% if cartItemCount > 0 %}
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            {{cartItemCount}}
+        </span>
+                        {% endif %}
                     </a>
                     {% endif %}
                     <!-- Dropdown de Usuario -->
@@ -49,10 +54,8 @@
                 <div class="d-flex align-items-center gap-3 ms-1">
 
                     <div class="dropdown">
-                        <a href="/auth/signin" class="d-flex align-items-center text-white text-decoration-none"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="defaultImg.png" alt="user" class="rounded-circle profile-img">
-                        </a>
+                        <img src="defaultImg.png" alt="user" class="rounded-circle profile-img"
+                             onclick="window.location='/auth/signin'">
                     </div>
                 </div>
                 {% endif %}

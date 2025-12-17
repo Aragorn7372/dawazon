@@ -283,7 +283,7 @@ public class UserController {
         if(!userId.equals(existingCart.getUserId())) {
             throw new UserException.UserPermisionDeclined("El usuario con ID: " + userId + " ha intentado acceder al carrito del usuario con ID: " +  existingCart.getUserId());
         }
-        model.addAttribute("cart",existingCart);
+        model.addAttribute("order",existingCart);
         return "web/cart/orderDetail";
     }
 

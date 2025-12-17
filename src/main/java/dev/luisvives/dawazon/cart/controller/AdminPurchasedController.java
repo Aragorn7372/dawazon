@@ -36,7 +36,7 @@ public class AdminPurchasedController {
         // Creamos cómo va a ser la paginación
         Pageable pageable = PageRequest.of(page, size, sort);
         val venta = cartService.findAllSalesAsLines(Optional.empty(),true,pageable);
-        val ganancias = cartService.findAllSalesAsLines(Optional.empty(),true,pageable);
+        val ganancias = cartService.calculateTotalEarnings(Optional.empty(),true);
         model.addAttribute("venta", venta);
         model.addAttribute("ganancias", ganancias);
         return "/web/cart/ventas";

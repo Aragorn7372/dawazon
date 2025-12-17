@@ -26,7 +26,10 @@ public class GlobalFuncionController {
         this.productService = productService;
         this.cartService = cartService;
     }
-
+    @ModelAttribute("categorias")
+    public List<String> categorias() {
+        return productService.getAllCategorias();
+    }
     @ModelAttribute("currentUser")
     public User getCurrentUser(Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()

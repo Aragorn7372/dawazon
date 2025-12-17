@@ -107,39 +107,39 @@ VALUES ('aB3xT9kL2pQm', 'Electrónica', NOW(), NOW()),
 
 -- Insertar usuarios (password es 'password123' hasheado con BCrypt)
 -- Admin y Manager sin información de cliente (no compran)
-INSERT INTO users (id, user_name, email, password, telefono, avatar, is_deleted)
-VALUES (1, 'admin', 'admin@dawazon.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
+INSERT INTO users ( user_name, email, password, telefono, avatar, is_deleted)
+VALUES ( 'admin', 'admin@dawazon.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
         '+34666111222', 'admin-avatar.png', FALSE),
 
-       (2, 'manager_jose', 'jose. manager@dawazon.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
+       ( 'manager_jose', 'jose. manager@dawazon.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
         '+34666222333', 'manager-avatar. png', FALSE);
 
 -- Usuarios normales con información de cliente completa
-INSERT INTO users (id, user_name, email, password, client_name, client_email, client_phone,
+INSERT INTO users ( user_name, email, password, client_name, client_email, client_phone,
                    client_address_number, client_address_street, client_address_city,
                    client_address_province, client_address_country, client_address_postal_code,
                    telefono, avatar, is_deleted)
-VALUES (3, 'john_doe', 'john. doe@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
+VALUES ( 'john_doe', 'john. doe@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
         'John Doe', 'john.doe@email.com', '+34666333444',
         42, 'Gran Vía', 'Madrid', 'Madrid', 'España', 28013,
         '+34666333444', 'john-avatar.png', FALSE),
 
-       (4, 'jane_smith', 'jane.smith@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
+       ( 'jane_smith', 'jane.smith@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
         'Jane Smith', 'jane.smith@email.com', '+34666555666',
         15, 'Paseo de Gracia', 'Barcelona', 'Barcelona', 'España', 8007,
         '+34666555666', 'jane-avatar. png', FALSE),
 
-       (5, 'carlos_ruiz', 'carlos.ruiz@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
+       ( 'carlos_ruiz', 'carlos.ruiz@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
         'Carlos Ruiz', 'carlos.ruiz@email.com', '+34666777888',
         8, 'Calle Larios', 'Málaga', 'Málaga', 'España', 29015,
         '+34666777888', 'default.png', FALSE),
 
-       (6, 'maria_garcia', 'maria.garcia@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
+       ( 'maria_garcia', 'maria.garcia@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
         'María García', 'maria.garcia@email.com', '+34666999000',
         23, 'Calle Sierpes', 'Sevilla', 'Sevilla', 'España', 41004,
         '+34666999000', 'maria-avatar.png', FALSE),
 
-       (7, 'pedro_lopez', 'pedro.lopez@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
+       ( 'pedro_lopez', 'pedro.lopez@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
         'Pedro López', 'pedro.lopez@email.com', '+34666000111',
         50, 'Calle Mayor', 'Valencia', 'Valencia', 'España', 46001,
         '+34666000111', 'default.png', FALSE);
@@ -212,8 +212,8 @@ VALUES ('Hx9Lp2Ks4TnB', 'laptop-hp-1.jpg'),
        ('Yw3Zq7Vm1RfG', 'iphone14-pro-1.jpg'),
        ('Yw3Zq7Vm1RfG', 'iphone14-pro-2.jpg'),
        ('Yw3Zq7Vm1RfG', 'iphone14-pro-3.jpg'),
-       ('Dk5Mn8Pj2WcX', 'quijote-cover. jpg'),
-       ('Rt6Bv9Nh3QsL', '1984-cover.jpg'),
+       ('Dk5Mn8Pj2WcX', 'quijote-cover.jpg'),
+       ('Rt6Bv9Nh3QsL', '1984-cover.jpeg'),
        ('Fp2Jk7Xm4YzT', 'nike-tshirt-1.jpg'),
        ('Fp2Jk7Xm4YzT', 'nike-tshirt-2.jpg'),
        ('Ln8Cv5Dt1WpR', 'levis-501-1.jpg'),
@@ -222,7 +222,7 @@ VALUES ('Hx9Lp2Ks4TnB', 'laptop-hp-1.jpg'),
        ('Qs1Zw8Ty3NlJ', 'philips-hue-1.jpg'),
        ('Mx7Pk2Vn5RbD', 'trek-marlin-1.jpg'),
        ('Mx7Pk2Vn5RbD', 'trek-marlin-2.jpg'),
-       ('Jt3Lw6Fh9CmY', 'adidas-ucl-ball. jpg'),
+       ('Jt3Lw6Fh9CmY', 'adidas-ucl-ball.jpg'),
        ('Tx5Wr9Km2NhP', 'samsung-s23-1.jpg'),
        ('Tx5Wr9Km2NhP', 'samsung-s23-2.jpg'),
        ('Gn7Qs4Lv8BxZ', 'cien-anos-cover.jpg');

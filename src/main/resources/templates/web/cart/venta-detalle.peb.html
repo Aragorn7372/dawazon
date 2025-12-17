@@ -4,7 +4,7 @@
 <header class="bg-custom-dark p-2">
     <div class="container d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center gap-3">
-            <a href="{% if isAdmin %}/admin/ventas{% else %}/manager/ventas{% endif %}"
+            <a href="{% if isAdmin %}/ventas{% else %}/auth/me/ventas{% endif %}"
                class="btn btn-sm btn-outline-light">
                 <i class="fa-solid fa-arrow-left"></i> Volver
             </a>
@@ -30,13 +30,13 @@
                         <div class="col-md-6">
                             <h6 class="text-muted mb-3">PRODUCTO</h6>
                             <p class="mb-2">
-                                <strong>Nombre:</strong>
+                                <strong>Nombre: </strong>
                                 <a href="/products/{{venta.productId}}" class="text-decoration-none">
                                     {{venta.productName}}
                                 </a>
                             </p>
                             <p class="mb-2">
-                                <strong>Código:</strong>
+                                <strong>Código: </strong>
                                 <code>{{venta.productId}}</code>
                             </p>
                             <p class="mb-2">
@@ -64,7 +64,7 @@
                         <div class="col-md-6">
                             <h6 class="text-muted mb-3">ESTADO</h6>
                             <p>
-                                <span class="status-badge status-{{venta. status | lower}} fs-6">
+                                <span class="status-badge status-{{venta.status | lower}} fs-6">
                                     {{venta.status}}
                                 </span>
                             </p>
@@ -85,7 +85,7 @@
                     <!-- Acciones -->
                     {% if venta.status != 'CANCELADO' and venta.status != 'ENTREGADO' %}
                     <div class="d-flex gap-2 mt-4">
-                        <a href="{% if isAdmin %}/admin/ventas/edit/{{venta.saleId}}/{{venta.productId}}{% else %}/manager/ventas/edit/{{venta.saleId}}/{{venta.productId}}{% endif %}"
+                        <a href="{% if isAdmin %}/ventas/edit/{{venta.saleId}}/{{venta.productId}}{% else %}/auth/me/ventas/edit/{{venta.saleId}}/{{venta.productId}}{% endif %}"
                            class="btn btn-primary">
                             <i class="fa-solid fa-pen-to-square"></i> Editar Estado
                         </a>
@@ -118,7 +118,7 @@
                         <a href="mailto:{{venta.client.email}}">{{venta.client.email}}</a>
                     </p>
                     <p class="mb-2">
-                        <strong>Teléfono:</strong><br>
+                        <strong>Teléfono: </strong><br>
                         <a href="tel:{{venta.client.phone}}">{{venta.client.phone}}</a>
                     </p>
                 </div>
@@ -134,7 +134,7 @@
                 </div>
                 <div class="card-body">
                     <address class="mb-0">
-                        {{venta.client.address. street}}, {{venta.client.address.number}}<br>
+                        {{venta.client.address.street}}, {{venta.client.address.number}}<br>
                         {{venta.client.address.postalCode}} {{venta.client.address.city}}<br>
                         {{venta.client.address.province}}<br>
                         {{venta.client.address.country}}
@@ -165,7 +165,7 @@
             <!-- ID de venta -->
             <div class="card shadow-sm mt-3">
                 <div class="card-body bg-light">
-                    <p class="mb-1 text-muted small">ID de Venta:</p>
+                    <p class="mb-1 text-muted small">ID de Venta: </p>
                     <code class="small">{{venta.saleId}}</code>
                 </div>
             </div>
@@ -180,9 +180,9 @@
         }
 
         {% if isAdmin %}
-        window.location.href = '/admin/ventas/cancel/{{venta.saleId}}/{{venta.productId}}';
+        window.location.href = '/ventas/cancel/{{venta.saleId}}/{{venta.productId}}';
         {% else %}
-        window.location.href = '/manager/ventas/cancel/{{venta.saleId}}/{{venta.productId}}';
+        window.location.href = '/auth/me/ventas/cancel/{{venta.saleId}}/{{venta.productId}}';
         {% endif %}
     }
 </script>

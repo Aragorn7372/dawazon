@@ -1,38 +1,42 @@
 {% include "common/header" %}
 {% include "common/navbar" %}
 {% set currentPath = request.servletPath %}
-{% set isMyProductos= currentPath equals '/auth/me/products' %}
+{% set isMyProductos = currentPath == '/auth/me/products' %}
 <div class="container my-5">
     <div class="row">
         <h2 class="mb-4 col-9">Resultados</h2>
         {% if isMyProductos %}
         <button class="col-3 btn btn-gradient" onclick="save(this)">
-            añadir produto
+            añadir producto
         </button>
         {% endif %}
     </div>
     <div id="grid-productos" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         {% if productos.content is empty %}
-        <div class="alert alert-warning">No se encontraron productos.</div>
+        <div class="alert alert-warning">No se encontraron productos. </div>
         {% endif %}
         {% for product in productos.content %}
         <div class="col">
             <div class="card h-100 p-3 bg-white">
                 <div class="img-container">
-                    <img src="{{product.getImages[0]}}" alt="${producto.nombre}">
+                    {% if product.image is not empty %}
+                    <img src="{{product.image[0]}}" alt="{{product.name}}">
+                    {% endif %}
                 </div>
                 <div class="card-body px-0 pb-0">
-                    <div class="product-title">{{product.getName}}</div>
+                    <div class="product-title">{{product.name}}</div>
 
                     <div class="price-container mt-2">
-                        <span class="price-symbol">{{product.getPrice}}€</span>
+                        <span class="price-symbol">{{product.price}}€</span>
                     </div>
-                    {% if product.getStock>0 %}
-                    </span><br>Stock: ${producto.stock}
+                    {% if product.stock > 0 %}
+                    <span class="badge bg-success">En stock</span><br>
+                    <span style="font-size: 0.8rem">Stock: {{product.stock}}</span>
                     {% else %}
-                    <span class="badge bg-danger">AGOTADO</span><br><span style="font-size: 0.8rem">No disponible</span>
+                    <span class="badge bg-danger">AGOTADO</span><br>
+                    <span style="font-size: 0.8rem">No disponible</span>
                     {% endif %}
-                    <a href="/productos/${producto.id}" class="btn btn-amazon">Ver detalles</a>
+                    <a href="/products/{{product.id}}" class="btn btn-amazon">Ver detalles</a>
                 </div>
             </div>
         </div>

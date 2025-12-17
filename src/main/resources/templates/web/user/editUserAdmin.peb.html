@@ -1,23 +1,29 @@
 {% include "common/header" %}
 {% include "common/navbar" %}
 {% set currentPath = request.servletPath %}
-{% set isUserView = currentPath equals '/auth/me' %}
-{% set isUserEdit = currentPath equals '/auth/me/edit' %}
-{% set isEditAdmin = currentPath equals 'auth/me/user/edit/{{user.getId}}' %}
-{% set isAdminView= currentPath equals 'auth/me/user/{{user.getId}}' %}
+{% set isUserView = currentPath == '/auth/me' %}
+{% set isUserEdit = currentPath == '/auth/me/edit' %}
+{% set isEditAdmin = currentPath == '/auth/me/user/edit/' ~ user.id %}
+{% set isAdminView = currentPath == '/auth/me/user/' ~ user.id %}
 <div class="container col-12">
 
-    <form action="{% if isEditAdmin %}/admin/users/edit {% elseif isUserEdit %}/auth/me/edit{% endif %}" method="{% if isEditAdmin %}POST {% elseif isUserEdit %}POST{% else %} GET {% endif %}">
+    <form action="{% if isEditAdmin %}/auth/me/users/edit{% elseif isUserEdit %}/auth/me/edit{% endif %}"
+          method="{% if isEditAdmin or isUserEdit %}POST{% else %}GET{% endif %}">
+        <input type="hidden" name="{{ csrfParamName }}" value="{{ csrfToken }}"/>
         <input type="hidden" name="id" value="{{ user.id }}">
 
         <div class="admin-header"
              style="text-align: center; display: flex; flex-direction: column; align-items: center;">
             <div class="admin-avatar">
-                {% if user.avatarUrl %}
-                <img src="{{ user.avatarUrl }}" alt="Avatar">
+                {% if user.avatar %}
+                <img src="{{ user.avatar }}" alt="Avatar">
+                {% else %}
+                <div style="width: 100px; height: 100px; border-radius: 50%; background-color: #eee; display: flex; align-items: center; justify-content:  center; font-size: 2rem; color: #ccc;">
+                    {{ user.userName | slice(0,1) | upper }}
+                </div>
                 {% endif %}
             </div>
-            <h3 class="product-title" style="font-size: 1.4rem;">{{ user.username }}</h3>
+            <h3 class="product-title" style="font-size: 1.4rem;">{{ user.userName }}</h3>
         </div>
 
         <div class="product-main-grid">
@@ -25,46 +31,45 @@
             <div class="product-info" style="text-align: left; align-items: stretch;">
                 <div class="form-group">
                     <label class="form-label">Nombre</label>
-                    <input type="text" name="nombre" class="form-input" value="{{ user.nombre }}" {% if isUserView or isAdminView %}readonly{% endif %}}>
+                    <input type="text" name="nombre" class="form-input" value="{{ user.client.name | default('') }}" {% if isUserView or isAdminView %}readonly{% endif %}>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Email</label>
-                    <input type="email" name="email" class="form-input" value="{{ user.email }}" {% if isUserView or isAdminView %}readonly{% endif %}}>
+                    <input type="email" name="email" class="form-input" value="{{ user.email }}" {% if isUserView or isAdminView %}readonly{% endif %}>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Teléfono</label>
-                    <input type="text" name="telefono" class="form-input" value="{{ user.telefono }}" {% if isUserView or isAdminView %}readonly{% endif %}}>
+                    <input type="text" name="telefono" class="form-input" value="{{ user.telefono | default('') }}" {% if isUserView or isAdminView %}readonly{% endif %}>
                 </div>
             </div>
 
-            {% if isNotHimSelf %}
-            {% if isAdmin %}
+            {% if isNotHimSelf and isAdmin %}
             <div class="product-info" style="text-align: left; align-items: stretch;">
                 <label class="form-label">Roles</label>
                 <div class="roles-list">
-
                     <div style="margin-bottom: 8px;">
                         <label style="cursor: pointer; display: flex; align-items: center; gap: 10px;">
-                        <select name="roles" id="roles" >
-                        {% for role in user.getRoles %}
-                        <option value="{{role.getName}}">{{role}}</option>
-                        {% endfor %}
-                        </select>
+                            <select name="roles" id="roles" class="form-select">
+                                {% for role in user.roles %}
+                                <option value="{{role}}" selected>{{role}}</option>
+                                {% endfor %}
+                                <option value="USER">USER</option>
+                                <option value="MANAGER">MANAGER</option>
+                                <option value="ADMIN">ADMIN</option>
+                            </select>
                         </label>
                     </div>
-
                 </div>
             </div>
             {% endif %}
-{% endif %}
 
         </div>
 
         <div class="action-buttons admin-actions" style="margin-top: 20px;">
             {% if isUser %}
-            <a href="/auth/me/favs" class="btn-gradient"
+            <a href="/auth/me/fav" class="btn-gradient"
                style="text-decoration: none; display: flex; justify-content: center; align-items: center;">
                 Favs
             </a>
@@ -74,17 +79,18 @@
                     class="btn-gradient">
                 Guardar
             </button>
-            {% else%}
+            {% else %}
             <button type="submit"
-                    formaction="{% if isNotHimSelf %}/auth/me/user/edit/{{user.getId}}{% else %}/auth/me/edit{% endif %} "
+                    formaction="{% if isNotHimSelf %}/auth/me/users/edit/{{user.id}}{% else %}/auth/me/edit{% endif %}"
                     class="btn-gradient">
                 Editar
             </button>
             {% endif %}
 
             <button type="submit"
-                    formaction="{% if isHimSelf %}/auth/me/delete{% else %}/admin/users/delete/{{user.id}}{% endif %}"
-                    class="btn-gradient btn-delete">
+                    formaction="{% if isHimSelf %}/auth/me/delete{% else %}/auth/me/users/ban/{{user.id}}{% endif %}"
+                    class="btn-gradient btn-delete"
+                    onclick="return confirm('¿Estás seguro de eliminar esta cuenta?');">
                 Eliminar cuenta
             </button>
 

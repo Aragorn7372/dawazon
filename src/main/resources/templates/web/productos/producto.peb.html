@@ -2,33 +2,37 @@
 {% include "common/navbar" %}
 <div class="container col-12">
 
-    <h1 class="product-title">{{producto.getName}}</h1>
+    <h1 class="product-title">{{producto.name}}</h1>
 
     <div class="product-main-grid">
 
         <div class="carousel-container">
             <button class="carousel-arrow left">&#10094;</button>
-            {% for image in producto.getImages %}
-            <img src="{{image}}" class="product-img">
+            {% if producto.image is not empty %}
+            {% for image in producto.image %}
+            <img src="{{image}}" class="product-img {% if loop.first %}active{% endif %}" alt="{{producto.name}}">
             {% endfor %}
+            {% else %}
+            <img src="/img/default-product.png" class="product-img active" alt="Producto sin imagen">
+            {% endif %}
             <button class="carousel-arrow right">&#10095;</button>
         </div>
 
         <div class="product-info">
-            <div class="price-tag">{{producto.getPrice}}</div>
+            <div class="price-tag">{{producto.price}}€</div>
 
             <ul id="description" class="features-list">
-                {{producto.getDescription}}
+                {{producto.description}}
             </ul>
 
             <div class="seller-info">
-                vendedor: <strong>{{producto.getSelter}}</strong>
+                vendedor: <strong>{{producto.category}}</strong>
             </div>
         </div>
     </div>
     {% if isUser %}
     <div class="action-buttons">
-        <button onclick="añadirAlCarrito(this, {{ producto.getId }})"
+        <button onclick="añadirAlCarrito(this, '{{ producto.id }}')"
                 class="{% if isCart %}btn btn-danger{% else %}btn btn-gradient{% endif %}">
             {% if isCart %}
             Quitar del carrito
@@ -36,7 +40,7 @@
             Añadir al carrito
             {% endif %}
         </button>
-        <button onclick="añadirAFav(this, {{ producto.getId }})"
+        <button onclick="añadirAFav(this, '{{ producto.id }}')"
                 class="{% if isFav %}btn btn-danger{% else %}btn btn-gradient{% endif %}"
                 data-fav="{% if isFav %}true{% else %}false{% endif %}">
             {% if isFav %}
@@ -49,25 +53,25 @@
     {% endif %}
     {% if isManager and isMine %}
     <div class="action-buttons">
-        <button onclick="edit(this,{{ producto.getId }})" class="btn btn-gradient">editar</button>
-        <button onclick="eliminar(this,{{ producto.getId }})" class="btn btn-danger">eliminar</button>
+        <button onclick="edit(this,'{{ producto.id }}')" class="btn btn-gradient">editar</button>
+        <button onclick="eliminar(this,'{{ producto.id }}')" class="btn btn-danger">eliminar</button>
     </div>
     {% endif %}
     {% if isAdmin %}
     <div class="action-buttons">
-        <button onclick="eliminar(this,{{ producto.getId }})" class="btn btn-danger">eliminar</button>
+        <button onclick="eliminar(this,'{{ producto.id }}')" class="btn btn-danger">eliminar</button>
     </div>
     {% endif %}
     <section class="comments-section">
 
-        <h3>comentarios:</h3>
+        <h3>comentarios: </h3>
         {% if isUser %}
-        <form id="ratingForm" onsubmit="event.preventDefault(); submitRating({{ producto.getId }});">
+        <form id="ratingForm" onsubmit="event.preventDefault(); submitRating('{{ producto.id }}');">
             <input type="hidden" name="{{ csrfParamName }}" value="{{ csrfToken }}"/>
 
             <div class="comment-card">
                 <div class="d-block">
-                    <label class="form-label col-12" for="comment">comentario:</label>
+                    <label class="form-label col-12" for="comment">comentario: </label>
                     <textarea class="form-control col-12" name="comment" id="comment" rows="4"></textarea>
 
                     <div class="mt-3">
@@ -91,29 +95,32 @@
         </form>
         {% endif %}
 
-        {% for comment in producto.getComments %}
+        {% if producto.comments is not empty %}
+        {% for comment in producto.comments %}
         <div class="comment-card">
             <div class="comment-header">
                 <div>
-                    <span class="user-name">{{ comment.getUserName }}</span>
-                    {% if comment.getVerified %}
+                    <span class="user-name">{{ comment.userName }}</span>
+                    {% if comment.verified %}
                     <span class="badge-verified">compra verificada</span>
                     {% else %}
                     <span class="badge-">compra no verificada</span>
                     {% endif %}
                 </div>
-                {% if comment.getRecomended %}
+                {% if comment.recommended %}
                 <span class="recommendation positive">recomendado</span>
                 {% else %}
                 <span class="recommendation negative">no recomendado</span>
                 {% endif %}
             </div>
             <div class="comment-body">
-                <p>{{ comment.getContent }}</p>
+                <p>{{ comment.comment }}</p>
             </div>
             <hr>
         </div>
         {% endfor %}
+        {% endif %}
+
         <!-- Toast para notificaciones -->
         <div class="toast-container position-fixed bottom-0 end-0 p-3">
             <div id="notificationToast" class="toast" role="alert">
@@ -131,16 +138,21 @@
                 const lista = document.getElementById("description");
                 if (lista) {
                     const json = lista.textContent;
-                    cargarLista(json, lista);
+                    try {
+                        cargarLista(json, lista);
+                    } catch(e) {
+                        // Si no es JSON, dejar el texto tal cual
+                        console.log("Descripción en formato texto");
+                    }
                 }
             });
 
             function cargarLista(json, element) {
                 var contenedor = element;
                 contenedor.innerHTML = "";
-                const lista = JSON.parse(json); // Usa JSON.parse en lugar de stringify
-                var contenido = `<li>Caracteristicas.</li>\n`;
-                for (let i = 0; i < lista.length; i++) { // Agrega . length
+                const lista = JSON.parse(json);
+                var contenido = `<li>Características. </li>\n`;
+                for (let i = 0; i < lista.length; i++) {
                     contenido += `<li>${lista[i]}</li>`;
                 }
                 contenedor.innerHTML = contenido;
@@ -181,28 +193,16 @@
         <script>
             function añadirAlCarrito(element, productoId) {
                 if (element.textContent.trim() === "Añadir al carrito") {
-                    element.textContent = "Quitar del carrito";
-                    element.classList.remove("btn-gradient");
-                    element.classList.add("btn-danger");
-                    window.location.href = `auth/me/carrito/add/${productoId}`;
+                    window.location.href = `/auth/me/carrito/add/${productoId}`;
                 } else {
-                    element.textContent = "Añadir al carrito";
-                    element.classList.add("btn-gradient");
-                    element.classList.remove("btn-danger");
-                    window.location.href = `auth/me/carrito/remove/${productoId}`;
+                    window.location.href = `/auth/me/carrito/remove/${productoId}`;
                 }
             }
 
             function añadirAFav(element, productoId) {
                 if (element.textContent.trim() === "fav") {
-                    element.textContent = "no fav";
-                    element.classList.remove("btn-gradient");
-                    element.classList.add("btn-danger");
                     window.location.href = `/auth/me/fav/add/${productoId}`;
                 } else {
-                    element.textContent = "fav";
-                    element.classList.add("btn-gradient");
-                    element.classList.remove("btn-danger");
                     window.location.href = `/auth/me/fav/remove/${productoId}`;
                 }
             }
@@ -211,7 +211,7 @@
                 const rating = document.querySelector('input[name="recomended"]:checked');
                 const comentario = document.getElementById('comment').value;
 
-                if (!rating) {
+                if (! rating) {
                     showNotification('Por favor, seleccione si recomienda o no el producto', 'warning');
                     return;
                 }
@@ -221,7 +221,7 @@
                 formData.append('comment', comentario);
                 formData.append(getCsrfParamName(), getCsrfToken());
 
-                fetch(`/productos/${productoId}/comentarios`, {
+                fetch(`/products/${productoId}/comentarios`, {
                     method: 'POST',
                     body: formData
                 })
@@ -232,7 +232,7 @@
                             document.getElementById('ratingForm').reset();
                             setTimeout(() => location.reload(), 2000);
                         } else {
-                            showNotification('Error: ' + data.message, 'error');
+                            showNotification('Error:  ' + data.message, 'error');
                         }
                     })
                     .catch(error => {
@@ -242,7 +242,6 @@
             }
         </script>
         {% endif %}
-        {% endif %}
         {% if isManager and isMine %}
         <script>
             function edit(element, productoId) {
@@ -250,14 +249,18 @@
             }
 
             function eliminar(element, productoId) {
-                window.location.href = `/auth/me/products/remove/${productoId}`;
+                if(confirm('¿Estás seguro de eliminar este producto?')) {
+                    window.location.href = `/auth/me/products/delete/${productoId}`;
+                }
             }
         </script>
         {% endif %}
         {% if isAdmin %}
         <script>
             function eliminar(element, productoId) {
-                window.location.href = `/auth/products/remove/${productoId}`;
+                if(confirm('¿Estás seguro de eliminar este producto?')) {
+                    window.location.href = `/products/delete/${productoId}`;
+                }
             }
         </script>
         {% endif %}

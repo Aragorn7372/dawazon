@@ -60,4 +60,6 @@ public interface ProductService extends Service<
      * @return El recurso actualizado.
      */
     GenericProductResponseDto update(String id, PostProductRequestDto entity);
+
+    List<String> getAllCategorias();
 }

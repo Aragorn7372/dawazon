@@ -23,7 +23,7 @@
         </div>
 
         <div class="text-end text-muted-small">
-            Mostrando <span id="shownCount">{{ ventas.size }}</span> de <span id="totalCount">{{ totalVentas }}</span> ventas
+            Mostrando <span id="shownCount">{{ ventas | length }}</span> de <span id="totalCount">{{ totalVentas | default(ventas | length) }}</span> ventas
         </div>
     </div>
 
@@ -88,14 +88,14 @@
             </tbody>
             <tfoot>
             <tr class="total-row">
-                <td colspan="7" class="text-end fw-bold">Ganancias totales: </td>
-                <td colspan="2" id="totalAmount" class="fw-bold">{{ganancias}}€</td>
+                <td colspan="7" class="text-end fw-bold">Ganancias totales:</td>
+                <td colspan="2" id="totalAmount" class="fw-bold">{{ganancias | default(0) | numberformat("#,##0.00")}}€</td>
             </tr>
             </tfoot>
         </table>
     </div>
 
-    {% if ventas.size == 0 %}
+    {% if ventas is empty %}
     <div class="alert alert-info text-center">
         No se encontraron ventas con los filtros aplicados.
     </div>
@@ -105,7 +105,7 @@
 
 <script>
     function cancelSale(saleId, productId) {
-        if (!confirm('¿Estás seguro de que deseas cancelar esta venta?  Se restaurará el stock del producto.')) {
+        if (!confirm('¿Estás seguro de que deseas cancelar esta venta? Se restaurará el stock del producto.')) {
             return;
         }
 
@@ -127,7 +127,7 @@
     function filterByStatus(status) {
         const url = new URL(window.location);
         if (status) {
-            url.searchParams. set('status', status);
+            url.searchParams.set('status', status);
         } else {
             url.searchParams.delete('status');
         }

@@ -8,26 +8,24 @@
     </div>
 </header>
 <main class="container col-12 mt-4">
-    <h2 class="text-center mb-3">usuarios admin</h2>
+    <h2 class="text-center mb-3">Usuarios Admin</h2>
 
     <div class="row align-items-center mb-3">
-        <form action="/users" class="d-flex me-3" method="get" role="search"></form>
         <div class="col-md-6 mb-2">
-            <div class="input-group">
-                <input id="searchInput" type="search" name="name" class="form-control search-input"
-                       placeholder="Buscar por nombre, email o rol..." value="{{name | default('')}}">
-                <button id=" btnSearch" class="btn btn-search" type="submit"><i class="bi bi-search"></i>
-                    Buscar
-                </button>
-
-            </div>
-
+            <form action="/auth/me/users" class="d-flex" method="get" role="search">
+                <div class="input-group">
+                    <input id="searchInput" type="search" name="name" class="form-control search-input"
+                           placeholder="Buscar por nombre, email o rol..." value="{{name | default('')}}">
+                    <button id="btnSearch" class="btn btn-search" type="submit"><i class="bi bi-search"></i>
+                        Buscar
+                    </button>
+                </div>
+            </form>
         </div>
-        </form>
         <div class="col-md-6 text-end">
-            <button id="btnAddUser" class="btn btn-amazon" data-bs-toggle="modal" data-bs-target="#editUserModal">
+            <a href="/auth/signup" class="btn btn-amazon">
                 <i class="bi bi-person-plus"></i> Nuevo usuario
-            </button>
+            </a>
         </div>
     </div>
 
@@ -47,39 +45,56 @@
             <tbody>
             {% if users is empty %}
             <tr>
-                <td colspan="6" class="text-center text-muted">No se encontraron usuarios.</td>
+                <td colspan="6" class="text-center text-muted">No se encontraron usuarios. </td>
             </tr>
-            {% endif %}
+            {% else %}
             {% for user in users %}
             <tr>
                 <td>
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='{{user.getAvatar}}' width='80' height='80'><rect width='100%' height='100%' fill='%23888'/></svg>"
-                         alt="{{user.getName}}" class="avatar-small">
+                    {% if user.avatar %}
+                    <img src="{{user.avatar}}" alt="{{user.userName}}" class="avatar-small">
+                    {% else %}
+                    <div class="avatar-small bg-secondary text-white d-flex align-items-center justify-content-center">
+                        {{user.userName | slice(0,1) | upper}}
+                    </div>
+                    {% endif %}
                 </td>
                 <td>
-                    <div>user.getName</div>
-                    <div class="text-muted-small">user.getUserName</div>
+                    <div>{{user.client.name | default('Sin nombre')}}</div>
+                    <div class="text-muted-small">{{user.userName}}</div>
                 </td>
-                <td>user.getEmail</td>
+                <td>{{user.email}}</td>
                 <td>
-                    {% for role in user.getRoles %}
-                    <span class="role-badge">role</span>
+                    {% if user.roles is not empty %}
+                    {% for role in user.roles %}
+                    <span class="role-badge">{{role}}</span>
                     {% endfor %}
+                    {% else %}
+                    <span class="text-muted">Sin roles</span>
+                    {% endif %}
                 </td>
                 <td>
-                            <span class="status-badge">{% if user.isDeleted %} Activo {% else %} Inactivo {% endif
-                                %}</span>
+                    {% if user.isDeleted %}
+                    <span class="status-badge status-cancelada">Inactivo</span>
+                    {% else %}
+                    <span class="status-badge status-completada">Activo</span>
+                    {% endif %}
                 </td>
                 <td class="text-end actions-cell">
-                    <button onclick="edit(this,{{user.getId}})" class="btn btn-gradient action-edit"><i
-                            class="bi bi-pencil"></i>
-                        editar
+                    <a href="/auth/me/users/{{user.id}}" class="btn btn-sm btn-outline-primary me-2">
+                        <i class="bi bi-eye"></i> Ver
+                    </a>
+                    <button onclick="edit(this,{{user.id}})" class="btn btn-sm btn-gradient me-2">
+                        <i class="bi bi-pencil"></i> Editar
                     </button>
-                    <button onclick="deleted(this,{{user.getId}})" class="action-delete"
-                            title="Banear usuario"><i class="bi bi-hammer"></i></button>
+                    <button onclick="deleted(this,{{user.id}})" class="btn btn-sm btn-outline-danger"
+                            title="Banear usuario">
+                        <i class="bi bi-hammer"></i>
+                    </button>
                 </td>
             </tr>
             {% endfor %}
+            {% endif %}
             </tbody>
         </table>
     </div>
@@ -87,11 +102,13 @@
 <script>
 
     function edit(element, userId) {
-        window.location.href = `/users/edit/${userId}`;
+        window.location.href = `/auth/me/users/edit/${userId}`;
     }
 
     function deleted(element, userId) {
-        window.location.href = `/users/delete/${userId}`;
+        if(confirm('¿Estás seguro de banear este usuario?')) {
+            window.location.href = `/auth/me/users/ban/${userId}`;
+        }
     }
 
 </script>
