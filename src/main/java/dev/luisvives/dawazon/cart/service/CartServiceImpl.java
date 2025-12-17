@@ -31,6 +31,7 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -250,6 +251,8 @@ public class CartServiceImpl implements CartService {
     public Cart save(Cart entity) {
         entity.getCartLines().forEach((it)->{it.setStatus(Status.PREPARADO);});
         entity.setPurchased(true);
+        entity.setCheckoutInProgress(false);
+        entity.setCheckoutStartedAt(null);
         cartRepository.save(entity);
         return createNewCart(entity.getUserId());
     }
@@ -322,7 +325,9 @@ public class CartServiceImpl implements CartService {
 
     @Transactional
     public String checkout(ObjectId id, Cart entity) {
-
+        entity.setCheckoutInProgress(true);
+        entity.setCheckoutStartedAt(LocalDateTime.now());
+        cartRepository.save(entity);
         //Procesamos el stock de cada línea
         entity.getCartLines().forEach((it) -> {
             int intentos = 0;
@@ -370,6 +375,9 @@ public class CartServiceImpl implements CartService {
                     productRepository.save(product);
                 });
             });
+            cart.setCheckoutInProgress(false);
+            cart.setCheckoutStartedAt(null);
+            cartRepository.save(cart);
             log.info("Stock restaurado para el carrito: " + cartId);
         }
     }
@@ -407,5 +415,48 @@ public class CartServiceImpl implements CartService {
                     log.error("Carrito no encontrado para userId: " + userId);
                     return new CartException.NotFoundException("Carrito no encontrado para userId: " + userId);
                 });
+    }
+    @Transactional
+    public int cleanupExpiredCheckouts() {
+        LocalDateTime expirationTime = LocalDateTime.now().minusMinutes(5);
+
+        Query query = new Query();
+        query.addCriteria(Criteria.where("checkoutInProgress").is(true)
+                .and("purchased").is(false)
+                .and("checkoutStartedAt").lt(expirationTime));
+
+        List<Cart> expiredCarts = mongoTemplate.find(query, Cart. class);
+
+        if (expiredCarts.isEmpty()) {
+            log.debug("✨ No hay carritos expirados para limpiar");
+            return 0;
+        }
+
+        log.info("🧹 Limpiando {} carritos expirados", expiredCarts.size());
+
+        int cleanedCount = 0;
+
+        for (Cart cart : expiredCarts) {
+            try {
+                log.warn("⏰ Carrito {} expirado ({} minutos). Restaurando stock...",
+                        cart.getId(), cart.getMinutesSinceCheckoutStarted());
+
+                // Restaurar stock
+                restoreStock(new ObjectId(cart.getId()));
+
+                cleanedCount++;
+
+                log.info("Carrito {} limpiado exitosamente", cart.getId());
+
+            } catch (Exception e) {
+                log.error("Error restaurando stock del carrito {}: {}",
+                        cart.getId(), e.getMessage(), e);
+            }
+        }
+
+        log.info("Limpieza completada:  {}/{} carritos procesados",
+                cleanedCount, expiredCarts.size());
+
+        return cleanedCount;
     }
 }

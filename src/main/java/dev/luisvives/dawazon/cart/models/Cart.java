@@ -59,4 +59,21 @@ public class Cart {
         this.totalItems = cartLines == null ? 0 : cartLines.size();
         this.total = cartLines == null ? 0.0 : cartLines.stream().mapToDouble(CartLine::getTotalPrice).sum();
     }
+    @Builder.Default
+    private boolean checkoutInProgress = false;
+    private LocalDateTime checkoutStartedAt;
+    public long getMinutesSinceCheckoutStarted() {
+        if (checkoutStartedAt == null) {
+            return 0;
+        }
+        return java.time.Duration.between(checkoutStartedAt, LocalDateTime. now())
+                .toMinutes();
+    }
+
+
+    public boolean isCheckoutExpired() {
+        return checkoutInProgress &&
+                checkoutStartedAt != null &&
+                getMinutesSinceCheckoutStarted() > 5;
+    }
 }

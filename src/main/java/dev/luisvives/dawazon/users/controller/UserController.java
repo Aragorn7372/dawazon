@@ -458,8 +458,17 @@ public class UserController {
             val user = (User) model.getAttribute("currentUser");
             val cart = (Cart) model.getAttribute("cart");
 
-            log.info("Procesando pago exitoso para usuario: {} - Session ID: {}",
-                    user.getId(), sessionId);
+            log.info("💳 Procesando pago exitoso - Usuario: {} - Session: {}",
+                    user. getId(), sessionId);
+
+            // 🆕 Verificar expiración usando el método helper
+            if (cart.isCheckoutExpired()) {
+                log.warn("⏰ Checkout expirado ({} minutos) - Carrito: {}",
+                        cart.getMinutesSinceCheckoutStarted(), cart.getId());
+                redirectAttributes.addFlashAttribute("errorMessage",
+                        "La sesión de pago ha expirado. Por favor, intenta de nuevo.");
+                return "redirect:/cart";
+            }
 
             // Verificar que el carrito tenga items
             if (cart.getCartLines().isEmpty()) {
@@ -468,7 +477,7 @@ public class UserController {
                 return "redirect:/cart";
             }
 
-            // Marcar el carrito como comprado y crear uno nuevo
+            // Marcar el carrito como comprado (save ya resetea los flags de checkout)
             Cart purchasedCart = cartService.save(cart);
 
             // Enviar email de confirmación de forma asíncrona
@@ -479,12 +488,13 @@ public class UserController {
             model.addAttribute("client", user. getClient());
             model.addAttribute("sessionId", sessionId);
 
-            log.info("✅ Pedido completado exitosamente:  {}", purchasedCart.getId());
-
-            return "cart/checkout-success"; // Vista de confirmación
+            log.info("✅ Pedido completado - ID: {} - Total: {}€",
+                    purchasedCart.getId(), purchasedCart.getTotal());
+            cartService.createNewCart(user.getId());
+            return "cart/checkout-success";
 
         } catch (Exception e) {
-            log.error("❌ Error procesando checkout success:  {}", e.getMessage(), e);
+            log.error("Error procesando checkout success: {}", e.getMessage(), e);
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Error procesando tu pedido:  " + e.getMessage());
             return "redirect:/cart";
@@ -502,7 +512,7 @@ public class UserController {
             val user = (User) model.getAttribute("currentUser");
             val cart = (Cart) model.getAttribute("cart");
 
-            log.warn("⚠️ Pago cancelado por usuario: {} - Session ID: {}",
+            log.warn("Pago cancelado por usuario: {} - Session ID: {}",
                     user.getId(), sessionId);
 
             // Restaurar el stock de los productos
@@ -514,12 +524,12 @@ public class UserController {
             redirectAttributes.addFlashAttribute("infoMessage",
                     "Los productos han sido devueltos al stock.");
 
-            log.info("🔄 Stock restaurado para carrito: {}", cart.getId());
+            log.info("Stock restaurado para carrito: {}", cart.getId());
 
             return "redirect:/cart";
 
         } catch (Exception e) {
-            log.error("❌ Error procesando cancelación:  {}", e.getMessage(), e);
+            log.error("Eror procesando cancelación:  {}", e.getMessage(), e);
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Error al cancelar el pago");
             return "redirect:/cart";
