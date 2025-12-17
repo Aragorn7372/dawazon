@@ -51,6 +51,7 @@ public class FavServiceImpl implements FavService {
     public Page<GenericProductResponseDto> getFavs(Long userId, Pageable pageable) {
         val user = userRepository.findById(userId).orElseThrow(()-> new UserException.UserNotFoundException("no encontrado usuario con id"+userId));
         val products = user.getFavs().stream().map(it->productRepository.findById(it).orElse(null));
+
         return new PageImpl<>(products.toList().stream().filter(Objects::nonNull)
                 .map((it)->productMapper.modelToGenericResponseDTO(
                         it,it.getComments().stream()

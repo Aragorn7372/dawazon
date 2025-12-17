@@ -29,4 +29,6 @@ public interface CartRepository extends MongoRepository<Cart, ObjectId> {
     @Query("{ '_id' : ?0 }")
     @Update("{ '$pull' : { 'cartLines' : ?1 } }")
     long removeCartLine(ObjectId cartId, CartLine lineToRemove);
+
+    Optional<Cart> findByUserIdAndPurchased(Long userId, boolean b);
 }

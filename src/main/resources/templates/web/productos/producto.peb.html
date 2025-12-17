@@ -184,12 +184,12 @@
                     element.textContent = "Quitar del carrito";
                     element.classList.remove("btn-gradient");
                     element.classList.add("btn-danger");
-                    window.location.href = `/carrito/add/${productoId}`;
+                    window.location.href = `auth/me/carrito/add/${productoId}`;
                 } else {
                     element.textContent = "Añadir al carrito";
                     element.classList.add("btn-gradient");
                     element.classList.remove("btn-danger");
-                    window.location.href = `/carrito/remove/${productoId}`;
+                    window.location.href = `auth/me/carrito/remove/${productoId}`;
                 }
             }
 

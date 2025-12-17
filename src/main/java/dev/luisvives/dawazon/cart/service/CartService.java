@@ -1,5 +1,6 @@
 package dev.luisvives.dawazon.cart.service;
 
+import dev.luisvives.dawazon.cart.dto.CartStockRequestDto;
 import dev.luisvives.dawazon.cart.models.Cart;
 import dev.luisvives.dawazon.cart.models.CartLine;
 import dev.luisvives.dawazon.common.service.Service;
@@ -21,4 +22,8 @@ public interface CartService extends Service<Cart, ObjectId, Cart> {
     Cart removeProduct(ObjectId id, String productId);
 
     List<Product> variosPorId(List<String> productIds);
+
+    Cart getCartByUserId(Long userId);
+
+    Cart updateStock(CartStockRequestDto entity);
 }

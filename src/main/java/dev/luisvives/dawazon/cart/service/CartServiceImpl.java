@@ -1,5 +1,6 @@
 package dev.luisvives.dawazon.cart.service;
 
+import dev.luisvives.dawazon.cart.dto.CartStockRequestDto;
 import dev.luisvives.dawazon.cart.dto.LineRequestDto;
 import dev.luisvives.dawazon.cart.dto.SaleLineDto;
 import dev.luisvives.dawazon.cart.exceptions.CartException;
@@ -109,7 +110,7 @@ public class CartServiceImpl implements CartService {
         // Obtenemos el numero del ultimo elemento de la pagina
         int end = Math.min(start + pageable.getPageSize(), filteredLines.size());
         // creamos la lista y verificamos que exista es decir que si falla el filtro ya que en el indice
-        // inicial y en el indice final no hay lineas de pedido devuelve una lista vacia
+        // inicial y en el índice final no hay lineas de pedido devuelve una lista vacia
         List<SaleLineDto> paginatedLines = start < filteredLines.size()
                 ? filteredLines.subList(start, end)
                 : Collections.emptyList();
@@ -250,6 +251,15 @@ public class CartServiceImpl implements CartService {
         return createNewCart(entity.getUserId());
     }
 
+    @Override
+    public Cart updateStock(CartStockRequestDto entity) {
+        val cart= cartRepository.findById(entity.getCartId()).orElseThrow(()->new CartException.NotFoundException("Cart no encontrado con id: " + entity.getCartId()));
+        cart.getCartLines().stream().filter((it)->it.getProductId().equals(entity.getProductId())).findFirst().get().setQuantity(entity.getQuantity());
+        cartRepository.save(cart);
+        return cart;
+    }
+
+
     public Cart createNewCart(Long userId) {
         val user=userRepository.findById(userId).get();
         val cart= Cart.builder()
@@ -348,5 +358,14 @@ public class CartServiceImpl implements CartService {
         });
 
         return products;
+    }
+
+    @Override
+    public Cart getCartByUserId(Long userId){
+        return cartRepository.findByUserIdAndPurchased(userId,false)
+                .orElseThrow(() -> {
+                    log.error("Carrito no encontrado para userId: " + userId);
+                    return new CartException.NotFoundException("Carrito no encontrado para userId: " + userId);
+                });
     }
 }
