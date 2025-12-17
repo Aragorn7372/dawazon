@@ -1,5 +1,5 @@
 {% set currentPath = request.servletPath %}
-{% set isLogin = currentPath equals '/auth/singin' %}
+{% set isLogin = currentPath equals '/auth/signin' %}
 {% set isRegister = currentPath equals '/auth/signup' %}
 {% set isChangePass = currentPath equals '/auth/me/changepassword' %}
 <!DOCTYPE html>
@@ -42,7 +42,7 @@
     <div class="auth-container">
 
         <div class="auth-card">
-            <form action="{% if isLogin %}/auth/signin-post/{% elseif isRegister %} /auth/signup {% else %} /auth/me/changepassword" method="POST">
+            <form action="{% if isLogin %}/auth/signin-post/{% elseif isRegister %} /auth/signup {% else %} /auth/me/changepassword {% endif %}" method="POST">
                 <input type="hidden" name="{{ csrfParamName }}" value="{{ csrfToken }}"/>
 
                 {% if isLogin or isRegister %}
@@ -96,7 +96,7 @@
                         <button type="submit" class="btn-auth">Iniciar sesión</button>
                     
                     {% elseif isRegister %}
-                        <button type="button" class="btn-auth" onclick="window.location.href='/auth/singin'">Iniciar sesión</button>
+                        <button type="button" class="btn-auth" onclick="window.location.href='/auth/signin'">Iniciar sesión</button>
                         <button type="submit" class="btn-auth">Registrarse</button>
                     
                     {% elseif isChangePass %}
