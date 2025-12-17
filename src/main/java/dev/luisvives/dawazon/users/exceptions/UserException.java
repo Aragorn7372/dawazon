@@ -19,4 +19,9 @@ public abstract class UserException extends RuntimeException{
             super(message);
         }
     }
+    public static class UserHasThatFavProductException extends UserException{
+        public UserHasThatFavProductException(String message){
+            super(message);
+        }
+    }
 }

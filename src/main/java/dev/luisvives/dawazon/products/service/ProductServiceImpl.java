@@ -123,6 +123,9 @@ public class ProductServiceImpl implements ProductService {
 
         return repository.findAll(criterio, pageable);
     }
+    public Page<Product> findAllByManagerId(Long id,Pageable pageable) {
+        return repository.findAllByCreatorId(id,pageable);
+    }
 
     /**
      * Recupera un producto por su ID.

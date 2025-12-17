@@ -60,7 +60,10 @@ public class User implements UserDetails {
     @Column(nullable = false)
     @Builder.Default
     private String avatar = IMAGE_DEFAULT;
-
+    @Column()
+    @ElementCollection(fetch = FetchType.EAGER) // Pocos datos, tipo eaguer para ir mas rapido
+    @Enumerated(EnumType.STRING) // Guardar el nombre del enum en lugar de el "indice" del valor Ej.: Tipo[0] = ADMIN / Tipo[1] = USER
+    private List<String> favs;
     @Column(nullable = false)
     @CreatedDate
     @Builder.Default

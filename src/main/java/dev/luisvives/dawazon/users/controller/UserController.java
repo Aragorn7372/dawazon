@@ -7,11 +7,15 @@ import dev.luisvives.dawazon.users.dto.UserRequestDto;
 import dev.luisvives.dawazon.users.exceptions.UserException;
 import dev.luisvives.dawazon.users.models.User;
 import dev.luisvives.dawazon.users.service.AuthService;
+import dev.luisvives.dawazon.users.service.FavService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,25 +32,27 @@ import java.util.List;
 public class UserController {
     private final AuthService authService;
     private final ProductServiceImpl productService;
+    private final FavService favService;
 
     @Autowired
-    public UserController(AuthService authService, ProductServiceImpl productService) {
+    public UserController(AuthService authService, ProductServiceImpl productService, FavService favService) {
         this.authService = authService;
         this.productService = productService;
+        this.favService = favService;
     }
 
     @GetMapping({"", "/"})
     public String index(Model model) {
         val user = (User) model.getAttribute("currentUser");
         model.addAttribute("user", user);
-        return "/web/user/editUserAdmin";
+        return "web/user/editUserAdmin";
     }
 
     @GetMapping("/edit")
     public String edit(Model model) {
         val user = (User) model.getAttribute("currentUser");
         model.addAttribute("user", user);
-        return "/web/user/editUserAdmin";
+        return "web/user/editUserAdmin";
     }
 
     @PostMapping("/edit")
@@ -83,7 +89,22 @@ public class UserController {
     @PreAuthorize("hasRole('MANAGER')")
     @GetMapping({"/products/save", "/products/save/"})
     public String save(Model model) {
-        return "/web/productos/productoSaveEdit";
+        return "web/productos/productoSaveEdit";
+    }
+    @PreAuthorize("hasRole('MANAGER')")
+    @GetMapping({"/products", "/products/"})
+    public String products(Model model,
+                           @RequestParam(defaultValue = "0") int page,
+                           @RequestParam(defaultValue = "10") int size,
+                           @RequestParam(defaultValue = "id") String sortBy,
+                           @RequestParam(defaultValue = "asc") String direction) {
+        Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        // Creamos cómo va a ser la paginación
+        Pageable pageable = PageRequest.of(page, size, sort);
+        val user = (User) model.getAttribute("currentUser");
+        assert user != null;
+        model.addAttribute("productos",productService.findAllByManagerId(user.getId(),pageable));
+        return "web/productos/lista";
     }
 
     @PreAuthorize("hasRole('MANAGER')")
@@ -95,7 +116,7 @@ public class UserController {
             model.addAttribute("error.status", 400);
             model.addAttribute("error.title", "El producto no es válido");
             model.addAttribute("error.message", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage));
-            return "/web/productos/productoSaveEdit";
+            return "web/productos/productoSaveEdit";
         }
         product.setCreatorId((Long) model.getAttribute("currentUserId"));
         val savedProduct = productService.save(product);
@@ -108,7 +129,7 @@ public class UserController {
     public String update(Model model,@PathVariable String id) {
         val product= productService.getById(id);
         model.addAttribute("product", product);
-        return "/web/productos/productoSaveEdit";
+        return "web/productos/productoSaveEdit";
     }
 
     @PreAuthorize("hasRole('MANAGER')")
@@ -143,5 +164,34 @@ public class UserController {
         }
         productService.deleteById(id);
         return "redirect:/products/" + id;
+    }
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/fav/add/{id}")
+    public String addFav(Model model, @PathVariable String id) {
+        val userId=(Long) model.getAttribute("currentUserId");
+        favService.addFav(id,userId);
+        return "redirect:/products/" + id;
+    }
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/fav/remove/{id}")
+    public String removeFav(Model model, @PathVariable String id) {
+        val userId=(Long) model.getAttribute("currentUserId");
+        favService.addFav(id,userId);
+        return "redirect:/products/" + id;
+    }
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("fav")
+    public String fav(Model model,
+                      @RequestParam(defaultValue = "0") int page,
+                      @RequestParam(defaultValue = "10") int size,
+                      @RequestParam(defaultValue = "id") String sortBy,
+                      @RequestParam(defaultValue = "asc") String direction) {
+        log.info("");
+        Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        // Creamos cómo va a ser la paginación
+        Pageable pageable = PageRequest.of(page, size, sort);
+        val userId=(Long) model.getAttribute("currentUserId");
+        model.addAttribute("productos", favService.getFavs(userId,pageable));
+        return "web/productos/lista";
     }
 }

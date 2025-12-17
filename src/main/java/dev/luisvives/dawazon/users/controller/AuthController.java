@@ -1,4 +1,6 @@
 package dev.luisvives.dawazon.users.controller;
+import dev.luisvives.dawazon.cart.service.CartService;
+import dev.luisvives.dawazon.cart.service.CartServiceImpl;
 import dev.luisvives.dawazon.common.storage.controller.StorageController;
 import dev.luisvives.dawazon.common.storage.service.StorageService;
 import dev.luisvives.dawazon.users.dto.UserChangePasswordDto;
@@ -20,11 +22,13 @@ public class AuthController {
 
     final AuthService usuarioServicio;
     final StorageService storageService;
+    final CartServiceImpl cartService;
 
     @Autowired
-    public AuthController(AuthService usuarioServicio, StorageService storageService) {
+    public AuthController(AuthService usuarioServicio, StorageService storageService,CartServiceImpl cartService) {
         this.usuarioServicio = usuarioServicio;
         this.storageService = storageService;
+        this.cartService = cartService;
     }
     @GetMapping("/auth/signin")
     public String login(Model model) {
@@ -52,7 +56,8 @@ public class AuthController {
                     .fromMethodName(StorageController.class, "serveFile", imagen)
                     .build().toUriString());
         }
-        usuarioServicio.register(usuario);
+        val user=usuarioServicio.register(usuario);
+        cartService.createNewCart(user.getId());
         return "redirect:/";
     }
     @PreAuthorize("hasAnyAuthority()")

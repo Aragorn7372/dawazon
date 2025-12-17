@@ -24,7 +24,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     Optional<Product> substractStock(String id, int amount, Long version);
 
 
-    List<Product> findAllByCreatorId(Long userId);
+    Page<Product> findAllByCreatorId(Long userId, Pageable pageable);
     @Modifying
     @Query("UPDATE Product p SET p.isDeleted=true, p.stock=0 WHERE p.id= :id")
     void deleteByIdLogical(String id);
