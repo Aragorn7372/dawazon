@@ -1,11 +1,14 @@
 package dev.luisvives.dawazon.products.mapper;
 
 import dev.luisvives.dawazon.common.dto.PageResponseDTO;
+import dev.luisvives.dawazon.common.storage.service.StorageService;
 import dev.luisvives.dawazon.products.dto.CommentDto;
 import dev.luisvives.dawazon.products.dto.GenericProductResponseDto;
 import dev.luisvives.dawazon.products.dto.PostProductRequestDto;
 import dev.luisvives.dawazon.products.models.Comment;
 import dev.luisvives.dawazon.products.models.Product;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
@@ -13,13 +16,25 @@ import java.util.List;
 
 @Component
 public class ProductMapper {
+    private final StorageService storageService;
+    
+    @Autowired
+    public ProductMapper(StorageService storageService) {
+        this.storageService = storageService;
+    }
+    
     public GenericProductResponseDto modelToGenericResponseDTO(Product productoFound, List<CommentDto> commentsFound) {
+        // Convert filenames to full URLs
+        List<String> imageUrls = productoFound.getImages().stream()
+                .map(storageService::getUrl)
+                .toList();
+                
         return GenericProductResponseDto.builder()
                 .id(productoFound.getId())
                 .name(productoFound.getName())
                 .price(productoFound.getPrice())
                 .category(productoFound.getCategory().getName())
-                .image(productoFound.getImages())
+                .image(imageUrls)  // Now contains full URLs instead of just filenames
                 .stock(productoFound.getStock())
                 .comments(commentsFound)
                 .description(productoFound.getDescription()).build();

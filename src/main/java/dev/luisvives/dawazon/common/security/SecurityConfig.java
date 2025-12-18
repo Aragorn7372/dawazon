@@ -16,14 +16,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import org.springframework.security.web.SecurityFilterChain;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig {
 
-    final
-    UserDetailsService userDetailsService;
+    final UserDetailsService userDetailsService;
 
     @Autowired
     public SecurityConfig(UserDetailsService userDetailsService) {
@@ -53,32 +51,35 @@ public class SecurityConfig {
         http
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/productos/**", "/files/**").permitAll()
+                        // Static resources and public endpoints must be first
                         .requestMatchers("/images/**", "/css/**", "/js/**", "/static/**").permitAll()
-                        .requestMatchers("/auth/signin", "/auth/signup").permitAll()
-                        .anyRequest().authenticated()
-                )
+                        .requestMatchers("/*.png", "/*.jpg", "/*.jpeg", "/*.ico", "/*.svg").permitAll() // Root-level
+                                                                                                        // static files
+                        .requestMatchers("/files/**").permitAll() // Image files
+                        .requestMatchers("/", "/products", "/products/**", "/productos", "/productos/**").permitAll() // Products
+                        // pages
+                        .requestMatchers("/auth/signin", "/auth/signup", "/auth/signin-post").permitAll() // Auth
+                                                                                                          // endpoints
+                        .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/auth/signin")
                         .loginProcessingUrl("/auth/signin-post")
-                        .usernameParameter("userName")  // ← IMPORTANTE: nombre del campo en el formulario
-                        .passwordParameter("password")   // ← IMPORTANTE: nombre del campo en el formulario
+                        .usernameParameter("userName") // ← IMPORTANTE: nombre del campo en el formulario
+                        .passwordParameter("password") // ← IMPORTANTE: nombre del campo en el formulario
                         .defaultSuccessUrl("/", true)
-                        .failureUrl("/auth/signin?error=true")  // ← Redirige en caso de error
-                        .permitAll()
-                )
+                        .failureUrl("/auth/signin?error=true") // ← Redirige en caso de error
+                        .permitAll())
                 .logout(logout -> logout
                         .logoutUrl("/auth/logout")
                         .logoutSuccessUrl("/")
-                        .invalidateHttpSession(true)  // ← Invalida la sesión
-                        .deleteCookies("JSESSIONID")  // ← Elimina cookies
-                        .permitAll()
-                )
+                        .invalidateHttpSession(true) // ← Invalida la sesión
+                        .deleteCookies("JSESSIONID") // ← Elimina cookies
+                        .permitAll())
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.IF_REQUIRED)
-                        .maximumSessions(1)  // ← Máximo de sesiones concurrentes
-                        .maxSessionsPreventsLogin(false)
-                );
+                        .sessionCreationPolicy(
+                                org.springframework.security.config.http.SessionCreationPolicy.IF_REQUIRED)
+                        .maximumSessions(1) // ← Máximo de sesiones concurrentes
+                        .maxSessionsPreventsLogin(false));
 
         return http.build();
     }

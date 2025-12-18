@@ -8,6 +8,7 @@ import dev.luisvives.dawazon.products.dto.GenericProductResponseDto;
 import dev.luisvives.dawazon.products.dto.PostProductRequestDto;
 import dev.luisvives.dawazon.products.mapper.ProductMapper;
 import dev.luisvives.dawazon.products.models.Category;
+import dev.luisvives.dawazon.products.models.Comment;
 import dev.luisvives.dawazon.products.models.Product;
 import dev.luisvives.dawazon.products.repository.CategoryRepository;
 import dev.luisvives.dawazon.products.repository.ProductRepository;
@@ -32,16 +33,19 @@ import java.util.stream.Collectors;
 /**
  * Implementación del servicio de productos (Producto).
  * <p>
- * Esta capa actúa como puente entre el controlador y los repositorios de productos y categorías.
- * Contiene la lógica de negocio, manejo de cache, validaciones, integridad referencial,
+ * Esta capa actúa como puente entre el controlador y los repositorios de
+ * productos y categorías.
+ * Contiene la lógica de negocio, manejo de cache, validaciones, integridad
+ * referencial,
  * y envía notificaciones vía WebSocket cuando hay cambios en los productos.
  * </p>
  *
  * <p>
  * Anotaciones:
  * <ul>
- *     <li>{@link Service}: Indica que esta clase es un servicio gestionado por Spring.</li>
- *     <li>{@link CacheConfig}: Configura la caché con nombre "productos".</li>
+ * <li>{@link Service}: Indica que esta clase es un servicio gestionado por
+ * Spring.</li>
+ * <li>{@link CacheConfig}: Configura la caché con nombre "productos".</li>
  * </ul>
  * </p>
  *
@@ -50,7 +54,7 @@ import java.util.stream.Collectors;
  * @see StorageService
  */
 @org.springframework.stereotype.Service
-@CacheConfig(cacheNames = {"productos"})
+@CacheConfig(cacheNames = { "productos" })
 public class ProductServiceImpl implements ProductService {
 
     private final Logger log = Logger.getLogger(ProductServiceImpl.class.getName());
@@ -73,7 +77,6 @@ public class ProductServiceImpl implements ProductService {
      */
     private final StorageService storageService;
 
-
     /**
      * Mapper de Jackson para serializar objetos a JSON
      */
@@ -89,10 +92,10 @@ public class ProductServiceImpl implements ProductService {
      */
     @Autowired
     public ProductServiceImpl(ProductRepository repository,
-                              CategoryRepository categoryRepository,
-                              StorageService storageService,
-                              ProductMapper mapper,
-                              UserRepository userRepository) {
+            CategoryRepository categoryRepository,
+            StorageService storageService,
+            ProductMapper mapper,
+            UserRepository userRepository) {
         this.repository = repository;
         this.categoryRepository = categoryRepository;
         this.storageService = storageService;
@@ -102,7 +105,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     /**
-     * Busca productos aplicando filtros opcionales por nombre, precio máximo y categoría.
+     * Busca productos aplicando filtros opcionales por nombre, precio máximo y
+     * categoría.
      *
      * @param name     Filtro opcional por nombre
      * @param pageable Paginación y ordenación
@@ -110,24 +114,30 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public Page<Product> findAll(Optional<String> name,
-                                 Pageable pageable) {
-        var isDeleted=false;
-        Specification<Product> specNameProducto = (root, query, criteriaBuilder) ->
-                name.map(n -> criteriaBuilder.like(criteriaBuilder.lower(root.get("name")),
-                                "%" + n.toLowerCase() + "%"))
-                        .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
-        Specification<Product> specIsDeleted = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("isDeleted"), isDeleted);
+            Optional<String> category,
+            Pageable pageable) {
+        var isDeleted = false;
+        Specification<Product> specNameProducto = (root, query, criteriaBuilder) -> name
+                .map(n -> criteriaBuilder.like(criteriaBuilder.lower(root.get("name")),
+                        "%" + n.toLowerCase() + "%"))
+                .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
+        Specification<Product> specIsDeleted = (root, query, criteriaBuilder) -> criteriaBuilder
+                .equal(root.get("isDeleted"), isDeleted);
+
+        Specification<Product> specCategory = (root, query, criteriaBuilder) -> category
+                .map(c -> criteriaBuilder.equal(root.get("category").get("name"), c))
+                .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
 
         Specification<Product> criterio = Specification.allOf(
                 specNameProducto,
-                specIsDeleted
-        );
+                specIsDeleted,
+                specCategory);
 
         return repository.findAll(criterio, pageable);
     }
-    public Page<Product> findAllByManagerId(Long id,Pageable pageable) {
-        return repository.findAllByCreatorId(id,pageable);
+
+    public Page<Product> findAllByManagerId(Long id, Pageable pageable) {
+        return repository.findAllByCreatorId(id, pageable);
     }
 
     /**
@@ -150,10 +160,11 @@ public class ProductServiceImpl implements ProductService {
                     log.warning("SERVICE: No se encontró Producto con id: " + id);
                     return new ProductException.NotFoundException("No se encontró Producto con id: " + id);
                 });
-        val commentsDto= mapearComentarios(productoFound);
+        val commentsDto = mapearComentarios(productoFound);
 
         return mapper.modelToGenericResponseDTO(productoFound, commentsDto);
     }
+
     public Long getUserProductId(String id) {
         log.info("SERVICE: Buscando Producto con id: " + id);
 
@@ -169,7 +180,8 @@ public class ProductServiceImpl implements ProductService {
     /**
      * Crea un nuevo producto.
      * <p>
-     * Valida integridad referencial con la categoría y envía notificación de creación.
+     * Valida integridad referencial con la categoría y envía notificación de
+     * creación.
      * </p>
      *
      * @param productoDto DTO con datos del producto
@@ -191,7 +203,7 @@ public class ProductServiceImpl implements ProductService {
         Product savedProducto = repository.save(productoModel);
 
         log.info("SERVICE: Producto con id " + savedProducto.getId() + " creado correctamente");
-        val commentsDto=mapearComentarios(savedProducto);
+        val commentsDto = mapearComentarios(savedProducto);
         return mapper.modelToGenericResponseDTO(savedProducto, commentsDto);
     }
 
@@ -228,10 +240,9 @@ public class ProductServiceImpl implements ProductService {
 
         Product updatedProductos = repository.save(productoModel);
 
-
         log.info("SERVICE: Producto con id " + updatedProductos.getId() + " actualizado correctamente");
-        val commentsDto= mapearComentarios(updatedProductos);
-        return mapper.modelToGenericResponseDTO(updatedProductos,commentsDto);
+        val commentsDto = mapearComentarios(updatedProductos);
+        return mapper.modelToGenericResponseDTO(updatedProductos, commentsDto);
     }
 
     @Override
@@ -240,11 +251,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private List<CommentDto> mapearComentarios(Product producto) {
-        return producto.getComments().stream().map((it)->{
-            return  mapper.commentToCommentDto(it,userRepository.findById(it.getUserId()).get().getUsername());
+        return producto.getComments().stream().map((it) -> {
+            return mapper.commentToCommentDto(it, userRepository.findById(it.getUserId()).get().getUsername());
         }).toList();
     }
-
 
     /**
      * Elimina un producto por su ID.
@@ -298,13 +308,32 @@ public class ProductServiceImpl implements ProductService {
                 .build();
 
         var updatedProducto = repository.save(productoToUpdate);
-        val commentsDto= mapearComentarios(updatedProducto);
-        return mapper.modelToGenericResponseDTO(updatedProducto,commentsDto);
+        val commentsDto = mapearComentarios(updatedProducto);
+        return mapper.modelToGenericResponseDTO(updatedProducto, commentsDto);
     }
-
-
 
     public List<Product> findByCreatedAtBetween(LocalDateTime ultimaEjecucion, LocalDateTime ahora) {
         return repository.findAllBycreatedAtBetween(ultimaEjecucion, ahora);
+    }
+
+    @Override
+    @CacheEvict(key = "#productId")
+    public void addComment(String productId, Comment comment) {
+        log.info("Agregando comentario al producto con ID: " + productId);
+
+        // Obtener el producto
+        Product product = repository.findById(productId)
+                .orElseThrow(() -> {
+                    log.warning("Producto no encontrado con ID: " + productId);
+                    return new ProductException.NotFoundException("Producto no encontrado con ID: " + productId);
+                });
+
+        // Agregar el comentario
+        product.getComments().add(comment);
+
+        // Guardar el producto actualizado
+        repository.save(product);
+
+        log.info("Comentario agregado exitosamente al producto: " + productId);
     }
 }
