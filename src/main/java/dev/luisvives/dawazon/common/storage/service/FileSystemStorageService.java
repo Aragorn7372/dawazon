@@ -24,7 +24,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
 
-
 /**
  * Implementación de un {@link StorageService} que almacena
  * los ficheros subidos dentro del servidor donde se ha desplegado
@@ -32,7 +31,8 @@ import java.util.stream.Stream;
  * <p>
  * ESTO SE REALIZA ASÍ PARA NO HACER MÁS COMPLEJO EL EJEMPLO.
  * EN UNA APLICACIÓN EN PRODUCCIÓN POSIBLEMENTE SE UTILICE
- * UN ALMACÉN REMOTO, solo habría que cambiar la implementación de estos métodos.
+ * UN ALMACÉN REMOTO, solo habría que cambiar la implementación de estos
+ * métodos.
  *
  * @author Equipo de desarrollo de Spring
  */
@@ -42,7 +42,6 @@ public class FileSystemStorageService implements StorageService {
 
     // Directorio raiz de nuestro almacén de ficheros
     private final Path rootLocation;
-
 
     public FileSystemStorageService(@Value("${upload.root-location}") String path) {
         this.rootLocation = Paths.get(path);
@@ -115,7 +114,6 @@ public class FileSystemStorageService implements StorageService {
         return rootLocation.resolve(filename);
     }
 
-
     /**
      * Método que es capaz de cargar un fichero a partir de su nombre
      * Devuelve un objeto de tipo Resource
@@ -136,7 +134,6 @@ public class FileSystemStorageService implements StorageService {
         }
     }
 
-
     /**
      * Método que elimina todos los ficheros del almacenamiento
      * secundario del proyecto.
@@ -146,7 +143,6 @@ public class FileSystemStorageService implements StorageService {
         log.info("Eliminando todos los ficheros almacenados");
         FileSystemUtils.deleteRecursively(rootLocation.toFile());
     }
-
 
     /**
      * Método que inicializa el almacenamiento secundario del proyecto
@@ -160,7 +156,6 @@ public class FileSystemStorageService implements StorageService {
             throw new StorageInternal("No se puede inicializar el almacenamiento " + e);
         }
     }
-
 
     @Override
     public void delete(String filename) {

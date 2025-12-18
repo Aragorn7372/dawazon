@@ -12,10 +12,10 @@ public class CartMapper {
     public SaleLineDto cartlineToSaleLineDto(Cart cart, Product product, CartLine line, User manager) {
         return SaleLineDto.builder()
                 .saleId(cart.getId())
-                .productId(product.getId())
+                .productId(String.valueOf(product.getId()))
                 .productName(product.getName())
                 .quantity(line.getQuantity())
-                .productPrice(line. getProductPrice())
+                .productPrice(line.getProductPrice())
                 .totalPrice(line.getTotalPrice())
                 .status(line.getStatus())
                 .managerId(product.getCreatorId())

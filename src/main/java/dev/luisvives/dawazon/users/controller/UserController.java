@@ -30,6 +30,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -43,7 +45,7 @@ import java.util.Optional;
 @Controller
 @Slf4j
 @RequestMapping("/auth/me")
-@PreAuthorize("hasAnyAuthority()")
+@PreAuthorize("isAuthenticated()")
 public class UserController {
     private final AuthService authService;
     private final ProductServiceImpl productService;
@@ -65,14 +67,32 @@ public class UserController {
 
     @GetMapping({ "", "/" })
     public String index(Model model) {
-        val user = (User) model.getAttribute("currentUser");
-        model.addAttribute("user", user);
-        return "web/user/editUserAdmin";
+        log.info("[GET /auth/me] Cargando perfil de ususario");
+
+        // Get user from model (contains ID from SecurityContext)
+        val sessionUser = (User) model.getAttribute("currentUser");
+        if (sessionUser == null) {
+            log.error("El usuario actual es nulo");
+            throw new RuntimeException("El usuario actual es nulo - no autenticado");
+        }
+
+        val freshUser = authService.findById(sessionUser.getId());
+        if (freshUser == null) {
+            throw new RuntimeException("Usuario no encontrado en la bd: ID=" + sessionUser.getId());
+        }
+
+        log.info("[GET /auth/me] Usuario cargado: ID={}, Username={}", freshUser.getId(), freshUser.getUsername());
+        log.info("[GET /auth/me] Datos de cliente: {}", freshUser.getClient());
+
+        model.addAttribute("user", freshUser);
+        return "web/user/userProfile";
     }
 
     @GetMapping("/edit")
     public String edit(Model model) {
+        log.info("[GET /auth/me/edit] Cargando formulario de edicion de usuario");
         val user = (User) model.getAttribute("currentUser");
+        log.info("[GET /auth/me/edit] Usuario actual: ID={}, Username={}", user.getId(), user.getUsername());
         model.addAttribute("user", user);
         return "web/user/editUserAdmin";
     }
@@ -80,26 +100,51 @@ public class UserController {
     @PostMapping("/edit")
     public String edit(@Valid @ModelAttribute("user") UserRequestDto updateUser,
             BindingResult bindingResult, Model model,
-            @RequestParam("avatar") MultipartFile file) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("error.status", 400);
-            model.addAttribute("error.title", "Escribiste tus campos mal");
-            model.addAttribute("error.message",
-                    bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage));
-            return "/blocked";
-        }
-        val id = (Long) model.getAttribute("currentUserId");
-        val userUpdated = authService.updateCurrentUser(id, updateUser);
-        val updateImages = authService.updateImage(id, file);
-        model.addAttribute("user", updateImages);
-        return "redirect:/auth/me";
-    }
+            @RequestParam(value = "avatar", required = false) MultipartFile file) {
+        log.info("[POST /auth/me/edit] Editar request de usuario");
+        log.info("[POST /auth/me/edit] UpdateUser data: nombre={}, email={}, telefono={}",
+                updateUser.getNombre(), updateUser.getEmail(), updateUser.getTelefono());
+        log.info("[POST /auth/me/edit] Archivo de avatar: {}, size: {}",
+                file != null && !file.isEmpty(), file != null ? file.getSize() : 0);
 
-    @GetMapping("/auth/me")
-    public String delete(Model model) {
-        val user = (User) model.getAttribute("currentUser");
-        model.addAttribute("user", user);
-        return "auth/me";
+        if (bindingResult.hasErrors()) {
+            log.error("[POST /auth/me/edit] Errores de validacion: {}", bindingResult.getAllErrors());
+            // Volver a mostrar el formulario de edición con los errores
+            val currentUser = (User) model.getAttribute("currentUser");
+            model.addAttribute("user", currentUser);
+            return "web/user/editUserAdmin";
+        }
+
+        val id = (Long) model.getAttribute("currentUserId");
+        log.info("[POST /auth/me/edit] ID del usuario actual: {}", id);
+
+        try {
+            log.info("[POST /auth/me/edit] Llamando a authService.updateCurrentUser...");
+            val userUpdated = authService.updateCurrentUser(id, updateUser);
+            log.info("[POST /auth/me/edit] Usuario actualizado cone exito: ID={}, Username={}",
+                    userUpdated.getId(), userUpdated.getUsername());
+
+            User finalUser;
+            if (file != null && !file.isEmpty()) {
+                log.info("[POST /auth/me/edit] Llamando a authService.updateImage...");
+                finalUser = authService.updateImage(id, file);
+                log.info("[POST /auth/me/edit] Imagen actualizada correctamente, nuevo avatar: {}", finalUser.getAvatar());
+            } else {
+                log.info("[POST /auth/me/edit] No hay avatar para actualizar");
+                finalUser = userUpdated;
+            }
+
+            log.info("[POST /auth/me/edit] Actualizando sesion de spring con nuevos datos de usuario");
+            val authentication = new UsernamePasswordAuthenticationToken(
+                    finalUser, finalUser.getPassword(), finalUser.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            log.info("[POST /auth/me/edit] SecurityContext actualizado correctamente");
+
+            log.info("[POST /auth/me/edit] Redirect a /auth/me");
+            return "redirect:/auth/me";
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     @PostMapping("/delete")
@@ -491,9 +536,8 @@ public class UserController {
             log.info("💳 Procesando pago exitoso - Usuario: {} - Session: {}",
                     user.getId(), sessionId);
 
-            // 🆕 Verificar expiración usando el método helper
             if (cart.isCheckoutExpired()) {
-                log.warn("⏰ Checkout expirado ({} minutos) - Carrito: {}",
+                log.warn("Checkout expirado ({} minutos) - Carrito: {}",
                         cart.getMinutesSinceCheckoutStarted(), cart.getId());
                 redirectAttributes.addFlashAttribute("errorMessage",
                         "La sesión de pago ha expirado. Por favor, intenta de nuevo.");
@@ -518,7 +562,7 @@ public class UserController {
             model.addAttribute("client", user.getClient());
             model.addAttribute("sessionId", sessionId);
 
-            log.info("✅ Pedido completado - ID: {} - Total: {}€",
+            log.info("Pedido completado - ID: {} - Total: {}€",
                     purchasedCart.getId(), purchasedCart.getTotal());
             cartService.createNewCart(user.getId());
             return "cart/checkout-success";
@@ -545,10 +589,8 @@ public class UserController {
             log.warn("Pago cancelado por usuario: {} - Session ID: {}",
                     user.getId(), sessionId);
 
-            // Restaurar el stock de los productos
             cartService.restoreStock(new ObjectId(cart.getId()));
 
-            // Mensaje informativo
             redirectAttributes.addFlashAttribute("warningMessage",
                     "Pago cancelado.  Tu carrito sigue disponible.");
             redirectAttributes.addFlashAttribute("infoMessage",

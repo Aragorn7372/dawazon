@@ -8,6 +8,7 @@ import dev.luisvives.dawazon.users.models.Role;
 import dev.luisvives.dawazon.users.models.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @ControllerAdvice
 public class GlobalFuncionController {
     private ProductService productService;
@@ -39,10 +41,21 @@ public class GlobalFuncionController {
 
     @ModelAttribute("currentUser")
     public User getCurrentUser(Authentication authentication) {
+        System.out.println("===== GlobalFuncionController.getCurrentUser() =====");
+        System.out
+                .println("Authentication: " + (authentication != null ? authentication.getClass().getName() : "NULL"));
+        System.out.println("isAuthenticated: " + (authentication != null ? authentication.isAuthenticated() : "N/A"));
+        System.out.println("Principal type: " + (authentication != null && authentication.getPrincipal() != null
+                ? authentication.getPrincipal().getClass().getName()
+                : "NULL"));
+
         if (authentication != null && authentication.isAuthenticated()
                 && !(authentication.getPrincipal() instanceof String)) {
-            return (User) authentication.getPrincipal();
+            User user = (User) authentication.getPrincipal();
+            System.out.println("Returning user: ID=" + user.getId() + ", Username=" + user.getUsername());
+            return user;
         }
+        System.out.println("Returning NULL user");
         return null;
     }
 
@@ -52,34 +65,49 @@ public class GlobalFuncionController {
                 && !(authentication.getPrincipal() instanceof String);
     }
 
-    // ⭐ AÑADIR MÉTODO HELPER PARA ADMIN ⭐
+    // ⭐ MÉTODO HELPER PARA VERIFICAR ROL ADMIN ⭐
     @ModelAttribute("isAdmin")
-    public boolean isAdmin(Authentication authentication) {
+    public Boolean isAdmin(Authentication authentication) {
+        System.out.println("===== isAdmin() CALLED =====");
         if (authentication != null && authentication.isAuthenticated()
                 && !(authentication.getPrincipal() instanceof String)) {
             User user = (User) authentication.getPrincipal();
-            return user.getRoles() != null && user.getRoles().contains(Role.ADMIN);
+            boolean result = user.getRoles() != null && user.getRoles().contains(Role.ADMIN);
+            System.out.println(
+                    "isAdmin - User: " + user.getUsername() + ", Roles: " + user.getRoles() + ", Result: " + result);
+            return result;
         }
+        System.out.println("isAdmin - No auth, returning false");
         return false;
     }
 
     @ModelAttribute("isManager")
-    public boolean isManager(Authentication authentication) {
+    public Boolean isManager(Authentication authentication) {
+        System.out.println("===== isManager() CALLED =====");
         if (authentication != null && authentication.isAuthenticated()
                 && !(authentication.getPrincipal() instanceof String)) {
             User user = (User) authentication.getPrincipal();
-            return user.getRoles() != null && user.getRoles().contains(Role.MANAGER);
+            boolean result = user.getRoles() != null && user.getRoles().contains(Role.MANAGER);
+            System.out.println(
+                    "isManager - User: " + user.getUsername() + ", Roles: " + user.getRoles() + ", Result: " + result);
+            return result;
         }
+        System.out.println("isManager - No auth, returning false");
         return false;
     }
 
     @ModelAttribute("isUser")
-    public boolean isUser(Authentication authentication) {
+    public Boolean isUser(Authentication authentication) {
+        System.out.println("===== isUser() CALLED =====");
         if (authentication != null && authentication.isAuthenticated()
                 && !(authentication.getPrincipal() instanceof String)) {
             User user = (User) authentication.getPrincipal();
-            return user.getRoles() != null && user.getRoles().contains(Role.USER);
+            boolean result = user.getRoles() != null && user.getRoles().contains(Role.USER);
+            System.out.println(
+                    "isUser - User: " + user.getUsername() + ", Roles: " + user.getRoles() + ", Result: " + result);
+            return result;
         }
+        System.out.println("isUser - No auth, returning false");
         return false;
     }
 
@@ -139,7 +167,6 @@ public class GlobalFuncionController {
 
     @ModelAttribute("hasCartItems")
     public boolean hasCartItems(HttpServletRequest request) {
-        // ✅ Reutilizar el método anterior para evitar duplicación
         return getCartItemCount(request) > 0;
     }
 

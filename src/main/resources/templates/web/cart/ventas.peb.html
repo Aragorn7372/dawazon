@@ -12,16 +12,6 @@
 
     <!-- Filtros rápidos y acciones -->
     <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
-        <div class="d-flex gap-2 align-items-center">
-            <select id="filterState" class="form-select form-select-sm" style="width: 200px;" onchange="filterByStatus(this.value)">
-                <option value="">Filtro:  Todos los estados</option>
-                <option value="PREPARADO">Preparado</option>
-                <option value="ENVIADO">Enviado</option>
-                <option value="ENTREGADO">Entregado</option>
-                <option value="CANCELADO">Cancelado</option>
-            </select>
-        </div>
-
         <div class="text-end text-muted-small">
             Mostrando <span id="shownCount">{{ ventas | length }}</span> de <span id="totalCount">{{ totalVentas | default(ventas | length) }}</span> ventas
         </div>
@@ -110,7 +100,7 @@
         }
 
         {% if isAdmin %}
-        window.location.href = `/ventas/cancel/${saleId}/${productId}`;
+        window.location.href = `/admin/ventas/cancel/${saleId}/${productId}`;
         {% else %}
         window.location.href = `/auth/me/ventas/cancel/${saleId}/${productId}`;
         {% endif %}
@@ -118,7 +108,7 @@
 
     function editSale(saleId, productId) {
         {% if isAdmin %}
-        window.location.href = `/ventas/edit/${saleId}/${productId}`;
+        window.location.href = `/admin/ventas/edit/${saleId}/${productId}`;
         {% else %}
         window.location.href = `/auth/me/ventas/edit/${saleId}/${productId}`;
         {% endif %}

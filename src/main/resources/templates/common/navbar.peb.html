@@ -43,7 +43,12 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="/auth/logout">Cerrar Sesión</a></li>
+                            <li>
+                                <form method="POST" action="/auth/logout" style="margin: 0;">
+                                    <input type="hidden" name="{{ csrfParamName }}" value="{{ csrfToken }}"/>
+                                    <button type="submit" class="dropdown-item" style="cursor: pointer; border: none; background: none; width: 100%; text-align: left;">Cerrar Sesión</button>
+                                </form>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -62,8 +67,8 @@
         {% if isAdmin %}
         <div class="bg-custom-secondary text-white py-1 shadow-sm">
             <nav class="d-flex gap-3 overflow-auto ms-6" style="white-space: nowrap; scrollbar-width: none;">
-                <a class="nav-link text-white small" href="/usuarios">Usuarios:</a>
-                <a class="nav-link text-white small" href="/ventas">Ventas y envios:</a>
+                <a class="nav-link text-white small" href="/auth/me/users">Usuarios:</a>
+                <a class="nav-link text-white small" href="/admin/ventas">Ventas y envios:</a>
             </nav>
         </div>
         {% endif %}

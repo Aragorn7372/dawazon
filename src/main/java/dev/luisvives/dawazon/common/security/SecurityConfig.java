@@ -51,34 +51,32 @@ public class SecurityConfig {
         http
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(auth -> auth
-                        // Static resources and public endpoints must be first
                         .requestMatchers("/images/**", "/css/**", "/js/**", "/static/**").permitAll()
-                        .requestMatchers("/*.png", "/*.jpg", "/*.jpeg", "/*.ico", "/*.svg").permitAll() // Root-level
-                                                                                                        // static files
-                        .requestMatchers("/files/**").permitAll() // Image files
-                        .requestMatchers("/", "/products", "/products/**", "/productos", "/productos/**").permitAll() // Products
-                        // pages
-                        .requestMatchers("/auth/signin", "/auth/signup", "/auth/signin-post").permitAll() // Auth
-                                                                                                          // endpoints
+                        .requestMatchers("/*.png", "/*.jpg", "/*.jpeg", "/*.ico", "/*.svg").permitAll() 
+                                                                                                        
+                        .requestMatchers("/files/**").permitAll() 
+                        .requestMatchers("/", "/products", "/products/**", "/productos", "/productos/**").permitAll()
+                        .requestMatchers("/auth/signin", "/auth/signup", "/auth/signin-post").permitAll() 
+                                                                                                          
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/auth/signin")
                         .loginProcessingUrl("/auth/signin-post")
-                        .usernameParameter("userName") // ← IMPORTANTE: nombre del campo en el formulario
-                        .passwordParameter("password") // ← IMPORTANTE: nombre del campo en el formulario
+                        .usernameParameter("userName") //  nombre del campo en el formulario
+                        .passwordParameter("password") //  nombre del campo en el formulario
                         .defaultSuccessUrl("/", true)
-                        .failureUrl("/auth/signin?error=true") // ← Redirige en caso de error
+                        .failureUrl("/auth/signin?error=true") // Redirige en caso de error
                         .permitAll())
                 .logout(logout -> logout
                         .logoutUrl("/auth/logout")
                         .logoutSuccessUrl("/")
-                        .invalidateHttpSession(true) // ← Invalida la sesión
-                        .deleteCookies("JSESSIONID") // ← Elimina cookies
+                        .invalidateHttpSession(true) //  Invalida la sesión
+                        .deleteCookies("JSESSIONID") //  Elimina cookies
                         .permitAll())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(
                                 org.springframework.security.config.http.SessionCreationPolicy.IF_REQUIRED)
-                        .maximumSessions(1) // ← Máximo de sesiones concurrentes
+                        .maximumSessions(1) // Máximo de sesiones concurrentes
                         .maxSessionsPreventsLogin(false));
 
         return http.build();
