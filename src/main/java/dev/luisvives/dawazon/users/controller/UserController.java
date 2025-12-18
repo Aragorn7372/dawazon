@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -128,7 +129,8 @@ public class UserController {
             if (file != null && !file.isEmpty()) {
                 log.info("[POST /auth/me/edit] Llamando a authService.updateImage...");
                 finalUser = authService.updateImage(id, file);
-                log.info("[POST /auth/me/edit] Imagen actualizada correctamente, nuevo avatar: {}", finalUser.getAvatar());
+                log.info("[POST /auth/me/edit] Imagen actualizada correctamente, nuevo avatar: {}",
+                        finalUser.getAvatar());
             } else {
                 log.info("[POST /auth/me/edit] No hay avatar para actualizar");
                 finalUser = userUpdated;
@@ -432,14 +434,42 @@ public class UserController {
     public String getUsers(Model model, @PathVariable Long id) {
         val users = authService.findById(id);
         model.addAttribute("user", users);
-        return "web/user/users";
+        return "web/user/userProfile";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/users/edit/{id}")
-    public String getEditUsers(Model model, @PathVariable Long id) {
+    public String getEditUsers(Model model, @PathVariable Long id, Authentication authentication) {
+        log.info("[GET /auth/me/users/edit/{}] Iniciando edición de usuario", id);
+
         val users = authService.findById(id);
+        log.info("[GET /auth/me/users/edit/{}] Usuario encontrado: ID={}, Username={}, Email={}",
+                id, users.getId(), users.getUsername(), users.getEmail());
+
+        if (users.getClient() != null) {
+            log.info("[GET /auth/me/users/edit/{}] Client: name={}, email={}",
+                    id, users.getClient().getName(), users.getClient().getEmail());
+            if (users.getClient().getAddress() != null) {
+                log.info("[GET /auth/me/users/edit/{}] Address: street={}, city={}",
+                        id, users.getClient().getAddress().getStreet(), users.getClient().getAddress().getCity());
+            } else {
+                log.warn("[GET /auth/me/users/edit/{}] Address is NULL", id);
+            }
+        } else {
+            log.warn("[GET /auth/me/users/edit/{}] Client is NULL", id);
+        }
+
+        // Log current user info
+        if (authentication != null) {
+            val currentUser = (User) authentication.getPrincipal();
+            log.info("[GET /auth/me/users/edit/{}] CurrentUser: ID={}, Username={}",
+                    id, currentUser.getId(), currentUser.getUsername());
+        } else {
+            log.warn("[GET /auth/me/users/edit/{}] Authentication is NULL!", id);
+        }
+
         model.addAttribute("user", users);
+        log.info("[GET /auth/me/users/edit/{}] Model attributes set, returning view", id);
         return "web/user/editUserAdmin";
     }
 

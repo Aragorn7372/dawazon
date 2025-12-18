@@ -145,12 +145,76 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public User updateAdminCurrentUser(Long id, UserAdminRequestDto updateUser) {
-        var user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User no encontrado"));
-        user.setUserName(updateUser.getNombre());
-        user.setEmail(updateUser.getEmail());
-        user.setRoles(List.of(Role.valueOf(updateUser.getRoles())));
-        user.setTelefono(updateUser.getTelefono());
-        return userRepository.save(user);
+        log.info("[AuthService.updateAdminCurrentUser] User ID: {}", id);
+        log.info("[AuthService.updateAdminCurrentUser] Actualizar datos: nombre={}, email={}, telefono={}",
+                updateUser.getNombre(), updateUser.getEmail(), updateUser.getTelefono());
+
+        try {
+            var user = userRepository.findById(id).orElseThrow(() -> {
+                log.error("[AuthService.updateAdminCurrentUser] Usuario no encontrado con ID: {}", id);
+                return new UsernameNotFoundException("User no encontrado");
+            });
+
+            log.info(
+                    "[AuthService.updateAdminCurrentUser] usuario encontrado: ID={}, currentUsername={}, currentEmail={}",
+                    user.getId(), user.getUsername(), user.getEmail());
+
+            user.setUserName(updateUser.getNombre());
+            user.setEmail(updateUser.getEmail());
+            user.setTelefono(updateUser.getTelefono());
+
+            if (updateUser.getRoles() != null && !updateUser.getRoles().isEmpty()) {
+                user.setRoles(List.of(Role.valueOf(updateUser.getRoles())));
+            }
+
+            if (updateUser.getCalle() != null || updateUser.getCiudad() != null ||
+                    updateUser.getCodigoPostal() != null || updateUser.getProvincia() != null) {
+
+                log.info("[AuthService.updateAdminCurrentUser] Actualizando datos de cliente");
+
+                Client client = user.getClient();
+                if (client == null) {
+                    client = new Client();
+                    log.info("[AuthService.updateAdminCurrentUser] nuevo Client");
+                }
+
+                client.setName(updateUser.getNombre());
+                client.setEmail(updateUser.getEmail());
+                client.setPhone(updateUser.getTelefono());
+
+                Address address = client.getAddress();
+                if (address == null) {
+                    address = new Address();
+                    log.info("[AuthService.updateAdminCurrentUser] nuevo Address");
+                }
+
+                address.setStreet(updateUser.getCalle());
+                address.setCity(updateUser.getCiudad());
+                if (updateUser.getCodigoPostal() != null && !updateUser.getCodigoPostal().isEmpty()) {
+                    try {
+                        address.setPostalCode(Integer.parseInt(updateUser.getCodigoPostal()));
+                    } catch (NumberFormatException e) {
+                        log.warn("[AuthService.updateAdminCurrentUser] formato de código postal inválido: {}",
+                                updateUser.getCodigoPostal());
+                    }
+                }
+                address.setProvince(updateUser.getProvincia());
+
+                client.setAddress(address);
+                user.setClient(client);
+
+                log.info("[AuthService.updateAdminCurrentUser] Client y Address actualizados");
+            }
+
+            log.info("[AuthService.updateAdminCurrentUser] Guardando usuario...");
+            User savedUser = userRepository.save(user);
+            log.info("[AuthService.updateAdminCurrentUser] Usuario guardado con éxito: ID={}, Username={}",
+                    savedUser.getId(), savedUser.getUsername());
+
+            return savedUser;
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     @Override
