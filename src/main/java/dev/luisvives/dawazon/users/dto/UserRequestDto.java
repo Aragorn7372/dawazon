@@ -19,6 +19,10 @@ public class UserRequestDto {
     private String email;
     @Pattern(regexp = "^\\d{9}$")
     private String telefono;
-    @NotNull
-    private String avatar;
+
+    // Campos de dirección del cliente
+    private String calle;
+    private String ciudad;
+    private String codigoPostal;
+    private String provincia;
 }

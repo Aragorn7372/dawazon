@@ -47,7 +47,9 @@ public class CartServiceImpl implements CartService {
     private final OrderEmailService mailService;
 
     @Autowired
-    public CartServiceImpl(ProductRepository productRepository, CartRepository cartRepository, UserRepository userRepository, StripeService stripeService, MongoTemplate mongoTemplate, CartMapper cartMapper, OrderEmailService mailservice) {
+    public CartServiceImpl(ProductRepository productRepository, CartRepository cartRepository,
+            UserRepository userRepository, StripeService stripeService, MongoTemplate mongoTemplate,
+            CartMapper cartMapper, OrderEmailService mailservice) {
         this.productRepository = productRepository;
         this.cartRepository = cartRepository;
         this.userRepository = userRepository;
@@ -63,7 +65,7 @@ public class CartServiceImpl implements CartService {
             Pageable pageable) {
 
         log.info("Buscando ventas - Manager: {},  isAdmin: {}",
-                managerId.orElse(null),  isAdmin);
+                managerId.orElse(null), isAdmin);
 
         // Obtenemos los carritos comprados
         Query query = new Query();
@@ -72,7 +74,8 @@ public class CartServiceImpl implements CartService {
         List<Cart> purchasedCarts = mongoTemplate.find(query, Cart.class);
         log.info("Carritos comprados encontrados: {}", purchasedCarts.size());
 
-        // Convertimos cada CartLine a SaleLineDto, añadiendo datos extra para la vista de verga
+        // Convertimos cada CartLine a SaleLineDto, añadiendo datos extra para la vista
+        // de verga
         List<SaleLineDto> allSaleLines = new ArrayList<>();
 
         for (Cart cart : purchasedCarts) {
@@ -108,12 +111,13 @@ public class CartServiceImpl implements CartService {
         log.info("Ventas filtradas: {}", filteredLines.size());
 
         // Ordenamos y paginamos manualmente
-        filteredLines.sort(Comparator.comparing(SaleLineDto:: getCreatedAt).reversed());
+        filteredLines.sort(Comparator.comparing(SaleLineDto::getCreatedAt).reversed());
         // Obtenemos el desfase y lo usamos como primer elemento
         int start = (int) pageable.getOffset();
         // Obtenemos el numero del ultimo elemento de la pagina
         int end = Math.min(start + pageable.getPageSize(), filteredLines.size());
-        // creamos la lista y verificamos que exista es decir que si falla el filtro ya que en el indice
+        // creamos la lista y verificamos que exista es decir que si falla el filtro ya
+        // que en el indice
         // inicial y en el índice final no hay lineas de pedido devuelve una lista vacia
         List<SaleLineDto> paginatedLines = start < filteredLines.size()
                 ? filteredLines.subList(start, end)
@@ -121,6 +125,7 @@ public class CartServiceImpl implements CartService {
 
         return new PageImpl<>(paginatedLines, pageable, filteredLines.size());
     }
+
     public Double calculateTotalEarnings(Optional<Long> managerId, boolean isAdmin) {
         Query query = new Query();
         query.addCriteria(Criteria.where("purchased").is(true));
@@ -130,8 +135,10 @@ public class CartServiceImpl implements CartService {
         return purchasedCarts.stream()
                 .flatMap(cart -> cart.getCartLines().stream())
                 .filter(line -> {
-                    if (isAdmin && managerId.isEmpty()) return true;
-                    if (managerId.isEmpty()) return false;
+                    if (isAdmin && managerId.isEmpty())
+                        return true;
+                    if (managerId.isEmpty())
+                        return false;
 
                     Product product = productRepository.findById(line.getProductId()).orElse(null);
                     return product != null && product.getCreatorId().equals(managerId.get());
@@ -139,60 +146,61 @@ public class CartServiceImpl implements CartService {
                 .mapToDouble(CartLine::getTotalPrice)
                 .sum();
     }
+
     @Override
     public Page<Cart> findAll(Optional<Long> userId,
-                              Optional<String> purchased,
-                              Pageable pageable) {
+            Optional<String> purchased,
+            Pageable pageable) {
 
-            // creamos query de mongo
-            Query query = new Query();
-            List<Criteria> criteriaList = new ArrayList<>();
-            // Filtro por User ID (si está presente)
-            userId.ifPresent(id ->
-                    criteriaList.add(Criteria.where("userId").is(id))
-            );
-            // Filtro por Estado de Compra (purchased)
-            // El input es String ("true"/"false"), pero en BD es boolean. Hacemos el parseo.
-            purchased.ifPresent(p -> {
-                boolean isPurchased = Boolean.parseBoolean(p);
-                criteriaList.add(Criteria.where("purchased").is(isPurchased));
-            });
-            // Aplicar los criterios
-            if (!criteriaList.isEmpty()) {
-                query.addCriteria(new Criteria().andOperator(criteriaList.toArray(new Criteria[0])));
-            }
-            // Contar el total de elementos (necesario para el objeto Page)
-            // Esto se hace ANTES de aplicar la paginación a la query
-            long count = mongoTemplate.count(query, Cart.class);
-            // Aplicar paginación y ordenación
-            query.with(pageable);
-            // Ejecutar la búsqueda
-            List<Cart> carts = mongoTemplate.find(query, Cart.class);
-            // Retornar la página
-            return new PageImpl<>(carts, pageable, count);
+        // creamos query de mongo
+        Query query = new Query();
+        List<Criteria> criteriaList = new ArrayList<>();
+        // Filtro por User ID (si está presente)
+        userId.ifPresent(id -> criteriaList.add(Criteria.where("userId").is(id)));
+        // Filtro por Estado de Compra (purchased)
+        // El input es String ("true"/"false"), pero en BD es boolean. Hacemos el
+        // parseo.
+        purchased.ifPresent(p -> {
+            boolean isPurchased = Boolean.parseBoolean(p);
+            criteriaList.add(Criteria.where("purchased").is(isPurchased));
+        });
+        // Aplicar los criterios
+        if (!criteriaList.isEmpty()) {
+            query.addCriteria(new Criteria().andOperator(criteriaList.toArray(new Criteria[0])));
+        }
+        // Contar el total de elementos (necesario para el objeto Page)
+        // Esto se hace ANTES de aplicar la paginación a la query
+        long count = mongoTemplate.count(query, Cart.class);
+        // Aplicar paginación y ordenación
+        query.with(pageable);
+        // Ejecutar la búsqueda
+        List<Cart> carts = mongoTemplate.find(query, Cart.class);
+        // Retornar la página
+        return new PageImpl<>(carts, pageable, count);
     }
 
     @Override
     @Transactional
     public Cart addProduct(ObjectId id, String productId) {
-        log.info("Adding product " + productId + " to " + id);
+        log.info("Añadiendo producto " + productId + " a " + id);
         // Comprobamos que la cantidad de producto este en stock
-        val product=productRepository.findById(productId).orElseThrow(() -> {
+        val product = productRepository.findById(productId).orElseThrow(() -> {
             log.warn("Producto no encontrado con id: " + productId);
             return new ProductException.NotFoundException(productId);
         });
-        val line= new CartLine().builder()
+        val line = new CartLine().builder()
                 .quantity(1)
                 .productPrice(product.getPrice())
                 .productId(productId)
                 .status(Status.EN_CARRITO)
                 .build();
-        cartRepository.addCartLine(id,line);
-        return cartRepository.findById(id).orElseThrow(()->{
+        cartRepository.addCartLine(id, line);
+        return cartRepository.findById(id).orElseThrow(() -> {
             log.warn("Cart no encontrado con id: " + id);
             return new CartException.NotFoundException("Cart no encontrado con id: " + id);
         });
     }
+
     public SaleLineDto getSaleLineByIds(String cartId, String productId, Long managerId, boolean isAdmin) {
         ObjectId objectId = new ObjectId(cartId);
         Cart cart = cartRepository.findById(objectId)
@@ -211,29 +219,30 @@ public class CartServiceImpl implements CartService {
             throw new CartException.UnauthorizedException("No tienes permisos para ver esta venta");
         }
 
-        User manager = userRepository.findById(product.getCreatorId()).orElseThrow(()->{
+        User manager = userRepository.findById(product.getCreatorId()).orElseThrow(() -> {
             log.warn("User no encontrado con id: " + product.getCreatorId());
             return new UserException.UserNotFoundException("User no encontrado con id: " + product.getCreatorId());
         });
 
-        return mapper.cartlineToSaleLineDto(cart,product,line,manager);
+        return mapper.cartlineToSaleLineDto(cart, product, line, manager);
     }
+
     @Override
     @Transactional
     public Cart removeProduct(ObjectId id, String productId) {
-        log.info("Removing product with id from cart: " + productId);
-        val cartLine=cartRepository.findById(id).orElseThrow(()->{
+        log.info("Eliminando producto del carrito, con ID: " + productId);
+        val cartLine = cartRepository.findById(id).orElseThrow(() -> {
             log.warn("Cart no encontrado con id: " + id);
             return new CartException.NotFoundException("Cart no encontrado con id: " + id);
-        }).getCartLines().stream().filter((it)->it.getProductId().equals(productId)).findFirst().get();
-        val line= new CartLine().builder()
+        }).getCartLines().stream().filter((it) -> it.getProductId().equals(productId)).findFirst().get();
+        val line = new CartLine().builder()
                 .quantity(cartLine.getQuantity())
                 .productPrice(cartLine.getProductPrice())
                 .productId(productId)
                 .status(Status.EN_CARRITO)
                 .build();
-        cartRepository.removeCartLine(id,line);
-        return cartRepository.findById(id).orElseThrow(()->{
+        cartRepository.removeCartLine(id, line);
+        return cartRepository.findById(id).orElseThrow(() -> {
             log.warn("Cart no encontrado con id: " + id);
             return new CartException.NotFoundException("Cart no encontrado con id: " + id);
         });
@@ -241,15 +250,17 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart getById(ObjectId id) {
-        return cartRepository.findById(id).orElseThrow(()->{
-            log.warn("Cart or purchased no encontrado con id: " + id);
+        return cartRepository.findById(id).orElseThrow(() -> {
+            log.warn("Cart no encontrado con id: " + id);
             return new CartException.NotFoundException("Cart no encontrado con id: " + id);
         });
     }
 
     @Override
     public Cart save(Cart entity) {
-        entity.getCartLines().forEach((it)->{it.setStatus(Status.PREPARADO);});
+        entity.getCartLines().forEach((it) -> {
+            it.setStatus(Status.PREPARADO);
+        });
         entity.setPurchased(true);
         entity.setCheckoutInProgress(false);
         entity.setCheckoutStartedAt(null);
@@ -264,7 +275,8 @@ public class CartServiceImpl implements CartService {
      * - Si falla el email, no afecta al pedido
      * - Mejor experiencia de usuario
      *
-     * @param pedido El {@link Cart} para el cual se enviará el email de confirmación.
+     * @param pedido El {@link Cart} para el cual se enviará el email de
+     *               confirmación.
      */
     public void sendConfirmationEmailAsync(Cart pedido) {
         Thread emailThread = new Thread(() -> {
@@ -291,21 +303,22 @@ public class CartServiceImpl implements CartService {
         // Iniciar el hilo (no bloqueante)
         emailThread.start();
 
-        log.info("🧵 Hilo de email iniciado para pedido: {}", pedido.getId());
+        log.info("Hilo de email iniciado para pedido: {}", pedido.getId());
     }
 
     @Override
     public Cart updateStock(CartStockRequestDto entity) {
-        val cart= cartRepository.findById(entity.getCartId()).orElseThrow(()->new CartException.NotFoundException("Cart no encontrado con id: " + entity.getCartId()));
-        cart.getCartLines().stream().filter((it)->it.getProductId().equals(entity.getProductId())).findFirst().get().setQuantity(entity.getQuantity());
+        val cart = cartRepository.findById(entity.getCartId()).orElseThrow(
+                () -> new CartException.NotFoundException("Cart no encontrado con id: " + entity.getCartId()));
+        cart.getCartLines().stream().filter((it) -> it.getProductId().equals(entity.getProductId())).findFirst().get()
+                .setQuantity(entity.getQuantity());
         cartRepository.save(cart);
         return cart;
     }
 
-
     public Cart createNewCart(Long userId) {
-        val user=userRepository.findById(userId).get();
-        val cart= Cart.builder()
+        val user = userRepository.findById(userId).get();
+        val cart = Cart.builder()
                 .userId(userId)
                 .client(user.getClient())
                 .cartLines(List.of())
@@ -322,13 +335,12 @@ public class CartServiceImpl implements CartService {
         });
     }
 
-
     @Transactional
     public String checkout(ObjectId id, Cart entity) {
         entity.setCheckoutInProgress(true);
         entity.setCheckoutStartedAt(LocalDateTime.now());
         cartRepository.save(entity);
-        //Procesamos el stock de cada línea
+        // Procesamos el stock de cada línea
         entity.getCartLines().forEach((it) -> {
             int intentos = 0;
             boolean success = false;
@@ -341,7 +353,7 @@ public class CartServiceImpl implements CartService {
                                 return new ProductException.NotFoundException(it.getProductId());
                             });
                     if (product.getStock() < it.getQuantity()) {
-                        log.warn("Product stock negative " + it.getQuantity());
+                        log.warn("Producto stock negativo " + it.getQuantity());
                         throw new CartException.ProductQuantityExceededException();
                     }
                     product.setStock(product.getStock() - it.getQuantity());
@@ -394,14 +406,15 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public List<Product> variosPorId(List<String> productsIds){
+    public List<Product> variosPorId(List<String> productsIds) {
 
         List<Product> products = new ArrayList<>();
 
         productsIds.forEach(id -> {
             val product = productRepository.findById(id)
-                    .orElseThrow(() -> new ProductException.NotFoundException("No se encontró el producto con id: " +id) {
-                    });
+                    .orElseThrow(
+                            () -> new ProductException.NotFoundException("No se encontró el producto con id: " + id) {
+                            });
             products.add(product);
         });
 
@@ -409,13 +422,51 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart getCartByUserId(Long userId){
-        return cartRepository.findByUserIdAndPurchased(userId,false)
+    public Cart getCartByUserId(Long userId) {
+        return cartRepository.findByUserIdAndPurchased(userId, false)
                 .orElseThrow(() -> {
                     log.error("Carrito no encontrado para userId: " + userId);
                     return new CartException.NotFoundException("Carrito no encontrado para userId: " + userId);
                 });
     }
+
+    @Override
+    @Transactional
+    public void cancelSale(String ventaId, String productId, Long managerId, boolean isAdmin) {
+        // 1. Get the cart and validate existence
+        ObjectId cartObjectId = new ObjectId(ventaId);
+        Cart cart = cartRepository.findById(cartObjectId)
+                .orElseThrow(() -> new CartException.NotFoundException("Venta no encontrada"));
+
+        // 2. Find the specific line
+        CartLine line = cart.getCartLines().stream()
+                .filter(l -> l.getProductId().equals(productId))
+                .findFirst()
+                .orElseThrow(() -> new CartException.NotFoundException("Producto no encontrado en esta venta"));
+
+        // 3. Check permissions (Security)
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductException.NotFoundException(productId));
+
+        if (!isAdmin && !product.getCreatorId().equals(managerId)) {
+            throw new CartException.UnauthorizedException("No tienes permisos para cancelar esta venta");
+        }
+
+        // 4. Update status and stock
+        // Only if not already cancelled to avoid double stock restoration
+        if (line.getStatus() != Status.CANCELADO) {
+            line.setStatus(Status.CANCELADO);
+
+            // Restore stock
+            product.setStock(product.getStock() + line.getQuantity());
+            productRepository.save(product);
+
+            // Save cart
+            cartRepository.save(cart);
+            log.info("Venta cancelada: Cart {} Product {}", ventaId, productId);
+        }
+    }
+
     @Transactional
     public int cleanupExpiredCheckouts() {
         LocalDateTime expirationTime = LocalDateTime.now().minusMinutes(5);
@@ -425,20 +476,20 @@ public class CartServiceImpl implements CartService {
                 .and("purchased").is(false)
                 .and("checkoutStartedAt").lt(expirationTime));
 
-        List<Cart> expiredCarts = mongoTemplate.find(query, Cart. class);
+        List<Cart> expiredCarts = mongoTemplate.find(query, Cart.class);
 
         if (expiredCarts.isEmpty()) {
-            log.debug("✨ No hay carritos expirados para limpiar");
+            log.debug("No hay carritos expirados para limpiar");
             return 0;
         }
 
-        log.info("🧹 Limpiando {} carritos expirados", expiredCarts.size());
+        log.info("Limpiando {} carritos expirados", expiredCarts.size());
 
         int cleanedCount = 0;
 
         for (Cart cart : expiredCarts) {
             try {
-                log.warn("⏰ Carrito {} expirado ({} minutos). Restaurando stock...",
+                log.warn("Carrito {} expirado ({} minutos). Restaurando stock...",
                         cart.getId(), cart.getMinutesSinceCheckoutStarted());
 
                 // Restaurar stock

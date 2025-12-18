@@ -17,24 +17,24 @@ import java.util.List;
 @Component
 public class ProductMapper {
     private final StorageService storageService;
-    
+
     @Autowired
     public ProductMapper(StorageService storageService) {
         this.storageService = storageService;
     }
-    
+
     public GenericProductResponseDto modelToGenericResponseDTO(Product productoFound, List<CommentDto> commentsFound) {
         // Convert filenames to full URLs
         List<String> imageUrls = productoFound.getImages().stream()
                 .map(storageService::getUrl)
                 .toList();
-                
+
         return GenericProductResponseDto.builder()
                 .id(productoFound.getId())
                 .name(productoFound.getName())
                 .price(productoFound.getPrice())
                 .category(productoFound.getCategory().getName())
-                .image(imageUrls)  // Now contains full URLs instead of just filenames
+                .image(imageUrls) // Now contains full URLs instead of just filenames
                 .stock(productoFound.getStock())
                 .comments(commentsFound)
                 .description(productoFound.getDescription()).build();
@@ -47,12 +47,12 @@ public class ProductMapper {
                 .price(productoDto.getPrice())
                 .stock(productoDto.getStock())
                 .description(productoDto.getDescription())
-                //.category(productoDto.getCategory()) Esto en el servicio
+                // .category(productoDto.getCategory()) Esto en el servicio
                 .creatorId(productoDto.getCreatorId())
                 .build();
     }
 
-    public CommentDto commentToCommentDto(Comment comment,String userName){
+    public CommentDto commentToCommentDto(Comment comment, String userName) {
         return CommentDto.builder()
                 .comment(comment.getContent())
                 .userName(userName)
@@ -61,7 +61,7 @@ public class ProductMapper {
                 .build();
     }
 
-    public PageResponseDTO<Product> pageToDTO (Page<Product> page, String sortBy, String direction) {
+    public PageResponseDTO<Product> pageToDTO(Page<Product> page, String sortBy, String direction) {
         return new PageResponseDTO<>(
                 page.getContent()
                         .stream()
@@ -76,7 +76,6 @@ public class ProductMapper {
                 page.isFirst(),
                 page.isLast(),
                 sortBy,
-                direction
-        );
+                direction);
     }
 }

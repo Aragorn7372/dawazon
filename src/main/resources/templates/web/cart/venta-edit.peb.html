@@ -52,7 +52,7 @@
           </h5>
         </div>
         <div class="card-body">
-          <form method="POST" action="{% if isAdmin %}/ventas/update/{{venta.saleId}}/{{venta.productId}}{% else %}/auth/me/venta/edit{% endif %}">
+          <form method="POST" action="{% if isAdmin %}/admin/venta/edit{% else %}/auth/me/venta/edit{% endif %}">
             <input type="hidden" name="{{ csrfParamName }}" value="{{ csrfToken }}"/>
             <input type="hidden" name="cartId" value="{{ venta.saleId }}"/>
             <input type="hidden" name="productId" value="{{ venta.productId }}"/>

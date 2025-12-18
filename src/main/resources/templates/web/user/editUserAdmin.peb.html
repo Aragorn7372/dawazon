@@ -1,105 +1,83 @@
 {% include "common/header" %}
 {% include "common/navbar" %}
-{% set currentPath = request.servletPath %}
-{% set isUserView = currentPath == '/auth/me' %}
-{% set isUserEdit = currentPath == '/auth/me/edit' %}
-{% set isEditAdmin = currentPath == '/auth/me/user/edit/' ~ user.id %}
-{% set isAdminView = currentPath == '/auth/me/user/' ~ user.id %}
-<div class="container col-12">
 
-    <form action="{% if isEditAdmin %}/auth/me/users/edit{% elseif isUserEdit %}/auth/me/edit{% endif %}"
-          method="{% if isEditAdmin or isUserEdit %}POST{% else %}GET{% endif %}">
+<div class="container col-12 my-4">
+    <h2 class="text-center mb-4">Editar Perfil</h2>
+
+    <form action="/auth/me/edit" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="{{ csrfParamName }}" value="{{ csrfToken }}"/>
         <input type="hidden" name="id" value="{{ user.id }}">
 
-        <div class="admin-header"
-             style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+        <div class="admin-header" style="text-align: center; display: flex; flex-direction: column; align-items: center;">
             <div class="admin-avatar">
                 {% if user.avatar %}
-                <img src="{{ user.avatar }}" alt="Avatar">
+                <img src="{{ filesPath }}{{ user.avatar }}" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
                 {% else %}
-                <div style="width: 100px; height: 100px; border-radius: 50%; background-color: #eee; display: flex; align-items: center; justify-content:  center; font-size: 2rem; color: #ccc;">
-                    {{ user.userName | slice(0,1) | upper }}
-                </div>
+                <img src="{{ filesPath }}system-images/default.png" alt="Default Avatar" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
                 {% endif %}
             </div>
-            <h3 class="product-title" style="font-size: 1.4rem;">{{ user.userName }}</h3>
+            <h3 class="product-title mt-3" style="font-size: 1.4rem;">{{ user.userName }}</h3>
+            
+            <div class="form-group mt-2">
+                <label class="form-label">Cambiar Avatar</label>
+                <input type="file" name="avatar" class="form-control" accept="image/*">
+            </div>
         </div>
 
-        <div class="product-main-grid">
-
-            <div class="product-info" style="text-align: left; align-items: stretch;">
+        <div class="product-main-grid mt-4">
+            <div class="product-info" style="text-align: left;">
                 <div class="form-group">
                     <label class="form-label">Nombre</label>
-                    <input type="text" name="nombre" class="form-input" value="{{ user.client.name | default('') }}" {% if isUserView or isAdminView %}readonly{% endif %}>
+                    <input type="text" name="nombre" class="form-control" 
+                           value="{% if user.client and user.client.name %}{{ user.client.name }}{% endif %}" required>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Email</label>
-                    <input type="email" name="email" class="form-input" value="{{ user.email }}" {% if isUserView or isAdminView %}readonly{% endif %}>
+                    <input type="email" name="email" class="form-control" value="{{ user.email }}" required>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Teléfono</label>
-                    <input type="text" name="telefono" class="form-input" value="{{ user.telefono | default('') }}" {% if isUserView or isAdminView %}readonly{% endif %}>
+                    <input type="text" name="telefono" class="form-control" 
+                           value="{% if user.telefono %}{{ user.telefono }}{% endif %}">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Calle</label>
+                    <input type="text" name="calle" class="form-control" 
+                           value="{% if user.client and user.client.address and user.client.address.street %}{{ user.client.address.street }}{% endif %}">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Ciudad</label>
+                    <input type="text" name="ciudad" class="form-control" 
+                           value="{% if user.client and user.client.address and user.client.address.city %}{{ user.client.address.city }}{% endif %}">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Código Postal</label>
+                    <input type="text" name="codigoPostal" class="form-control" 
+                           value="{% if user.client and user.client.address and user.client.address.postalCode %}{{ user.client.address.postalCode }}{% endif %}">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Provincia</label>
+                    <input type="text" name="provincia" class="form-control" 
+                           value="{% if user.client and user.client.address and user.client.address.province %}{{ user.client.address.province }}{% endif %}">
                 </div>
             </div>
-
-            {% if isNotHimSelf and isAdmin %}
-            <div class="product-info" style="text-align: left; align-items: stretch;">
-                <label class="form-label">Roles</label>
-                <div class="roles-list">
-                    <div style="margin-bottom: 8px;">
-                        <label style="cursor: pointer; display: flex; align-items: center; gap: 10px;">
-                            <select name="roles" id="roles" class="form-select">
-                                {% for role in user.roles %}
-                                <option value="{{role}}" selected>{{role}}</option>
-                                {% endfor %}
-                                <option value="USER">USER</option>
-                                <option value="MANAGER">MANAGER</option>
-                                <option value="ADMIN">ADMIN</option>
-                            </select>
-                        </label>
-                    </div>
-                </div>
-            </div>
-            {% endif %}
-
         </div>
 
-        <div class="action-buttons admin-actions" style="margin-top: 20px;">
-            {% if isUser %}
-            <a href="/auth/me/fav" class="btn-gradient"
-               style="text-decoration: none; display: flex; justify-content: center; align-items: center;">
-                Favs
+        <div class="action-buttons mt-4" style="display: flex; gap: 10px; justify-content: center;">
+            <a href="/auth/me" class="btn btn-secondary" style="padding: 10px 20px;">
+                <i class="bi bi-x-circle me-2"></i> Cancelar
             </a>
-            {% endif %}
-            {% if isUserEdit or isEditAdmin %}
-            <button type="submit"
-                    class="btn-gradient">
-                Guardar
-            </button>
-            {% else %}
-            <button type="submit"
-                    formaction="{% if isNotHimSelf %}/auth/me/users/edit/{{user.id}}{% else %}/auth/me/edit{% endif %}"
-                    class="btn-gradient">
-                Editar
-            </button>
-            {% endif %}
-
-            <button type="submit"
-                    formaction="{% if isHimSelf %}/auth/me/delete{% else %}/auth/me/users/ban/{{user.id}}{% endif %}"
-                    class="btn-gradient btn-delete"
-                    onclick="return confirm('¿Estás seguro de eliminar esta cuenta?');">
-                Eliminar cuenta
-            </button>
-
-            <button type="submit"
-                    formaction="{% if isHimSelf %}/auth/me/changepassword{% else %}/auth/me/reset-password/{{user.id}}{% endif %}"
-                    class="btn-gradient btn-reset">
-                Restablecer contraseña
+            <button type="submit" class="btn-gradient" style="padding: 10px 20px;">
+                <i class="bi bi-check-circle me-2"></i> Guardar Cambios
             </button>
         </div>
     </form>
 </div>
+
 {% include "common/footer" %}

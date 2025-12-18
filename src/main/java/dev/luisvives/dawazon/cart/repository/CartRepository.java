@@ -16,8 +16,8 @@ import java.util.Optional;
 @Repository
 public interface CartRepository extends MongoRepository<Cart, ObjectId> {
     @Query("{ '_id' : ?0, 'cartLines.productId' : ?1 }")
-    @Update("{ '$set' : { 'status' : ?2 } }")
-    long updateCartLineStatus(ObjectId id,String productId ,Status status);
+    @Update("{ '$set' : { 'cartLines.$.status' : ?2 } }")
+    long updateCartLineStatus(ObjectId id, String productId, Status status);
 
     Page<Cart> findByUserId(Long id, Pageable pageable);
 
@@ -25,7 +25,6 @@ public interface CartRepository extends MongoRepository<Cart, ObjectId> {
     @Update("{ '$push' : { 'cartLines' : ?1 } }")
     long addCartLine(ObjectId cartId, CartLine newLine);
 
-    // ✅ Retorna long (número de documentos actualizados)
     @Query("{ '_id' : ?0 }")
     @Update("{ '$pull' : { 'cartLines' : ?1 } }")
     long removeCartLine(ObjectId cartId, CartLine lineToRemove);

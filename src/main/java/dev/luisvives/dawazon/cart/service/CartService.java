@@ -28,4 +28,6 @@ public interface CartService extends Service<Cart, ObjectId, Cart> {
     Cart updateStock(CartStockRequestDto entity);
 
     void sendConfirmationEmailAsync(Cart pedido);
+
+    void cancelSale(String ventaId, String productId, Long currentId, boolean isAdmin);
 }

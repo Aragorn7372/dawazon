@@ -1,10 +1,9 @@
--- Limpieza de tablas
 DROP TABLE IF EXISTS product_comments CASCADE;
 DROP TABLE IF EXISTS product_images CASCADE;
 DROP TABLE IF EXISTS product CASCADE;
 DROP TABLE IF EXISTS category CASCADE;
-DROP TABLE IF EXISTS users_favs CASCADE;
-DROP TABLE IF EXISTS users_roles CASCADE;
+DROP TABLE IF EXISTS user_favs CASCADE;
+DROP TABLE IF EXISTS user_roles CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
 
 -- Tabla de categorías
@@ -39,16 +38,16 @@ CREATE TABLE users
     is_deleted                 BOOLEAN      NOT NULL DEFAULT FALSE
 );
 
--- Tabla de roles de usuarios
-CREATE TABLE users_roles
+-- Tabla de roles de usuarios (NOMBRE CORREGIDO: user_roles en lugar de users_roles)
+CREATE TABLE user_roles
 (
     user_id BIGINT      NOT NULL,
     roles   VARCHAR(50) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
--- Tabla de favoritos de usuarios
-CREATE TABLE users_favs
+-- Tabla de favoritos de usuarios (NOMBRE CORREGIDO: user_favs en lugar de users_favs)
+CREATE TABLE user_favs
 (
     user_id BIGINT NOT NULL,
     favs    VARCHAR(255),
@@ -108,18 +107,18 @@ VALUES ('aB3xT9kL2pQm', 'Electrónica', NOW(), NOW()),
 -- Insertar usuarios (password es 'password123' hasheado con BCrypt)
 -- Admin y Manager sin información de cliente (no compran)
 INSERT INTO users ( user_name, email, password, telefono, avatar, is_deleted)
-VALUES ( 'admin', 'admin@dawazon.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
+VALUES ( 'admin', 'admin@dawazon.com', '$2a$12$lCscGZz/fkYBFUms.kgn2OhnPo3dnZh794OLCMulNpLSJFTqC9/D2',
         '+34666111222', 'admin-avatar.png', FALSE),
 
-       ( 'manager_jose', 'jose. manager@dawazon.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
-        '+34666222333', 'manager-avatar. png', FALSE);
+       ( 'manager_jose', 'jose.manager@dawazon.com', '$2a$12$nca74X1GHKl98exObCRNVea.73rwakP9JNV/Luoc6zXjgmjIv4R3O',
+        '+34666222333', 'manager-avatar.png', FALSE);
 
 -- Usuarios normales con información de cliente completa
 INSERT INTO users ( user_name, email, password, client_name, client_email, client_phone,
                    client_address_number, client_address_street, client_address_city,
                    client_address_province, client_address_country, client_address_postal_code,
                    telefono, avatar, is_deleted)
-VALUES ( 'john_doe', 'john. doe@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
+VALUES ( 'john_doe', 'john.doe@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
         'John Doe', 'john.doe@email.com', '+34666333444',
         42, 'Gran Vía', 'Madrid', 'Madrid', 'España', 28013,
         '+34666333444', 'john-avatar.png', FALSE),
@@ -127,7 +126,7 @@ VALUES ( 'john_doe', 'john. doe@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5x
        ( 'jane_smith', 'jane.smith@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
         'Jane Smith', 'jane.smith@email.com', '+34666555666',
         15, 'Paseo de Gracia', 'Barcelona', 'Barcelona', 'España', 8007,
-        '+34666555666', 'jane-avatar. png', FALSE),
+        '+34666555666', 'jane-avatar.png', FALSE),
 
        ( 'carlos_ruiz', 'carlos.ruiz@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
         'Carlos Ruiz', 'carlos.ruiz@email.com', '+34666777888',
@@ -145,7 +144,7 @@ VALUES ( 'john_doe', 'john. doe@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5x
         '+34666000111', 'default.png', FALSE);
 
 -- Insertar roles de usuarios (ROLES EXCLUYENTES - UN SOLO ROL POR USUARIO)
-INSERT INTO users_roles (user_id, roles)
+INSERT INTO user_roles (user_id, roles)
 VALUES (1, 'ADMIN'),   -- Admin
        (2, 'MANAGER'), -- Manager
        (3, 'USER'),    -- Usuario normal
@@ -254,7 +253,7 @@ VALUES ('Hx9Lp2Ks4TnB', 3, 'Excelente portátil, muy rápido y ligero. Lo recomi
         NOW() - INTERVAL '18 days');
 
 -- Insertar favoritos de usuarios (solo usuarios normales tienen favoritos)
-INSERT INTO users_favs (user_id, favs)
+INSERT INTO user_favs (user_id, favs)
 VALUES (3, 'Hx9Lp2Ks4TnB'),
        (3, 'Yw3Zq7Vm1RfG'),
        (3, 'Dk5Mn8Pj2WcX'),

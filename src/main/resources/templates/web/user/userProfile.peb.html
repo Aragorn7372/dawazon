@@ -1,0 +1,118 @@
+{% include "common/header" %}
+{% include "common/navbar" %}
+
+<div class="container col-12 my-4">
+    <div class="admin-header" style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+        <div class="admin-avatar">
+            {% if user.avatar %}
+            <img src="{{ filesPath }}{{ user.avatar }}" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+            {% else %}
+            <img src="{{ filesPath }}system-images/default.png" alt="Default Avatar" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+            {% endif %}
+        </div>
+        <h3 class="product-title mt-3" style="font-size: 1.4rem;">{{ user.userName }}</h3>
+    </div>
+
+    <div class="product-main-grid mt-4">
+        <div class="product-info" style="text-align: left;">
+            <div class="form-group">
+                <label class="form-label fw-bold">Usuario</label>
+                <p class="form-control-plaintext">{{ user.userName }}</p>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label fw-bold">Email</label>
+                <p class="form-control-plaintext">{{ user.email }}</p>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label fw-bold">Teléfono</label>
+                <p class="form-control-plaintext">
+                    {% if user.telefono %}
+                        {{ user.telefono }}
+                    {% else %}
+                        No especificado
+                    {% endif %}
+                </p>
+            </div>
+
+            {% if user.client is not null %}
+            <div class="form-group">
+                <label class="form-label fw-bold">Cliente</label>
+                <p class="form-control-plaintext">
+                    {% if user.client.name %}
+                        {{ user.client.name }}
+                    {% else %}
+                        No especificado
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label fw-bold">Calle</label>
+                <p class="form-control-plaintext">
+                    {% if user.client.address.street %}
+                        {{ user.client.address.street }}
+                    {% else %}
+                        No especificado
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label fw-bold">Ciudad</label>
+                <p class="form-control-plaintext">
+                    {% if user.client.address.city %}
+                        {{ user.client.address.city }}
+                    {% else %}
+                        No especificado
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label fw-bold">Código Postal</label>
+                <p class="form-control-plaintext">
+                    {% if user.client.address.postalCode %}
+                        {{ user.client.address.postalCode }}
+                    {% else %}
+                        No especificado
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label fw-bold">Provincia</label>
+                <p class="form-control-plaintext">
+                    {% if user.client.address.province %}
+                        {{ user.client.address.province }}
+                    {% else %}
+                        No especificado
+                    {% endif %}
+                </p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="action-buttons admin-actions mt-4" style="display: flex; gap: 10px; justify-content: center;">
+        {% if isUser %}
+        <a href="/auth/me/fav" class="btn-gradient" style="text-decoration: none; display: flex; justify-content: center; align-items: center; padding: 10px 20px;">
+            <i class="bi bi-heart-fill me-2"></i> Mis Favoritos
+        </a>
+        {% endif %}
+
+        <a href="/auth/me/edit" class="btn-gradient" style="text-decoration: none; display: flex; justify-content: center; align-items: center; padding: 10px 20px;">
+            <i class="bi bi-pencil-fill me-2"></i> Editar Perfil
+        </a>
+
+        <form action="/auth/me/delete" method="POST" style="display: inline;">
+            <input type="hidden" name="{{ csrfParamName }}" value="{{ csrfToken }}"/>
+            <button type="submit" class="btn-gradient btn-delete" onclick="return confirm('¿Estás seguro de eliminar tu cuenta?');" style="padding: 10px 20px;">
+                <i class="bi bi-trash-fill me-2"></i> Eliminar Cuenta
+            </button>
+        </form>
+    </div>
+</div>
+
+{% include "common/footer" %}

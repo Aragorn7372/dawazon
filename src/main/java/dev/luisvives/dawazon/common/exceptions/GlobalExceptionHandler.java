@@ -6,8 +6,10 @@ import dev.luisvives.dawazon.users.exceptions.UserException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import lombok.extern.slf4j.Slf4j;
 
 @ControllerAdvice
+@Slf4j  
 public class GlobalExceptionHandler {
     @ExceptionHandler(ProductException.NotFoundException.class)
     public String handleProductNotFound(ProductException ex, Model model) {
@@ -83,6 +85,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public String handleGenericException(Exception ex, Model model) {
+        log.info("Tipo: " + ex.getClass().getName());
+        log.info("Mensaje: " + ex.getMessage());
+        log.info("Stack trace:");
+        ex.printStackTrace();
+
         model.addAttribute("error.status", "500");
         model.addAttribute("error.message", "Ha ocurrido un error inesperado: " + ex.getMessage());
         model.addAttribute("error.title", "Error interno del servidor");
