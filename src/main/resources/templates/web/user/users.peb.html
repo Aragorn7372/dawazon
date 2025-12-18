@@ -8,26 +8,7 @@
     </div>
 </header>
 <main class="container col-12 mt-4">
-    <h2 class="text-center mb-3">Usuarios Admin</h2>
-
-    <div class="row align-items-center mb-3">
-        <div class="col-md-6 mb-2">
-            <form action="/auth/me/users" class="d-flex" method="get" role="search">
-                <div class="input-group">
-                    <input id="searchInput" type="search" name="name" class="form-control search-input"
-                           placeholder="Buscar por nombre, email o rol..." value="{{name | default('')}}">
-                    <button id="btnSearch" class="btn btn-search" type="submit"><i class="bi bi-search"></i>
-                        Buscar
-                    </button>
-                </div>
-            </form>
-        </div>
-        <div class="col-md-6 text-end">
-            <a href="/auth/signup" class="btn btn-amazon">
-                <i class="bi bi-person-plus"></i> Nuevo usuario
-            </a>
-        </div>
-    </div>
+   <h2 class="text-center mb-3">Usuarios Admin</h2>
 
     <!-- Tabla responsive -->
     <div class="table-responsive">

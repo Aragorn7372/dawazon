@@ -4,7 +4,7 @@
 <div class="container col-12 my-4">
     <h2 class="text-center mb-4">Editar Perfil</h2>
 
-    <form action="/auth/me/edit" method="POST" enctype="multipart/form-data">
+    <form action="{% if currentUser.id == user.id %}/auth/me/edit{% else %}/auth/me/users/edit/{{ user.id }}{% endif %}" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="{{ csrfParamName }}" value="{{ csrfToken }}"/>
         <input type="hidden" name="id" value="{{ user.id }}">
 
@@ -70,7 +70,7 @@
         </div>
 
         <div class="action-buttons mt-4" style="display: flex; gap: 10px; justify-content: center;">
-            <a href="/auth/me" class="btn btn-secondary" style="padding: 10px 20px;">
+            <a href="{% if currentUser.id == user.id %}/auth/me{% else %}/auth/me/users/{{ user.id }}{% endif %}" class="btn btn-secondary" style="padding: 10px 20px;">
                 <i class="bi bi-x-circle me-2"></i> Cancelar
             </a>
             <button type="submit" class="btn-gradient" style="padding: 10px 20px;">

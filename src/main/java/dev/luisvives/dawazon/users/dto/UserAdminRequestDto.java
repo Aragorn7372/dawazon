@@ -23,4 +23,10 @@ public class UserAdminRequestDto {
     @Pattern(regexp = "")
     private String telefono;
     private String roles;
+
+    // Campos de dirección del cliente
+    private String calle;
+    private String ciudad;
+    private String codigoPostal;
+    private String provincia;
 }
