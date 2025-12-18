@@ -8,8 +8,8 @@
 
         <div class="carousel-container">
             <button class="carousel-arrow left">&#10094;</button>
-            {% for image in producto.images %}
-            <img src="/files/{{image}}" class="product-img {% if loop.first %}active{% endif %}" alt="{{producto.name}}">
+            {% for image in producto.image %}
+            <img src="{{image}}" class="product-img {% if loop.first %}active{% endif %}" alt="{{producto.name}}">
             {% endfor %}
             <button class="carousel-arrow right">&#10095;</button>
         </div>

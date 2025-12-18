@@ -183,9 +183,7 @@ public class FileSystemStorageService implements StorageService {
     public String getUrl(String filename) {
         log.info("Obteniendo URL del fichero " + filename);
         return MvcUriComponentsBuilder
-                // El segundo argumento es necesario solo cuando queremos obtener la imagen
-                // En este caso tan solo necesitamos obtener la URL
-                .fromMethodName(StorageController.class, "serveFile", filename, null)
+                .fromMethodName(StorageController.class, "serveFile", filename)
                 .build().toUriString();
     }
 

@@ -58,7 +58,7 @@ services:
       dockerfile: dockerfile
       target: run
     volumes:
-      - ./storage-dir:/app/storage-dir
+      - ./storage-dir/system-images:/app/system-images
     restart: always
     env_file: .env
     depends_on:

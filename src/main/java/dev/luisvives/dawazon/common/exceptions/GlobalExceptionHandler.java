@@ -10,79 +10,83 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(ProductException.NotFoundException.class)
-    public String handleNotFound(ProductException ex, Model model) {
+    public String handleProductNotFound(ProductException ex, Model model) {
         model.addAttribute("error.status", "404");
         model.addAttribute("error.message", ex.getMessage());
-        model.addAttribute("error.title", "Not Found");
+        model.addAttribute("error.title", "Producto no encontrado");
         return "blocked";
     }
 
     @ExceptionHandler(ProductException.ValidationException.class)
     public String handleValidationException(ProductException ex, Model model) {
-        model.addAttribute("error.status", "404");
+        model.addAttribute("error.status", "400");
         model.addAttribute("error.message", ex.getMessage());
-        model.addAttribute("error.title", "Not Found");
+        model.addAttribute("error.title", "Error de validación");
         return "blocked";
     }
 
     @ExceptionHandler(CartException.NotFoundException.class)
-    public String handleNotFound(CartException ex, Model model) {
+    public String handleCartNotFound(CartException ex, Model model) {
         model.addAttribute("error.status", "404");
         model.addAttribute("error.message", ex.getMessage());
-        model.addAttribute("error.title", "Not Found");
+        model.addAttribute("error.title", "Carrito no encontrado");
         return "blocked";
     }
 
     @ExceptionHandler(CartException.ProductQuantityExceededException.class)
     public String handleProductQuantityExceeded(CartException ex, Model model) {
-        model.addAttribute("error.status", "404");
+        model.addAttribute("error.status", "400");
         model.addAttribute("error.message", ex.getMessage());
-        model.addAttribute("error.title", "Not Found");
+        model.addAttribute("error.title", "Cantidad excedida");
         return "blocked";
     }
 
     @ExceptionHandler(CartException.AttemptAmountExceededException.class)
     public String handleAttemptAmountExceeded(CartException ex, Model model) {
-        model.addAttribute("error.status", "404");
+        model.addAttribute("error.status", "400");
         model.addAttribute("error.message", ex.getMessage());
-        model.addAttribute("error.title", "Not Found");
+        model.addAttribute("error.title", "Cantidad de intentos excedida");
         return "blocked";
     }
 
     @ExceptionHandler(CartException.UnauthorizedException.class)
-    public String handleUnauthorizedException(CartException ex, Model model) {
-        model.addAttribute("error.status", "404");
+    public String handleCartUnauthorized(CartException ex, Model model) {
+        model.addAttribute("error.status", "403");
         model.addAttribute("error.message", ex.getMessage());
-        model.addAttribute("error.title", "Not Found");
+        model.addAttribute("error.title", "Acceso denegado");
         return "blocked";
     }
 
-
     @ExceptionHandler(UserException.UserPasswordNotMatchException.class)
     public String handleUserPasswordNotMatchException(UserException ex, Model model) {
-        model.addAttribute("error.status", "404");
+        model.addAttribute("error.status", "401");
         model.addAttribute("error.message", ex.getMessage());
-        model.addAttribute("error.title", "Not Found");
+        model.addAttribute("error.title", "Contraseña incorrecta");
         return "blocked";
     }
 
     @ExceptionHandler(UserException.UserPermissionDeclined.class)
     public String handleUserPermisionDeclined(UserException ex, Model model) {
-        model.addAttribute("error.status", "404");
+        model.addAttribute("error.status", "403");
         model.addAttribute("error.message", ex.getMessage());
-        model.addAttribute("error.title", "Not Found");
+        model.addAttribute("error.title", "Permiso denegado");
         return "blocked";
     }
 
     @ExceptionHandler(UserException.UserHasThatFavProductException.class)
     public String handleUserHasThatFavProductException(UserException ex, Model model) {
-        model.addAttribute("error.status", "404");
+        model.addAttribute("error.status", "400");
         model.addAttribute("error.message", ex.getMessage());
-        model.addAttribute("error.title", "Not Found");
+        model.addAttribute("error.title", "Producto ya en favoritos");
         return "blocked";
     }
 
-
-
+    @ExceptionHandler(Exception.class)
+    public String handleGenericException(Exception ex, Model model) {
+        model.addAttribute("error.status", "500");
+        model.addAttribute("error.message", "Ha ocurrido un error inesperado: " + ex.getMessage());
+        model.addAttribute("error.title", "Error interno del servidor");
+        return "blocked";
+    }
 
 }

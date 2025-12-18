@@ -19,6 +19,8 @@ import dev.luisvives.dawazon.users.service.AuthService;
 import dev.luisvives.dawazon.users.service.FavService;
 import dev.luisvives.dawazon.users.service.UserService;
 import jakarta.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.bson.types.ObjectId;
@@ -51,7 +53,8 @@ public class UserController {
     private final UserService userService;
 
     @Autowired
-    public UserController(AuthService authService, ProductServiceImpl productService, FavService favService, CartServiceImpl cartService, UserMapper userMapper, UserService userService) {
+    public UserController(AuthService authService, ProductServiceImpl productService, FavService favService,
+            CartServiceImpl cartService, UserMapper userMapper, UserService userService) {
         this.authService = authService;
         this.productService = productService;
         this.favService = favService;
@@ -60,7 +63,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping({"", "/"})
+    @GetMapping({ "", "/" })
     public String index(Model model) {
         val user = (User) model.getAttribute("currentUser");
         model.addAttribute("user", user);
@@ -76,12 +79,13 @@ public class UserController {
 
     @PostMapping("/edit")
     public String edit(@Valid @ModelAttribute("user") UserRequestDto updateUser,
-                       BindingResult bindingResult, Model model,
-                       @RequestParam("avatar")  MultipartFile file) {
+            BindingResult bindingResult, Model model,
+            @RequestParam("avatar") MultipartFile file) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("error.status", 400);
             model.addAttribute("error.title", "Escribiste tus campos mal");
-            model.addAttribute("error.message", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage));
+            model.addAttribute("error.message",
+                    bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage));
             return "/blocked";
         }
         val id = (Long) model.getAttribute("currentUserId");
@@ -106,35 +110,38 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('MANAGER')")
-    @GetMapping({"/products/save", "/products/save/"})
+    @GetMapping({ "/products/save", "/products/save/" })
     public String save(Model model) {
         return "web/productos/productoSaveEdit";
     }
+
     @PreAuthorize("hasRole('MANAGER')")
-    @GetMapping({"/products", "/products/"})
+    @GetMapping({ "/products", "/products/" })
     public String products(Model model,
-                           @RequestParam(defaultValue = "0") int page,
-                           @RequestParam(defaultValue = "10") int size,
-                           @RequestParam(defaultValue = "id") String sortBy,
-                           @RequestParam(defaultValue = "asc") String direction) {
-        Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction) {
+        Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
         // Creamos cómo va a ser la paginación
         Pageable pageable = PageRequest.of(page, size, sort);
         val user = (User) model.getAttribute("currentUser");
         assert user != null;
-        model.addAttribute("productos",productService.findAllByManagerId(user.getId(),pageable));
+        model.addAttribute("productos", productService.findAllByManagerId(user.getId(), pageable));
         return "web/productos/lista";
     }
 
     @PreAuthorize("hasRole('MANAGER')")
-    @PostMapping({"/products/save", "/products/save/"})
+    @PostMapping({ "/products/save", "/products/save/" })
     public String saveProduct(@Valid @ModelAttribute("producto") PostProductRequestDto product,
-                              BindingResult bindingResult, Model model,
-                              @RequestParam("file") List<MultipartFile> file) {
+            BindingResult bindingResult, Model model,
+            @RequestParam("file") List<MultipartFile> file) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("error.status", 400);
             model.addAttribute("error.title", "El producto no es válido");
-            model.addAttribute("error.message", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage));
+            model.addAttribute("error.message",
+                    bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage));
             return "web/productos/productoSaveEdit";
         }
         product.setCreatorId((Long) model.getAttribute("currentUserId"));
@@ -144,22 +151,23 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('MANAGER')")
-    @GetMapping({"/products/edit/{id}", "/products/edit/"})
-    public String update(Model model,@PathVariable String id) {
-        val product= productService.getById(id);
+    @GetMapping({ "/products/edit/{id}", "/products/edit/" })
+    public String update(Model model, @PathVariable String id) {
+        val product = productService.getById(id);
         model.addAttribute("product", product);
         return "web/productos/productoSaveEdit";
     }
 
     @PreAuthorize("hasRole('MANAGER')")
-    @PostMapping({"/products/edit", "/products/edit/"})
+    @PostMapping({ "/products/edit", "/products/edit/" })
     public String updateProduct(@Valid @ModelAttribute("producto") PostProductRequestDto product,
-                              BindingResult bindingResult, Model model,
-                              @RequestParam("file") List<MultipartFile> file) {
+            BindingResult bindingResult, Model model,
+            @RequestParam("file") List<MultipartFile> file) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("error.status", 400);
             model.addAttribute("error.title", "El producto no es válido");
-            model.addAttribute("error.message", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage));
+            model.addAttribute("error.message",
+                    bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage));
             return "/web/productos/productoSaveEdit";
         }
         product.setCreatorId((Long) model.getAttribute("currentUserId"));
@@ -167,7 +175,7 @@ public class UserController {
         if (userId != product.getCreatorId()) {
             throw new UserException.UserPermissionDeclined("No puedes editar el producto de otro usuario");
         }
-        val savedProduct = productService.update(product.getId(),product);
+        val savedProduct = productService.update(product.getId(), product);
         productService.updateOrSaveImage(savedProduct.getId(), file);
         return "redirect:/products/" + savedProduct.getId();
     }
@@ -176,10 +184,10 @@ public class UserController {
     @GetMapping("/products/delete/{id}")
     public String delete(Model model, @PathVariable String id) {
         log.info("");
-        val product= productService.getById(id);
-        val productId=model.getAttribute("currentUserId");
+        val product = productService.getById(id);
+        val productId = model.getAttribute("currentUserId");
         val userId = productService.getUserProductId(product.getId());
-        if(userId!=productId){
+        if (userId != productId) {
             throw new UserException.UserPermissionDeclined("No puedes eliminar el producto de otro usuario");
         }
         productService.deleteById(id);
@@ -189,221 +197,242 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/fav/add/{id}")
     public String addFav(Model model, @PathVariable String id) {
-        val userId=(Long) model.getAttribute("currentUserId");
-        favService.addFav(id,userId);
+        val userId = (Long) model.getAttribute("currentUserId");
+        favService.addFav(id, userId);
         return "redirect:/products/" + id;
     }
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/fav/remove/{id}")
     public String removeFav(Model model, @PathVariable String id) {
-        val userId=(Long) model.getAttribute("currentUserId");
-        favService.addFav(id,userId);
+        val userId = (Long) model.getAttribute("currentUserId");
+        favService.addFav(id, userId);
         return "redirect:/products/" + id;
     }
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/fav")
     public String fav(Model model,
-                      @RequestParam(defaultValue = "0") int page,
-                      @RequestParam(defaultValue = "10") int size,
-                      @RequestParam(defaultValue = "id") String sortBy,
-                      @RequestParam(defaultValue = "asc") String direction) {
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction) {
         log.info("");
-        Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
         // Creamos cómo va a ser la paginación
         Pageable pageable = PageRequest.of(page, size, sort);
-        val userId=(Long) model.getAttribute("currentUserId");
-        model.addAttribute("productos", favService.getFavs(userId,pageable));
+        val userId = (Long) model.getAttribute("currentUserId");
+        model.addAttribute("productos", favService.getFavs(userId, pageable));
         return "web/productos/lista";
     }
 
-    @PreAuthorize("hasrole('USER')")
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/carrito/add/{id}")
-    public String addToCart(Model model, @PathVariable String id) {
-        val userId= (Long) model.getAttribute("currentUserId");
+    public String addToCart(Model model, @PathVariable String id, HttpServletRequest request) {
+        val userId = (Long) model.getAttribute("currentUserId");
         val cart = (Cart) model.getAttribute("cart");
-        val ultimateCart=cartService.addProduct(new ObjectId(cart.getId()), id);
-        model.addAttribute("carrito",ultimateCart);
+        val ultimateCart = cartService.addProduct(new ObjectId(cart.getId()), id);
+
+        // Actualizar la sesión con el carrito modificado
+        HttpSession session = request.getSession();
+        session.setAttribute("cart", ultimateCart);
+        session.setAttribute("carrito", ultimateCart);
+
+        model.addAttribute("carrito", ultimateCart);
         return "redirect:/products/" + id;
     }
 
-    @PreAuthorize("hasrole('USER')")
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/carrito/remove/{id}")
-    public String removeToCart(Model model, @PathVariable String id) {
+    public String removeToCart(Model model, @PathVariable String id, HttpServletRequest request) {
         val cart = (Cart) model.getAttribute("cart");
-        val ultimateCart=cartService.removeProduct(new ObjectId(cart.getId()), id);
-        model.addAttribute("carrito",ultimateCart);
+        val ultimateCart = cartService.removeProduct(new ObjectId(cart.getId()), id);
+
+        // Actualizar la sesión con el carrito modificado
+        HttpSession session = request.getSession();
+        session.setAttribute("cart", ultimateCart);
+        session.setAttribute("carrito", ultimateCart);
+
+        model.addAttribute("carrito", ultimateCart);
         return "redirect:/products/" + id;
     }
 
-    @PreAuthorize("hasrole('USER')")
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/cart")
-    public String getCart(Model model){
+    public String getCart(Model model) {
         return "web/cart/cart";
     }
 
-    @PreAuthorize(("hasrole('USER')"))
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("cart/stock")
-    public String updateCartStock(@Valid @ModelAttribute("line") CartStockRequestDto line, BindingResult bindingResult, Model model){
+    public String updateCartStock(@Valid @ModelAttribute("line") CartStockRequestDto line, BindingResult bindingResult,
+            Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("error.status", 400);
             model.addAttribute("error.title", "El producto no es válido");
-            model.addAttribute("error.message", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage));
+            model.addAttribute("error.message",
+                    bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage));
             return "web/cart/cart";
         }
 
-        Cart cart=cartService.updateStock(line);
-        model.addAttribute("carrito",cart);
+        Cart cart = cartService.updateStock(line);
+        model.addAttribute("carrito", cart);
         return "redirect:/auth/me/cart";
     }
 
-    @PreAuthorize("hasrole('USER')")
-    @GetMapping({"/pedidos", "/pedidos/"})
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping({ "/pedidos", "/pedidos/" })
     public String getPedidos(Model model,
-                             @RequestParam(defaultValue = "0") int page,
-                             @RequestParam(defaultValue = "10") int size,
-                             @RequestParam(defaultValue = "id") String sortBy,
-                             @RequestParam(defaultValue = "asc") String direction){
-        Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction) {
+        Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
-        Long userId= (Long) model.getAttribute("currentUserId");
+        Long userId = (Long) model.getAttribute("currentUserId");
         val pedidos = cartService.findAll(Optional.of(userId), Optional.of("true"), pageable);
-        model.addAttribute("pedidos",pedidos);
+        model.addAttribute("pedidos", pedidos);
         return "web/cart/myOrders";
     }
 
-    @PreAuthorize("hasrole('USER')")
-    @GetMapping({"/pedidos/{id}", "/pedidos/{id}/"})
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping({ "/pedidos/{id}", "/pedidos/{id}/" })
     public String getOrderDetail(Model model,
             @PathVariable String id) {
         val existingCart = cartService.getById(new ObjectId(id));
-        val userId= (Long) model.getAttribute("currentUserId");
-        if(!userId.equals(existingCart.getUserId())) {
-            throw new UserException.UserPermissionDeclined("El usuario con ID: " + userId + " ha intentado acceder al carrito del usuario con ID: " +  existingCart.getUserId());
+        val userId = (Long) model.getAttribute("currentUserId");
+        if (!userId.equals(existingCart.getUserId())) {
+            throw new UserException.UserPermissionDeclined("El usuario con ID: " + userId
+                    + " ha intentado acceder al carrito del usuario con ID: " + existingCart.getUserId());
         }
-        model.addAttribute("order",existingCart);
+        model.addAttribute("order", existingCart);
         return "web/cart/orderDetail";
     }
 
-    @PreAuthorize("hasrole('MANAGER')")
-    @GetMapping({"/ventas", "/ventas/"})
+    @PreAuthorize("hasRole('MANAGER')")
+    @GetMapping({ "/ventas", "/ventas/" })
     public String getVentas(Model model,
-                            @RequestParam(defaultValue = "0") int page,
-                            @RequestParam(defaultValue = "10") int size,
-                            @RequestParam(defaultValue = "id") String sortBy,
-                            @RequestParam(defaultValue = "asc") String direction){
-        Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction) {
+        Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
-        val userId= (Long) model.getAttribute("currentUserId");
-        val venta=cartService.findAllSalesAsLines(Optional.of(userId),false,pageable);
-        model.addAttribute("ventas",venta);
+        val userId = (Long) model.getAttribute("currentUserId");
+        val venta = cartService.findAllSalesAsLines(Optional.of(userId), false, pageable);
+        model.addAttribute("ventas", venta);
         return "web/cart/ventas";
     }
 
-    @PreAuthorize("hasrole('MANAGER')")
-    @GetMapping( "/ventas/{cartId}/{productId}")
-    public String getVentas(Model model, @PathVariable String cartId, @PathVariable String productId){
-        val userId= (Long) model.getAttribute("currentUserId");
-        val line= cartService.getSaleLineByIds(cartId,productId,userId,false);
-        model.addAttribute("venta",line);
+    @PreAuthorize("hasRole('MANAGER')")
+    @GetMapping("/ventas/{cartId}/{productId}")
+    public String getVentas(Model model, @PathVariable String cartId, @PathVariable String productId) {
+        val userId = (Long) model.getAttribute("currentUserId");
+        val line = cartService.getSaleLineByIds(cartId, productId, userId, false);
+        model.addAttribute("venta", line);
         return "web/cart/ventas";
     }
 
-    @PreAuthorize("hasrole('MANAGER')")
-    @GetMapping( "/ventas/edit/{cartId}/{productId}")
-    public String getVentaEdit(Model model, @PathVariable String cartId, @PathVariable String productId){
-        val userId= (Long) model.getAttribute("currentUserId");
-        val line= cartService.getSaleLineByIds(cartId,productId,userId,false);
-        model.addAttribute("venta",line);
+    @PreAuthorize("hasRole('MANAGER')")
+    @GetMapping("/ventas/edit/{cartId}/{productId}")
+    public String getVentaEdit(Model model, @PathVariable String cartId, @PathVariable String productId) {
+        val userId = (Long) model.getAttribute("currentUserId");
+        val line = cartService.getSaleLineByIds(cartId, productId, userId, false);
+        model.addAttribute("venta", line);
         return "web/cart/ventas-edit";
     }
 
-    @PreAuthorize("hasrole('MANAGER')")
+    @PreAuthorize("hasRole('MANAGER')")
     @PostMapping("/venta/edit")
-    public String postVentaEdit(Model model, @Valid @ModelAttribute("line") LineRequestDto lineRequestDto){
-        val userId= (Long) model.getAttribute("currentUserId");
-        val line= cartService.update(lineRequestDto);
-        model.addAttribute("line",line);
-        return "redirect:auth/me/ventas/"+lineRequestDto.getCartId()+"/"+lineRequestDto.getProductId();
+    public String postVentaEdit(Model model, @Valid @ModelAttribute("line") LineRequestDto lineRequestDto) {
+        val userId = (Long) model.getAttribute("currentUserId");
+        val line = cartService.update(lineRequestDto);
+        model.addAttribute("line", line);
+        return "redirect:auth/me/ventas/" + lineRequestDto.getCartId() + "/" + lineRequestDto.getProductId();
     }
 
-    @PreAuthorize("hasrole('MANAGER')")
+    @PreAuthorize("hasRole('MANAGER')")
     @GetMapping("/ventas/cancel/{cartId}/{productId}")
-    public String postVentaCancel(Model model, @PathVariable String cartId, @PathVariable String productId){
-        val userId= (Long) model.getAttribute("currentUserId");
-        val line= cartService.getSaleLineByIds(cartId,productId,userId,false);
-        LineRequestDto lineRequestDto= LineRequestDto.builder()
+    public String postVentaCancel(Model model, @PathVariable String cartId, @PathVariable String productId) {
+        val userId = (Long) model.getAttribute("currentUserId");
+        val line = cartService.getSaleLineByIds(cartId, productId, userId, false);
+        LineRequestDto lineRequestDto = LineRequestDto.builder()
                 .cartId(new ObjectId(cartId)).productId(productId).status(Status.CANCELADO).build();
-        val lineFinal= cartService.update(lineRequestDto);
-        model.addAttribute("line",lineFinal);
+        val lineFinal = cartService.update(lineRequestDto);
+        model.addAttribute("line", lineFinal);
         return "redirect:auth/me/ventas";
     }
 
-    @PreAuthorize("hasrole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/users")
     public String getUsers(Model model,
-                           @RequestParam(required = false) Optional<String> userNameOrEmail,
-                           @RequestParam(defaultValue = "0") int page,
-                           @RequestParam(defaultValue = "10") int size,
-                           @RequestParam(defaultValue = "id") String sortBy,
-                           @RequestParam(defaultValue = "asc") String direction){
-        Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+            @RequestParam(required = false) Optional<String> userNameOrEmail,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction) {
+        Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
-        val users= authService.findAllPaginated(userNameOrEmail,pageable);
-        model.addAttribute("users",users);
+        val users = authService.findAllPaginated(userNameOrEmail, pageable);
+        model.addAttribute("users", users);
         return "web/user/users";
     }
 
-    @PreAuthorize("hasrole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/users/{id}")
-    public String getUsers(Model model,@PathVariable Long id){
-        val users= authService.findById(id);
-        model.addAttribute("user",users);
+    public String getUsers(Model model, @PathVariable Long id) {
+        val users = authService.findById(id);
+        model.addAttribute("user", users);
         return "web/user/users";
     }
 
-    @PreAuthorize("hasrole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/users/edit/{id}")
-    public String getEditUsers(Model model,@PathVariable Long id){
-        val users= authService.findById(id);
-        model.addAttribute("user",users);
+    public String getEditUsers(Model model, @PathVariable Long id) {
+        val users = authService.findById(id);
+        model.addAttribute("user", users);
         return "web/user/editUserAdmin";
     }
 
-    @PreAuthorize("hasrole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/users/edit/{id}")
-    public String getEditUsers(Model model, @Valid @ModelAttribute("user")UserAdminRequestDto user,BindingResult bindingResult){
-        if (bindingResult.hasErrors()){
+    public String getEditUsers(Model model, @Valid @ModelAttribute("user") UserAdminRequestDto user,
+            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute("error.status", 400);
             model.addAttribute("error.title", "El producto no es válido");
-            model.addAttribute("error.message", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage));
+            model.addAttribute("error.message",
+                    bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage));
             return "web/user/editUserAdmin";
         }
-        val userEdit = authService.updateAdminCurrentUser(user.getId(),user);
-        model.addAttribute("user",userEdit);
+        val userEdit = authService.updateAdminCurrentUser(user.getId(), user);
+        model.addAttribute("user", userEdit);
         return "redirect:web/user/users";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/users/ban/{id}")
-    public String banUser(Model model, @PathVariable Long id){
+    public String banUser(Model model, @PathVariable Long id) {
         authService.softDelete(id);
         return "redirect:/auth/me/users/";
     }
 
-    @PreAuthorize("hasAnyRole()")
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','USER')")
     @GetMapping("/client")
-    public String getClients(Model model){
-        val userId=(Long)model.getAttribute("currentUserId");
-        val client=authService.findById(userId).getClient();
-        model.addAttribute("client",client);
+    public String getClients(Model model) {
+        val userId = (Long) model.getAttribute("currentUserId");
+        val client = authService.findById(userId).getClient();
+        model.addAttribute("client", client);
         return "web/user/clients";
     }
 
-    @PreAuthorize("hasAnyAuthority()")
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','USER')")
     @PostMapping("/client/")
-    public String editClient(Model model, @Valid @ModelAttribute("client") ClientDto clientDto ){
+    public String editClient(Model model, @Valid @ModelAttribute("client") ClientDto clientDto) {
         Client client = userMapper.toClient(clientDto);
         val currentUserId = (Long) model.getAttribute("currentUserId");
         val existing = authService.findById(currentUserId);
@@ -413,39 +442,41 @@ public class UserController {
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/cart/checkout")
-    public String checkout(Model model,RedirectAttributes redirectAttributes){
-        val user= (User)model.getAttribute("currentUser");
-        val cart = (Cart)model.getAttribute("cart");
-        if (cart.getTotal()<=0){
+    public String checkout(Model model, RedirectAttributes redirectAttributes) {
+        val user = (User) model.getAttribute("currentUser");
+        val cart = (Cart) model.getAttribute("cart");
+        if (cart.getTotal() <= 0) {
             return "redirect:/";
         }
-        if (user.getClient()==null){
+        if (user.getClient() == null) {
             redirectAttributes.addFlashAttribute("error.status", 301);
             redirectAttributes.addFlashAttribute("error.title", "faltan los datos de cliente");
             redirectAttributes.addFlashAttribute("error.message", "introduce tus datos");
             return "redirect:/auth/me/client";
         }
-        model.addAttribute("client",user.getClient());
+        model.addAttribute("client", user.getClient());
         return "web/user/checkout";
     }
+
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/cart/checkout/pay")
-    public String checkoutPay(Model model, RedirectAttributes redirectAttributes){
-        val user= (User)model.getAttribute("currentUser");
-        val cart = (Cart)model.getAttribute("cart");
-        if (cart.getTotal()<=0){
+    public String checkoutPay(Model model, RedirectAttributes redirectAttributes) {
+        val user = (User) model.getAttribute("currentUser");
+        val cart = (Cart) model.getAttribute("cart");
+        if (cart.getTotal() <= 0) {
             return "redirect:/";
         }
-        if (user.getClient()==null){
+        if (user.getClient() == null) {
             redirectAttributes.addFlashAttribute("error.status", 301);
             redirectAttributes.addFlashAttribute("error.title", "faltan los datos de cliente");
             redirectAttributes.addFlashAttribute("error.message", "introduce tus datos");
             return "redirect:/auth/me/client";
         }
-        model.addAttribute("client",user.getClient());
-        val stripe= cartService.checkout(new ObjectId(cart.getId()),cart);
-        return "redirect:"+stripe;
+        model.addAttribute("client", user.getClient());
+        val stripe = cartService.checkout(new ObjectId(cart.getId()), cart);
+        return "redirect:" + stripe;
     }
+
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/cart/checkout/success")
     public String checkoutSuccess(
@@ -458,7 +489,7 @@ public class UserController {
             val cart = (Cart) model.getAttribute("cart");
 
             log.info("💳 Procesando pago exitoso - Usuario: {} - Session: {}",
-                    user. getId(), sessionId);
+                    user.getId(), sessionId);
 
             // 🆕 Verificar expiración usando el método helper
             if (cart.isCheckoutExpired()) {
@@ -484,7 +515,7 @@ public class UserController {
 
             // Pasar datos a la vista
             model.addAttribute("order", purchasedCart);
-            model.addAttribute("client", user. getClient());
+            model.addAttribute("client", user.getClient());
             model.addAttribute("sessionId", sessionId);
 
             log.info("✅ Pedido completado - ID: {} - Total: {}€",
@@ -534,6 +565,5 @@ public class UserController {
             return "redirect:/cart";
         }
     }
-
 
 }
