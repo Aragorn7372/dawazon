@@ -12,20 +12,39 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Interfaz de servicio de autenticación y gestión de usuarios.
+ * <p>
+ * Define operaciones CRUD, autenticación, cambio de contraseña, actualización
+ * de perfil y gestión de imágenes.
+ * </p>
+ */
 public interface AuthService {
     User register(User u);
+
     User findById(long id);
+
     User findByEmail(String email);
+
     User findByUsername(String userName);
+
     List<User> findAll();
+
     User edit(User u);
+
     void delete(Long id);
+
     User findByIdOptional(Long id);
+
     void softDelete(Long id);
-    Page<User> findAllPaginated(Optional<String> userNameOrEmail,Pageable pageable);
+
+    Page<User> findAllPaginated(Optional<String> userNameOrEmail, Pageable pageable);
+
     User changePassword(UserChangePasswordDto userDto, Long id);
 
     User updateCurrentUser(Long id, @Valid UserRequestDto updateUser);
+
     User updateAdminCurrentUser(Long id, UserAdminRequestDto updateUser);
-    User updateImage(Long id,MultipartFile file);
+
+    User updateImage(Long id, MultipartFile file);
 }

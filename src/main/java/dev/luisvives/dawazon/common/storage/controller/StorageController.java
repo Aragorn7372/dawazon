@@ -9,12 +9,26 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * Controlador para devolver archivos almacenados.
+ * <p>
+ * Proporciona endpoints para acceder a archivos subidos.
+ * </p>
+ */
 @Controller
 public class StorageController {
+    /**
+     * Servicio de almacenamiento.
+     */
     @Autowired
     StorageService storageService;
 
-    // Devuelve el fichero
+    /**
+     * Devuelve el archivo almacenado.
+     *
+     * @param filename Nombre del archivo
+     * @return Recurso del archivo
+     */
     @GetMapping("/files/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {

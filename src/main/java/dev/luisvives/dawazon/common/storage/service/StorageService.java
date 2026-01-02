@@ -22,7 +22,9 @@ import java.util.stream.Stream;
 @Service
 public interface StorageService {
 
-    // Inicia sl sistema de ficheros
+    /**
+     * Inicializa el sistema de ficheros.
+     */
     void init();
 
     /**

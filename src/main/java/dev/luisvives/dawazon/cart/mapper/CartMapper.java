@@ -7,8 +7,20 @@ import dev.luisvives.dawazon.products.models.Product;
 import dev.luisvives.dawazon.users.models.User;
 import org.springframework.stereotype.Component;
 
+/**
+ * Mapper para transformar entidades de carrito a DTOs.
+ */
 @Component
 public class CartMapper {
+    /**
+     * Convierte una línea de carrito a DTO de línea de venta.
+     *
+     * @param cart    Carrito al que pertenece la línea
+     * @param product Producto asociado
+     * @param line    Línea de carrito a convertir
+     * @param manager Usuario vendedor del producto
+     * @return DTO de línea de venta
+     */
     public SaleLineDto cartlineToSaleLineDto(Cart cart, Product product, CartLine line, User manager) {
         return SaleLineDto.builder()
                 .saleId(cart.getId())

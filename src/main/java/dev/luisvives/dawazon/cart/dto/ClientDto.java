@@ -8,6 +8,22 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * DTO que combina información del cliente y su dirección.
+ *
+ * <b>Campos:</b>
+ * <ul>
+ * <li><b>name</b> (<code>String</code>): Nombre del cliente.</li>
+ * <li><b>email</b> (<code>String</code>): Email del cliente.</li>
+ * <li><b>phone</b> (<code>String</code>): Teléfono del cliente.</li>
+ * <li><b>number</b> (<code>Short</code>): Número de calle.</li>
+ * <li><b>street</b> (<code>String</code>): Calle.</li>
+ * <li><b>city</b> (<code>String</code>): Ciudad.</li>
+ * <li><b>province</b> (<code>String</code>): Provincia.</li>
+ * <li><b>country</b> (<code>String</code>): País.</li>
+ * <li><b>postalCode</b> (<code>Integer</code>): Código postal.</li>
+ * </ul>
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -7,8 +7,22 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart. MultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * DTO para el registro de nuevos usuarios.
+ * <p>
+ * <b>Campos:</b>
+ * <ul>
+ * <li><b>userName</b> (String): Nombre de usuario único (3-50 caracteres)</li>
+ * <li><b>email</b> (String): Email válido y único</li>
+ * <li><b>password</b> (String): Contraseña (mínimo 6 caracteres)</li>
+ * <li><b>confirmPassword</b> (String): Confirmación de contraseña</li>
+ * <li><b>telefono</b> (String): Teléfono opcional</li>
+ * <li><b>avatar</b> (MultipartFile): Imagen de perfil opcional</li>
+ * </ul>
+ * </p>
+ */
 @Data
 @Builder
 @NoArgsConstructor
@@ -34,7 +48,11 @@ public class UserRegisterDto {
 
     private MultipartFile avatar;
 
-    // Validación personalizada
+    /**
+     * Valida que las contraseñas coincidan.
+     *
+     * @return true si password y confirmPassword son iguales
+     */
     public boolean passwordsMatch() {
         return password != null && password.equals(confirmPassword);
     }

@@ -40,9 +40,16 @@ import java.util.stream.Stream;
 @Slf4j
 public class FileSystemStorageService implements StorageService {
 
-    // Directorio raiz de nuestro almacén de ficheros
+    /**
+     * Directorio raíz del almacenamiento de ficheros.
+     */
     private final Path rootLocation;
 
+    /**
+     * Constructor que inicializa la ubicación del almacenamiento.
+     *
+     * @param path Ruta del directorio de almacenamiento (desde configuración)
+     */
     public FileSystemStorageService(@Value("${upload.root-location}") String path) {
         this.rootLocation = Paths.get(path);
     }
@@ -105,8 +112,10 @@ public class FileSystemStorageService implements StorageService {
     }
 
     /**
-     * Método que es capaz de cargar un fichero a partir de su nombre
-     * Devuelve un objeto de tipo Path
+     * Carga la ruta de un fichero por su nombre.
+     *
+     * @param filename Nombre del fichero
+     * @return Path del fichero
      */
     @Override
     public Path load(String filename) {
@@ -115,8 +124,11 @@ public class FileSystemStorageService implements StorageService {
     }
 
     /**
-     * Método que es capaz de cargar un fichero a partir de su nombre
-     * Devuelve un objeto de tipo Resource
+     * Carga un fichero como recurso por su nombre.
+     *
+     * @param filename Nombre del fichero
+     * @return Recurso del fichero
+     * @throws StorageNotFound Si el fichero no existe o no es legible
      */
     @Override
     public Resource loadAsResource(String filename) {
@@ -135,8 +147,7 @@ public class FileSystemStorageService implements StorageService {
     }
 
     /**
-     * Método que elimina todos los ficheros del almacenamiento
-     * secundario del proyecto.
+     * Elimina todos los ficheros del almacenamiento.
      */
     @Override
     public void deleteAll() {
@@ -145,7 +156,9 @@ public class FileSystemStorageService implements StorageService {
     }
 
     /**
-     * Método que inicializa el almacenamiento secundario del proyecto
+     * Inicializa el sistema de almacenamiento creando el directorio raíz.
+     *
+     * @throws StorageInternal Si no se puede crear el directorio
      */
     @Override
     public void init() {
@@ -157,6 +170,12 @@ public class FileSystemStorageService implements StorageService {
         }
     }
 
+    /**
+     * Elimina un fichero específico del almacenamiento.
+     *
+     * @param filename Nombre del fichero a eliminar
+     * @throws StorageInternal Si no se puede eliminar el fichero
+     */
     @Override
     public void delete(String filename) {
         String justFilename = StringUtils.getFilename(filename);
@@ -171,8 +190,10 @@ public class FileSystemStorageService implements StorageService {
     }
 
     /**
-     * Método que devuelve la URL de un fichero a partir de su nombre
-     * Devuelve un objeto de tipo String
+     * Obtiene la URL pública de un fichero.
+     *
+     * @param filename Nombre del fichero
+     * @return URL del fichero
      */
     @Override
     public String getUrl(String filename) {

@@ -12,20 +12,50 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Servicio para integración con Stripe para procesamiento de pagos.
+ * <p>
+ * Gestiona la creación de sesiones de checkout con Stripe para procesar
+ * los pagos de los carritos de compra.
+ * </p>
+ */
 @Service
 public class StripeService {
 
+    /**
+     * Clave secreta de la API de Stripe (desde configuración).
+     */
     @Value("${stripe.key}")
     private String secretKey;
 
+    /**
+     * URL base del servidor (para URLs de éxito y cancelación).
+     */
     @Value("${server.url}")
     private String serverUrl;
 
+    /**
+     * Inicializa la API de Stripe con la clave secreta.
+     * <p>
+     * Se ejecuta automáticamente después de la construcción del bean.
+     * </p>
+     */
     @PostConstruct
     public void init() {
         Stripe.apiKey = secretKey;
     }
 
+    /**
+     * Crea una sesión de checkout en Stripe para un carrito.
+     * <p>
+     * Genera los line items a partir de las líneas del carrito,
+     * configura URLs de éxito/cancelación y crea la sesión de pago.
+     * </p>
+     *
+     * @param cart Carrito de compra para el que crear la sesión
+     * @return URL de la sesión de checkout de Stripe
+     * @throws RuntimeException Si hay error al crear la sesión
+     */
     public String createCheckoutSession(Cart cart) {
         try {
             List<SessionCreateParams.LineItem> lineItems = new ArrayList<>();
@@ -46,7 +76,8 @@ public class StripeService {
                         .build());
             }
 
-            // URL a la que vuelve si paga bien. Pasamos el ID del carrito para cerrarlo luego.
+            // URL a la que vuelve si paga bien. Pasamos el ID del carrito para cerrarlo
+            // luego.
             String successUrl = serverUrl + "/auth/me/cart/checkout/success/";
             String cancelUrl = serverUrl + "/auth/me/cart/checkout/cancel/";
 
@@ -54,7 +85,7 @@ public class StripeService {
                     .setMode(SessionCreateParams.Mode.PAYMENT)
                     .setSuccessUrl(successUrl)
                     .setCancelUrl(cancelUrl)
-                    .setCustomerEmail(cart.getClient().getEmail()) // Opcional
+                    .setCustomerEmail(cart.getClient().getEmail())
                     .addAllLineItem(lineItems)
                     .build();
 
