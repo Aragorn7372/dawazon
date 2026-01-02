@@ -70,7 +70,7 @@ public class UserController {
     public String index(Model model) {
         log.info("[GET /auth/me] Cargando perfil de ususario");
 
-        // Get user from model (contains ID from SecurityContext)
+
         val sessionUser = (User) model.getAttribute("currentUser");
         if (sessionUser == null) {
             log.error("El usuario actual es nulo");
@@ -361,16 +361,23 @@ public class UserController {
     @PreAuthorize("hasRole('MANAGER')")
     @GetMapping({ "/ventas", "/ventas/" })
     public String getVentas(Model model,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "asc") String direction) {
-        Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                            @RequestParam(required = false) Optional<String> status,
+                            @RequestParam(defaultValue = "0") int page,
+                            @RequestParam(defaultValue = "10") int size,
+                            @RequestParam(defaultValue = "id") String sortBy,
+                            @RequestParam(defaultValue = "asc") String direction) {
+        Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC. name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
-        Pageable pageable = PageRequest.of(page, size, sort);
+        Pageable pageable = PageRequest. of(page, size, sort);
         val userId = (Long) model.getAttribute("currentUserId");
-        val venta = cartService.findAllSalesAsLines(Optional.of(userId), false, pageable);
-        model.addAttribute("ventas", venta);
+
+        val ventas = cartService.findAllSalesAsLines(Optional.of(userId), false, pageable);
+        val ganancias = cartService.calculateTotalEarnings(Optional.of(userId), false);
+
+        model.addAttribute("ventas", ventas);
+        model.addAttribute("ganancias", ganancias);
+        model.addAttribute("currentStatus", status.orElse(""));
+
         return "web/cart/ventas";
     }
 
@@ -380,7 +387,7 @@ public class UserController {
         val userId = (Long) model.getAttribute("currentUserId");
         val line = cartService.getSaleLineByIds(cartId, productId, userId, false);
         model.addAttribute("venta", line);
-        return "web/cart/ventas";
+        return "web/cart/ventas-detalle";
     }
 
     @PreAuthorize("hasRole('MANAGER')")
@@ -397,7 +404,7 @@ public class UserController {
     public String postVentaEdit(Model model, @Valid @ModelAttribute("line") LineRequestDto lineRequestDto) {
         val userId = (Long) model.getAttribute("currentUserId");
         val line = cartService.update(lineRequestDto);
-        model.addAttribute("line", line);
+        model.addAttribute("venta", line);
         return "redirect:auth/me/ventas/" + lineRequestDto.getCartId() + "/" + lineRequestDto.getProductId();
     }
 
@@ -409,9 +416,21 @@ public class UserController {
         LineRequestDto lineRequestDto = LineRequestDto.builder()
                 .cartId(new ObjectId(cartId)).productId(productId).status(Status.CANCELADO).build();
         val lineFinal = cartService.update(lineRequestDto);
-        model.addAttribute("line", lineFinal);
+        model.addAttribute("venta", lineFinal);
         return "redirect:auth/me/ventas";
     }
+    /*
+       @GetMapping("/ventas/edit/{ventaId}/{productId}")
+    public String edit(@PathVariable String ventaId,
+            @PathVariable String productId,
+            @ModelAttribute("currentUserId") Long CurrentId,
+            @ModelAttribute("isAdmin") boolean isAdmin,
+            Model model) {
+        val cartDto = cartService.getSaleLineByIds(ventaId, productId, CurrentId, isAdmin);
+        model.addAttribute("venta", cartDto);
+        return "web/cart/venta-edit";
+
+     */
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/users")

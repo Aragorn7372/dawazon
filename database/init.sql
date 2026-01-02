@@ -118,7 +118,7 @@ INSERT INTO users ( user_name, email, password, client_name, client_email, clien
                    client_address_number, client_address_street, client_address_city,
                    client_address_province, client_address_country, client_address_postal_code,
                    telefono, avatar, is_deleted)
-VALUES ( 'john_doe', 'john.doe@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
+VALUES ( 'john_doe', 'john.doe@email.com', '$2a$12$xNh7ShFISlT27.NU.oSCp.YxNIytRgw4PlzUmwjKd2bNzy0KaCfme',
         'John Doe', 'john.doe@email.com', '+34666333444',
         42, 'Gran Vía', 'Madrid', 'Madrid', 'España', 28013,
         '+34666333444', 'john-avatar.png', FALSE),
