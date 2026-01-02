@@ -7,14 +7,23 @@ import org.springframework.beans.factory.annotation.Value;
 import java.util.Random;
 
 /**
- * Clase que genera IDs
+ * Generador personalizado de IDs alfanuméricos para entidades JPA.
+ * <p>
+ * Genera identificadores aleatorios usando caracteres alfanuméricos y guiones.
+ * La longitud del ID es configurable mediante la propiedad {@code id.length}.
+ * </p>
  */
 public class IdGenerator implements IdentifierGenerator {
+    /**
+     * Longitud del ID generado (configurable desde properties).
+     */
     @Value("${id.length}")
     private Integer length;
+
     /**
-     * Metodo que genera un ID aleatorio con la longitud parametrizada
-     * @return
+     * Genera un ID aleatorio con la longitud parametrizada.
+     *
+     * @return ID alfanumérico generado
      */
     private String generateId() {
         String charArray = "QWRTYPSDFGHJKLZXCVBNMqwrtypsdfghjklzxcvbnm1234567890-_";
@@ -26,6 +35,13 @@ public class IdGenerator implements IdentifierGenerator {
         return id.toString();
     }
 
+    /**
+     * Método llamado por Hibernate para generar el ID de la entidad.
+     *
+     * @param session Sesión de Hibernate
+     * @param object  Entidad para la que se genera el ID
+     * @return ID generado
+     */
     @Override
     public Object generate(SharedSessionContractImplementor session, Object object) {
         return generateId();

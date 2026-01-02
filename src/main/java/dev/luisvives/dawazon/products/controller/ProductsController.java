@@ -24,18 +24,70 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Controlador web para gestionar productos en la aplicación Dawazon.
+ * <p>
+ * Este controlador maneja las peticiones HTTP relacionadas con productos,
+ * incluyendo listado, detalle, edición, eliminación y comentarios.
+ * Utiliza Thymeleaf para renderizar vistas HTML.
+ * </p>
+ *
+ * <p>
+ * Funcionalidades principales:
+ * <ul>
+ * <li>Listado de productos con filtros y paginación</li>
+ * <li>Visualización de detalles de producto</li>
+ * <li>Edición de productos (solo ADMIN)</li>
+ * <li>Eliminación lógica de productos (solo ADMIN)</li>
+ * <li>Sistema de comentarios (usuarios autenticados)</li>
+ * </ul>
+ * </p>
+ *
+ * @see ProductService
+ * @see ProductMapper
+ */
 @Controller
 @Slf4j
 public class ProductsController {
+    /**
+     * Servicio de productos para lógica de negocio.
+     */
     ProductService productService;
+
+    /**
+     * Mapper para transformar entidades a DTOs.
+     */
     ProductMapper mapper;
 
+    /**
+     * Constructor con inyección de dependencias.
+     *
+     * @param productService Servicio de productos
+     * @param mapper         Mapper de productos
+     */
     @Autowired
     public ProductsController(ProductService productService, ProductMapper mapper) {
         this.productService = productService;
         this.mapper = mapper;
     }
 
+    /**
+     * Obtiene y muestra el listado de productos con filtros y paginación.
+     * <p>
+     * Endpoint público accesible desde la raíz, /products y /products/.
+     * Permite filtrar por nombre y categoría, con soporte de paginación y
+     * ordenamiento.
+     * </p>
+     *
+     * @param model     Modelo de Spring MVC para pasar datos a la vista
+     * @param name      Filtro opcional por nombre de producto
+     * @param category  Filtro opcional por categoría
+     * @param page      Número de página (por defecto 0)
+     * @param size      Tamaño de página (por defecto 10)
+     * @param sortBy    Campo de ordenamiento (por defecto "id")
+     * @param direction Dirección de ordenamiento: asc o desc (por defecto "asc")
+     * @return Nombre de la vista Thymeleaf "web/productos/lista"
+     */
     @GetMapping({ "/", "/products", "/products/" })
     public String getProducts(Model model,
             @RequestParam(required = false) Optional<String> name,
@@ -55,6 +107,13 @@ public class ProductsController {
         return "web/productos/lista";
     }
 
+    /**
+     * Muestra el detalle de un producto específico.
+     *
+     * @param model Modelo de Spring MVC
+     * @param id    ID del producto a mostrar
+     * @return Nombre de la vista Thymeleaf "web/productos/producto"
+     */
     @GetMapping("/products/{id}")
     public String getProduct(Model model, @PathVariable String id) {
         log.info("Buscando productos por id: " + id);
@@ -63,6 +122,16 @@ public class ProductsController {
         return "web/productos/producto";
     }
 
+    /**
+     * Muestra el formulario de edición de un producto.
+     * <p>
+     * Solo accesible para usuarios con rol ADMIN.
+     * </p>
+     *
+     * @param model Modelo de Spring MVC
+     * @param id    ID del producto a editar
+     * @return Nombre de la vista Thymeleaf "web/productos/productSaveEdit"
+     */
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/products/edit/{id}")
     public String editProduct(Model model, @PathVariable String id) {
@@ -75,6 +144,17 @@ public class ProductsController {
         return "web/productos/productSaveEdit";
     }
 
+    /**
+     * Procesa la edición de un producto existente.
+     * <p>
+     * Actualiza los datos del producto y sus imágenes. Solo para ADMIN.
+     * </p>
+     *
+     * @param product       DTO con los nuevos datos del producto
+     * @param files         Archivos de imágenes a actualizar
+     * @param bindingResult Resultado de validación
+     * @return Redirección a la página de detalle del producto
+     */
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/products/edit/")
     public String editProduct(@Valid @ModelAttribute("producto") PostProductRequestDto product,
@@ -85,6 +165,19 @@ public class ProductsController {
         return "redirect:/products/" + productoEdit.getId();
     }
 
+    /**
+     * Publica un comentario en un producto.
+     * <p>
+     * Endpoint REST que retorna JSON. Solo usuarios con rol USER pueden comentar.
+     * El comentario se crea como no verificado por defecto.
+     * </p>
+     *
+     * @param id         ID del producto a comentar
+     * @param comment    Contenido del comentario
+     * @param recomended Si el usuario recomienda el producto
+     * @param model      Modelo con información del usuario actual
+     * @return ResponseEntity con el resultado de la operación (success/error)
+     */
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/products/{id}/comentarios")
     @ResponseBody
@@ -123,6 +216,17 @@ public class ProductsController {
         }
     }
 
+    /**
+     * Elimina lógicamente un producto.
+     * <p>
+     * Solo usuarios ADMIN pueden eliminar productos.
+     * El producto se marca como eliminado pero no se borra de la base de datos.
+     * </p>
+     *
+     * @param model Modelo de Spring MVC
+     * @param id    ID del producto a eliminar
+     * @return Redirección al listado de productos
+     */
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/products/delete/{id}")
     public String deleteProduct(Model model, @PathVariable String id) {

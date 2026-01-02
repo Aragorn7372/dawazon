@@ -17,7 +17,30 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+/**
+ * Entidad que representa un usuario del sistema.
+ * <p>
+ * Implementa {@link UserDetails} para integración con Spring Security.
+ * Contiene información de autenticación, perfil, roles y productos favoritos.
+ * </p>
+ * <p>
+ * <b>Campos:</b>
+ * <ul>
+ * <li><b>id</b> (Long): Identificador único (generado automáticamente)</li>
+ * <li><b>userName</b> (String): Nombre de usuario único</li>
+ * <li><b>email</b> (String): Email único</li>
+ * <li><b>password</b> (String): Contraseña encriptada</li>
+ * <li><b>client</b> (Client): Información del cliente embebida</li>
+ * <li><b>telefono</b> (String): Teléfono del usuario</li>
+ * <li><b>roles</b> (List&lt;Role&gt;): Lista de roles asignados</li>
+ * <li><b>avatar</b> (String): Nombre del archivo de imagen de perfil</li>
+ * <li><b>favs</b> (List&lt;String&gt;): IDs de productos favoritos</li>
+ * <li><b>createdAt</b> (LocalDateTime): Fecha de creación</li>
+ * <li><b>updatedAt</b> (LocalDateTime): Fecha de última actualización</li>
+ * <li><b>isDeleted</b> (boolean): Marca de borrado lógico</li>
+ * </ul>
+ * </p>
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,6 +48,9 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
+    /**
+     * Imagen de avatar por defecto.
+     */
     public final static String IMAGE_DEFAULT = "default.png";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,7 +81,8 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     @ElementCollection(fetch = FetchType.EAGER) // Pocos datos, tipo eaguer para ir mas rapido
-    @Enumerated(EnumType.STRING) // Guardar el nombre del enum en lugar de el "indice" del valor Ej.: Tipo[0] = ADMIN / Tipo[1] = USER
+    @Enumerated(EnumType.STRING) // Guardar el nombre del enum en lugar de el "indice" del valor Ej.: Tipo[0] =
+                                 // ADMIN / Tipo[1] = USER
     @Builder.Default
     private List<Role> roles=List.of(Role.USER);
 
@@ -64,7 +91,8 @@ public class User implements UserDetails {
     private String avatar = IMAGE_DEFAULT;
     @Column()
     @ElementCollection(fetch = FetchType.EAGER) // Pocos datos, tipo eaguer para ir mas rapido
-    @Enumerated(EnumType.STRING) // Guardar el nombre del enum en lugar de el "indice" del valor Ej.: Tipo[0] = ADMIN / Tipo[1] = USER
+    @Enumerated(EnumType.STRING) // Guardar el nombre del enum en lugar de el "indice" del valor Ej.: Tipo[0] =
+                                 // ADMIN / Tipo[1] = USER
     private List<String> favs;
     @Column(nullable = false)
     @CreatedDate
@@ -79,6 +107,12 @@ public class User implements UserDetails {
     @Column(nullable = false)
     @Builder.Default
     private boolean isDeleted = false;
+
+    /**
+     * Obtiene las autoridades (roles) del usuario para Spring Security.
+     *
+     * @return Colección de autoridades con prefijo ROLE_
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
@@ -86,6 +120,11 @@ public class User implements UserDetails {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Obtiene el nombre de usuario para Spring Security.
+     *
+     * @return Nombre de usuario
+     */
     @Override
     public String getUsername() {
         return this.userName;

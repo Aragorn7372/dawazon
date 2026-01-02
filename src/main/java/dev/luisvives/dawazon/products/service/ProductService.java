@@ -25,7 +25,7 @@ import java.util.Optional;
  * <ul>
  * <li><b>R</b>: {@link GenericProductResponseDto} – tipo de respuesta para get,
  * save, update y patch.</li>
- * <li><b>ID</b>: <code>Long</code> – tipo del identificador del producto.</li>
+ * <li><b>ID</b>: <code>String</code> – tipo del identificador del producto.</li>
  * <li><b>P</b>: {@link PostProductRequestDto} – DTO para crear o actualizar
  * completamente un producto.</li>
  * </ul>

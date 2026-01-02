@@ -5,9 +5,18 @@ import dev.luisvives.dawazon.cart.models.Address;
 import dev.luisvives.dawazon.cart.models.Client;
 import org.springframework.stereotype.Component;
 
+/**
+ * Mapper para convertir DTOs a entidades de usuario.
+ */
 @Component
 public class UserMapper {
-    public Client toClient(ClientDto dto){
+    /**
+     * Convierte un ClientDto a entidad Client.
+     *
+     * @param dto DTO con datos del cliente
+     * @return Entidad Client con dirección embebida
+     */
+    public Client toClient(ClientDto dto) {
         return Client.builder()
                 .name(dto.getName())
                 .email(dto.getEmail())
