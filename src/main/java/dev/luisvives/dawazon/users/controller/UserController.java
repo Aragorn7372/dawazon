@@ -8,7 +8,7 @@ import dev.luisvives.dawazon.cart.models.Client;
 import dev.luisvives.dawazon.cart.models.Status;
 import dev.luisvives.dawazon.cart.service.CartServiceImpl;
 import dev.luisvives.dawazon.products.dto.PostProductRequestDto;
-
+import dev.luisvives.dawazon.products.mapper.ProductMapper;
 import dev.luisvives.dawazon.products.service.ProductServiceImpl;
 import dev.luisvives.dawazon.users.dto.UserAdminRequestDto;
 import dev.luisvives.dawazon.users.dto.UserRequestDto;
@@ -63,6 +63,7 @@ public class UserController {
     private final CartServiceImpl cartService;
     private final UserMapper userMapper;
     private final UserService userService;
+    private final ProductMapper mapper;
 
     /**
      * Constructor con inyección de dependencias.
@@ -76,13 +77,14 @@ public class UserController {
      */
     @Autowired
     public UserController(AuthService authService, ProductServiceImpl productService, FavService favService,
-            CartServiceImpl cartService, UserMapper userMapper, UserService userService) {
+            CartServiceImpl cartService, UserMapper userMapper, UserService userService, ProductMapper mapper) {
         this.authService = authService;
         this.productService = productService;
         this.favService = favService;
         this.cartService = cartService;
         this.userMapper = userMapper;
         this.userService = userService;
+        this.mapper = mapper;
     }
 
     /**
@@ -218,29 +220,37 @@ public class UserController {
     }
 
     /**
-     * Lista productos del manager actual con paginación (solo MANAGER).
+     * Obtiene y muestra el listado de productos con filtros y paginación del Manager actual.
+     * <p>
+     * Endpoint público accesible desde la raíz, /products y /products/.
+     * Permite filtrar por nombre y categoría, con soporte de paginación y
+     * ordenamiento.
+     * </p>
      *
-     * @param model     Modelo de Spring MVC
-     * @param page      Número de página
-     * @param size      Tamaño de página
-     * @param sortBy    Campo de ordenación
-     * @param direction Dirección de ordenación
-     * @return Vista de lista de productos
+     * @param model     Modelo de Spring MVC para pasar datos a la vista
+     * @param page      Número de página (por defecto 0)
+     * @param size      Tamaño de página (por defecto 10)
+     * @param sortBy    Campo de ordenamiento (por defecto "id")
+     * @param direction Dirección de ordenamiento: asc o desc (por defecto "asc")
+     * @return Nombre de la vista Thymeleaf "web/productos/lista"
      */
     @PreAuthorize("hasRole('MANAGER')")
     @GetMapping({ "/products", "/products/" })
-    public String products(Model model,
+    public String getProducts(Model model,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String direction) {
+        val id=(Long)model.getAttribute("currentUserId");
+        // Creamos el objeto de ordenación
         Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
         // Creamos cómo va a ser la paginación
         Pageable pageable = PageRequest.of(page, size, sort);
-        val user = (User) model.getAttribute("currentUser");
-        assert user != null;
-        model.addAttribute("productos", productService.findAllByManagerId(user.getId(), pageable));
+        val products = mapper.pageToDTO(
+                productService.findAll(Optional.empty(), Optional.empty(), Optional.of(id), pageable), sortBy,
+                direction);
+        model.addAttribute("productos", products);
         return "web/productos/lista";
     }
 
@@ -645,18 +655,6 @@ public class UserController {
         model.addAttribute("venta", lineFinal);
         return "redirect:auth/me/ventas";
     }
-    /*
-       @GetMapping("/ventas/edit/{ventaId}/{productId}")
-    public String edit(@PathVariable String ventaId,
-            @PathVariable String productId,
-            @ModelAttribute("currentUserId") Long CurrentId,
-            @ModelAttribute("isAdmin") boolean isAdmin,
-            Model model) {
-        val cartDto = cartService.getSaleLineByIds(ventaId, productId, CurrentId, isAdmin);
-        model.addAttribute("venta", cartDto);
-        return "web/cart/venta-edit";
-
-     */
 
     /**
      * Lista usuarios con paginación y filtro opcional (solo ADMIN).
@@ -778,7 +776,7 @@ public class UserController {
     @PostMapping("/users/ban/{id}")
     public String banUser(Model model, @PathVariable Long id) {
         authService.softDelete(id);
-        return "redirect:/auth/me/users/";
+        return "redirect:/auth/me/users";
     }
 
     /**

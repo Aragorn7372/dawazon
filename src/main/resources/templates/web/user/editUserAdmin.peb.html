@@ -4,73 +4,98 @@
 <div class="container col-12 my-4">
     <h2 class="text-center mb-4">Editar Perfil</h2>
 
-    <form action="{% if currentUser.id == user.id %}/auth/me/edit{% else %}/auth/me/users/edit/{{ user.id }}{% endif %}" method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="{{ csrfParamName }}" value="{{ csrfToken }}"/>
+    <form action="{% if currentUser.id == user.id %}/auth/me/edit{% else %}/auth/me/users/edit/{{ user.id }}{% endif %}"
+        method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="{{ csrfParamName }}" value="{{ csrfToken }}" />
         <input type="hidden" name="id" value="{{ user.id }}">
 
-        <div class="admin-header" style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+        <div class="admin-header"
+            style="text-align: center; display: flex; flex-direction: column; align-items: center;">
             <div class="admin-avatar">
                 {% if user.avatar %}
-                <img src="{{ filesPath }}{{ user.avatar }}" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+                <img src="{{ filesPath }}{{ user.avatar }}" alt="Avatar"
+                    style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
                 {% else %}
-                <img src="{{ filesPath }}system-images/default.png" alt="Default Avatar" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+                <img src="{{ filesPath }}system-images/default.png" alt="Default Avatar"
+                    style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
                 {% endif %}
             </div>
             <h3 class="product-title mt-3" style="font-size: 1.4rem;">{{ user.userName }}</h3>
-            
-            <div class="form-group mt-2">
+
+            <div class="form-group mt-2" style="width: 100%; max-width: 500px;">
                 <label class="form-label">Cambiar Avatar</label>
                 <input type="file" name="avatar" class="form-control" accept="image/*">
             </div>
         </div>
 
-        <div class="product-main-grid mt-4">
-            <div class="product-info" style="text-align: left;">
-                <div class="form-group">
-                    <label class="form-label">Nombre</label>
-                    <input type="text" name="nombre" class="form-control" 
-                           value="{% if user.client and user.client.name %}{{ user.client.name }}{% endif %}" required>
-                </div>
+        <div class="mt-4" style="max-width: 600px; margin: 0 auto;">
+            <div class="form-group mb-3">
+                <label class="form-label">Nombre</label>
+                <input type="text" name="nombre" class="form-control"
+                    value="{% if user.client and user.client.name %}{{ user.client.name }}{% else %}{{ user.userName }}{% endif %}"
+                    required>
+            </div>
 
-                <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control" value="{{ user.email }}" required>
-                </div>
+            <div class="form-group mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" name="email" class="form-control" value="{{ user.email }}" required>
+            </div>
 
-                <div class="form-group">
-                    <label class="form-label">Teléfono</label>
-                    <input type="text" name="telefono" class="form-control" 
-                           value="{% if user.telefono %}{{ user.telefono }}{% endif %}">
-                </div>
+            <div class="form-group mb-3">
+                <label class="form-label">Teléfono</label>
+                <input type="text" name="telefono" class="form-control"
+                    value="{% if user.telefono %}{{ user.telefono }}{% endif %}">
+            </div>
 
-                <div class="form-group">
-                    <label class="form-label">Calle</label>
-                    <input type="text" name="calle" class="form-control" 
-                           value="{% if user.client and user.client.address and user.client.address.street %}{{ user.client.address.street }}{% endif %}">
-                </div>
+            {% if isAdmin and currentUser.id != user.id %}
+            <div class="form-group mb-3">
+                <label class="form-label">Rol</label>
+                <select name="roles" class="form-control">
+                    {% for role in user.roles %}
+                    <option value="{{ role }}" selected>{{ role }}</option>
+                    {% endfor %}
+                    {% if not user.roles contains 'USER' %}
+                    <option value="USER">USER</option>
+                    {% endif %}
+                    {% if not user.roles contains 'MANAGER' %}
+                    <option value="MANAGER">MANAGER</option>
+                    {% endif %}
+                    {% if not user.roles contains 'ADMIN' %}
+                    <option value="ADMIN">ADMIN</option>
+                    {% endif %}
+                </select>
+                <small class="form-text text-muted">Selecciona el rol principal del usuario</small>
+            </div>
+            {% endif %}
 
-                <div class="form-group">
-                    <label class="form-label">Ciudad</label>
-                    <input type="text" name="ciudad" class="form-control" 
-                           value="{% if user.client and user.client.address and user.client.address.city %}{{ user.client.address.city }}{% endif %}">
-                </div>
+            <div class="form-group mb-3">
+                <label class="form-label">Calle</label>
+                <input type="text" name="calle" class="form-control"
+                    value="{% if user.client and user.client.address and user.client.address.street %}{{ user.client.address.street }}{% endif %}">
+            </div>
 
-                <div class="form-group">
-                    <label class="form-label">Código Postal</label>
-                    <input type="text" name="codigoPostal" class="form-control" 
-                           value="{% if user.client and user.client.address and user.client.address.postalCode %}{{ user.client.address.postalCode }}{% endif %}">
-                </div>
+            <div class="form-group mb-3">
+                <label class="form-label">Ciudad</label>
+                <input type="text" name="ciudad" class="form-control"
+                    value="{% if user.client and user.client.address and user.client.address.city %}{{ user.client.address.city }}{% endif %}">
+            </div>
 
-                <div class="form-group">
-                    <label class="form-label">Provincia</label>
-                    <input type="text" name="provincia" class="form-control" 
-                           value="{% if user.client and user.client.address and user.client.address.province %}{{ user.client.address.province }}{% endif %}">
-                </div>
+            <div class="form-group mb-3">
+                <label class="form-label">Código Postal</label>
+                <input type="text" name="codigoPostal" class="form-control"
+                    value="{% if user.client and user.client.address and user.client.address.postalCode %}{{ user.client.address.postalCode }}{% endif %}">
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="form-label">Provincia</label>
+                <input type="text" name="provincia" class="form-control"
+                    value="{% if user.client and user.client.address and user.client.address.province %}{{ user.client.address.province }}{% endif %}">
             </div>
         </div>
 
         <div class="action-buttons mt-4" style="display: flex; gap: 10px; justify-content: center;">
-            <a href="{% if currentUser.id == user.id %}/auth/me{% else %}/auth/me/users/{{ user.id }}{% endif %}" class="btn btn-secondary" style="padding: 10px 20px;">
+            <a href="{% if currentUser.id == user.id %}/auth/me{% else %}/auth/me/users/{{ user.id }}{% endif %}"
+                class="btn btn-secondary" style="padding: 10px 20px;">
                 <i class="bi bi-x-circle me-2"></i> Cancelar
             </a>
             <button type="submit" class="btn-gradient" style="padding: 10px 20px;">

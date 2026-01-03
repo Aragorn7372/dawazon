@@ -8,74 +8,75 @@
     </div>
 </header>
 <main class="container col-12 mt-4">
-   <h2 class="text-center mb-3">Usuarios Admin</h2>
+    <h2 class="text-center mb-3">Usuarios Admin</h2>
 
     <!-- Tabla responsive -->
     <div class="table-responsive">
         <table id="usersTable" class="table align-middle users-table">
             <thead>
-            <tr>
-                <th scope="col"></th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Email</th>
-                <th scope="col">Roles</th>
-                <th scope="col">Estado</th>
-                <th scope="col" class="text-end">Acciones</th>
-            </tr>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Roles</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col" class="text-end">Acciones</th>
+                </tr>
             </thead>
             <tbody>
-            {% if users is empty %}
-            <tr>
-                <td colspan="6" class="text-center text-muted">No se encontraron usuarios. </td>
-            </tr>
-            {% else %}
-            {% for user in users %}
-            <tr>
-                <td>
-                    {% if user.avatar %}
-                    <img src="{{user.avatar}}" alt="{{user.userName}}" class="avatar-small">
-                    {% else %}
-                    <div class="avatar-small bg-secondary text-white d-flex align-items-center justify-content-center">
-                        {{user.userName | slice(0,1) | upper}}
-                    </div>
-                    {% endif %}
-                </td>
-                <td>
-                    <div>{{user.client.name | default('Sin nombre')}}</div>
-                    <div class="text-muted-small">{{user.userName}}</div>
-                </td>
-                <td>{{user.email}}</td>
-                <td>
-                    {% if user.roles is not empty %}
-                    {% for role in user.roles %}
-                    <span class="role-badge">{{role}}</span>
-                    {% endfor %}
-                    {% else %}
-                    <span class="text-muted">Sin roles</span>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if user.isDeleted %}
-                    <span class="status-badge status-cancelada">Inactivo</span>
-                    {% else %}
-                    <span class="status-badge status-completada">Activo</span>
-                    {% endif %}
-                </td>
-                <td class="text-end actions-cell">
-                    <a href="/auth/me/users/{{user.id}}" class="btn btn-sm btn-outline-primary me-2">
-                        <i class="bi bi-eye"></i> Ver
-                    </a>
-                    <button onclick="edit(this,{{user.id}})" class="btn btn-sm btn-gradient me-2">
-                        <i class="bi bi-pencil"></i> Editar
-                    </button>
-                    <button onclick="deleted(this,{{user.id}})" class="btn btn-sm btn-outline-danger"
+                {% if users is empty %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted">No se encontraron usuarios. </td>
+                </tr>
+                {% else %}
+                {% for user in users %}
+                <tr>
+                    <td>
+                        {% if user.avatar %}
+                        <img src="{{ filesPath }}{{ user.avatar }}" alt="{{user.userName}}" class="avatar-small">
+                        {% else %}
+                        <div
+                            class="avatar-small bg-secondary text-white d-flex align-items-center justify-content-center">
+                            {{user.userName | slice(0,1) | upper}}
+                        </div>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div>{{user.client.name | default('Sin nombre')}}</div>
+                        <div class="text-muted-small">{{user.userName}}</div>
+                    </td>
+                    <td>{{user.email}}</td>
+                    <td>
+                        {% if user.roles is not empty %}
+                        {% for role in user.roles %}
+                        <span class="role-badge">{{role}}</span>
+                        {% endfor %}
+                        {% else %}
+                        <span class="text-muted">Sin roles</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if user.isDeleted %}
+                        <span class="status-badge status-cancelada">Inactivo</span>
+                        {% else %}
+                        <span class="status-badge status-completada">Activo</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-end actions-cell">
+                        <a href="/auth/me/users/{{user.id}}" class="btn btn-sm btn-outline-primary me-2">
+                            <i class="bi bi-eye"></i> Ver
+                        </a>
+                        <button onclick="edit(this,{{user.id}})" class="btn btn-sm btn-gradient me-2">
+                            <i class="bi bi-pencil"></i> Editar
+                        </button>
+                        <button onclick="deleted(this,{{user.id}})" class="btn btn-sm btn-outline-danger"
                             title="Banear usuario">
-                        <i class="bi bi-hammer"></i>
-                    </button>
-                </td>
-            </tr>
-            {% endfor %}
-            {% endif %}
+                            <i class="bi bi-hammer"></i>
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% endif %}
             </tbody>
         </table>
     </div>
@@ -87,8 +88,19 @@
     }
 
     function deleted(element, userId) {
-        if(confirm('¿Estás seguro de banear este usuario?')) {
-            window.location.href = `/auth/me/users/ban/${userId}`;
+        if (confirm('¿Estás seguro de banear este usuario?')) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/auth/me/users/ban/${userId}`;
+
+            const csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = document.querySelector('meta[name="_csrf_param"]').content;
+            csrfInput.value = document.querySelector('meta[name="_csrf"]').content;
+            form.appendChild(csrfInput);
+
+            document.body.appendChild(form);
+            form.submit();
         }
     }
 

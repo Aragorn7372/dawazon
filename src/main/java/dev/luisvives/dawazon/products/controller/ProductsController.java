@@ -102,7 +102,7 @@ public class ProductsController {
                 : Sort.by(sortBy).descending();
         // Creamos cómo va a ser la paginación
         Pageable pageable = PageRequest.of(page, size, sort);
-        val products = mapper.pageToDTO(productService.findAll(name, category, pageable), sortBy, direction);
+        val products = mapper.pageToDTO(productService.findAll(name, category,Optional.empty(), pageable), sortBy, direction);
         model.addAttribute("productos", products);
         return "web/productos/lista";
     }

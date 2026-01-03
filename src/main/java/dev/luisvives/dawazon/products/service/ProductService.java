@@ -42,6 +42,7 @@ public interface ProductService extends Service<GenericProductResponseDto, Strin
      */
     Page<Product> findAll(Optional<String> name,
             Optional<String> category,
+            Optional<Long> idCreator,
             Pageable pageable);
 
     /**

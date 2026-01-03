@@ -104,7 +104,7 @@ public class ProductServiceImpl implements ProductService {
         this.userRepository = userRepository;
     }
 
-    /**
+     /**
      * Busca productos aplicando filtros opcionales por nombre, precio máximo y
      * categoría.
      *
@@ -115,6 +115,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<Product> findAll(Optional<String> name,
             Optional<String> category,
+            Optional<Long> idCreator,
             Pageable pageable) {
         var isDeleted = false;
         Specification<Product> specNameProducto = (root, query, criteriaBuilder) -> name
@@ -127,17 +128,16 @@ public class ProductServiceImpl implements ProductService {
         Specification<Product> specCategory = (root, query, criteriaBuilder) -> category
                 .map(c -> criteriaBuilder.equal(root.get("category").get("name"), c))
                 .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
-
+        Specification<Product> specIdCreator =(root,query,criteriaBuilder)->
+                idCreator.map(id -> criteriaBuilder.equal(root.get("creatorId"),id
+                )).orElseGet(()->criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
         Specification<Product> criterio = Specification.allOf(
                 specNameProducto,
                 specIsDeleted,
-                specCategory);
+                specCategory,
+                specIdCreator);
 
         return repository.findAll(criterio, pageable);
-    }
-
-    public Page<Product> findAllByManagerId(Long id, Pageable pageable) {
-        return repository.findAllByCreatorId(id, pageable);
     }
 
     /**
@@ -264,6 +264,7 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     @CacheEvict(key = "#id")
+    @Transactional
     public void deleteById(String id) {
         log.info("SERVICE: Eliminando Producto con id: " + id);
 

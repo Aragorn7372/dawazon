@@ -12,6 +12,7 @@ import dev.luisvives.dawazon.users.exceptions.UserException;
 import dev.luisvives.dawazon.users.models.Role;
 import dev.luisvives.dawazon.users.models.User;
 import dev.luisvives.dawazon.users.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -440,6 +441,7 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     @CacheEvict(value = "usuarios", allEntries = true)
+    @Transactional
     public void softDelete(Long id) {
         userRepository.softDelete(id);
     }

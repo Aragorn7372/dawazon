@@ -29,7 +29,7 @@
     {% if isUser %}
     <div class="action-buttons">
         <button onclick="añadirAlCarrito(this, '{{ producto.id }}')"
-                class="{% if isCart %}btn btn-danger{% else %}btn btn-gradient{% endif %}">
+            class="{% if isCart %}btn btn-danger{% else %}btn btn-gradient{% endif %}">
             {% if isCart %}
             Quitar del carrito
             {% else %}
@@ -37,8 +37,8 @@
             {% endif %}
         </button>
         <button onclick="añadirAFav(this, '{{ producto.id }}')"
-                class="{% if isFav %}btn btn-danger{% else %}btn btn-gradient{% endif %}"
-                data-fav="{% if isFav %}true{% else %}false{% endif %}">
+            class="{% if isFav %}btn btn-danger{% else %}btn btn-gradient{% endif %}"
+            data-fav="{% if isFav %}true{% else %}false{% endif %}">
             {% if isFav %}
             no fav
             {% else %}
@@ -63,7 +63,7 @@
         <h3>comentarios: </h3>
         {% if isUser %}
         <form id="ratingForm" onsubmit="event.preventDefault(); submitRating('{{ producto.id }}');">
-            <input type="hidden" name="{{ csrfParamName }}" value="{{ csrfToken }}"/>
+            <input type="hidden" name="{{ csrfParamName }}" value="{{ csrfToken }}" />
 
             <div class="comment-card">
                 <div class="d-block">
@@ -72,14 +72,13 @@
 
                     <div class="mt-3">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="recomended" id="recomended"
-                                   value="true" required/>
-                            <label class="form-check-label recommendation positive"
-                                   for="recomended">recomendado</label>
+                            <input class="form-check-input" type="radio" name="recomended" id="recomended" value="true"
+                                required />
+                            <label class="form-check-label recommendation positive" for="recomended">recomendado</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="recomended" id="noRecomended"
-                                   value="false" required/>
+                                value="false" required />
                             <label class="form-check-label recommendation negative" for="noRecomended">no
                                 recomendado</label>
                         </div>
@@ -207,7 +206,7 @@
                 const rating = document.querySelector('input[name="recomended"]:checked');
                 const comentario = document.getElementById('comment').value;
 
-                if (! rating) {
+                if (!rating) {
                     showNotification('Por favor, seleccione si recomienda o no el producto', 'warning');
                     return;
                 }
@@ -254,8 +253,19 @@
         {% if isAdmin %}
         <script>
             function eliminar(element, productoId) {
-                if(confirm('¿Estás seguro de eliminar este producto?')) {
-                    window.location.href = `/products/delete/${productoId}`;
+                if (confirm('¿Estás seguro de eliminar este producto?')) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = `/products/delete/${productoId}`;
+
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = getCsrfParamName();
+                    csrfInput.value = getCsrfToken();
+                    form.appendChild(csrfInput);
+
+                    document.body.appendChild(form);
+                    form.submit();
                 }
             }
         </script>
