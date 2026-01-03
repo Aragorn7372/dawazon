@@ -104,7 +104,7 @@ public class ProductServiceImpl implements ProductService {
         this.userRepository = userRepository;
     }
 
-    /**
+     /**
      * Busca productos aplicando filtros opcionales por nombre, precio máximo y
      * categoría.
      *
@@ -138,10 +138,6 @@ public class ProductServiceImpl implements ProductService {
                 specIdCreator);
 
         return repository.findAll(criterio, pageable);
-    }
-
-    public Page<Product> findAllByManagerId(Long id, Pageable pageable) {
-        return repository.findAllByCreatorId(id, pageable);
     }
 
     /**
@@ -268,6 +264,7 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     @CacheEvict(key = "#id")
+    @Transactional
     public void deleteById(String id) {
         log.info("SERVICE: Eliminando Producto con id: " + id);
 

@@ -57,11 +57,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * Realiza un borrado lógico de un usuario.
      *
      * @param id ID del usuario a eliminar
-     * @return Usuario opcional
      */
     @Modifying
     @Query("UPDATE User u SET u.isDeleted=true WHERE u.id=:id")
-    Optional<User> softDelete(Long id);
+    void softDelete(Long id);
 
     /**
      * Busca usuarios con criterios y paginación.

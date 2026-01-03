@@ -8,7 +8,6 @@ import dev.luisvives.dawazon.cart.models.Client;
 import dev.luisvives.dawazon.cart.models.Status;
 import dev.luisvives.dawazon.cart.service.CartServiceImpl;
 import dev.luisvives.dawazon.products.dto.PostProductRequestDto;
-
 import dev.luisvives.dawazon.products.mapper.ProductMapper;
 import dev.luisvives.dawazon.products.service.ProductServiceImpl;
 import dev.luisvives.dawazon.users.dto.UserAdminRequestDto;
@@ -215,17 +214,6 @@ public class UserController {
     public String save(Model model) {
         return "web/productos/productoSaveEdit";
     }
-
-    /**
-     * Lista productos del manager actual con paginación (solo MANAGER).
-     *
-     * @param model     Modelo de Spring MVC
-     * @param page      Número de página
-     * @param size      Tamaño de página
-     * @param sortBy    Campo de ordenación
-     * @param direction Dirección de ordenación
-     * @return Vista de lista de productos
-     */
 
     /**
      * Obtiene y muestra el listado de productos con filtros y paginación del Manager actual.
@@ -662,18 +650,6 @@ public class UserController {
         model.addAttribute("venta", lineFinal);
         return "redirect:auth/me/ventas";
     }
-    /*
-       @GetMapping("/ventas/edit/{ventaId}/{productId}")
-    public String edit(@PathVariable String ventaId,
-            @PathVariable String productId,
-            @ModelAttribute("currentUserId") Long CurrentId,
-            @ModelAttribute("isAdmin") boolean isAdmin,
-            Model model) {
-        val cartDto = cartService.getSaleLineByIds(ventaId, productId, CurrentId, isAdmin);
-        model.addAttribute("venta", cartDto);
-        return "web/cart/venta-edit";
-
-     */
 
     /**
      * Lista usuarios con paginación y filtro opcional (solo ADMIN).
@@ -795,7 +771,7 @@ public class UserController {
     @PostMapping("/users/ban/{id}")
     public String banUser(Model model, @PathVariable Long id) {
         authService.softDelete(id);
-        return "redirect:/auth/me/users/";
+        return "redirect:/auth/me/users";
     }
 
     /**

@@ -108,10 +108,10 @@ VALUES ('aB3xT9kL2pQm', 'Electrónica', NOW(), NOW()),
 -- Admin y Manager sin información de cliente (no compran)
 INSERT INTO users ( user_name, email, password, telefono, avatar, is_deleted)
 VALUES ( 'admin', 'admin@dawazon.com', '$2a$12$lCscGZz/fkYBFUms.kgn2OhnPo3dnZh794OLCMulNpLSJFTqC9/D2',
-        '+34666111222', 'admin-avatar.png', FALSE),
+        '+34666111222', 'default.png', FALSE),
 
        ( 'manager_jose', 'jose.manager@dawazon.com', '$2a$12$nca74X1GHKl98exObCRNVea.73rwakP9JNV/Luoc6zXjgmjIv4R3O',
-        '+34666222333', 'manager-avatar.png', FALSE);
+        '+34666222333', 'default.png', FALSE);
 
 -- Usuarios normales con información de cliente completa
 INSERT INTO users ( user_name, email, password, client_name, client_email, client_phone,
@@ -121,12 +121,12 @@ INSERT INTO users ( user_name, email, password, client_name, client_email, clien
 VALUES ( 'john_doe', 'john.doe@email.com', '$2a$12$xNh7ShFISlT27.NU.oSCp.YxNIytRgw4PlzUmwjKd2bNzy0KaCfme',
         'John Doe', 'john.doe@email.com', '+34666333444',
         42, 'Gran Vía', 'Madrid', 'Madrid', 'España', 28013,
-        '+34666333444', 'john-avatar.png', FALSE),
+        '+34666333444', 'default.png', FALSE),
 
        ( 'jane_smith', 'jane.smith@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
         'Jane Smith', 'jane.smith@email.com', '+34666555666',
         15, 'Paseo de Gracia', 'Barcelona', 'Barcelona', 'España', 8007,
-        '+34666555666', 'jane-avatar.png', FALSE),
+        '+34666555666', 'default.png', FALSE),
 
        ( 'carlos_ruiz', 'carlos.ruiz@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
         'Carlos Ruiz', 'carlos.ruiz@email.com', '+34666777888',
@@ -136,7 +136,7 @@ VALUES ( 'john_doe', 'john.doe@email.com', '$2a$12$xNh7ShFISlT27.NU.oSCp.YxNIytR
        ( 'maria_garcia', 'maria.garcia@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
         'María García', 'maria.garcia@email.com', '+34666999000',
         23, 'Calle Sierpes', 'Sevilla', 'Sevilla', 'España', 41004,
-        '+34666999000', 'maria-avatar.png', FALSE),
+        '+34666999000', 'default.png', FALSE),
 
        ( 'pedro_lopez', 'pedro.lopez@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
         'Pedro López', 'pedro.lopez@email.com', '+34666000111',
@@ -252,7 +252,7 @@ VALUES ('Hx9Lp2Ks4TnB', 3, 'Excelente portátil, muy rápido y ligero. Lo recomi
        ('Gn7Qs4Lv8BxZ', 3, 'Una joya de la literatura latinoamericana. Imprescindible.', TRUE, TRUE,
         NOW() - INTERVAL '18 days');
 
--- Insertar favoritos de usuarios (solo usuarios normales tienen favoritos)
+-- Insertar favoritos de usuarios (solo los usuarios normales tienen favoritos)
 INSERT INTO user_favs (user_id, favs)
 VALUES (3, 'Hx9Lp2Ks4TnB'),
        (3, 'Yw3Zq7Vm1RfG'),
