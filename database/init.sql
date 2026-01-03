@@ -158,11 +158,11 @@ VALUES (1, 'ADMIN'),   -- Admin
 INSERT INTO product (id, name, price, stock, description, creator_id, category_id, is_deleted, version)
 VALUES ('Hx9Lp2Ks4TnB', 'Laptop HP Pavilion 15', 699.99, 25,
         'Portátil HP Pavilion 15 con procesador Intel Core i5, 8GB RAM, 256GB SSD',
-        1, 'aB3xT9kL2pQm', FALSE, 0),
+        2, 'aB3xT9kL2pQm', FALSE, 0),
 
        ('Yw3Zq7Vm1RfG', 'iPhone 14 Pro 128GB', 1099.99, 15,
         'Apple iPhone 14 Pro con pantalla Super Retina XDR de 6.1 pulgadas',
-        1, 'aB3xT9kL2pQm', FALSE, 0),
+        2, 'aB3xT9kL2pQm', FALSE, 0),
 
        ('Dk5Mn8Pj2WcX', 'Don Quijote de la Mancha', 19.99, 50,
         'Obra maestra de Miguel de Cervantes, edición completa ilustrada',
@@ -182,11 +182,11 @@ VALUES ('Hx9Lp2Ks4TnB', 'Laptop HP Pavilion 15', 699.99, 25,
 
        ('Vb4Gx9Hs6MqK', 'Sofá IKEA KIVIK 3 plazas', 449.99, 10,
         'Sofá de 3 plazas con funda lavable y diseño moderno',
-        1, 'pL9dF2nB6vCx', FALSE, 0),
+        2, 'pL9dF2nB6vCx', FALSE, 0),
 
        ('Qs1Zw8Ty3NlJ', 'Lámpara Philips Hue White', 59.99, 35,
         'Bombilla LED inteligente con control por aplicación',
-        1, 'pL9dF2nB6vCx', FALSE, 0),
+        2, 'pL9dF2nB6vCx', FALSE, 0),
 
        ('Mx7Pk2Vn5RbD', 'Bicicleta Trek Marlin 5', 599.99, 8,
         'Bicicleta de montaña con cuadro de aluminio y frenos de disco',
@@ -198,7 +198,7 @@ VALUES ('Hx9Lp2Ks4TnB', 'Laptop HP Pavilion 15', 699.99, 25,
 
        ('Tx5Wr9Km2NhP', 'Samsung Galaxy S23 Ultra', 1199.99, 20,
         'Samsung Galaxy S23 Ultra con pantalla AMOLED de 6.8 pulgadas y S Pen',
-        1, 'aB3xT9kL2pQm', FALSE, 0),
+        2, 'aB3xT9kL2pQm', FALSE, 0),
 
        ('Gn7Qs4Lv8BxZ', 'Cien Años de Soledad', 22.99, 35,
         'Obra maestra de Gabriel García Márquez, edición especial',
