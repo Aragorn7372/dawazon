@@ -9,6 +9,7 @@ import dev.luisvives.dawazon.cart.models.Status;
 import dev.luisvives.dawazon.cart.service.CartServiceImpl;
 import dev.luisvives.dawazon.products.dto.PostProductRequestDto;
 
+import dev.luisvives.dawazon.products.mapper.ProductMapper;
 import dev.luisvives.dawazon.products.service.ProductServiceImpl;
 import dev.luisvives.dawazon.users.dto.UserAdminRequestDto;
 import dev.luisvives.dawazon.users.dto.UserRequestDto;
@@ -63,6 +64,7 @@ public class UserController {
     private final CartServiceImpl cartService;
     private final UserMapper userMapper;
     private final UserService userService;
+    private final ProductMapper mapper;
 
     /**
      * Constructor con inyección de dependencias.
@@ -76,13 +78,14 @@ public class UserController {
      */
     @Autowired
     public UserController(AuthService authService, ProductServiceImpl productService, FavService favService,
-            CartServiceImpl cartService, UserMapper userMapper, UserService userService) {
+            CartServiceImpl cartService, UserMapper userMapper, UserService userService, ProductMapper mapper) {
         this.authService = authService;
         this.productService = productService;
         this.favService = favService;
         this.cartService = cartService;
         this.userMapper = userMapper;
         this.userService = userService;
+        this.mapper = mapper;
     }
 
     /**
@@ -162,34 +165,30 @@ public class UserController {
         val id = (Long) model.getAttribute("currentUserId");
         log.info("[POST /auth/me/edit] ID del usuario actual: {}", id);
 
-        try {
-            log.info("[POST /auth/me/edit] Llamando a authService.updateCurrentUser...");
-            val userUpdated = authService.updateCurrentUser(id, updateUser);
-            log.info("[POST /auth/me/edit] Usuario actualizado cone exito: ID={}, Username={}",
-                    userUpdated.getId(), userUpdated.getUsername());
+        log.info("[POST /auth/me/edit] Llamando a authService.updateCurrentUser...");
+        val userUpdated = authService.updateCurrentUser(id, updateUser);
+        log.info("[POST /auth/me/edit] Usuario actualizado cone exito: ID={}, Username={}",
+                userUpdated.getId(), userUpdated.getUsername());
 
-            User finalUser;
-            if (file != null && !file.isEmpty()) {
-                log.info("[POST /auth/me/edit] Llamando a authService.updateImage...");
-                finalUser = authService.updateImage(id, file);
-                log.info("[POST /auth/me/edit] Imagen actualizada correctamente, nuevo avatar: {}",
-                        finalUser.getAvatar());
-            } else {
-                log.info("[POST /auth/me/edit] No hay avatar para actualizar");
-                finalUser = userUpdated;
-            }
-
-            log.info("[POST /auth/me/edit] Actualizando sesion de spring con nuevos datos de usuario");
-            val authentication = new UsernamePasswordAuthenticationToken(
-                    finalUser, finalUser.getPassword(), finalUser.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            log.info("[POST /auth/me/edit] SecurityContext actualizado correctamente");
-
-            log.info("[POST /auth/me/edit] Redirect a /auth/me");
-            return "redirect:/auth/me";
-        } catch (Exception e) {
-            throw e;
+        User finalUser;
+        if (file != null && !file.isEmpty()) {
+            log.info("[POST /auth/me/edit] Llamando a authService.updateImage...");
+            finalUser = authService.updateImage(id, file);
+            log.info("[POST /auth/me/edit] Imagen actualizada correctamente, nuevo avatar: {}",
+                    finalUser.getAvatar());
+        } else {
+            log.info("[POST /auth/me/edit] No hay avatar para actualizar");
+            finalUser = userUpdated;
         }
+
+        log.info("[POST /auth/me/edit] Actualizando sesion de spring con nuevos datos de usuario");
+        val authentication = new UsernamePasswordAuthenticationToken(
+                finalUser, finalUser.getPassword(), finalUser.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        log.info("[POST /auth/me/edit] SecurityContext actualizado correctamente");
+
+        log.info("[POST /auth/me/edit] Redirect a /auth/me");
+        return "redirect:/auth/me";
     }
 
     /**
@@ -227,20 +226,37 @@ public class UserController {
      * @param direction Dirección de ordenación
      * @return Vista de lista de productos
      */
+
+    /**
+     * Obtiene y muestra el listado de productos con filtros y paginación del Manager actual.
+     * <p>
+     * Endpoint público accesible desde la raíz, /products y /products/.
+     * Permite filtrar por nombre y categoría, con soporte de paginación y
+     * ordenamiento.
+     * </p>
+     *
+     * @param model     Modelo de Spring MVC para pasar datos a la vista
+     * @param page      Número de página (por defecto 0)
+     * @param size      Tamaño de página (por defecto 10)
+     * @param sortBy    Campo de ordenamiento (por defecto "id")
+     * @param direction Dirección de ordenamiento: asc o desc (por defecto "asc")
+     * @return Nombre de la vista Thymeleaf "web/productos/lista"
+     */
     @PreAuthorize("hasRole('MANAGER')")
     @GetMapping({ "/products", "/products/" })
-    public String products(Model model,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "asc") String direction) {
+    public String getProducts(Model model,
+                              @RequestParam(defaultValue = "0") int page,
+                              @RequestParam(defaultValue = "10") int size,
+                              @RequestParam(defaultValue = "id") String sortBy,
+                              @RequestParam(defaultValue = "asc") String direction) {
+        val id=(Long)model.getAttribute("currentUserId");
+        // Creamos el objeto de ordenación
         Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
         // Creamos cómo va a ser la paginación
         Pageable pageable = PageRequest.of(page, size, sort);
-        val user = (User) model.getAttribute("currentUser");
-        assert user != null;
-        model.addAttribute("productos", productService.findAllByManagerId(user.getId(), pageable));
+        val products = mapper.pageToDTO(productService.findAll(Optional.empty(),Optional.empty() ,Optional.of(id), pageable), sortBy, direction);
+        model.addAttribute("productos", products);
         return "web/productos/lista";
     }
 
@@ -259,9 +275,9 @@ public class UserController {
             BindingResult bindingResult, Model model,
             @RequestParam("file") List<MultipartFile> file) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("error.status", 400);
-            model.addAttribute("error.title", "El producto no es válido");
-            model.addAttribute("error.message",
+            model.addAttribute("status", 400);
+            model.addAttribute("title", "El producto no es válido");
+            model.addAttribute("message",
                     bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage));
             return "web/productos/productoSaveEdit";
         }
@@ -306,9 +322,9 @@ public class UserController {
             BindingResult bindingResult, Model model,
             @RequestParam("file") List<MultipartFile> file) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("error.status", 400);
-            model.addAttribute("error.title", "El producto no es válido");
-            model.addAttribute("error.message",
+            model.addAttribute("status", 400);
+            model.addAttribute("title", "El producto no es válido");
+            model.addAttribute("message",
                     bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage));
             return "/web/productos/productoSaveEdit";
         }
@@ -347,6 +363,7 @@ public class UserController {
         productService.deleteById(id);
         return "redirect:/products/" + id;
     }
+
 
     /**
      * Añade un producto a los favoritos del usuario (solo USER).
@@ -477,9 +494,9 @@ public class UserController {
     public String updateCartStock(@Valid @ModelAttribute("line") CartStockRequestDto line, BindingResult bindingResult,
             Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("error.status", 400);
-            model.addAttribute("error.title", "El producto no es válido");
-            model.addAttribute("error.message",
+            model.addAttribute("status", 400);
+            model.addAttribute("title", "El producto no es válido");
+            model.addAttribute("message",
                     bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage));
             return "web/cart/cart";
         }
@@ -756,9 +773,9 @@ public class UserController {
     public String getEditUsers(Model model, @Valid @ModelAttribute("user") UserAdminRequestDto user,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("error.status", 400);
-            model.addAttribute("error.title", "El producto no es válido");
-            model.addAttribute("error.message",
+            model.addAttribute("status", 400);
+            model.addAttribute("title", "El producto no es válido");
+            model.addAttribute("message",
                     bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage));
             return "web/user/editUserAdmin";
         }
@@ -829,9 +846,9 @@ public class UserController {
             return "redirect:/";
         }
         if (user.getClient() == null) {
-            redirectAttributes.addFlashAttribute("error.status", 301);
-            redirectAttributes.addFlashAttribute("error.title", "faltan los datos de cliente");
-            redirectAttributes.addFlashAttribute("error.message", "introduce tus datos");
+            redirectAttributes.addFlashAttribute("status", 301);
+            redirectAttributes.addFlashAttribute("title", "faltan los datos de cliente");
+            redirectAttributes.addFlashAttribute("message", "introduce tus datos");
             return "redirect:/auth/me/client";
         }
         model.addAttribute("client", user.getClient());
@@ -854,9 +871,9 @@ public class UserController {
             return "redirect:/";
         }
         if (user.getClient() == null) {
-            redirectAttributes.addFlashAttribute("error.status", 301);
-            redirectAttributes.addFlashAttribute("error.title", "faltan los datos de cliente");
-            redirectAttributes.addFlashAttribute("error.message", "introduce tus datos");
+            redirectAttributes.addFlashAttribute("status", 301);
+            redirectAttributes.addFlashAttribute("title", "faltan los datos de cliente");
+            redirectAttributes.addFlashAttribute("message", "introduce tus datos");
             return "redirect:/auth/me/client";
         }
         model.addAttribute("client", user.getClient());

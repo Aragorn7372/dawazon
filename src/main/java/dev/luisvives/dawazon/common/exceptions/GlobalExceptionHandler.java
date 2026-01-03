@@ -27,9 +27,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ProductException.NotFoundException.class)
     public String handleProductNotFound(ProductException ex, Model model) {
-        model.addAttribute("error.status", "404");
-        model.addAttribute("error.message", ex.getMessage());
-        model.addAttribute("error.title", "Producto no encontrado");
+        model.addAttribute("status", "404");
+        model.addAttribute("message", ex.getMessage());
+        model.addAttribute("title", "Producto no encontrado");
         return "blocked";
     }
 
@@ -42,9 +42,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ProductException.ValidationException.class)
     public String handleValidationException(ProductException ex, Model model) {
-        model.addAttribute("error.status", "400");
-        model.addAttribute("error.message", ex.getMessage());
-        model.addAttribute("error.title", "Error de validación");
+        model.addAttribute("status", "400");
+        model.addAttribute("message", ex.getMessage());
+        model.addAttribute("title", "Error de validación");
         return "blocked";
     }
 
@@ -57,9 +57,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(CartException.NotFoundException.class)
     public String handleCartNotFound(CartException ex, Model model) {
-        model.addAttribute("error.status", "404");
-        model.addAttribute("error.message", ex.getMessage());
-        model.addAttribute("error.title", "Carrito no encontrado");
+        model.addAttribute("status", "404");
+        model.addAttribute("message", ex.getMessage());
+        model.addAttribute("title", "Carrito no encontrado");
         return "blocked";
     }
 
@@ -72,9 +72,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(CartException.ProductQuantityExceededException.class)
     public String handleProductQuantityExceeded(CartException ex, Model model) {
-        model.addAttribute("error.status", "400");
-        model.addAttribute("error.message", ex.getMessage());
-        model.addAttribute("error.title", "Cantidad excedida");
+        model.addAttribute("status", "400");
+        model.addAttribute("message", ex.getMessage());
+        model.addAttribute("title", "Cantidad excedida");
         return "blocked";
     }
 
@@ -87,9 +87,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(CartException.AttemptAmountExceededException.class)
     public String handleAttemptAmountExceeded(CartException ex, Model model) {
-        model.addAttribute("error.status", "400");
-        model.addAttribute("error.message", ex.getMessage());
-        model.addAttribute("error.title", "Cantidad de intentos excedida");
+        model.addAttribute("status", "400");
+        model.addAttribute("message", ex.getMessage());
+        model.addAttribute("title", "Cantidad de intentos excedida");
         return "blocked";
     }
 
@@ -102,9 +102,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(CartException.UnauthorizedException.class)
     public String handleCartUnauthorized(CartException ex, Model model) {
-        model.addAttribute("error.status", "403");
-        model.addAttribute("error.message", ex.getMessage());
-        model.addAttribute("error.title", "Acceso denegado");
+        model.addAttribute("status", "403");
+        model.addAttribute("message", ex.getMessage());
+        model.addAttribute("title", "Acceso denegado");
         return "blocked";
     }
 
@@ -117,9 +117,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(UserException.UserPasswordNotMatchException.class)
     public String handleUserPasswordNotMatchException(UserException ex, Model model) {
-        model.addAttribute("error.status", "401");
-        model.addAttribute("error.message", ex.getMessage());
-        model.addAttribute("error.title", "Contraseña incorrecta");
+        model.addAttribute("status", "401");
+        model.addAttribute("message", ex.getMessage());
+        model.addAttribute("title", "Contraseña incorrecta");
         return "blocked";
     }
 
@@ -132,9 +132,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(UserException.UserPermissionDeclined.class)
     public String handleUserPermisionDeclined(UserException ex, Model model) {
-        model.addAttribute("error.status", "403");
-        model.addAttribute("error.message", ex.getMessage());
-        model.addAttribute("error.title", "Permiso denegado");
+        model.addAttribute("status", "403");
+        model.addAttribute("message", ex.getMessage());
+        model.addAttribute("title", "Permiso denegado");
         return "blocked";
     }
 
@@ -147,9 +147,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(UserException.UserHasThatFavProductException.class)
     public String handleUserHasThatFavProductException(UserException ex, Model model) {
-        model.addAttribute("error.status", "400");
-        model.addAttribute("error.message", ex.getMessage());
-        model.addAttribute("error.title", "Producto ya en favoritos");
+        model.addAttribute("status", "400");
+        model.addAttribute("message", ex.getMessage());
+        model.addAttribute("title", "Producto ya en favoritos");
         return "blocked";
     }
 
@@ -167,9 +167,9 @@ public class GlobalExceptionHandler {
         log.info("Stack trace:");
         ex.printStackTrace();
 
-        model.addAttribute("error.status", "500");
-        model.addAttribute("error.message", "Ha ocurrido un error inesperado: " + ex.getMessage());
-        model.addAttribute("error.title", "Error interno del servidor");
+        model.addAttribute("status", "500");
+        model.addAttribute("message", "Ha ocurrido un error inesperado: " + ex.getMessage());
+        model.addAttribute("title", "Error interno del servidor");
         return "blocked";
     }
 
