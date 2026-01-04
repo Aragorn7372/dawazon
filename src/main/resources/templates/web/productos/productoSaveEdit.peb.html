@@ -11,10 +11,9 @@
                 </a>
             </div>
 
-            <form action="{% if product.id is not empty %}/auth/me/products/edit{% else %}/auth/me/products/save{% endif %}"
-                  method="POST"
-                  enctype="multipart/form-data"
-                  class="bg-white p-4 rounded shadow-sm border">
+            <form
+                action="{% if product.id is not empty %}/auth/me/products/edit{% else %}/auth/me/products/save{% endif %}"
+                method="POST" enctype="multipart/form-data" class="bg-white p-4 rounded shadow-sm border">
 
                 <input type="hidden" name="{{ csrfParamName }}" value="{{ csrfToken }}"/>
                 {% if product.id is not empty %}
@@ -29,7 +28,8 @@
 
                     <div class="col-12">
                         <label for="name" class="form-label fw-bold">Nombre del producto</label>
-                        <input type="text" class="form-control" id="name" name="name" value="{{ product.name | default('') }}" required>
+                        <input type="text" class="form-control" id="name" name="name"
+                            value="{{ product.name | default('') }}" required>
                     </div>
 
                     <div class="col-md-4">
@@ -37,23 +37,24 @@
                         <div class="input-group">
                             <span class="input-group-text">€</span>
                             <input type="number" step="0.01" min="0" class="form-control" id="price" name="price"
-                                   value="{{ product.price | default('') }}" required>
+                                value="{{ product.price | default('') }}" required>
                         </div>
                     </div>
 
                     <div class="col-md-4">
                         <label for="stock" class="form-label fw-bold">Stock disponible</label>
                         <input type="number" min="0" class="form-control" id="stock" name="stock"
-                               value="{{ product.stock | default(0) }}" required>
+                            value="{{ product.stock | default(0) }}" required>
                     </div>
 
                     <div class="col-md-4">
                         <label for="category" class="form-label fw-bold">Categoría</label>
                         <select class="form-select" id="category" name="category" required>
-                            <option value="" disabled {% if product.category is empty %}selected{% endif %}>Seleccionar... </option>
-                            {% for cat in categories %}
-                            <option value="{{ cat.id }}" {% if product.category == cat.name %}selected{% endif %}>
-                                {{ cat.name }}
+                            <option value="" disabled {% if product.category is empty %}selected{% endif %}>
+                                Seleccionar... </option>
+                            {% for categoria in categorias %}
+                            <option value="{{ categoria }}" {% if product.category==categoria %}selected{% endif %}>
+                                {{ categoria }}
                             </option>
                             {% endfor %}
                         </select>
@@ -77,16 +78,15 @@
                                     <div class="card h-100 border position-relative shadow-sm">
 
                                         <button type="button"
-                                                class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 rounded-circle p-0 d-flex align-items-center justify-content-center shadow"
-                                                style="width: 28px; height: 28px; z-index: 10;"
-                                                onclick="removeExistingImage(this)"
-                                                title="Eliminar imagen">
+                                            class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 rounded-circle p-0 d-flex align-items-center justify-content-center shadow"
+                                            style="width: 28px; height: 28px; z-index: 10;"
+                                            onclick="removeExistingImage(this)" title="Eliminar imagen">
                                             <i class="bi bi-trash-fill" style="font-size: 0.8rem;"></i>
                                         </button>
 
                                         <div class="ratio ratio-1x1 bg-light rounded overflow-hidden">
                                             <img src="/files/{{ imgUrl }}" class="object-fit-contain w-100 h-100"
-                                                 alt="Producto">
+                                                alt="Producto">
                                         </div>
 
                                         <input type="hidden" name="keptImages" value="{{ imgUrl }}">
@@ -191,7 +191,7 @@
 
     /* Borde punteado para la zona de subida */
     .border-dashed {
-        border-style:  dashed ! important;
+        border-style: dashed ! important;
         border-width: 2px ! important;
     }
 
