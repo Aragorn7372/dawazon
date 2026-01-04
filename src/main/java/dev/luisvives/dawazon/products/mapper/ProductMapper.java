@@ -89,6 +89,8 @@ public class ProductMapper {
                 .stock(productoDto.getStock())
                 .description(productoDto.getDescription())
                 .creatorId(productoDto.getCreatorId())
+                .images(new java.util.ArrayList<>())
+                .comments(new java.util.ArrayList<>())
                 .build();
     }
 

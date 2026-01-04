@@ -99,7 +99,8 @@ public class Product {
         @Column(nullable = false)
         @ElementCollection(fetch = FetchType.EAGER)
         @Enumerated(EnumType.STRING)
-        private List<String> images;
+        @Builder.Default
+        private List<String> images = new java.util.ArrayList<>();
 
         /**
          * Categoría a la que pertenece el producto.
@@ -122,7 +123,8 @@ public class Product {
          */
         @ElementCollection(fetch = FetchType.EAGER)
         @CollectionTable(name = "product_comments", joinColumns = @JoinColumn(name = "product_id"))
-        private List<Comment> comments;
+        @Builder.Default
+        private List<Comment> comments = new java.util.ArrayList<>();
 
         /**
          * Indica si el producto ha sido eliminado lógicamente.
@@ -167,5 +169,6 @@ public class Product {
          * </p>
          */
         @Version
-        private Long version;
+        @Builder.Default
+        private Long version = 0L;
 }

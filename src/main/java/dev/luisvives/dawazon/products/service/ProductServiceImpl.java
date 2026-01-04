@@ -104,7 +104,7 @@ public class ProductServiceImpl implements ProductService {
         this.userRepository = userRepository;
     }
 
-     /**
+    /**
      * Busca productos aplicando filtros opcionales por nombre, precio máximo y
      * categoría.
      *
@@ -189,6 +189,7 @@ public class ProductServiceImpl implements ProductService {
      * @throws ProductException.ValidationException si la categoría no existe
      */
     @Override
+    @Transactional
     public GenericProductResponseDto save(PostProductRequestDto productoDto) {
         log.info("SERVICE: Guardando Producto");
 
@@ -218,6 +219,7 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     @CacheEvict(key = "#result.id")
+    @Transactional
     public GenericProductResponseDto update(String id, PostProductRequestDto productoDto) {
         log.info("SERVICE: Actualizando Producto con id: " + id);
 
@@ -301,9 +303,12 @@ public class ProductServiceImpl implements ProductService {
                 .id(foundProducto.getId())
                 .name(foundProducto.getName())
                 .price(foundProducto.getPrice())
+                .stock(foundProducto.getStock())
                 .category(foundProducto.getCategory())
                 .description(foundProducto.getDescription())
+                .creatorId(foundProducto.getCreatorId())
                 .images(imageStored)
+                .comments(foundProducto.getComments())
                 .createdAt(foundProducto.getCreatedAt())
                 .updatedAt(foundProducto.getUpdatedAt())
                 .build();

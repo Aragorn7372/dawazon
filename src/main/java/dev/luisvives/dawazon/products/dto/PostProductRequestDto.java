@@ -95,7 +95,6 @@ public class PostProductRequestDto {
     /**
      * Ruta de la imagen asociada al producto.
      */
-    @NotNull
     private List<String> images;
 
     /**

@@ -266,17 +266,39 @@ public class UserController {
     public String saveProduct(@Valid @ModelAttribute("producto") PostProductRequestDto product,
             BindingResult bindingResult, Model model,
             @RequestParam("file") List<MultipartFile> file) {
+        log.info("===== saveProduct CALLED =====");
+        log.info("Product data received: name={}, category={}, price={}, stock={}, description length={}",
+                product.getName(), product.getCategory(), product.getPrice(), product.getStock(),
+                product.getDescription() != null ? product.getDescription().length() : 0);
+        log.info("Number of files uploaded: {}", file != null ? file.size() : 0);
+
         if (bindingResult.hasErrors()) {
+            log.error("Validation errors found:");
+            bindingResult.getAllErrors().forEach(error -> {
+                log.error("  - {}", error.getDefaultMessage());
+            });
             model.addAttribute("status", 400);
             model.addAttribute("title", "El producto no es válido");
             model.addAttribute("message",
                     bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage));
             return "web/productos/productoSaveEdit";
         }
-        product.setCreatorId((Long) model.getAttribute("currentUserId"));
+
+        Long userId = (Long) model.getAttribute("currentUserId");
+        log.info("Setting creator ID: {}", userId);
+        product.setCreatorId(userId);
+
+        log.info("Calling productService.save()...");
         val savedProduct = productService.save(product);
+        log.info("Product saved successfully with ID: {}", savedProduct.getId());
+
+        log.info("Uploading images for product ID: {}", savedProduct.getId());
         productService.updateOrSaveImage(savedProduct.getId(), file);
-        return "redirect:/products/" + savedProduct.getId();
+        log.info("Images uploaded successfully");
+
+        String redirectUrl = "redirect:/products/" + savedProduct.getId();
+        log.info("Redirecting to: {}", redirectUrl);
+        return redirectUrl;
     }
 
     /**
