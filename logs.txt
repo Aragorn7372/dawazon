@@ -1,0 +1,1869 @@
+2026-01-04 18:14:40.784 | 
+2026-01-04 18:14:40.784 |   .   ____          _            __ _ _
+2026-01-04 18:14:40.784 |  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+2026-01-04 18:14:40.784 | ( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+2026-01-04 18:14:40.784 |  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+2026-01-04 18:14:40.784 |   '  |____| .__|_| |_|_| |_\__, | / / / /
+2026-01-04 18:14:40.784 |  =========|_|==============|___/=/_/_/_/
+2026-01-04 18:14:40.784 | 
+2026-01-04 18:14:40.784 |  :: Spring Boot ::                (v3.5.8)
+2026-01-04 18:14:40.784 | 
+2026-01-04 18:14:41.024 | 2026-01-04T17:14:41.020Z  INFO 1 --- [dawazon] [           main] d.luisvives.dawazon.DawazonApplication   : Starting DawazonApplication v0.0.1-SNAPSHOT using Java 25.0.1 with PID 1 (/app/my-app.jar started by root in /app)
+2026-01-04 18:14:41.028 | 2026-01-04T17:14:41.025Z  INFO 1 --- [dawazon] [           main] d.luisvives.dawazon.DawazonApplication   : No active profile set, falling back to 1 default profile: "default"
+2026-01-04 18:14:42.984 | 2026-01-04T17:14:42.984Z  INFO 1 --- [dawazon] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-01-04 18:14:42.989 | 2026-01-04T17:14:42.988Z  INFO 1 --- [dawazon] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-04 18:14:43.073 | 2026-01-04T17:14:43.073Z  INFO 1 --- [dawazon] [           main] .RepositoryConfigurationExtensionSupport : Spring Data JPA - Could not safely identify store assignment for repository candidate interface dev.luisvives.dawazon.cart.repository.CartRepository; If you want this repository to be a JPA repository, consider annotating your entities with one of these annotations: jakarta.persistence.Entity, jakarta.persistence.MappedSuperclass (preferred), or consider extending one of the following types with your repository: org.springframework.data.jpa.repository.JpaRepository
+2026-01-04 18:14:43.228 | 2026-01-04T17:14:43.227Z  INFO 1 --- [dawazon] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 215 ms. Found 3 JPA repository interfaces.
+2026-01-04 18:14:43.262 | 2026-01-04T17:14:43.262Z  INFO 1 --- [dawazon] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-01-04 18:14:43.262 | 2026-01-04T17:14:43.262Z  INFO 1 --- [dawazon] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2026-01-04 18:14:43.271 | 2026-01-04T17:14:43.271Z  INFO 1 --- [dawazon] [           main] .RepositoryConfigurationExtensionSupport : Spring Data MongoDB - Could not safely identify store assignment for repository candidate interface dev.luisvives.dawazon.products.repository.CategoryRepository; If you want this repository to be a MongoDB repository, consider annotating your entities with one of these annotations: org.springframework.data.mongodb.core.mapping.Document (preferred), or consider extending one of the following types with your repository: org.springframework.data.mongodb.repository.MongoRepository
+2026-01-04 18:14:43.271 | 2026-01-04T17:14:43.271Z  INFO 1 --- [dawazon] [           main] .RepositoryConfigurationExtensionSupport : Spring Data MongoDB - Could not safely identify store assignment for repository candidate interface dev.luisvives.dawazon.products.repository.ProductRepository; If you want this repository to be a MongoDB repository, consider annotating your entities with one of these annotations: org.springframework.data.mongodb.core.mapping.Document (preferred), or consider extending one of the following types with your repository: org.springframework.data.mongodb.repository.MongoRepository
+2026-01-04 18:14:43.273 | 2026-01-04T17:14:43.273Z  INFO 1 --- [dawazon] [           main] .RepositoryConfigurationExtensionSupport : Spring Data MongoDB - Could not safely identify store assignment for repository candidate interface dev.luisvives.dawazon.users.repository.UserRepository; If you want this repository to be a MongoDB repository, consider annotating your entities with one of these annotations: org.springframework.data.mongodb.core.mapping.Document (preferred), or consider extending one of the following types with your repository: org.springframework.data.mongodb.repository.MongoRepository
+2026-01-04 18:14:43.278 | 2026-01-04T17:14:43.277Z  INFO 1 --- [dawazon] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 13 ms. Found 1 MongoDB repository interface.
+2026-01-04 18:14:43.293 | 2026-01-04T17:14:43.292Z  INFO 1 --- [dawazon] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-01-04 18:14:43.295 | 2026-01-04T17:14:43.294Z  INFO 1 --- [dawazon] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-01-04 18:14:43.308 | 2026-01-04T17:14:43.308Z  INFO 1 --- [dawazon] [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface dev.luisvives.dawazon.cart.repository.CartRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-04 18:14:43.308 | 2026-01-04T17:14:43.308Z  INFO 1 --- [dawazon] [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface dev.luisvives.dawazon.products.repository.CategoryRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-04 18:14:43.308 | 2026-01-04T17:14:43.308Z  INFO 1 --- [dawazon] [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface dev.luisvives.dawazon.products.repository.ProductRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-04 18:14:43.309 | 2026-01-04T17:14:43.308Z  INFO 1 --- [dawazon] [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface dev.luisvives.dawazon.users.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-04 18:14:43.309 | 2026-01-04T17:14:43.309Z  INFO 1 --- [dawazon] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 4 ms. Found 0 Redis repository interfaces.
+2026-01-04 18:14:44.319 | 2026-01-04T17:14:44.319Z  INFO 1 --- [dawazon] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 3000 (http)
+2026-01-04 18:14:44.345 | 2026-01-04T17:14:44.344Z  INFO 1 --- [dawazon] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-01-04 18:14:44.345 | 2026-01-04T17:14:44.345Z  INFO 1 --- [dawazon] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.49]
+2026-01-04 18:14:44.415 | 2026-01-04T17:14:44.414Z  INFO 1 --- [dawazon] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-01-04 18:14:44.417 | 2026-01-04T17:14:44.417Z  INFO 1 --- [dawazon] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3218 ms
+2026-01-04 18:14:44.739 | WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+2026-01-04 18:14:44.739 | WARNING: sun.misc.Unsafe::allocateMemory has been called by io.netty.util.internal.PlatformDependent0$2 (jar:nested:/app/my-app.jar/!BOOT-INF/lib/netty-common-4.1.128.Final.jar!/)
+2026-01-04 18:14:44.739 | WARNING: Please consider reporting this to the maintainers of class io.netty.util.internal.PlatformDependent0$2
+2026-01-04 18:14:44.739 | WARNING: sun.misc.Unsafe::allocateMemory will be removed in a future release
+2026-01-04 18:14:45.174 | 2026-01-04T17:14:45.170Z  INFO 1 --- [dawazon] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-01-04 18:14:45.261 | 2026-01-04T17:14:45.260Z  INFO 1 --- [dawazon] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.36.Final
+2026-01-04 18:14:45.318 | 2026-01-04T17:14:45.317Z  INFO 1 --- [dawazon] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-01-04 18:14:45.596 | 2026-01-04T17:14:45.595Z  INFO 1 --- [dawazon] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-04 18:14:45.625 | 2026-01-04T17:14:45.624Z  INFO 1 --- [dawazon] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-01-04 18:14:45.726 | 2026-01-04T17:14:45.725Z  INFO 1 --- [dawazon] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@b90c5a5
+2026-01-04 18:14:45.727 | 2026-01-04T17:14:45.727Z  INFO 1 --- [dawazon] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-01-04 18:14:45.755 | 2026-01-04T17:14:45.755Z  WARN 1 --- [dawazon] [           main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-01-04 18:14:45.779 | 2026-01-04T17:14:45.778Z  INFO 1 --- [dawazon] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+2026-01-04 18:14:45.779 | 	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+2026-01-04 18:14:45.779 | 	Database driver: undefined/unknown
+2026-01-04 18:14:45.779 | 	Database version: 12.22
+2026-01-04 18:14:45.779 | 	Autocommit mode: undefined/unknown
+2026-01-04 18:14:45.779 | 	Isolation level: undefined/unknown
+2026-01-04 18:14:45.779 | 	Minimum pool size: undefined/unknown
+2026-01-04 18:14:45.779 | 	Maximum pool size: undefined/unknown
+2026-01-04 18:14:46.793 | 2026-01-04T17:14:46.792Z  INFO 1 --- [dawazon] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-01-04 18:14:46.846 | Hibernate: 
+2026-01-04 18:14:46.846 |     alter table if exists product 
+2026-01-04 18:14:46.846 |        alter column description set data type varchar(255)
+2026-01-04 18:14:46.856 | Hibernate: 
+2026-01-04 18:14:46.856 |     alter table if exists product_comments 
+2026-01-04 18:14:46.856 |        alter column content set data type varchar(255)
+2026-01-04 18:14:46.861 | Hibernate: 
+2026-01-04 18:14:46.861 |     alter table if exists product_images 
+2026-01-04 18:14:46.861 |        alter column images set data type varchar(255)
+2026-01-04 18:14:46.866 | Hibernate: 
+2026-01-04 18:14:46.866 |     alter table if exists user_roles 
+2026-01-04 18:14:46.866 |        alter column roles set data type varchar(255)
+2026-01-04 18:14:46.868 | Hibernate: 
+2026-01-04 18:14:46.868 |     alter table if exists users 
+2026-01-04 18:14:46.868 |        add column country varchar(255)
+2026-01-04 18:14:46.870 | Hibernate: 
+2026-01-04 18:14:46.870 |     alter table if exists users 
+2026-01-04 18:14:46.870 |        add column number smallint
+2026-01-04 18:14:46.961 | 2026-01-04T17:14:46.960Z  INFO 1 --- [dawazon] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-04 18:14:47.269 | 2026-01-04T17:14:47.269Z  INFO 1 --- [dawazon] [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-04 18:14:48.058 | 2026-01-04T17:14:48.057Z  INFO 1 --- [dawazon] [           main] org.mongodb.driver.client                : MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "5.5.2"}, "os": {"type": "Linux", "name": "Linux", "architecture": "amd64", "version": "6.6.87.1-microsoft-standard-WSL2"}, "platform": "Java/Eclipse Adoptium/25.0.1+8-LTS", "env": {"container": {"runtime": "docker"}}} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=MongoCredential{mechanism=null, userName='tiendita', source='admin', password=<hidden>, mechanismProperties=<hidden>}, transportSettings=null, commandListeners=[], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@1f6865ca, com.mongodb.Jep395RecordCodecProvider@6044311a, com.mongodb.KotlinCodecProvider@7416b560]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[mongo:27017], srvServiceName=mongodb, mode=SINGLE, requiredClusterType=UNKNOWN, requiredReplicaSetName='null', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverMonitoringMode=AUTO, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=false, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null, timeoutMS=null}
+2026-01-04 18:14:48.082 | 2026-01-04T17:14:48.082Z  INFO 1 --- [dawazon] [l'}-mongo:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=mongo:27017, type=STANDALONE, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=13, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=24570799, minRoundTripTimeNanos=0}
+2026-01-04 18:14:48.591 | 2026-01-04T17:14:48.590Z  INFO 1 --- [dawazon] [           main] d.l.d.c.s.s.FileSystemStorageService     : Inicializando almacenamiento
+2026-01-04 18:14:48.744 | 2026-01-04T17:14:48.744Z  WARN 1 --- [dawazon] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-01-04 18:14:49.064 | 2026-01-04T17:14:49.063Z  INFO 1 --- [dawazon] [           main] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-01-04 18:14:49.064 | 2026-01-04T17:14:49.064Z  WARN 1 --- [dawazon] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-01-04 18:14:50.092 | 2026-01-04T17:14:50.090Z  INFO 1 --- [dawazon] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 3000 (http) with context path '/'
+2026-01-04 18:14:50.110 | 2026-01-04T17:14:50.109Z  INFO 1 --- [dawazon] [           main] d.luisvives.dawazon.DawazonApplication   : Started DawazonApplication in 10.493 seconds (process running for 11.713)
+2026-01-04 18:14:50.191 | 2026-01-04T17:14:50.190Z  INFO 1 --- [dawazon] [nio-3000-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-01-04 18:14:50.191 | 2026-01-04T17:14:50.191Z  INFO 1 --- [dawazon] [nio-3000-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-01-04 18:14:50.194 | 2026-01-04T17:14:50.194Z  INFO 1 --- [dawazon] [nio-3000-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2026-01-04 18:14:50.308 | 2026-01-04T17:14:50.307Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.e.GlobalExceptionHandler         : Tipo: org.springframework.web.servlet.resource.NoResourceFoundException
+2026-01-04 18:14:50.308 | 2026-01-04T17:14:50.308Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.e.GlobalExceptionHandler         : Mensaje: No static resource favicon.ico.
+2026-01-04 18:14:50.308 | 2026-01-04T17:14:50.308Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.e.GlobalExceptionHandler         : Stack trace:
+2026-01-04 18:14:50.309 | org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.
+2026-01-04 18:14:50.309 | 	at org.springframework.web.servlet.resource.ResourceHttpRequestHandler.handleRequest(ResourceHttpRequestHandler.java:585)
+2026-01-04 18:14:50.309 | 	at org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter.handle(HttpRequestHandlerAdapter.java:52)
+2026-01-04 18:14:50.309 | 	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+2026-01-04 18:14:50.309 | 	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+2026-01-04 18:14:50.309 | 	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+2026-01-04 18:14:50.309 | 	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+2026-01-04 18:14:50.309 | 	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+2026-01-04 18:14:50.309 | 	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+2026-01-04 18:14:50.309 | 	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+2026-01-04 18:14:50.309 | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+2026-01-04 18:14:50.309 | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138)
+2026-01-04 18:14:50.309 | 	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+2026-01-04 18:14:50.309 | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162)
+2026-01-04 18:14:50.309 | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138)
+2026-01-04 18:14:50.309 | 	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+2026-01-04 18:14:50.309 | 	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+2026-01-04 18:14:50.309 | 	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+2026-01-04 18:14:50.309 | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365)
+2026-01-04 18:14:50.309 | 	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:101)
+2026-01-04 18:14:50.309 | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+2026-01-04 18:14:50.309 | 	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:125)
+2026-01-04 18:14:50.310 | 	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:119)
+2026-01-04 18:14:50.310 | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+2026-01-04 18:14:50.310 | 	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+2026-01-04 18:14:50.310 | 	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+2026-01-04 18:14:50.310 | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+2026-01-04 18:14:50.310 | 	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+2026-01-04 18:14:50.310 | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+2026-01-04 18:14:50.310 | 	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+2026-01-04 18:14:50.310 | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+2026-01-04 18:14:50.311 | 	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+2026-01-04 18:14:50.311 | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+2026-01-04 18:14:50.311 | 	at org.springframework.security.web.session.ConcurrentSessionFilter.doFilter(ConcurrentSessionFilter.java:151)
+2026-01-04 18:14:50.311 | 	at org.springframework.security.web.session.ConcurrentSessionFilter.doFilter(ConcurrentSessionFilter.java:129)
+2026-01-04 18:14:50.311 | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+2026-01-04 18:14:50.311 | 	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:235)
+2026-01-04 18:14:50.311 | 	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:229)
+2026-01-04 18:14:50.311 | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+2026-01-04 18:14:50.311 | 	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+2026-01-04 18:14:50.311 | 	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+2026-01-04 18:14:50.311 | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+2026-01-04 18:14:50.311 | 	at org.springframework.security.web.csrf.CsrfFilter.doFilterInternal(CsrfFilter.java:117)
+2026-01-04 18:14:50.311 | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+2026-01-04 18:14:50.311 | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+2026-01-04 18:14:50.311 | 	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+2026-01-04 18:14:50.311 | 	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+2026-01-04 18:14:50.311 | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+2026-01-04 18:14:50.311 | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+2026-01-04 18:14:50.311 | 	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+2026-01-04 18:14:50.311 | 	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+2026-01-04 18:14:50.311 | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+2026-01-04 18:14:50.311 | 	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+2026-01-04 18:14:50.312 | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+2026-01-04 18:14:50.312 | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+2026-01-04 18:14:50.312 | 	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+2026-01-04 18:14:50.312 | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+2026-01-04 18:14:50.312 | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+2026-01-04 18:14:50.312 | 	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+2026-01-04 18:14:50.312 | 	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+2026-01-04 18:14:50.312 | 	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+2026-01-04 18:14:50.312 | 	at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52)
+2026-01-04 18:14:50.312 | 	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+2026-01-04 18:14:50.312 | 	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+2026-01-04 18:14:50.312 | 	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:319)
+2026-01-04 18:14:50.312 | 	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+2026-01-04 18:14:50.313 | 	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$4(HandlerMappingIntrospector.java:267)
+2026-01-04 18:14:50.313 | 	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+2026-01-04 18:14:50.313 | 	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+2026-01-04 18:14:50.313 | 	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:240)
+2026-01-04 18:14:50.313 | 	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362)
+2026-01-04 18:14:50.313 | 	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278)
+2026-01-04 18:14:50.313 | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162)
+2026-01-04 18:14:50.313 | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138)
+2026-01-04 18:14:50.313 | 	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+2026-01-04 18:14:50.313 | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+2026-01-04 18:14:50.313 | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162)
+2026-01-04 18:14:50.313 | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138)
+2026-01-04 18:14:50.313 | 	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+2026-01-04 18:14:50.313 | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+2026-01-04 18:14:50.313 | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162)
+2026-01-04 18:14:50.313 | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138)
+2026-01-04 18:14:50.313 | 	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+2026-01-04 18:14:50.313 | 	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+2026-01-04 18:14:50.313 | 	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162)
+2026-01-04 18:14:50.313 | 	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138)
+2026-01-04 18:14:50.313 | 	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165)
+2026-01-04 18:14:50.313 | 	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:88)
+2026-01-04 18:14:50.313 | 	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+2026-01-04 18:14:50.313 | 	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:113)
+2026-01-04 18:14:50.313 | 	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:83)
+2026-01-04 18:14:50.313 | 	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:72)
+2026-01-04 18:14:50.313 | 	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+2026-01-04 18:14:50.313 | 	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:399)
+2026-01-04 18:14:50.313 | 	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+2026-01-04 18:14:50.313 | 	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+2026-01-04 18:14:50.313 | 	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1774)
+2026-01-04 18:14:50.313 | 	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+2026-01-04 18:14:50.313 | 	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:973)
+2026-01-04 18:14:50.313 | 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:491)
+2026-01-04 18:14:50.313 | 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+2026-01-04 18:14:50.313 | 	at java.base/java.lang.Thread.run(Unknown Source)
+2026-01-04 18:14:50.767 | 2026-01-04T17:14:50.766Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:50.767 | 2026-01-04T17:14:50.766Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : isAdmin - No auth, returning false
+2026-01-04 18:14:50.826 | Hibernate: 
+2026-01-04 18:14:50.826 |     select
+2026-01-04 18:14:50.826 |         c1_0.id,
+2026-01-04 18:14:50.826 |         c1_0.created_at,
+2026-01-04 18:14:50.826 |         c1_0.name,
+2026-01-04 18:14:50.826 |         c1_0.updated_at 
+2026-01-04 18:14:50.826 |     from
+2026-01-04 18:14:50.826 |         category c1_0
+2026-01-04 18:14:50.855 | 2026-01-04T17:14:50.854Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:50.855 | 2026-01-04T17:14:50.855Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : Authentication: NULL
+2026-01-04 18:14:50.855 | 2026-01-04T17:14:50.855Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: N/A
+2026-01-04 18:14:50.855 | 2026-01-04T17:14:50.855Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : Principal type: NULL
+2026-01-04 18:14:50.855 | 2026-01-04T17:14:50.855Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : Returning NULL user
+2026-01-04 18:14:50.856 | 2026-01-04T17:14:50.855Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:50.856 | 2026-01-04T17:14:50.855Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : isManager - No auth, returning false
+2026-01-04 18:14:50.856 | 2026-01-04T17:14:50.856Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:50.856 | 2026-01-04T17:14:50.856Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : isUser - No auth, returning false
+2026-01-04 18:14:50.888 | 2026-01-04T17:14:50.888Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.p.controller.ProductsController    : Buscando todos los Productos por nombre: Optional.empty
+2026-01-04 18:14:50.918 | Hibernate: 
+2026-01-04 18:14:50.918 |     select
+2026-01-04 18:14:50.918 |         p1_0.id,
+2026-01-04 18:14:50.918 |         p1_0.category_id,
+2026-01-04 18:14:50.918 |         p1_0.created_at,
+2026-01-04 18:14:50.918 |         p1_0.creator_id,
+2026-01-04 18:14:50.918 |         p1_0.description,
+2026-01-04 18:14:50.918 |         p1_0.is_deleted,
+2026-01-04 18:14:50.918 |         p1_0.name,
+2026-01-04 18:14:50.918 |         p1_0.price,
+2026-01-04 18:14:50.918 |         p1_0.stock,
+2026-01-04 18:14:50.918 |         p1_0.updated_at,
+2026-01-04 18:14:50.918 |         p1_0.version 
+2026-01-04 18:14:50.918 |     from
+2026-01-04 18:14:50.918 |         product p1_0 
+2026-01-04 18:14:50.918 |     where
+2026-01-04 18:14:50.918 |         true 
+2026-01-04 18:14:50.918 |         and p1_0.is_deleted=? 
+2026-01-04 18:14:50.918 |         and true 
+2026-01-04 18:14:50.918 |         and true 
+2026-01-04 18:14:50.918 |     order by
+2026-01-04 18:14:50.918 |         p1_0.id 
+2026-01-04 18:14:50.918 |     offset
+2026-01-04 18:14:50.918 |         ? rows 
+2026-01-04 18:14:50.918 |     fetch
+2026-01-04 18:14:50.918 |         first ? rows only
+2026-01-04 18:14:50.936 | Hibernate: 
+2026-01-04 18:14:50.936 |     select
+2026-01-04 18:14:50.936 |         i1_0.product_id,
+2026-01-04 18:14:50.936 |         i1_0.images 
+2026-01-04 18:14:50.936 |     from
+2026-01-04 18:14:50.936 |         product_images i1_0 
+2026-01-04 18:14:50.936 |     where
+2026-01-04 18:14:50.936 |         i1_0.product_id=?
+2026-01-04 18:14:50.939 | Hibernate: 
+2026-01-04 18:14:50.939 |     select
+2026-01-04 18:14:50.939 |         c1_0.product_id,
+2026-01-04 18:14:50.939 |         c1_0.content,
+2026-01-04 18:14:50.939 |         c1_0.created_at,
+2026-01-04 18:14:50.939 |         c1_0.recommended,
+2026-01-04 18:14:50.939 |         c1_0.user_id,
+2026-01-04 18:14:50.939 |         c1_0.verified 
+2026-01-04 18:14:50.939 |     from
+2026-01-04 18:14:50.939 |         product_comments c1_0 
+2026-01-04 18:14:50.939 |     where
+2026-01-04 18:14:50.939 |         c1_0.product_id=?
+2026-01-04 18:14:50.946 | Hibernate: 
+2026-01-04 18:14:50.946 |     select
+2026-01-04 18:14:50.946 |         i1_0.product_id,
+2026-01-04 18:14:50.946 |         i1_0.images 
+2026-01-04 18:14:50.946 |     from
+2026-01-04 18:14:50.946 |         product_images i1_0 
+2026-01-04 18:14:50.946 |     where
+2026-01-04 18:14:50.946 |         i1_0.product_id=?
+2026-01-04 18:14:50.947 | Hibernate: 
+2026-01-04 18:14:50.947 |     select
+2026-01-04 18:14:50.947 |         c1_0.product_id,
+2026-01-04 18:14:50.947 |         c1_0.content,
+2026-01-04 18:14:50.947 |         c1_0.created_at,
+2026-01-04 18:14:50.947 |         c1_0.recommended,
+2026-01-04 18:14:50.947 |         c1_0.user_id,
+2026-01-04 18:14:50.947 |         c1_0.verified 
+2026-01-04 18:14:50.947 |     from
+2026-01-04 18:14:50.947 |         product_comments c1_0 
+2026-01-04 18:14:50.947 |     where
+2026-01-04 18:14:50.947 |         c1_0.product_id=?
+2026-01-04 18:14:50.949 | Hibernate: 
+2026-01-04 18:14:50.949 |     select
+2026-01-04 18:14:50.949 |         i1_0.product_id,
+2026-01-04 18:14:50.949 |         i1_0.images 
+2026-01-04 18:14:50.949 |     from
+2026-01-04 18:14:50.949 |         product_images i1_0 
+2026-01-04 18:14:50.949 |     where
+2026-01-04 18:14:50.949 |         i1_0.product_id=?
+2026-01-04 18:14:50.949 | Hibernate: 
+2026-01-04 18:14:50.949 |     select
+2026-01-04 18:14:50.949 |         c1_0.product_id,
+2026-01-04 18:14:50.949 |         c1_0.content,
+2026-01-04 18:14:50.949 |         c1_0.created_at,
+2026-01-04 18:14:50.949 |         c1_0.recommended,
+2026-01-04 18:14:50.949 |         c1_0.user_id,
+2026-01-04 18:14:50.949 |         c1_0.verified 
+2026-01-04 18:14:50.949 |     from
+2026-01-04 18:14:50.949 |         product_comments c1_0 
+2026-01-04 18:14:50.949 |     where
+2026-01-04 18:14:50.949 |         c1_0.product_id=?
+2026-01-04 18:14:50.950 | Hibernate: 
+2026-01-04 18:14:50.950 |     select
+2026-01-04 18:14:50.950 |         i1_0.product_id,
+2026-01-04 18:14:50.950 |         i1_0.images 
+2026-01-04 18:14:50.950 |     from
+2026-01-04 18:14:50.950 |         product_images i1_0 
+2026-01-04 18:14:50.950 |     where
+2026-01-04 18:14:50.950 |         i1_0.product_id=?
+2026-01-04 18:14:50.951 | Hibernate: 
+2026-01-04 18:14:50.951 |     select
+2026-01-04 18:14:50.951 |         c1_0.product_id,
+2026-01-04 18:14:50.951 |         c1_0.content,
+2026-01-04 18:14:50.951 |         c1_0.created_at,
+2026-01-04 18:14:50.951 |         c1_0.recommended,
+2026-01-04 18:14:50.951 |         c1_0.user_id,
+2026-01-04 18:14:50.951 |         c1_0.verified 
+2026-01-04 18:14:50.951 |     from
+2026-01-04 18:14:50.951 |         product_comments c1_0 
+2026-01-04 18:14:50.951 |     where
+2026-01-04 18:14:50.951 |         c1_0.product_id=?
+2026-01-04 18:14:50.951 | Hibernate: 
+2026-01-04 18:14:50.951 |     select
+2026-01-04 18:14:50.951 |         i1_0.product_id,
+2026-01-04 18:14:50.951 |         i1_0.images 
+2026-01-04 18:14:50.951 |     from
+2026-01-04 18:14:50.951 |         product_images i1_0 
+2026-01-04 18:14:50.951 |     where
+2026-01-04 18:14:50.951 |         i1_0.product_id=?
+2026-01-04 18:14:50.952 | Hibernate: 
+2026-01-04 18:14:50.952 |     select
+2026-01-04 18:14:50.952 |         c1_0.product_id,
+2026-01-04 18:14:50.952 |         c1_0.content,
+2026-01-04 18:14:50.952 |         c1_0.created_at,
+2026-01-04 18:14:50.952 |         c1_0.recommended,
+2026-01-04 18:14:50.952 |         c1_0.user_id,
+2026-01-04 18:14:50.952 |         c1_0.verified 
+2026-01-04 18:14:50.952 |     from
+2026-01-04 18:14:50.952 |         product_comments c1_0 
+2026-01-04 18:14:50.952 |     where
+2026-01-04 18:14:50.952 |         c1_0.product_id=?
+2026-01-04 18:14:50.953 | Hibernate: 
+2026-01-04 18:14:50.953 |     select
+2026-01-04 18:14:50.953 |         i1_0.product_id,
+2026-01-04 18:14:50.953 |         i1_0.images 
+2026-01-04 18:14:50.953 |     from
+2026-01-04 18:14:50.953 |         product_images i1_0 
+2026-01-04 18:14:50.953 |     where
+2026-01-04 18:14:50.953 |         i1_0.product_id=?
+2026-01-04 18:14:50.953 | Hibernate: 
+2026-01-04 18:14:50.953 |     select
+2026-01-04 18:14:50.953 |         c1_0.product_id,
+2026-01-04 18:14:50.953 |         c1_0.content,
+2026-01-04 18:14:50.953 |         c1_0.created_at,
+2026-01-04 18:14:50.953 |         c1_0.recommended,
+2026-01-04 18:14:50.953 |         c1_0.user_id,
+2026-01-04 18:14:50.953 |         c1_0.verified 
+2026-01-04 18:14:50.953 |     from
+2026-01-04 18:14:50.953 |         product_comments c1_0 
+2026-01-04 18:14:50.953 |     where
+2026-01-04 18:14:50.953 |         c1_0.product_id=?
+2026-01-04 18:14:50.955 | Hibernate: 
+2026-01-04 18:14:50.955 |     select
+2026-01-04 18:14:50.955 |         i1_0.product_id,
+2026-01-04 18:14:50.955 |         i1_0.images 
+2026-01-04 18:14:50.955 |     from
+2026-01-04 18:14:50.955 |         product_images i1_0 
+2026-01-04 18:14:50.955 |     where
+2026-01-04 18:14:50.955 |         i1_0.product_id=?
+2026-01-04 18:14:50.955 | Hibernate: 
+2026-01-04 18:14:50.955 |     select
+2026-01-04 18:14:50.955 |         c1_0.product_id,
+2026-01-04 18:14:50.955 |         c1_0.content,
+2026-01-04 18:14:50.955 |         c1_0.created_at,
+2026-01-04 18:14:50.955 |         c1_0.recommended,
+2026-01-04 18:14:50.955 |         c1_0.user_id,
+2026-01-04 18:14:50.955 |         c1_0.verified 
+2026-01-04 18:14:50.955 |     from
+2026-01-04 18:14:50.955 |         product_comments c1_0 
+2026-01-04 18:14:50.955 |     where
+2026-01-04 18:14:50.955 |         c1_0.product_id=?
+2026-01-04 18:14:50.956 | Hibernate: 
+2026-01-04 18:14:50.956 |     select
+2026-01-04 18:14:50.956 |         i1_0.product_id,
+2026-01-04 18:14:50.956 |         i1_0.images 
+2026-01-04 18:14:50.956 |     from
+2026-01-04 18:14:50.956 |         product_images i1_0 
+2026-01-04 18:14:50.956 |     where
+2026-01-04 18:14:50.956 |         i1_0.product_id=?
+2026-01-04 18:14:50.957 | Hibernate: 
+2026-01-04 18:14:50.957 |     select
+2026-01-04 18:14:50.957 |         c1_0.product_id,
+2026-01-04 18:14:50.957 |         c1_0.content,
+2026-01-04 18:14:50.957 |         c1_0.created_at,
+2026-01-04 18:14:50.957 |         c1_0.recommended,
+2026-01-04 18:14:50.957 |         c1_0.user_id,
+2026-01-04 18:14:50.957 |         c1_0.verified 
+2026-01-04 18:14:50.957 |     from
+2026-01-04 18:14:50.957 |         product_comments c1_0 
+2026-01-04 18:14:50.957 |     where
+2026-01-04 18:14:50.957 |         c1_0.product_id=?
+2026-01-04 18:14:50.957 | Hibernate: 
+2026-01-04 18:14:50.957 |     select
+2026-01-04 18:14:50.957 |         i1_0.product_id,
+2026-01-04 18:14:50.957 |         i1_0.images 
+2026-01-04 18:14:50.957 |     from
+2026-01-04 18:14:50.957 |         product_images i1_0 
+2026-01-04 18:14:50.957 |     where
+2026-01-04 18:14:50.957 |         i1_0.product_id=?
+2026-01-04 18:14:50.958 | Hibernate: 
+2026-01-04 18:14:50.958 |     select
+2026-01-04 18:14:50.958 |         c1_0.product_id,
+2026-01-04 18:14:50.958 |         c1_0.content,
+2026-01-04 18:14:50.958 |         c1_0.created_at,
+2026-01-04 18:14:50.958 |         c1_0.recommended,
+2026-01-04 18:14:50.958 |         c1_0.user_id,
+2026-01-04 18:14:50.958 |         c1_0.verified 
+2026-01-04 18:14:50.958 |     from
+2026-01-04 18:14:50.958 |         product_comments c1_0 
+2026-01-04 18:14:50.958 |     where
+2026-01-04 18:14:50.958 |         c1_0.product_id=?
+2026-01-04 18:14:50.958 | Hibernate: 
+2026-01-04 18:14:50.958 |     select
+2026-01-04 18:14:50.958 |         i1_0.product_id,
+2026-01-04 18:14:50.958 |         i1_0.images 
+2026-01-04 18:14:50.958 |     from
+2026-01-04 18:14:50.958 |         product_images i1_0 
+2026-01-04 18:14:50.958 |     where
+2026-01-04 18:14:50.958 |         i1_0.product_id=?
+2026-01-04 18:14:50.959 | Hibernate: 
+2026-01-04 18:14:50.959 |     select
+2026-01-04 18:14:50.959 |         c1_0.product_id,
+2026-01-04 18:14:50.959 |         c1_0.content,
+2026-01-04 18:14:50.959 |         c1_0.created_at,
+2026-01-04 18:14:50.959 |         c1_0.recommended,
+2026-01-04 18:14:50.959 |         c1_0.user_id,
+2026-01-04 18:14:50.959 |         c1_0.verified 
+2026-01-04 18:14:50.959 |     from
+2026-01-04 18:14:50.959 |         product_comments c1_0 
+2026-01-04 18:14:50.959 |     where
+2026-01-04 18:14:50.959 |         c1_0.product_id=?
+2026-01-04 18:14:50.965 | Hibernate: 
+2026-01-04 18:14:50.965 |     select
+2026-01-04 18:14:50.965 |         count(p1_0.id) 
+2026-01-04 18:14:50.965 |     from
+2026-01-04 18:14:50.965 |         product p1_0 
+2026-01-04 18:14:50.965 |     where
+2026-01-04 18:14:50.965 |         true 
+2026-01-04 18:14:50.965 |         and p1_0.is_deleted=? 
+2026-01-04 18:14:50.965 |         and true 
+2026-01-04 18:14:50.965 |         and true
+2026-01-04 18:14:51.050 | 2026-01-04T17:14:51.049Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:51.050 | 2026-01-04T17:14:51.050Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.c.GlobalFuncionController        : isAdmin - No auth, returning false
+2026-01-04 18:14:51.050 | 2026-01-04T17:14:51.049Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:51.050 | 2026-01-04T17:14:51.049Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:51.050 | 2026-01-04T17:14:51.050Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : isAdmin - No auth, returning false
+2026-01-04 18:14:51.050 | 2026-01-04T17:14:51.050Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : isAdmin - No auth, returning false
+2026-01-04 18:14:51.052 | Hibernate: 
+2026-01-04 18:14:51.052 |     select
+2026-01-04 18:14:51.052 |         c1_0.id,
+2026-01-04 18:14:51.052 |         c1_0.created_at,
+2026-01-04 18:14:51.052 |         c1_0.name,
+2026-01-04 18:14:51.052 |         c1_0.updated_at 
+2026-01-04 18:14:51.052 |     from
+2026-01-04 18:14:51.052 |         category c1_0
+2026-01-04 18:14:51.052 | Hibernate: 
+2026-01-04 18:14:51.052 |     select
+2026-01-04 18:14:51.052 |         c1_0.id,
+2026-01-04 18:14:51.052 |         c1_0.created_at,
+2026-01-04 18:14:51.052 |         c1_0.name,
+2026-01-04 18:14:51.052 |         c1_0.updated_at 
+2026-01-04 18:14:51.052 |     from
+2026-01-04 18:14:51.052 |         category c1_0
+2026-01-04 18:14:51.053 | Hibernate: 
+2026-01-04 18:14:51.053 |     select
+2026-01-04 18:14:51.053 |         c1_0.id,
+2026-01-04 18:14:51.053 |         c1_0.created_at,
+2026-01-04 18:14:51.053 |         c1_0.name,
+2026-01-04 18:14:51.053 |         c1_0.updated_at 
+2026-01-04 18:14:51.053 |     from
+2026-01-04 18:14:51.053 |         category c1_0
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.056Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.056Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.056Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.c.GlobalFuncionController        : Authentication: NULL
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.056Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.056Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: N/A
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.056Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : Authentication: NULL
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.056Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : Authentication: NULL
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.056Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.c.GlobalFuncionController        : Principal type: NULL
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.057Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: N/A
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.056Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: N/A
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.057Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.c.GlobalFuncionController        : Returning NULL user
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.057Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : Principal type: NULL
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.057Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : Principal type: NULL
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.057Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : Returning NULL user
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.057Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : Returning NULL user
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.057Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.057Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.c.GlobalFuncionController        : isManager - No auth, returning false
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.057Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.057Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : isManager - No auth, returning false
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.057Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.057Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.c.GlobalFuncionController        : isUser - No auth, returning false
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.057Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.057Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : isUser - No auth, returning false
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.057Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.057Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : isManager - No auth, returning false
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.057Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:51.057 | 2026-01-04T17:14:51.057Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : isUser - No auth, returning false
+2026-01-04 18:14:51.060 | 2026-01-04T17:14:51.060Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero nike-tshirt-1.jpg
+2026-01-04 18:14:51.061 | 2026-01-04T17:14:51.060Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero nike-tshirt-1.jpg
+2026-01-04 18:14:51.061 | 2026-01-04T17:14:51.060Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero cien-anos-cover.jpg
+2026-01-04 18:14:51.061 | 2026-01-04T17:14:51.060Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero cien-anos-cover.jpg
+2026-01-04 18:14:51.061 | 2026-01-04T17:14:51.061Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero quijote-cover.jpg
+2026-01-04 18:14:51.062 | 2026-01-04T17:14:51.061Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero quijote-cover.jpg
+2026-01-04 18:14:51.066 | 2026-01-04T17:14:51.066Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:51.067 | 2026-01-04T17:14:51.066Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:51.067 | 2026-01-04T17:14:51.066Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.c.GlobalFuncionController        : isAdmin - No auth, returning false
+2026-01-04 18:14:51.067 | 2026-01-04T17:14:51.066Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : isAdmin - No auth, returning false
+2026-01-04 18:14:51.069 | Hibernate: 
+2026-01-04 18:14:51.069 |     select
+2026-01-04 18:14:51.069 |         c1_0.id,
+2026-01-04 18:14:51.069 |         c1_0.created_at,
+2026-01-04 18:14:51.069 |         c1_0.name,
+2026-01-04 18:14:51.069 |         c1_0.updated_at 
+2026-01-04 18:14:51.069 |     from
+2026-01-04 18:14:51.069 |         category c1_0
+2026-01-04 18:14:51.069 | Hibernate: 
+2026-01-04 18:14:51.069 |     select
+2026-01-04 18:14:51.069 |         c1_0.id,
+2026-01-04 18:14:51.069 |         c1_0.created_at,
+2026-01-04 18:14:51.069 |         c1_0.name,
+2026-01-04 18:14:51.069 |         c1_0.updated_at 
+2026-01-04 18:14:51.069 |     from
+2026-01-04 18:14:51.069 |         category c1_0
+2026-01-04 18:14:51.070 | 2026-01-04T17:14:51.069Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:51.070 | 2026-01-04T17:14:51.070Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : isAdmin - No auth, returning false
+2026-01-04 18:14:51.073 | Hibernate: 
+2026-01-04 18:14:51.073 |     select
+2026-01-04 18:14:51.073 |         c1_0.id,
+2026-01-04 18:14:51.073 |         c1_0.created_at,
+2026-01-04 18:14:51.073 |         c1_0.name,
+2026-01-04 18:14:51.073 |         c1_0.updated_at 
+2026-01-04 18:14:51.073 |     from
+2026-01-04 18:14:51.073 |         category c1_0
+2026-01-04 18:14:51.073 | 2026-01-04T17:14:51.073Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:51.073 | 2026-01-04T17:14:51.073Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:51.073 | 2026-01-04T17:14:51.073Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : Authentication: NULL
+2026-01-04 18:14:51.073 | 2026-01-04T17:14:51.073Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.c.GlobalFuncionController        : Authentication: NULL
+2026-01-04 18:14:51.073 | 2026-01-04T17:14:51.073Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: N/A
+2026-01-04 18:14:51.073 | 2026-01-04T17:14:51.073Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: N/A
+2026-01-04 18:14:51.073 | 2026-01-04T17:14:51.073Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.c.GlobalFuncionController        : Principal type: NULL
+2026-01-04 18:14:51.073 | 2026-01-04T17:14:51.073Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : Principal type: NULL
+2026-01-04 18:14:51.073 | 2026-01-04T17:14:51.073Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.c.GlobalFuncionController        : Returning NULL user
+2026-01-04 18:14:51.073 | 2026-01-04T17:14:51.073Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : Returning NULL user
+2026-01-04 18:14:51.074 | 2026-01-04T17:14:51.073Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:51.074 | 2026-01-04T17:14:51.073Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:51.074 | 2026-01-04T17:14:51.073Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.c.GlobalFuncionController        : isManager - No auth, returning false
+2026-01-04 18:14:51.074 | 2026-01-04T17:14:51.073Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : isManager - No auth, returning false
+2026-01-04 18:14:51.074 | 2026-01-04T17:14:51.074Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:51.074 | 2026-01-04T17:14:51.074Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.c.GlobalFuncionController        : isUser - No auth, returning false
+2026-01-04 18:14:51.074 | 2026-01-04T17:14:51.074Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:51.075 | 2026-01-04T17:14:51.074Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : isUser - No auth, returning false
+2026-01-04 18:14:51.076 | 2026-01-04T17:14:51.075Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero adidas-ucl-ball.jpg
+2026-01-04 18:14:51.076 | 2026-01-04T17:14:51.075Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero adidas-ucl-ball.jpg
+2026-01-04 18:14:51.077 | 2026-01-04T17:14:51.077Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero laptop-hp-1.jpg
+2026-01-04 18:14:51.077 | 2026-01-04T17:14:51.077Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero laptop-hp-1.jpg
+2026-01-04 18:14:51.079 | 2026-01-04T17:14:51.078Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:51.079 | 2026-01-04T17:14:51.078Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : Authentication: NULL
+2026-01-04 18:14:51.079 | 2026-01-04T17:14:51.079Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: N/A
+2026-01-04 18:14:51.079 | 2026-01-04T17:14:51.079Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : Principal type: NULL
+2026-01-04 18:14:51.079 | 2026-01-04T17:14:51.079Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : Returning NULL user
+2026-01-04 18:14:51.079 | 2026-01-04T17:14:51.079Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:51.079 | 2026-01-04T17:14:51.079Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : isManager - No auth, returning false
+2026-01-04 18:14:51.079 | 2026-01-04T17:14:51.079Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:51.079 | 2026-01-04T17:14:51.079Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : isUser - No auth, returning false
+2026-01-04 18:14:51.081 | 2026-01-04T17:14:51.081Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero levis-501-1.jpg
+2026-01-04 18:14:51.081 | 2026-01-04T17:14:51.081Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero levis-501-1.jpg
+2026-01-04 18:14:51.159 | 2026-01-04T17:14:51.159Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:51.159 | 2026-01-04T17:14:51.159Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:51.159 | 2026-01-04T17:14:51.159Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : isAdmin - No auth, returning false
+2026-01-04 18:14:51.159 | 2026-01-04T17:14:51.159Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:51.159 | 2026-01-04T17:14:51.159Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : isAdmin - No auth, returning false
+2026-01-04 18:14:51.159 | 2026-01-04T17:14:51.159Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : isAdmin - No auth, returning false
+2026-01-04 18:14:51.160 | 2026-01-04T17:14:51.159Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:51.160 | 2026-01-04T17:14:51.160Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : isAdmin - No auth, returning false
+2026-01-04 18:14:51.161 | Hibernate: 
+2026-01-04 18:14:51.161 |     select
+2026-01-04 18:14:51.161 |         c1_0.id,
+2026-01-04 18:14:51.161 |         c1_0.created_at,
+2026-01-04 18:14:51.161 |         c1_0.name,
+2026-01-04 18:14:51.161 |         c1_0.updated_at 
+2026-01-04 18:14:51.161 |     from
+2026-01-04 18:14:51.161 |         category c1_0
+2026-01-04 18:14:51.161 | Hibernate: 
+2026-01-04 18:14:51.161 |     select
+2026-01-04 18:14:51.161 |         c1_0.id,
+2026-01-04 18:14:51.161 |         c1_0.created_at,
+2026-01-04 18:14:51.161 |         c1_0.name,
+2026-01-04 18:14:51.161 |         c1_0.updated_at 
+2026-01-04 18:14:51.161 |     from
+2026-01-04 18:14:51.161 |         category c1_0
+2026-01-04 18:14:51.161 | Hibernate: 
+2026-01-04 18:14:51.161 |     select
+2026-01-04 18:14:51.161 |         c1_0.id,
+2026-01-04 18:14:51.161 |         c1_0.created_at,
+2026-01-04 18:14:51.161 |         c1_0.name,
+2026-01-04 18:14:51.161 |         c1_0.updated_at 
+2026-01-04 18:14:51.161 |     from
+2026-01-04 18:14:51.161 |         category c1_0
+2026-01-04 18:14:51.161 | Hibernate: 
+2026-01-04 18:14:51.161 |     select
+2026-01-04 18:14:51.161 |         c1_0.id,
+2026-01-04 18:14:51.161 |         c1_0.created_at,
+2026-01-04 18:14:51.161 |         c1_0.name,
+2026-01-04 18:14:51.161 |         c1_0.updated_at 
+2026-01-04 18:14:51.161 |     from
+2026-01-04 18:14:51.161 |         category c1_0
+2026-01-04 18:14:51.165 | 2026-01-04T17:14:51.165Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.165Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.165Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : Authentication: NULL
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.165Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.165Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: N/A
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.165Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.166Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : Principal type: NULL
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.165Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : Authentication: NULL
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.166Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : Returning NULL user
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.166Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : Authentication: NULL
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.165Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : Authentication: NULL
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.166Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.166Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: N/A
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.166Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : isManager - No auth, returning false
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.166Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: N/A
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.166Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: N/A
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.166Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.166Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : isUser - No auth, returning false
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.166Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : Principal type: NULL
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.166Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : Principal type: NULL
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.166Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : Returning NULL user
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.166Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : Returning NULL user
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.166Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.166Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.166Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : isManager - No auth, returning false
+2026-01-04 18:14:51.166 | 2026-01-04T17:14:51.166Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : isManager - No auth, returning false
+2026-01-04 18:14:51.167 | 2026-01-04T17:14:51.166Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : Principal type: NULL
+2026-01-04 18:14:51.167 | 2026-01-04T17:14:51.166Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:51.167 | 2026-01-04T17:14:51.167Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : Returning NULL user
+2026-01-04 18:14:51.167 | 2026-01-04T17:14:51.166Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:51.167 | 2026-01-04T17:14:51.167Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : isUser - No auth, returning false
+2026-01-04 18:14:51.167 | 2026-01-04T17:14:51.167Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : isUser - No auth, returning false
+2026-01-04 18:14:51.168 | 2026-01-04T17:14:51.168Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:51.168 | 2026-01-04T17:14:51.168Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : isManager - No auth, returning false
+2026-01-04 18:14:51.168 | 2026-01-04T17:14:51.168Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero trek-marlin-1.jpg
+2026-01-04 18:14:51.168 | 2026-01-04T17:14:51.168Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero 1984-cover.jpeg
+2026-01-04 18:14:51.168 | 2026-01-04T17:14:51.168Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero trek-marlin-1.jpg
+2026-01-04 18:14:51.168 | 2026-01-04T17:14:51.168Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero 1984-cover.jpeg
+2026-01-04 18:14:51.168 | 2026-01-04T17:14:51.168Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:51.168 | 2026-01-04T17:14:51.168Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero samsung-s23-1.jpg
+2026-01-04 18:14:51.168 | 2026-01-04T17:14:51.168Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : isUser - No auth, returning false
+2026-01-04 18:14:51.168 | 2026-01-04T17:14:51.168Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero samsung-s23-1.jpg
+2026-01-04 18:14:51.170 | 2026-01-04T17:14:51.170Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero philips-hue-1.jpg
+2026-01-04 18:14:51.170 | 2026-01-04T17:14:51.170Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero philips-hue-1.jpg
+2026-01-04 18:14:52.190 | 2026-01-04T17:14:52.190Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:52.190 | 2026-01-04T17:14:52.190Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : isAdmin - No auth, returning false
+2026-01-04 18:14:52.192 | Hibernate: 
+2026-01-04 18:14:52.192 |     select
+2026-01-04 18:14:52.192 |         c1_0.id,
+2026-01-04 18:14:52.192 |         c1_0.created_at,
+2026-01-04 18:14:52.192 |         c1_0.name,
+2026-01-04 18:14:52.192 |         c1_0.updated_at 
+2026-01-04 18:14:52.192 |     from
+2026-01-04 18:14:52.192 |         category c1_0
+2026-01-04 18:14:52.196 | 2026-01-04T17:14:52.195Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:52.196 | 2026-01-04T17:14:52.195Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : Authentication: NULL
+2026-01-04 18:14:52.196 | 2026-01-04T17:14:52.195Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: N/A
+2026-01-04 18:14:52.196 | 2026-01-04T17:14:52.195Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : Principal type: NULL
+2026-01-04 18:14:52.196 | 2026-01-04T17:14:52.195Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : Returning NULL user
+2026-01-04 18:14:52.196 | 2026-01-04T17:14:52.196Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:52.196 | 2026-01-04T17:14:52.196Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : isManager - No auth, returning false
+2026-01-04 18:14:52.196 | 2026-01-04T17:14:52.196Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:52.196 | 2026-01-04T17:14:52.196Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : isUser - No auth, returning false
+2026-01-04 18:14:52.198 | 2026-01-04T17:14:52.197Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.users.controller.AuthController    : login
+2026-01-04 18:14:55.966 | Hibernate: 
+2026-01-04 18:14:55.966 |     select
+2026-01-04 18:14:55.966 |         u1_0.id,
+2026-01-04 18:14:55.966 |         u1_0.avatar,
+2026-01-04 18:14:55.966 |         u1_0.client_address_city,
+2026-01-04 18:14:55.966 |         u1_0.country,
+2026-01-04 18:14:55.966 |         u1_0.number,
+2026-01-04 18:14:55.966 |         u1_0.client_address_postal_code,
+2026-01-04 18:14:55.966 |         u1_0.client_address_province,
+2026-01-04 18:14:55.966 |         u1_0.client_address_street,
+2026-01-04 18:14:55.966 |         u1_0.client_email,
+2026-01-04 18:14:55.966 |         u1_0.client_name,
+2026-01-04 18:14:55.966 |         u1_0.client_phone,
+2026-01-04 18:14:55.966 |         u1_0.created_at,
+2026-01-04 18:14:55.966 |         u1_0.email,
+2026-01-04 18:14:55.966 |         u1_0.is_deleted,
+2026-01-04 18:14:55.966 |         u1_0.password,
+2026-01-04 18:14:55.966 |         u1_0.telefono,
+2026-01-04 18:14:55.966 |         u1_0.updated_at,
+2026-01-04 18:14:55.966 |         u1_0.user_name 
+2026-01-04 18:14:55.966 |     from
+2026-01-04 18:14:55.966 |         users u1_0 
+2026-01-04 18:14:55.966 |     where
+2026-01-04 18:14:55.966 |         u1_0.user_name=?
+2026-01-04 18:14:55.970 | Hibernate: 
+2026-01-04 18:14:55.970 |     select
+2026-01-04 18:14:55.970 |         r1_0.user_id,
+2026-01-04 18:14:55.970 |         r1_0.roles 
+2026-01-04 18:14:55.970 |     from
+2026-01-04 18:14:55.970 |         user_roles r1_0 
+2026-01-04 18:14:55.970 |     where
+2026-01-04 18:14:55.970 |         r1_0.user_id=?
+2026-01-04 18:14:55.972 | Hibernate: 
+2026-01-04 18:14:55.972 |     select
+2026-01-04 18:14:55.972 |         f1_0.user_id,
+2026-01-04 18:14:55.972 |         f1_0.favs 
+2026-01-04 18:14:55.972 |     from
+2026-01-04 18:14:55.972 |         user_favs f1_0 
+2026-01-04 18:14:55.972 |     where
+2026-01-04 18:14:55.972 |         f1_0.user_id=?
+2026-01-04 18:14:56.220 | 2026-01-04T17:14:56.220Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:56.222 | 2026-01-04T17:14:56.222Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : isAdmin - User: admin, Roles: [ADMIN], Result: true
+2026-01-04 18:14:56.240 | 2026-01-04T17:14:56.239Z ERROR 1 --- [dawazon] [nio-3000-exec-2] d.l.d.cart.service.CartServiceImpl       : Carrito no encontrado para userId: 1
+2026-01-04 18:14:56.280 | Hibernate: 
+2026-01-04 18:14:56.281 |     select
+2026-01-04 18:14:56.281 |         c1_0.id,
+2026-01-04 18:14:56.281 |         c1_0.created_at,
+2026-01-04 18:14:56.281 |         c1_0.name,
+2026-01-04 18:14:56.281 |         c1_0.updated_at 
+2026-01-04 18:14:56.281 |     from
+2026-01-04 18:14:56.281 |         category c1_0
+2026-01-04 18:14:56.282 | 2026-01-04T17:14:56.282Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:56.282 | 2026-01-04T17:14:56.282Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : Authentication: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+2026-01-04 18:14:56.282 | 2026-01-04T17:14:56.282Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: true
+2026-01-04 18:14:56.282 | 2026-01-04T17:14:56.282Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : Principal type: dev.luisvives.dawazon.users.models.User
+2026-01-04 18:14:56.283 | 2026-01-04T17:14:56.282Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : Returning user: ID=1, Username=admin
+2026-01-04 18:14:56.283 | 2026-01-04T17:14:56.283Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:56.283 | 2026-01-04T17:14:56.283Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : isManager - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:56.283 | 2026-01-04T17:14:56.283Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:56.283 | 2026-01-04T17:14:56.283Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : isUser - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:56.284 | 2026-01-04T17:14:56.284Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.p.controller.ProductsController    : Buscando todos los Productos por nombre: Optional.empty
+2026-01-04 18:14:56.286 | Hibernate: 
+2026-01-04 18:14:56.286 |     select
+2026-01-04 18:14:56.286 |         p1_0.id,
+2026-01-04 18:14:56.286 |         p1_0.category_id,
+2026-01-04 18:14:56.286 |         p1_0.created_at,
+2026-01-04 18:14:56.286 |         p1_0.creator_id,
+2026-01-04 18:14:56.286 |         p1_0.description,
+2026-01-04 18:14:56.286 |         p1_0.is_deleted,
+2026-01-04 18:14:56.286 |         p1_0.name,
+2026-01-04 18:14:56.286 |         p1_0.price,
+2026-01-04 18:14:56.286 |         p1_0.stock,
+2026-01-04 18:14:56.286 |         p1_0.updated_at,
+2026-01-04 18:14:56.286 |         p1_0.version 
+2026-01-04 18:14:56.286 |     from
+2026-01-04 18:14:56.286 |         product p1_0 
+2026-01-04 18:14:56.286 |     where
+2026-01-04 18:14:56.286 |         true 
+2026-01-04 18:14:56.286 |         and p1_0.is_deleted=? 
+2026-01-04 18:14:56.286 |         and true 
+2026-01-04 18:14:56.286 |         and true 
+2026-01-04 18:14:56.286 |     order by
+2026-01-04 18:14:56.286 |         p1_0.id 
+2026-01-04 18:14:56.286 |     offset
+2026-01-04 18:14:56.286 |         ? rows 
+2026-01-04 18:14:56.286 |     fetch
+2026-01-04 18:14:56.287 |         first ? rows only
+2026-01-04 18:14:56.292 | Hibernate: 
+2026-01-04 18:14:56.292 |     select
+2026-01-04 18:14:56.292 |         i1_0.product_id,
+2026-01-04 18:14:56.292 |         i1_0.images 
+2026-01-04 18:14:56.292 |     from
+2026-01-04 18:14:56.292 |         product_images i1_0 
+2026-01-04 18:14:56.292 |     where
+2026-01-04 18:14:56.292 |         i1_0.product_id=?
+2026-01-04 18:14:56.295 | Hibernate: 
+2026-01-04 18:14:56.295 |     select
+2026-01-04 18:14:56.295 |         c1_0.product_id,
+2026-01-04 18:14:56.295 |         c1_0.content,
+2026-01-04 18:14:56.295 |         c1_0.created_at,
+2026-01-04 18:14:56.295 |         c1_0.recommended,
+2026-01-04 18:14:56.295 |         c1_0.user_id,
+2026-01-04 18:14:56.295 |         c1_0.verified 
+2026-01-04 18:14:56.295 |     from
+2026-01-04 18:14:56.295 |         product_comments c1_0 
+2026-01-04 18:14:56.295 |     where
+2026-01-04 18:14:56.295 |         c1_0.product_id=?
+2026-01-04 18:14:56.296 | Hibernate: 
+2026-01-04 18:14:56.296 |     select
+2026-01-04 18:14:56.296 |         i1_0.product_id,
+2026-01-04 18:14:56.296 |         i1_0.images 
+2026-01-04 18:14:56.296 |     from
+2026-01-04 18:14:56.296 |         product_images i1_0 
+2026-01-04 18:14:56.296 |     where
+2026-01-04 18:14:56.296 |         i1_0.product_id=?
+2026-01-04 18:14:56.297 | Hibernate: 
+2026-01-04 18:14:56.297 |     select
+2026-01-04 18:14:56.297 |         c1_0.product_id,
+2026-01-04 18:14:56.297 |         c1_0.content,
+2026-01-04 18:14:56.297 |         c1_0.created_at,
+2026-01-04 18:14:56.297 |         c1_0.recommended,
+2026-01-04 18:14:56.297 |         c1_0.user_id,
+2026-01-04 18:14:56.297 |         c1_0.verified 
+2026-01-04 18:14:56.297 |     from
+2026-01-04 18:14:56.297 |         product_comments c1_0 
+2026-01-04 18:14:56.297 |     where
+2026-01-04 18:14:56.297 |         c1_0.product_id=?
+2026-01-04 18:14:56.297 | Hibernate: 
+2026-01-04 18:14:56.297 |     select
+2026-01-04 18:14:56.297 |         i1_0.product_id,
+2026-01-04 18:14:56.297 |         i1_0.images 
+2026-01-04 18:14:56.297 |     from
+2026-01-04 18:14:56.297 |         product_images i1_0 
+2026-01-04 18:14:56.297 |     where
+2026-01-04 18:14:56.297 |         i1_0.product_id=?
+2026-01-04 18:14:56.298 | Hibernate: 
+2026-01-04 18:14:56.298 |     select
+2026-01-04 18:14:56.298 |         c1_0.product_id,
+2026-01-04 18:14:56.298 |         c1_0.content,
+2026-01-04 18:14:56.298 |         c1_0.created_at,
+2026-01-04 18:14:56.298 |         c1_0.recommended,
+2026-01-04 18:14:56.298 |         c1_0.user_id,
+2026-01-04 18:14:56.298 |         c1_0.verified 
+2026-01-04 18:14:56.298 |     from
+2026-01-04 18:14:56.298 |         product_comments c1_0 
+2026-01-04 18:14:56.298 |     where
+2026-01-04 18:14:56.298 |         c1_0.product_id=?
+2026-01-04 18:14:56.299 | Hibernate: 
+2026-01-04 18:14:56.299 |     select
+2026-01-04 18:14:56.299 |         i1_0.product_id,
+2026-01-04 18:14:56.299 |         i1_0.images 
+2026-01-04 18:14:56.299 |     from
+2026-01-04 18:14:56.299 |         product_images i1_0 
+2026-01-04 18:14:56.299 |     where
+2026-01-04 18:14:56.299 |         i1_0.product_id=?
+2026-01-04 18:14:56.299 | Hibernate: 
+2026-01-04 18:14:56.299 |     select
+2026-01-04 18:14:56.299 |         c1_0.product_id,
+2026-01-04 18:14:56.299 |         c1_0.content,
+2026-01-04 18:14:56.299 |         c1_0.created_at,
+2026-01-04 18:14:56.299 |         c1_0.recommended,
+2026-01-04 18:14:56.299 |         c1_0.user_id,
+2026-01-04 18:14:56.299 |         c1_0.verified 
+2026-01-04 18:14:56.299 |     from
+2026-01-04 18:14:56.299 |         product_comments c1_0 
+2026-01-04 18:14:56.299 |     where
+2026-01-04 18:14:56.299 |         c1_0.product_id=?
+2026-01-04 18:14:56.300 | Hibernate: 
+2026-01-04 18:14:56.300 |     select
+2026-01-04 18:14:56.300 |         i1_0.product_id,
+2026-01-04 18:14:56.300 |         i1_0.images 
+2026-01-04 18:14:56.300 |     from
+2026-01-04 18:14:56.300 |         product_images i1_0 
+2026-01-04 18:14:56.300 |     where
+2026-01-04 18:14:56.300 |         i1_0.product_id=?
+2026-01-04 18:14:56.300 | Hibernate: 
+2026-01-04 18:14:56.300 |     select
+2026-01-04 18:14:56.300 |         c1_0.product_id,
+2026-01-04 18:14:56.300 |         c1_0.content,
+2026-01-04 18:14:56.300 |         c1_0.created_at,
+2026-01-04 18:14:56.300 |         c1_0.recommended,
+2026-01-04 18:14:56.300 |         c1_0.user_id,
+2026-01-04 18:14:56.300 |         c1_0.verified 
+2026-01-04 18:14:56.300 |     from
+2026-01-04 18:14:56.300 |         product_comments c1_0 
+2026-01-04 18:14:56.300 |     where
+2026-01-04 18:14:56.300 |         c1_0.product_id=?
+2026-01-04 18:14:56.301 | Hibernate: 
+2026-01-04 18:14:56.301 |     select
+2026-01-04 18:14:56.301 |         i1_0.product_id,
+2026-01-04 18:14:56.301 |         i1_0.images 
+2026-01-04 18:14:56.301 |     from
+2026-01-04 18:14:56.301 |         product_images i1_0 
+2026-01-04 18:14:56.301 |     where
+2026-01-04 18:14:56.301 |         i1_0.product_id=?
+2026-01-04 18:14:56.301 | Hibernate: 
+2026-01-04 18:14:56.301 |     select
+2026-01-04 18:14:56.301 |         c1_0.product_id,
+2026-01-04 18:14:56.301 |         c1_0.content,
+2026-01-04 18:14:56.301 |         c1_0.created_at,
+2026-01-04 18:14:56.301 |         c1_0.recommended,
+2026-01-04 18:14:56.301 |         c1_0.user_id,
+2026-01-04 18:14:56.301 |         c1_0.verified 
+2026-01-04 18:14:56.301 |     from
+2026-01-04 18:14:56.301 |         product_comments c1_0 
+2026-01-04 18:14:56.301 |     where
+2026-01-04 18:14:56.301 |         c1_0.product_id=?
+2026-01-04 18:14:56.302 | Hibernate: 
+2026-01-04 18:14:56.302 |     select
+2026-01-04 18:14:56.302 |         i1_0.product_id,
+2026-01-04 18:14:56.302 |         i1_0.images 
+2026-01-04 18:14:56.302 |     from
+2026-01-04 18:14:56.302 |         product_images i1_0 
+2026-01-04 18:14:56.302 |     where
+2026-01-04 18:14:56.302 |         i1_0.product_id=?
+2026-01-04 18:14:56.302 | Hibernate: 
+2026-01-04 18:14:56.302 |     select
+2026-01-04 18:14:56.302 |         c1_0.product_id,
+2026-01-04 18:14:56.302 |         c1_0.content,
+2026-01-04 18:14:56.302 |         c1_0.created_at,
+2026-01-04 18:14:56.302 |         c1_0.recommended,
+2026-01-04 18:14:56.302 |         c1_0.user_id,
+2026-01-04 18:14:56.302 |         c1_0.verified 
+2026-01-04 18:14:56.302 |     from
+2026-01-04 18:14:56.302 |         product_comments c1_0 
+2026-01-04 18:14:56.302 |     where
+2026-01-04 18:14:56.302 |         c1_0.product_id=?
+2026-01-04 18:14:56.303 | Hibernate: 
+2026-01-04 18:14:56.303 |     select
+2026-01-04 18:14:56.303 |         i1_0.product_id,
+2026-01-04 18:14:56.303 |         i1_0.images 
+2026-01-04 18:14:56.303 |     from
+2026-01-04 18:14:56.303 |         product_images i1_0 
+2026-01-04 18:14:56.303 |     where
+2026-01-04 18:14:56.303 |         i1_0.product_id=?
+2026-01-04 18:14:56.303 | Hibernate: 
+2026-01-04 18:14:56.303 |     select
+2026-01-04 18:14:56.303 |         c1_0.product_id,
+2026-01-04 18:14:56.303 |         c1_0.content,
+2026-01-04 18:14:56.303 |         c1_0.created_at,
+2026-01-04 18:14:56.303 |         c1_0.recommended,
+2026-01-04 18:14:56.303 |         c1_0.user_id,
+2026-01-04 18:14:56.303 |         c1_0.verified 
+2026-01-04 18:14:56.303 |     from
+2026-01-04 18:14:56.303 |         product_comments c1_0 
+2026-01-04 18:14:56.303 |     where
+2026-01-04 18:14:56.303 |         c1_0.product_id=?
+2026-01-04 18:14:56.304 | Hibernate: 
+2026-01-04 18:14:56.304 |     select
+2026-01-04 18:14:56.304 |         i1_0.product_id,
+2026-01-04 18:14:56.304 |         i1_0.images 
+2026-01-04 18:14:56.304 |     from
+2026-01-04 18:14:56.304 |         product_images i1_0 
+2026-01-04 18:14:56.304 |     where
+2026-01-04 18:14:56.304 |         i1_0.product_id=?
+2026-01-04 18:14:56.304 | Hibernate: 
+2026-01-04 18:14:56.304 |     select
+2026-01-04 18:14:56.304 |         c1_0.product_id,
+2026-01-04 18:14:56.304 |         c1_0.content,
+2026-01-04 18:14:56.304 |         c1_0.created_at,
+2026-01-04 18:14:56.304 |         c1_0.recommended,
+2026-01-04 18:14:56.304 |         c1_0.user_id,
+2026-01-04 18:14:56.304 |         c1_0.verified 
+2026-01-04 18:14:56.304 |     from
+2026-01-04 18:14:56.304 |         product_comments c1_0 
+2026-01-04 18:14:56.304 |     where
+2026-01-04 18:14:56.304 |         c1_0.product_id=?
+2026-01-04 18:14:56.305 | Hibernate: 
+2026-01-04 18:14:56.305 |     select
+2026-01-04 18:14:56.305 |         i1_0.product_id,
+2026-01-04 18:14:56.305 |         i1_0.images 
+2026-01-04 18:14:56.305 |     from
+2026-01-04 18:14:56.305 |         product_images i1_0 
+2026-01-04 18:14:56.305 |     where
+2026-01-04 18:14:56.305 |         i1_0.product_id=?
+2026-01-04 18:14:56.305 | Hibernate: 
+2026-01-04 18:14:56.305 |     select
+2026-01-04 18:14:56.305 |         c1_0.product_id,
+2026-01-04 18:14:56.305 |         c1_0.content,
+2026-01-04 18:14:56.305 |         c1_0.created_at,
+2026-01-04 18:14:56.305 |         c1_0.recommended,
+2026-01-04 18:14:56.305 |         c1_0.user_id,
+2026-01-04 18:14:56.305 |         c1_0.verified 
+2026-01-04 18:14:56.305 |     from
+2026-01-04 18:14:56.305 |         product_comments c1_0 
+2026-01-04 18:14:56.305 |     where
+2026-01-04 18:14:56.305 |         c1_0.product_id=?
+2026-01-04 18:14:56.307 | Hibernate: 
+2026-01-04 18:14:56.307 |     select
+2026-01-04 18:14:56.307 |         count(p1_0.id) 
+2026-01-04 18:14:56.307 |     from
+2026-01-04 18:14:56.307 |         product p1_0 
+2026-01-04 18:14:56.307 |     where
+2026-01-04 18:14:56.307 |         true 
+2026-01-04 18:14:56.307 |         and p1_0.is_deleted=? 
+2026-01-04 18:14:56.307 |         and true 
+2026-01-04 18:14:56.307 |         and true
+2026-01-04 18:14:56.365 | 2026-01-04T17:14:56.365Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:56.365 | 2026-01-04T17:14:56.365Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.c.GlobalFuncionController        : isAdmin - User: admin, Roles: [ADMIN], Result: true
+2026-01-04 18:14:56.365 | 2026-01-04T17:14:56.365Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:56.365 | 2026-01-04T17:14:56.365Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:56.365 | 2026-01-04T17:14:56.365Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:56.366 | 2026-01-04T17:14:56.365Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : isAdmin - User: admin, Roles: [ADMIN], Result: true
+2026-01-04 18:14:56.366 | 2026-01-04T17:14:56.365Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:56.366 | 2026-01-04T17:14:56.365Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : isAdmin - User: admin, Roles: [ADMIN], Result: true
+2026-01-04 18:14:56.366 | 2026-01-04T17:14:56.365Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:56.366 | 2026-01-04T17:14:56.365Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : isAdmin - User: admin, Roles: [ADMIN], Result: true
+2026-01-04 18:14:56.366 | 2026-01-04T17:14:56.366Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : isAdmin - User: admin, Roles: [ADMIN], Result: true
+2026-01-04 18:14:56.366 | 2026-01-04T17:14:56.365Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : isAdmin - User: admin, Roles: [ADMIN], Result: true
+2026-01-04 18:14:56.367 | Hibernate: 
+2026-01-04 18:14:56.367 |     select
+2026-01-04 18:14:56.367 |         c1_0.id,
+2026-01-04 18:14:56.367 |         c1_0.created_at,
+2026-01-04 18:14:56.367 |         c1_0.name,
+2026-01-04 18:14:56.368 |         c1_0.updated_at 
+2026-01-04 18:14:56.368 |     from
+2026-01-04 18:14:56.368 |         category c1_0
+2026-01-04 18:14:56.368 | Hibernate: 
+2026-01-04 18:14:56.368 |     select
+2026-01-04 18:14:56.368 |         c1_0.id,
+2026-01-04 18:14:56.368 |         c1_0.created_at,
+2026-01-04 18:14:56.368 |         c1_0.name,
+2026-01-04 18:14:56.368 |         c1_0.updated_at 
+2026-01-04 18:14:56.368 |     from
+2026-01-04 18:14:56.368 |         category c1_0
+2026-01-04 18:14:56.368 | Hibernate: 
+2026-01-04 18:14:56.368 |     select
+2026-01-04 18:14:56.368 |         c1_0.id,
+2026-01-04 18:14:56.368 |         c1_0.created_at,
+2026-01-04 18:14:56.368 |         c1_0.name,
+2026-01-04 18:14:56.368 |         c1_0.updated_at 
+2026-01-04 18:14:56.368 |     from
+2026-01-04 18:14:56.368 |         category c1_0
+2026-01-04 18:14:56.368 | Hibernate: 
+2026-01-04 18:14:56.368 |     select
+2026-01-04 18:14:56.368 |         c1_0.id,
+2026-01-04 18:14:56.368 |         c1_0.created_at,
+2026-01-04 18:14:56.368 |         c1_0.name,
+2026-01-04 18:14:56.368 |         c1_0.updated_at 
+2026-01-04 18:14:56.368 |     from
+2026-01-04 18:14:56.368 |         category c1_0
+2026-01-04 18:14:56.368 | Hibernate: 
+2026-01-04 18:14:56.368 |     select
+2026-01-04 18:14:56.368 |         c1_0.id,
+2026-01-04 18:14:56.368 |         c1_0.created_at,
+2026-01-04 18:14:56.368 |         c1_0.name,
+2026-01-04 18:14:56.368 |         c1_0.updated_at 
+2026-01-04 18:14:56.368 |     from
+2026-01-04 18:14:56.368 |         category c1_0
+2026-01-04 18:14:56.368 | Hibernate: 
+2026-01-04 18:14:56.368 |     select
+2026-01-04 18:14:56.368 |         c1_0.id,
+2026-01-04 18:14:56.368 |         c1_0.created_at,
+2026-01-04 18:14:56.368 |         c1_0.name,
+2026-01-04 18:14:56.368 |         c1_0.updated_at 
+2026-01-04 18:14:56.368 |     from
+2026-01-04 18:14:56.368 |         category c1_0
+2026-01-04 18:14:56.370 | 2026-01-04T17:14:56.369Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:56.370 | 2026-01-04T17:14:56.369Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:56.370 | 2026-01-04T17:14:56.369Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.c.GlobalFuncionController        : Authentication: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+2026-01-04 18:14:56.370 | 2026-01-04T17:14:56.370Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: true
+2026-01-04 18:14:56.370 | 2026-01-04T17:14:56.370Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:56.370 | 2026-01-04T17:14:56.370Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:56.370 | 2026-01-04T17:14:56.370Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : Authentication: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+2026-01-04 18:14:56.370 | 2026-01-04T17:14:56.370Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.c.GlobalFuncionController        : Principal type: dev.luisvives.dawazon.users.models.User
+2026-01-04 18:14:56.370 | 2026-01-04T17:14:56.370Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.c.GlobalFuncionController        : Returning user: ID=1, Username=admin
+2026-01-04 18:14:56.370 | 2026-01-04T17:14:56.370Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : Authentication: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+2026-01-04 18:14:56.370 | 2026-01-04T17:14:56.370Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:56.370 | 2026-01-04T17:14:56.370Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : Authentication: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+2026-01-04 18:14:56.370 | 2026-01-04T17:14:56.370Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: true
+2026-01-04 18:14:56.370 | 2026-01-04T17:14:56.370Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:56.370 | 2026-01-04T17:14:56.370Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : Authentication: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+2026-01-04 18:14:56.370 | 2026-01-04T17:14:56.370Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: true
+2026-01-04 18:14:56.370 | 2026-01-04T17:14:56.370Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : Principal type: dev.luisvives.dawazon.users.models.User
+2026-01-04 18:14:56.370 | 2026-01-04T17:14:56.370Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : Returning user: ID=1, Username=admin
+2026-01-04 18:14:56.371 | 2026-01-04T17:14:56.370Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:56.371 | 2026-01-04T17:14:56.370Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:56.371 | 2026-01-04T17:14:56.370Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : Authentication: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+2026-01-04 18:14:56.371 | 2026-01-04T17:14:56.370Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: true
+2026-01-04 18:14:56.371 | 2026-01-04T17:14:56.370Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : Principal type: dev.luisvives.dawazon.users.models.User
+2026-01-04 18:14:56.371 | 2026-01-04T17:14:56.370Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: true
+2026-01-04 18:14:56.371 | 2026-01-04T17:14:56.371Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : Returning user: ID=1, Username=admin
+2026-01-04 18:14:56.371 | 2026-01-04T17:14:56.371Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.c.GlobalFuncionController        : isManager - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:56.371 | 2026-01-04T17:14:56.371Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : isManager - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:56.372 | 2026-01-04T17:14:56.371Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: true
+2026-01-04 18:14:56.372 | 2026-01-04T17:14:56.371Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : Principal type: dev.luisvives.dawazon.users.models.User
+2026-01-04 18:14:56.372 | 2026-01-04T17:14:56.371Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : Principal type: dev.luisvives.dawazon.users.models.User
+2026-01-04 18:14:56.372 | 2026-01-04T17:14:56.371Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:56.372 | 2026-01-04T17:14:56.372Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : Principal type: dev.luisvives.dawazon.users.models.User
+2026-01-04 18:14:56.372 | 2026-01-04T17:14:56.371Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:56.372 | 2026-01-04T17:14:56.372Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : Returning user: ID=1, Username=admin
+2026-01-04 18:14:56.372 | 2026-01-04T17:14:56.372Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:56.372 | 2026-01-04T17:14:56.372Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : Returning user: ID=1, Username=admin
+2026-01-04 18:14:56.372 | 2026-01-04T17:14:56.372Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:56.372 | 2026-01-04T17:14:56.372Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.c.GlobalFuncionController        : isUser - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:56.372 | 2026-01-04T17:14:56.372Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:56.372 | 2026-01-04T17:14:56.372Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : Returning user: ID=1, Username=admin
+2026-01-04 18:14:56.372 | 2026-01-04T17:14:56.372Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : isManager - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:56.372 | 2026-01-04T17:14:56.372Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : isManager - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:56.372 | 2026-01-04T17:14:56.372Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:56.372 | 2026-01-04T17:14:56.372Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : isUser - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:56.372 | 2026-01-04T17:14:56.372Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : isUser - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:56.372 | 2026-01-04T17:14:56.372Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : isManager - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:56.372 | 2026-01-04T17:14:56.372Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:56.373 | 2026-01-04T17:14:56.372Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:56.373 | 2026-01-04T17:14:56.372Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : isManager - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:56.373 | 2026-01-04T17:14:56.373Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : isUser - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:56.373 | 2026-01-04T17:14:56.372Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:56.373 | 2026-01-04T17:14:56.373Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:56.373 | 2026-01-04T17:14:56.373Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : isUser - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:56.373 | 2026-01-04T17:14:56.373Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : isUser - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:56.373 | 2026-01-04T17:14:56.373Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero quijote-cover.jpg
+2026-01-04 18:14:56.373 | 2026-01-04T17:14:56.373Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero adidas-ucl-ball.jpg
+2026-01-04 18:14:56.373 | 2026-01-04T17:14:56.373Z  INFO 1 --- [dawazon] [nio-3000-exec-6] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero quijote-cover.jpg
+2026-01-04 18:14:56.373 | 2026-01-04T17:14:56.373Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero adidas-ucl-ball.jpg
+2026-01-04 18:14:56.373 | 2026-01-04T17:14:56.373Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero laptop-hp-1.jpg
+2026-01-04 18:14:56.373 | 2026-01-04T17:14:56.373Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero laptop-hp-1.jpg
+2026-01-04 18:14:56.374 | 2026-01-04T17:14:56.373Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero levis-501-1.jpg
+2026-01-04 18:14:56.374 | 2026-01-04T17:14:56.374Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero levis-501-1.jpg
+2026-01-04 18:14:56.374 | 2026-01-04T17:14:56.374Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero cien-anos-cover.jpg
+2026-01-04 18:14:56.374 | 2026-01-04T17:14:56.374Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero cien-anos-cover.jpg
+2026-01-04 18:14:56.374 | 2026-01-04T17:14:56.374Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero nike-tshirt-1.jpg
+2026-01-04 18:14:56.374 | 2026-01-04T17:14:56.374Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero nike-tshirt-1.jpg
+2026-01-04 18:14:56.390 | 2026-01-04T17:14:56.390Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:56.390 | 2026-01-04T17:14:56.390Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : isAdmin - User: admin, Roles: [ADMIN], Result: true
+2026-01-04 18:14:56.391 | 2026-01-04T17:14:56.390Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:56.391 | 2026-01-04T17:14:56.391Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:56.391 | 2026-01-04T17:14:56.391Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:56.391 | 2026-01-04T17:14:56.391Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : isAdmin - User: admin, Roles: [ADMIN], Result: true
+2026-01-04 18:14:56.391 | 2026-01-04T17:14:56.391Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : isAdmin - User: admin, Roles: [ADMIN], Result: true
+2026-01-04 18:14:56.391 | 2026-01-04T17:14:56.391Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.c.GlobalFuncionController        : isAdmin - User: admin, Roles: [ADMIN], Result: true
+2026-01-04 18:14:56.392 | Hibernate: 
+2026-01-04 18:14:56.392 |     select
+2026-01-04 18:14:56.392 |         c1_0.id,
+2026-01-04 18:14:56.392 |         c1_0.created_at,
+2026-01-04 18:14:56.392 |         c1_0.name,
+2026-01-04 18:14:56.392 |         c1_0.updated_at 
+2026-01-04 18:14:56.392 |     from
+2026-01-04 18:14:56.392 |         category c1_0
+2026-01-04 18:14:56.392 | Hibernate: 
+2026-01-04 18:14:56.392 |     select
+2026-01-04 18:14:56.392 |         c1_0.id,
+2026-01-04 18:14:56.393 |         c1_0.created_at,
+2026-01-04 18:14:56.393 |         c1_0.name,
+2026-01-04 18:14:56.393 |         c1_0.updated_at 
+2026-01-04 18:14:56.393 |     from
+2026-01-04 18:14:56.393 |         category c1_0
+2026-01-04 18:14:56.393 | Hibernate: 
+2026-01-04 18:14:56.393 |     select
+2026-01-04 18:14:56.393 |         c1_0.id,
+2026-01-04 18:14:56.393 |         c1_0.created_at,
+2026-01-04 18:14:56.393 |         c1_0.name,
+2026-01-04 18:14:56.393 |         c1_0.updated_at 
+2026-01-04 18:14:56.393 |     from
+2026-01-04 18:14:56.393 |         category c1_0
+2026-01-04 18:14:56.393 | Hibernate: 
+2026-01-04 18:14:56.393 |     select
+2026-01-04 18:14:56.393 |         c1_0.id,
+2026-01-04 18:14:56.393 |         c1_0.created_at,
+2026-01-04 18:14:56.393 |         c1_0.name,
+2026-01-04 18:14:56.393 |         c1_0.updated_at 
+2026-01-04 18:14:56.393 |     from
+2026-01-04 18:14:56.393 |         category c1_0
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.395Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.395Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.c.GlobalFuncionController        : Authentication: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.395Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.395Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: true
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.395Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.c.GlobalFuncionController        : Principal type: dev.luisvives.dawazon.users.models.User
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.395Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.c.GlobalFuncionController        : Returning user: ID=1, Username=admin
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.395Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : Authentication: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: true
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.395Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : Principal type: dev.luisvives.dawazon.users.models.User
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : Authentication: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.c.GlobalFuncionController        : isManager - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : Returning user: ID=1, Username=admin
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: true
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : Authentication: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : Principal type: dev.luisvives.dawazon.users.models.User
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: true
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : isManager - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : Principal type: dev.luisvives.dawazon.users.models.User
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : Returning user: ID=1, Username=admin
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : Returning user: ID=1, Username=admin
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.c.GlobalFuncionController        : isUser - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:56.396 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.c.GlobalFuncionController        : isUser - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:56.397 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : isManager - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:56.397 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : isManager - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:56.397 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:56.397 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:56.397 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : isUser - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:56.397 | 2026-01-04T17:14:56.396Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : isUser - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:56.397 | 2026-01-04T17:14:56.397Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero samsung-s23-1.jpg
+2026-01-04 18:14:56.397 | 2026-01-04T17:14:56.397Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero philips-hue-1.jpg
+2026-01-04 18:14:56.397 | 2026-01-04T17:14:56.397Z  INFO 1 --- [dawazon] [io-3000-exec-10] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero samsung-s23-1.jpg
+2026-01-04 18:14:56.397 | 2026-01-04T17:14:56.397Z  INFO 1 --- [dawazon] [nio-3000-exec-2] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero philips-hue-1.jpg
+2026-01-04 18:14:56.397 | 2026-01-04T17:14:56.397Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero trek-marlin-1.jpg
+2026-01-04 18:14:56.397 | 2026-01-04T17:14:56.397Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero trek-marlin-1.jpg
+2026-01-04 18:14:56.397 | 2026-01-04T17:14:56.397Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero 1984-cover.jpeg
+2026-01-04 18:14:56.397 | 2026-01-04T17:14:56.397Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero 1984-cover.jpeg
+2026-01-04 18:14:57.795 | 2026-01-04T17:14:57.795Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:57.795 | 2026-01-04T17:14:57.795Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : isAdmin - User: admin, Roles: [ADMIN], Result: true
+2026-01-04 18:14:57.797 | Hibernate: 
+2026-01-04 18:14:57.797 |     select
+2026-01-04 18:14:57.797 |         c1_0.id,
+2026-01-04 18:14:57.797 |         c1_0.created_at,
+2026-01-04 18:14:57.797 |         c1_0.name,
+2026-01-04 18:14:57.797 |         c1_0.updated_at 
+2026-01-04 18:14:57.797 |     from
+2026-01-04 18:14:57.797 |         category c1_0
+2026-01-04 18:14:57.799 | 2026-01-04T17:14:57.799Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:57.799 | 2026-01-04T17:14:57.799Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : Authentication: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+2026-01-04 18:14:57.799 | 2026-01-04T17:14:57.799Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: true
+2026-01-04 18:14:57.799 | 2026-01-04T17:14:57.799Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : Principal type: dev.luisvives.dawazon.users.models.User
+2026-01-04 18:14:57.799 | 2026-01-04T17:14:57.799Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : Returning user: ID=1, Username=admin
+2026-01-04 18:14:57.799 | 2026-01-04T17:14:57.799Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:57.799 | 2026-01-04T17:14:57.799Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : isManager - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:57.799 | 2026-01-04T17:14:57.799Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:57.799 | 2026-01-04T17:14:57.799Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : isUser - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:57.835 | Hibernate: 
+2026-01-04 18:14:57.835 |     select
+2026-01-04 18:14:57.835 |         u1_0.id,
+2026-01-04 18:14:57.835 |         u1_0.avatar,
+2026-01-04 18:14:57.835 |         u1_0.client_address_city,
+2026-01-04 18:14:57.835 |         u1_0.country,
+2026-01-04 18:14:57.835 |         u1_0.number,
+2026-01-04 18:14:57.835 |         u1_0.client_address_postal_code,
+2026-01-04 18:14:57.835 |         u1_0.client_address_province,
+2026-01-04 18:14:57.835 |         u1_0.client_address_street,
+2026-01-04 18:14:57.835 |         u1_0.client_email,
+2026-01-04 18:14:57.835 |         u1_0.client_name,
+2026-01-04 18:14:57.835 |         u1_0.client_phone,
+2026-01-04 18:14:57.835 |         u1_0.created_at,
+2026-01-04 18:14:57.835 |         u1_0.email,
+2026-01-04 18:14:57.835 |         u1_0.is_deleted,
+2026-01-04 18:14:57.835 |         u1_0.password,
+2026-01-04 18:14:57.835 |         u1_0.telefono,
+2026-01-04 18:14:57.835 |         u1_0.updated_at,
+2026-01-04 18:14:57.835 |         u1_0.user_name 
+2026-01-04 18:14:57.835 |     from
+2026-01-04 18:14:57.835 |         users u1_0 
+2026-01-04 18:14:57.835 |     order by
+2026-01-04 18:14:57.835 |         u1_0.id 
+2026-01-04 18:14:57.835 |     offset
+2026-01-04 18:14:57.835 |         ? rows 
+2026-01-04 18:14:57.835 |     fetch
+2026-01-04 18:14:57.835 |         first ? rows only
+2026-01-04 18:14:57.839 | Hibernate: 
+2026-01-04 18:14:57.839 |     select
+2026-01-04 18:14:57.839 |         r1_0.user_id,
+2026-01-04 18:14:57.839 |         r1_0.roles 
+2026-01-04 18:14:57.839 |     from
+2026-01-04 18:14:57.839 |         user_roles r1_0 
+2026-01-04 18:14:57.839 |     where
+2026-01-04 18:14:57.839 |         r1_0.user_id=?
+2026-01-04 18:14:57.840 | Hibernate: 
+2026-01-04 18:14:57.840 |     select
+2026-01-04 18:14:57.840 |         f1_0.user_id,
+2026-01-04 18:14:57.840 |         f1_0.favs 
+2026-01-04 18:14:57.840 |     from
+2026-01-04 18:14:57.840 |         user_favs f1_0 
+2026-01-04 18:14:57.840 |     where
+2026-01-04 18:14:57.840 |         f1_0.user_id=?
+2026-01-04 18:14:57.841 | Hibernate: 
+2026-01-04 18:14:57.841 |     select
+2026-01-04 18:14:57.841 |         r1_0.user_id,
+2026-01-04 18:14:57.841 |         r1_0.roles 
+2026-01-04 18:14:57.841 |     from
+2026-01-04 18:14:57.841 |         user_roles r1_0 
+2026-01-04 18:14:57.841 |     where
+2026-01-04 18:14:57.841 |         r1_0.user_id=?
+2026-01-04 18:14:57.841 | Hibernate: 
+2026-01-04 18:14:57.841 |     select
+2026-01-04 18:14:57.841 |         f1_0.user_id,
+2026-01-04 18:14:57.841 |         f1_0.favs 
+2026-01-04 18:14:57.841 |     from
+2026-01-04 18:14:57.841 |         user_favs f1_0 
+2026-01-04 18:14:57.841 |     where
+2026-01-04 18:14:57.841 |         f1_0.user_id=?
+2026-01-04 18:14:57.842 | Hibernate: 
+2026-01-04 18:14:57.842 |     select
+2026-01-04 18:14:57.842 |         r1_0.user_id,
+2026-01-04 18:14:57.842 |         r1_0.roles 
+2026-01-04 18:14:57.842 |     from
+2026-01-04 18:14:57.842 |         user_roles r1_0 
+2026-01-04 18:14:57.842 |     where
+2026-01-04 18:14:57.842 |         r1_0.user_id=?
+2026-01-04 18:14:57.842 | Hibernate: 
+2026-01-04 18:14:57.842 |     select
+2026-01-04 18:14:57.842 |         f1_0.user_id,
+2026-01-04 18:14:57.842 |         f1_0.favs 
+2026-01-04 18:14:57.842 |     from
+2026-01-04 18:14:57.842 |         user_favs f1_0 
+2026-01-04 18:14:57.842 |     where
+2026-01-04 18:14:57.842 |         f1_0.user_id=?
+2026-01-04 18:14:57.843 | Hibernate: 
+2026-01-04 18:14:57.843 |     select
+2026-01-04 18:14:57.843 |         r1_0.user_id,
+2026-01-04 18:14:57.843 |         r1_0.roles 
+2026-01-04 18:14:57.843 |     from
+2026-01-04 18:14:57.843 |         user_roles r1_0 
+2026-01-04 18:14:57.843 |     where
+2026-01-04 18:14:57.843 |         r1_0.user_id=?
+2026-01-04 18:14:57.843 | Hibernate: 
+2026-01-04 18:14:57.843 |     select
+2026-01-04 18:14:57.843 |         f1_0.user_id,
+2026-01-04 18:14:57.843 |         f1_0.favs 
+2026-01-04 18:14:57.843 |     from
+2026-01-04 18:14:57.843 |         user_favs f1_0 
+2026-01-04 18:14:57.843 |     where
+2026-01-04 18:14:57.843 |         f1_0.user_id=?
+2026-01-04 18:14:57.844 | Hibernate: 
+2026-01-04 18:14:57.844 |     select
+2026-01-04 18:14:57.844 |         r1_0.user_id,
+2026-01-04 18:14:57.844 |         r1_0.roles 
+2026-01-04 18:14:57.844 |     from
+2026-01-04 18:14:57.844 |         user_roles r1_0 
+2026-01-04 18:14:57.844 |     where
+2026-01-04 18:14:57.844 |         r1_0.user_id=?
+2026-01-04 18:14:57.844 | Hibernate: 
+2026-01-04 18:14:57.844 |     select
+2026-01-04 18:14:57.844 |         f1_0.user_id,
+2026-01-04 18:14:57.844 |         f1_0.favs 
+2026-01-04 18:14:57.844 |     from
+2026-01-04 18:14:57.844 |         user_favs f1_0 
+2026-01-04 18:14:57.844 |     where
+2026-01-04 18:14:57.844 |         f1_0.user_id=?
+2026-01-04 18:14:57.844 | Hibernate: 
+2026-01-04 18:14:57.844 |     select
+2026-01-04 18:14:57.844 |         r1_0.user_id,
+2026-01-04 18:14:57.844 |         r1_0.roles 
+2026-01-04 18:14:57.844 |     from
+2026-01-04 18:14:57.844 |         user_roles r1_0 
+2026-01-04 18:14:57.844 |     where
+2026-01-04 18:14:57.844 |         r1_0.user_id=?
+2026-01-04 18:14:57.845 | Hibernate: 
+2026-01-04 18:14:57.845 |     select
+2026-01-04 18:14:57.845 |         f1_0.user_id,
+2026-01-04 18:14:57.845 |         f1_0.favs 
+2026-01-04 18:14:57.845 |     from
+2026-01-04 18:14:57.845 |         user_favs f1_0 
+2026-01-04 18:14:57.845 |     where
+2026-01-04 18:14:57.845 |         f1_0.user_id=?
+2026-01-04 18:14:57.845 | Hibernate: 
+2026-01-04 18:14:57.845 |     select
+2026-01-04 18:14:57.845 |         r1_0.user_id,
+2026-01-04 18:14:57.845 |         r1_0.roles 
+2026-01-04 18:14:57.845 |     from
+2026-01-04 18:14:57.845 |         user_roles r1_0 
+2026-01-04 18:14:57.845 |     where
+2026-01-04 18:14:57.845 |         r1_0.user_id=?
+2026-01-04 18:14:57.846 | Hibernate: 
+2026-01-04 18:14:57.846 |     select
+2026-01-04 18:14:57.846 |         f1_0.user_id,
+2026-01-04 18:14:57.846 |         f1_0.favs 
+2026-01-04 18:14:57.846 |     from
+2026-01-04 18:14:57.846 |         user_favs f1_0 
+2026-01-04 18:14:57.846 |     where
+2026-01-04 18:14:57.846 |         f1_0.user_id=?
+2026-01-04 18:14:57.899 | 2026-01-04T17:14:57.899Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:57.900 | 2026-01-04T17:14:57.899Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : isAdmin - User: admin, Roles: [ADMIN], Result: true
+2026-01-04 18:14:57.904 | Hibernate: 
+2026-01-04 18:14:57.904 |     select
+2026-01-04 18:14:57.904 |         c1_0.id,
+2026-01-04 18:14:57.904 |         c1_0.created_at,
+2026-01-04 18:14:57.904 |         c1_0.name,
+2026-01-04 18:14:57.904 |         c1_0.updated_at 
+2026-01-04 18:14:57.904 |     from
+2026-01-04 18:14:57.904 |         category c1_0
+2026-01-04 18:14:57.906 | 2026-01-04T17:14:57.905Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:57.906 | 2026-01-04T17:14:57.906Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : Authentication: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+2026-01-04 18:14:57.906 | 2026-01-04T17:14:57.906Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: true
+2026-01-04 18:14:57.906 | 2026-01-04T17:14:57.906Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : Principal type: dev.luisvives.dawazon.users.models.User
+2026-01-04 18:14:57.906 | 2026-01-04T17:14:57.906Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : Returning user: ID=1, Username=admin
+2026-01-04 18:14:57.906 | 2026-01-04T17:14:57.906Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:57.906 | 2026-01-04T17:14:57.906Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : isManager - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:57.906 | 2026-01-04T17:14:57.906Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:57.906 | 2026-01-04T17:14:57.906Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.c.GlobalFuncionController        : isUser - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:57.907 | 2026-01-04T17:14:57.907Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero default.png
+2026-01-04 18:14:57.907 | 2026-01-04T17:14:57.907Z  INFO 1 --- [dawazon] [nio-3000-exec-3] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero default.png
+2026-01-04 18:14:59.866 | 2026-01-04T17:14:59.865Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:59.866 | 2026-01-04T17:14:59.865Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : isAdmin - User: admin, Roles: [ADMIN], Result: true
+2026-01-04 18:14:59.868 | Hibernate: 
+2026-01-04 18:14:59.868 |     select
+2026-01-04 18:14:59.868 |         c1_0.id,
+2026-01-04 18:14:59.868 |         c1_0.created_at,
+2026-01-04 18:14:59.868 |         c1_0.name,
+2026-01-04 18:14:59.868 |         c1_0.updated_at 
+2026-01-04 18:14:59.868 |     from
+2026-01-04 18:14:59.868 |         category c1_0
+2026-01-04 18:14:59.871 | 2026-01-04T17:14:59.870Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:59.871 | 2026-01-04T17:14:59.871Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : Authentication: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+2026-01-04 18:14:59.871 | 2026-01-04T17:14:59.871Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: true
+2026-01-04 18:14:59.871 | 2026-01-04T17:14:59.871Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : Principal type: dev.luisvives.dawazon.users.models.User
+2026-01-04 18:14:59.871 | 2026-01-04T17:14:59.871Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : Returning user: ID=1, Username=admin
+2026-01-04 18:14:59.871 | 2026-01-04T17:14:59.871Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:59.871 | 2026-01-04T17:14:59.871Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : isManager - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:59.871 | 2026-01-04T17:14:59.871Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:59.871 | 2026-01-04T17:14:59.871Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : isUser - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:59.873 | 2026-01-04T17:14:59.873Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.users.controller.UserController    : [GET /auth/me/users/edit/3] Iniciando edición de usuario
+2026-01-04 18:14:59.879 | Hibernate: 
+2026-01-04 18:14:59.879 |     select
+2026-01-04 18:14:59.879 |         u1_0.id,
+2026-01-04 18:14:59.879 |         u1_0.avatar,
+2026-01-04 18:14:59.879 |         u1_0.client_address_city,
+2026-01-04 18:14:59.879 |         u1_0.country,
+2026-01-04 18:14:59.879 |         u1_0.number,
+2026-01-04 18:14:59.879 |         u1_0.client_address_postal_code,
+2026-01-04 18:14:59.879 |         u1_0.client_address_province,
+2026-01-04 18:14:59.879 |         u1_0.client_address_street,
+2026-01-04 18:14:59.879 |         u1_0.client_email,
+2026-01-04 18:14:59.879 |         u1_0.client_name,
+2026-01-04 18:14:59.879 |         u1_0.client_phone,
+2026-01-04 18:14:59.879 |         u1_0.created_at,
+2026-01-04 18:14:59.879 |         u1_0.email,
+2026-01-04 18:14:59.879 |         u1_0.is_deleted,
+2026-01-04 18:14:59.879 |         u1_0.password,
+2026-01-04 18:14:59.879 |         u1_0.telefono,
+2026-01-04 18:14:59.879 |         u1_0.updated_at,
+2026-01-04 18:14:59.879 |         u1_0.user_name,
+2026-01-04 18:14:59.879 |         f1_0.user_id,
+2026-01-04 18:14:59.879 |         f1_0.favs 
+2026-01-04 18:14:59.879 |     from
+2026-01-04 18:14:59.879 |         users u1_0 
+2026-01-04 18:14:59.879 |     left join
+2026-01-04 18:14:59.879 |         user_favs f1_0 
+2026-01-04 18:14:59.879 |             on u1_0.id=f1_0.user_id 
+2026-01-04 18:14:59.879 |     where
+2026-01-04 18:14:59.879 |         u1_0.id=?
+2026-01-04 18:14:59.883 | Hibernate: 
+2026-01-04 18:14:59.883 |     select
+2026-01-04 18:14:59.883 |         r1_0.user_id,
+2026-01-04 18:14:59.883 |         r1_0.roles 
+2026-01-04 18:14:59.883 |     from
+2026-01-04 18:14:59.883 |         user_roles r1_0 
+2026-01-04 18:14:59.883 |     where
+2026-01-04 18:14:59.883 |         r1_0.user_id=?
+2026-01-04 18:14:59.884 | 2026-01-04T17:14:59.884Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.users.controller.UserController    : [GET /auth/me/users/edit/3] Usuario encontrado: ID=3, Username=john_doe, Email=john.doe@email.com
+2026-01-04 18:14:59.884 | 2026-01-04T17:14:59.884Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.users.controller.UserController    : [GET /auth/me/users/edit/3] Client exists: name=John Doe
+2026-01-04 18:14:59.884 | 2026-01-04T17:14:59.884Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.users.controller.UserController    : [GET /auth/me/users/edit/3] Address exists: street=Gran Vía
+2026-01-04 18:14:59.885 | 2026-01-04T17:14:59.884Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.users.controller.UserController    : [GET /auth/me/users/edit/3] Model attributes set, returning view
+2026-01-04 18:14:59.936 | 2026-01-04T17:14:59.936Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:14:59.936 | 2026-01-04T17:14:59.936Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : isAdmin - User: admin, Roles: [ADMIN], Result: true
+2026-01-04 18:14:59.938 | Hibernate: 
+2026-01-04 18:14:59.938 |     select
+2026-01-04 18:14:59.938 |         c1_0.id,
+2026-01-04 18:14:59.938 |         c1_0.created_at,
+2026-01-04 18:14:59.938 |         c1_0.name,
+2026-01-04 18:14:59.938 |         c1_0.updated_at 
+2026-01-04 18:14:59.938 |     from
+2026-01-04 18:14:59.938 |         category c1_0
+2026-01-04 18:14:59.941 | 2026-01-04T17:14:59.941Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:14:59.941 | 2026-01-04T17:14:59.941Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : Authentication: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+2026-01-04 18:14:59.941 | 2026-01-04T17:14:59.941Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: true
+2026-01-04 18:14:59.941 | 2026-01-04T17:14:59.941Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : Principal type: dev.luisvives.dawazon.users.models.User
+2026-01-04 18:14:59.941 | 2026-01-04T17:14:59.941Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : Returning user: ID=1, Username=admin
+2026-01-04 18:14:59.941 | 2026-01-04T17:14:59.941Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:14:59.942 | 2026-01-04T17:14:59.941Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : isManager - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:59.942 | 2026-01-04T17:14:59.941Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:14:59.942 | 2026-01-04T17:14:59.941Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.c.GlobalFuncionController        : isUser - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:14:59.943 | 2026-01-04T17:14:59.943Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero default.png
+2026-01-04 18:14:59.943 | 2026-01-04T17:14:59.943Z  INFO 1 --- [dawazon] [nio-3000-exec-7] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero default.png
+2026-01-04 18:15:03.394 | 2026-01-04T17:15:03.394Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:15:03.394 | 2026-01-04T17:15:03.394Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : isAdmin - User: admin, Roles: [ADMIN], Result: true
+2026-01-04 18:15:03.396 | Hibernate: 
+2026-01-04 18:15:03.396 |     select
+2026-01-04 18:15:03.396 |         c1_0.id,
+2026-01-04 18:15:03.396 |         c1_0.created_at,
+2026-01-04 18:15:03.396 |         c1_0.name,
+2026-01-04 18:15:03.396 |         c1_0.updated_at 
+2026-01-04 18:15:03.396 |     from
+2026-01-04 18:15:03.396 |         category c1_0
+2026-01-04 18:15:03.398 | 2026-01-04T17:15:03.397Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:15:03.398 | 2026-01-04T17:15:03.398Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : Authentication: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+2026-01-04 18:15:03.398 | 2026-01-04T17:15:03.398Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: true
+2026-01-04 18:15:03.398 | 2026-01-04T17:15:03.398Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : Principal type: dev.luisvives.dawazon.users.models.User
+2026-01-04 18:15:03.398 | 2026-01-04T17:15:03.398Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : Returning user: ID=1, Username=admin
+2026-01-04 18:15:03.398 | 2026-01-04T17:15:03.398Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:15:03.398 | 2026-01-04T17:15:03.398Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : isManager - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:15:03.398 | 2026-01-04T17:15:03.398Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:15:03.398 | 2026-01-04T17:15:03.398Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : isUser - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:15:03.449 | 2026-01-04T17:15:03.448Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.users.controller.UserController    : [POST /auth/me/users/edit/3] Iniciando guardado
+2026-01-04 18:15:03.449 | 2026-01-04T17:15:03.449Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.users.controller.UserController    : [POST /auth/me/users/edit/3] DTO recibido: nombre=John Doe, email=john.doe@email.com, roles=[USER]
+2026-01-04 18:15:03.449 | 2026-01-04T17:15:03.449Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.users.controller.UserController    : [POST /auth/me/users/edit/3] No validation errors, proceeding to save
+2026-01-04 18:15:03.449 | 2026-01-04T17:15:03.449Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.users.service.AuthServiceImpl      : [AuthService.updateAdminCurrentUser] User ID: 3
+2026-01-04 18:15:03.449 | 2026-01-04T17:15:03.449Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.users.service.AuthServiceImpl      : [AuthService.updateAdminCurrentUser] Actualizar datos: nombre=John Doe, email=john.doe@email.com, telefono=666333444
+2026-01-04 18:15:03.450 | Hibernate: 
+2026-01-04 18:15:03.450 |     select
+2026-01-04 18:15:03.450 |         u1_0.id,
+2026-01-04 18:15:03.450 |         u1_0.avatar,
+2026-01-04 18:15:03.450 |         u1_0.client_address_city,
+2026-01-04 18:15:03.450 |         u1_0.country,
+2026-01-04 18:15:03.450 |         u1_0.number,
+2026-01-04 18:15:03.450 |         u1_0.client_address_postal_code,
+2026-01-04 18:15:03.450 |         u1_0.client_address_province,
+2026-01-04 18:15:03.450 |         u1_0.client_address_street,
+2026-01-04 18:15:03.450 |         u1_0.client_email,
+2026-01-04 18:15:03.450 |         u1_0.client_name,
+2026-01-04 18:15:03.450 |         u1_0.client_phone,
+2026-01-04 18:15:03.450 |         u1_0.created_at,
+2026-01-04 18:15:03.450 |         u1_0.email,
+2026-01-04 18:15:03.450 |         u1_0.is_deleted,
+2026-01-04 18:15:03.450 |         u1_0.password,
+2026-01-04 18:15:03.450 |         u1_0.telefono,
+2026-01-04 18:15:03.450 |         u1_0.updated_at,
+2026-01-04 18:15:03.450 |         u1_0.user_name,
+2026-01-04 18:15:03.450 |         f1_0.user_id,
+2026-01-04 18:15:03.450 |         f1_0.favs 
+2026-01-04 18:15:03.450 |     from
+2026-01-04 18:15:03.450 |         users u1_0 
+2026-01-04 18:15:03.450 |     left join
+2026-01-04 18:15:03.450 |         user_favs f1_0 
+2026-01-04 18:15:03.450 |             on u1_0.id=f1_0.user_id 
+2026-01-04 18:15:03.450 |     where
+2026-01-04 18:15:03.450 |         u1_0.id=?
+2026-01-04 18:15:03.452 | Hibernate: 
+2026-01-04 18:15:03.452 |     select
+2026-01-04 18:15:03.452 |         r1_0.user_id,
+2026-01-04 18:15:03.452 |         r1_0.roles 
+2026-01-04 18:15:03.452 |     from
+2026-01-04 18:15:03.452 |         user_roles r1_0 
+2026-01-04 18:15:03.452 |     where
+2026-01-04 18:15:03.452 |         r1_0.user_id=?
+2026-01-04 18:15:03.453 | 2026-01-04T17:15:03.452Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.users.service.AuthServiceImpl      : [AuthService.updateAdminCurrentUser] usuario encontrado: ID=3, currentUsername=john_doe, currentEmail=john.doe@email.com
+2026-01-04 18:15:03.453 | 2026-01-04T17:15:03.452Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.users.service.AuthServiceImpl      : [AuthService.updateAdminCurrentUser] Updating roles from [USER] to [USER]
+2026-01-04 18:15:03.453 | 2026-01-04T17:15:03.453Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.users.service.AuthServiceImpl      : [AuthService.updateAdminCurrentUser] Roles updated to: [USER]
+2026-01-04 18:15:03.453 | 2026-01-04T17:15:03.453Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.users.service.AuthServiceImpl      : [AuthService.updateAdminCurrentUser] Actualizando datos de cliente
+2026-01-04 18:15:03.453 | 2026-01-04T17:15:03.453Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.users.service.AuthServiceImpl      : [AuthService.updateAdminCurrentUser] Client y Address actualizados
+2026-01-04 18:15:03.453 | 2026-01-04T17:15:03.453Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.users.service.AuthServiceImpl      : [AuthService.updateAdminCurrentUser] Guardando usuario...
+2026-01-04 18:15:03.477 | Hibernate: 
+2026-01-04 18:15:03.477 |     update
+2026-01-04 18:15:03.477 |         users 
+2026-01-04 18:15:03.477 |     set
+2026-01-04 18:15:03.477 |         avatar=?,
+2026-01-04 18:15:03.477 |         client_address_city=?,
+2026-01-04 18:15:03.477 |         country=?,
+2026-01-04 18:15:03.477 |         number=?,
+2026-01-04 18:15:03.477 |         client_address_postal_code=?,
+2026-01-04 18:15:03.477 |         client_address_province=?,
+2026-01-04 18:15:03.477 |         client_address_street=?,
+2026-01-04 18:15:03.477 |         client_email=?,
+2026-01-04 18:15:03.477 |         client_name=?,
+2026-01-04 18:15:03.477 |         client_phone=?,
+2026-01-04 18:15:03.477 |         created_at=?,
+2026-01-04 18:15:03.477 |         email=?,
+2026-01-04 18:15:03.477 |         is_deleted=?,
+2026-01-04 18:15:03.477 |         password=?,
+2026-01-04 18:15:03.477 |         telefono=?,
+2026-01-04 18:15:03.477 |         updated_at=?,
+2026-01-04 18:15:03.477 |         user_name=? 
+2026-01-04 18:15:03.477 |     where
+2026-01-04 18:15:03.477 |         id=?
+2026-01-04 18:15:03.485 | Hibernate: 
+2026-01-04 18:15:03.485 |     delete 
+2026-01-04 18:15:03.485 |     from
+2026-01-04 18:15:03.485 |         user_roles 
+2026-01-04 18:15:03.485 |     where
+2026-01-04 18:15:03.485 |         user_id=?
+2026-01-04 18:15:03.489 | Hibernate: 
+2026-01-04 18:15:03.489 |     insert 
+2026-01-04 18:15:03.489 |     into
+2026-01-04 18:15:03.489 |         user_roles
+2026-01-04 18:15:03.489 |         (user_id, roles) 
+2026-01-04 18:15:03.489 |     values
+2026-01-04 18:15:03.489 |         (?, ?)
+2026-01-04 18:15:03.491 | 2026-01-04T17:15:03.491Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.users.service.AuthServiceImpl      : [AuthService.updateAdminCurrentUser] Usuario guardado con éxito: ID=3, Username=John Doe
+2026-01-04 18:15:03.491 | 2026-01-04T17:15:03.491Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.users.controller.UserController    : [POST /auth/me/users/edit/3] User saved successfully, redirecting to profile
+2026-01-04 18:15:03.505 | 2026-01-04T17:15:03.505Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:15:03.505 | 2026-01-04T17:15:03.505Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : isAdmin - User: admin, Roles: [ADMIN], Result: true
+2026-01-04 18:15:03.507 | Hibernate: 
+2026-01-04 18:15:03.507 |     select
+2026-01-04 18:15:03.507 |         c1_0.id,
+2026-01-04 18:15:03.507 |         c1_0.created_at,
+2026-01-04 18:15:03.507 |         c1_0.name,
+2026-01-04 18:15:03.507 |         c1_0.updated_at 
+2026-01-04 18:15:03.507 |     from
+2026-01-04 18:15:03.507 |         category c1_0
+2026-01-04 18:15:03.509 | 2026-01-04T17:15:03.509Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:15:03.509 | 2026-01-04T17:15:03.509Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : Authentication: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+2026-01-04 18:15:03.509 | 2026-01-04T17:15:03.509Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: true
+2026-01-04 18:15:03.509 | 2026-01-04T17:15:03.509Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : Principal type: dev.luisvives.dawazon.users.models.User
+2026-01-04 18:15:03.509 | 2026-01-04T17:15:03.509Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : Returning user: ID=1, Username=admin
+2026-01-04 18:15:03.510 | 2026-01-04T17:15:03.509Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:15:03.510 | 2026-01-04T17:15:03.509Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : isManager - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:15:03.510 | 2026-01-04T17:15:03.509Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:15:03.510 | 2026-01-04T17:15:03.510Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : isUser - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:15:03.511 | Hibernate: 
+2026-01-04 18:15:03.511 |     select
+2026-01-04 18:15:03.511 |         u1_0.id,
+2026-01-04 18:15:03.511 |         u1_0.avatar,
+2026-01-04 18:15:03.511 |         u1_0.client_address_city,
+2026-01-04 18:15:03.511 |         u1_0.country,
+2026-01-04 18:15:03.511 |         u1_0.number,
+2026-01-04 18:15:03.511 |         u1_0.client_address_postal_code,
+2026-01-04 18:15:03.511 |         u1_0.client_address_province,
+2026-01-04 18:15:03.511 |         u1_0.client_address_street,
+2026-01-04 18:15:03.511 |         u1_0.client_email,
+2026-01-04 18:15:03.511 |         u1_0.client_name,
+2026-01-04 18:15:03.511 |         u1_0.client_phone,
+2026-01-04 18:15:03.511 |         u1_0.created_at,
+2026-01-04 18:15:03.511 |         u1_0.email,
+2026-01-04 18:15:03.511 |         u1_0.is_deleted,
+2026-01-04 18:15:03.511 |         u1_0.password,
+2026-01-04 18:15:03.511 |         u1_0.telefono,
+2026-01-04 18:15:03.511 |         u1_0.updated_at,
+2026-01-04 18:15:03.511 |         u1_0.user_name,
+2026-01-04 18:15:03.511 |         f1_0.user_id,
+2026-01-04 18:15:03.511 |         f1_0.favs 
+2026-01-04 18:15:03.511 |     from
+2026-01-04 18:15:03.511 |         users u1_0 
+2026-01-04 18:15:03.511 |     left join
+2026-01-04 18:15:03.511 |         user_favs f1_0 
+2026-01-04 18:15:03.511 |             on u1_0.id=f1_0.user_id 
+2026-01-04 18:15:03.511 |     where
+2026-01-04 18:15:03.511 |         u1_0.id=?
+2026-01-04 18:15:03.515 | Hibernate: 
+2026-01-04 18:15:03.515 |     select
+2026-01-04 18:15:03.515 |         r1_0.user_id,
+2026-01-04 18:15:03.515 |         r1_0.roles 
+2026-01-04 18:15:03.515 |     from
+2026-01-04 18:15:03.515 |         user_roles r1_0 
+2026-01-04 18:15:03.515 |     where
+2026-01-04 18:15:03.515 |         r1_0.user_id=?
+2026-01-04 18:15:03.591 | 2026-01-04T17:15:03.591Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:15:03.591 | 2026-01-04T17:15:03.591Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : isAdmin - User: admin, Roles: [ADMIN], Result: true
+2026-01-04 18:15:03.594 | Hibernate: 
+2026-01-04 18:15:03.594 |     select
+2026-01-04 18:15:03.594 |         c1_0.id,
+2026-01-04 18:15:03.594 |         c1_0.created_at,
+2026-01-04 18:15:03.594 |         c1_0.name,
+2026-01-04 18:15:03.594 |         c1_0.updated_at 
+2026-01-04 18:15:03.594 |     from
+2026-01-04 18:15:03.594 |         category c1_0
+2026-01-04 18:15:03.597 | 2026-01-04T17:15:03.596Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:15:03.597 | 2026-01-04T17:15:03.597Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : Authentication: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+2026-01-04 18:15:03.597 | 2026-01-04T17:15:03.597Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: true
+2026-01-04 18:15:03.597 | 2026-01-04T17:15:03.597Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : Principal type: dev.luisvives.dawazon.users.models.User
+2026-01-04 18:15:03.597 | 2026-01-04T17:15:03.597Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : Returning user: ID=1, Username=admin
+2026-01-04 18:15:03.597 | 2026-01-04T17:15:03.597Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:15:03.597 | 2026-01-04T17:15:03.597Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : isManager - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:15:03.597 | 2026-01-04T17:15:03.597Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:15:03.597 | 2026-01-04T17:15:03.597Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.c.GlobalFuncionController        : isUser - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:15:03.598 | 2026-01-04T17:15:03.598Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero default.png
+2026-01-04 18:15:03.598 | 2026-01-04T17:15:03.598Z  INFO 1 --- [dawazon] [nio-3000-exec-9] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero default.png
+2026-01-04 18:15:52.752 | 2026-01-04T17:15:52.752Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:15:52.752 | 2026-01-04T17:15:52.752Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : isAdmin - User: admin, Roles: [ADMIN], Result: true
+2026-01-04 18:15:52.755 | Hibernate: 
+2026-01-04 18:15:52.755 |     select
+2026-01-04 18:15:52.755 |         c1_0.id,
+2026-01-04 18:15:52.755 |         c1_0.created_at,
+2026-01-04 18:15:52.755 |         c1_0.name,
+2026-01-04 18:15:52.755 |         c1_0.updated_at 
+2026-01-04 18:15:52.755 |     from
+2026-01-04 18:15:52.755 |         category c1_0
+2026-01-04 18:15:52.757 | 2026-01-04T17:15:52.757Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:15:52.757 | 2026-01-04T17:15:52.757Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : Authentication: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+2026-01-04 18:15:52.757 | 2026-01-04T17:15:52.757Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: true
+2026-01-04 18:15:52.757 | 2026-01-04T17:15:52.757Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : Principal type: dev.luisvives.dawazon.users.models.User
+2026-01-04 18:15:52.757 | 2026-01-04T17:15:52.757Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : Returning user: ID=1, Username=admin
+2026-01-04 18:15:52.757 | 2026-01-04T17:15:52.757Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:15:52.757 | 2026-01-04T17:15:52.757Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : isManager - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:15:52.757 | 2026-01-04T17:15:52.757Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:15:52.757 | 2026-01-04T17:15:52.757Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : isUser - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:15:52.760 | 2026-01-04T17:15:52.759Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.users.controller.UserController    : [GET /auth/me/users/edit/3] Iniciando edición de usuario
+2026-01-04 18:15:52.761 | Hibernate: 
+2026-01-04 18:15:52.761 |     select
+2026-01-04 18:15:52.761 |         u1_0.id,
+2026-01-04 18:15:52.761 |         u1_0.avatar,
+2026-01-04 18:15:52.761 |         u1_0.client_address_city,
+2026-01-04 18:15:52.761 |         u1_0.country,
+2026-01-04 18:15:52.761 |         u1_0.number,
+2026-01-04 18:15:52.761 |         u1_0.client_address_postal_code,
+2026-01-04 18:15:52.761 |         u1_0.client_address_province,
+2026-01-04 18:15:52.761 |         u1_0.client_address_street,
+2026-01-04 18:15:52.761 |         u1_0.client_email,
+2026-01-04 18:15:52.761 |         u1_0.client_name,
+2026-01-04 18:15:52.761 |         u1_0.client_phone,
+2026-01-04 18:15:52.761 |         u1_0.created_at,
+2026-01-04 18:15:52.761 |         u1_0.email,
+2026-01-04 18:15:52.761 |         u1_0.is_deleted,
+2026-01-04 18:15:52.761 |         u1_0.password,
+2026-01-04 18:15:52.761 |         u1_0.telefono,
+2026-01-04 18:15:52.761 |         u1_0.updated_at,
+2026-01-04 18:15:52.761 |         u1_0.user_name,
+2026-01-04 18:15:52.761 |         f1_0.user_id,
+2026-01-04 18:15:52.761 |         f1_0.favs 
+2026-01-04 18:15:52.761 |     from
+2026-01-04 18:15:52.761 |         users u1_0 
+2026-01-04 18:15:52.761 |     left join
+2026-01-04 18:15:52.761 |         user_favs f1_0 
+2026-01-04 18:15:52.761 |             on u1_0.id=f1_0.user_id 
+2026-01-04 18:15:52.761 |     where
+2026-01-04 18:15:52.761 |         u1_0.id=?
+2026-01-04 18:15:52.764 | Hibernate: 
+2026-01-04 18:15:52.764 |     select
+2026-01-04 18:15:52.764 |         r1_0.user_id,
+2026-01-04 18:15:52.764 |         r1_0.roles 
+2026-01-04 18:15:52.764 |     from
+2026-01-04 18:15:52.764 |         user_roles r1_0 
+2026-01-04 18:15:52.764 |     where
+2026-01-04 18:15:52.764 |         r1_0.user_id=?
+2026-01-04 18:15:52.765 | 2026-01-04T17:15:52.765Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.users.controller.UserController    : [GET /auth/me/users/edit/3] Usuario encontrado: ID=3, Username=John Doe, Email=john.doe@email.com
+2026-01-04 18:15:52.765 | 2026-01-04T17:15:52.765Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.users.controller.UserController    : [GET /auth/me/users/edit/3] Client exists: name=John Doe
+2026-01-04 18:15:52.765 | 2026-01-04T17:15:52.765Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.users.controller.UserController    : [GET /auth/me/users/edit/3] Address exists: street=asdasdasd
+2026-01-04 18:15:52.765 | 2026-01-04T17:15:52.765Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.users.controller.UserController    : [GET /auth/me/users/edit/3] Model attributes set, returning view
+2026-01-04 18:15:52.819 | 2026-01-04T17:15:52.819Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:15:52.819 | 2026-01-04T17:15:52.819Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : isAdmin - User: admin, Roles: [ADMIN], Result: true
+2026-01-04 18:15:52.821 | Hibernate: 
+2026-01-04 18:15:52.821 |     select
+2026-01-04 18:15:52.821 |         c1_0.id,
+2026-01-04 18:15:52.821 |         c1_0.created_at,
+2026-01-04 18:15:52.821 |         c1_0.name,
+2026-01-04 18:15:52.821 |         c1_0.updated_at 
+2026-01-04 18:15:52.821 |     from
+2026-01-04 18:15:52.821 |         category c1_0
+2026-01-04 18:15:52.824 | 2026-01-04T17:15:52.823Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:15:52.824 | 2026-01-04T17:15:52.824Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : Authentication: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+2026-01-04 18:15:52.824 | 2026-01-04T17:15:52.824Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: true
+2026-01-04 18:15:52.824 | 2026-01-04T17:15:52.824Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : Principal type: dev.luisvives.dawazon.users.models.User
+2026-01-04 18:15:52.824 | 2026-01-04T17:15:52.824Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : Returning user: ID=1, Username=admin
+2026-01-04 18:15:52.824 | 2026-01-04T17:15:52.824Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:15:52.824 | 2026-01-04T17:15:52.824Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : isManager - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:15:52.824 | 2026-01-04T17:15:52.824Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:15:52.824 | 2026-01-04T17:15:52.824Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.c.GlobalFuncionController        : isUser - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:15:52.825 | 2026-01-04T17:15:52.825Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero default.png
+2026-01-04 18:15:52.825 | 2026-01-04T17:15:52.825Z  INFO 1 --- [dawazon] [nio-3000-exec-8] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero default.png
+2026-01-04 18:16:01.068 | 2026-01-04T17:16:01.068Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:16:01.068 | 2026-01-04T17:16:01.068Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : isAdmin - User: admin, Roles: [ADMIN], Result: true
+2026-01-04 18:16:01.070 | Hibernate: 
+2026-01-04 18:16:01.070 |     select
+2026-01-04 18:16:01.070 |         c1_0.id,
+2026-01-04 18:16:01.070 |         c1_0.created_at,
+2026-01-04 18:16:01.070 |         c1_0.name,
+2026-01-04 18:16:01.070 |         c1_0.updated_at 
+2026-01-04 18:16:01.070 |     from
+2026-01-04 18:16:01.070 |         category c1_0
+2026-01-04 18:16:01.072 | 2026-01-04T17:16:01.072Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:16:01.072 | 2026-01-04T17:16:01.072Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : Authentication: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+2026-01-04 18:16:01.072 | 2026-01-04T17:16:01.072Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: true
+2026-01-04 18:16:01.072 | 2026-01-04T17:16:01.072Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : Principal type: dev.luisvives.dawazon.users.models.User
+2026-01-04 18:16:01.072 | 2026-01-04T17:16:01.072Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : Returning user: ID=1, Username=admin
+2026-01-04 18:16:01.072 | 2026-01-04T17:16:01.072Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:16:01.072 | 2026-01-04T17:16:01.072Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : isManager - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:16:01.072 | 2026-01-04T17:16:01.072Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:16:01.072 | 2026-01-04T17:16:01.072Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.c.c.GlobalFuncionController        : isUser - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:16:01.074 | 2026-01-04T17:16:01.074Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.users.controller.UserController    : [POST /auth/me/users/edit/3] Iniciando guardado
+2026-01-04 18:16:01.074 | 2026-01-04T17:16:01.074Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.users.controller.UserController    : [POST /auth/me/users/edit/3] DTO recibido: nombre=John Doe, email=john.doe@email.com, roles=[USER]
+2026-01-04 18:16:01.074 | 2026-01-04T17:16:01.074Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.users.controller.UserController    : [POST /auth/me/users/edit/3] No validation errors, proceeding to save
+2026-01-04 18:16:01.074 | 2026-01-04T17:16:01.074Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.users.service.AuthServiceImpl      : [AuthService.updateAdminCurrentUser] User ID: 3
+2026-01-04 18:16:01.074 | 2026-01-04T17:16:01.074Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.users.service.AuthServiceImpl      : [AuthService.updateAdminCurrentUser] Actualizar datos: nombre=John Doe, email=john.doe@email.com, telefono=666333444
+2026-01-04 18:16:01.075 | Hibernate: 
+2026-01-04 18:16:01.075 |     select
+2026-01-04 18:16:01.075 |         u1_0.id,
+2026-01-04 18:16:01.075 |         u1_0.avatar,
+2026-01-04 18:16:01.075 |         u1_0.client_address_city,
+2026-01-04 18:16:01.075 |         u1_0.country,
+2026-01-04 18:16:01.075 |         u1_0.number,
+2026-01-04 18:16:01.075 |         u1_0.client_address_postal_code,
+2026-01-04 18:16:01.075 |         u1_0.client_address_province,
+2026-01-04 18:16:01.075 |         u1_0.client_address_street,
+2026-01-04 18:16:01.075 |         u1_0.client_email,
+2026-01-04 18:16:01.075 |         u1_0.client_name,
+2026-01-04 18:16:01.075 |         u1_0.client_phone,
+2026-01-04 18:16:01.075 |         u1_0.created_at,
+2026-01-04 18:16:01.075 |         u1_0.email,
+2026-01-04 18:16:01.075 |         u1_0.is_deleted,
+2026-01-04 18:16:01.075 |         u1_0.password,
+2026-01-04 18:16:01.075 |         u1_0.telefono,
+2026-01-04 18:16:01.075 |         u1_0.updated_at,
+2026-01-04 18:16:01.075 |         u1_0.user_name,
+2026-01-04 18:16:01.075 |         f1_0.user_id,
+2026-01-04 18:16:01.075 |         f1_0.favs 
+2026-01-04 18:16:01.075 |     from
+2026-01-04 18:16:01.075 |         users u1_0 
+2026-01-04 18:16:01.075 |     left join
+2026-01-04 18:16:01.075 |         user_favs f1_0 
+2026-01-04 18:16:01.075 |             on u1_0.id=f1_0.user_id 
+2026-01-04 18:16:01.075 |     where
+2026-01-04 18:16:01.075 |         u1_0.id=?
+2026-01-04 18:16:01.076 | Hibernate: 
+2026-01-04 18:16:01.076 |     select
+2026-01-04 18:16:01.076 |         r1_0.user_id,
+2026-01-04 18:16:01.076 |         r1_0.roles 
+2026-01-04 18:16:01.076 |     from
+2026-01-04 18:16:01.076 |         user_roles r1_0 
+2026-01-04 18:16:01.076 |     where
+2026-01-04 18:16:01.076 |         r1_0.user_id=?
+2026-01-04 18:16:01.077 | 2026-01-04T17:16:01.077Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.users.service.AuthServiceImpl      : [AuthService.updateAdminCurrentUser] usuario encontrado: ID=3, currentUsername=John Doe, currentEmail=john.doe@email.com
+2026-01-04 18:16:01.077 | 2026-01-04T17:16:01.077Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.users.service.AuthServiceImpl      : [AuthService.updateAdminCurrentUser] Updating roles from [USER] to [USER]
+2026-01-04 18:16:01.077 | 2026-01-04T17:16:01.077Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.users.service.AuthServiceImpl      : [AuthService.updateAdminCurrentUser] Roles updated to: [USER]
+2026-01-04 18:16:01.077 | 2026-01-04T17:16:01.077Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.users.service.AuthServiceImpl      : [AuthService.updateAdminCurrentUser] Actualizando datos de cliente
+2026-01-04 18:16:01.077 | 2026-01-04T17:16:01.077Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.users.service.AuthServiceImpl      : [AuthService.updateAdminCurrentUser] Client y Address actualizados
+2026-01-04 18:16:01.077 | 2026-01-04T17:16:01.077Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.users.service.AuthServiceImpl      : [AuthService.updateAdminCurrentUser] Guardando usuario...
+2026-01-04 18:16:01.079 | Hibernate: 
+2026-01-04 18:16:01.079 |     delete 
+2026-01-04 18:16:01.079 |     from
+2026-01-04 18:16:01.079 |         user_roles 
+2026-01-04 18:16:01.079 |     where
+2026-01-04 18:16:01.080 |         user_id=?
+2026-01-04 18:16:01.080 | Hibernate: 
+2026-01-04 18:16:01.080 |     insert 
+2026-01-04 18:16:01.080 |     into
+2026-01-04 18:16:01.080 |         user_roles
+2026-01-04 18:16:01.080 |         (user_id, roles) 
+2026-01-04 18:16:01.080 |     values
+2026-01-04 18:16:01.080 |         (?, ?)
+2026-01-04 18:16:01.083 | 2026-01-04T17:16:01.082Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.users.service.AuthServiceImpl      : [AuthService.updateAdminCurrentUser] Usuario guardado con éxito: ID=3, Username=John Doe
+2026-01-04 18:16:01.083 | 2026-01-04T17:16:01.083Z  INFO 1 --- [dawazon] [nio-3000-exec-5] d.l.d.users.controller.UserController    : [POST /auth/me/users/edit/3] User saved successfully, redirecting to profile
+2026-01-04 18:16:01.095 | 2026-01-04T17:16:01.094Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:16:01.095 | 2026-01-04T17:16:01.095Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : isAdmin - User: admin, Roles: [ADMIN], Result: true
+2026-01-04 18:16:01.097 | Hibernate: 
+2026-01-04 18:16:01.097 |     select
+2026-01-04 18:16:01.097 |         c1_0.id,
+2026-01-04 18:16:01.097 |         c1_0.created_at,
+2026-01-04 18:16:01.097 |         c1_0.name,
+2026-01-04 18:16:01.097 |         c1_0.updated_at 
+2026-01-04 18:16:01.097 |     from
+2026-01-04 18:16:01.097 |         category c1_0
+2026-01-04 18:16:01.099 | 2026-01-04T17:16:01.099Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:16:01.099 | 2026-01-04T17:16:01.099Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : Authentication: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+2026-01-04 18:16:01.099 | 2026-01-04T17:16:01.099Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: true
+2026-01-04 18:16:01.099 | 2026-01-04T17:16:01.099Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : Principal type: dev.luisvives.dawazon.users.models.User
+2026-01-04 18:16:01.099 | 2026-01-04T17:16:01.099Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : Returning user: ID=1, Username=admin
+2026-01-04 18:16:01.099 | 2026-01-04T17:16:01.099Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:16:01.099 | 2026-01-04T17:16:01.099Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : isManager - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:16:01.099 | 2026-01-04T17:16:01.099Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:16:01.099 | 2026-01-04T17:16:01.099Z  INFO 1 --- [dawazon] [nio-3000-exec-1] d.l.d.c.c.GlobalFuncionController        : isUser - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:16:01.102 | Hibernate: 
+2026-01-04 18:16:01.102 |     select
+2026-01-04 18:16:01.102 |         u1_0.id,
+2026-01-04 18:16:01.102 |         u1_0.avatar,
+2026-01-04 18:16:01.102 |         u1_0.client_address_city,
+2026-01-04 18:16:01.102 |         u1_0.country,
+2026-01-04 18:16:01.102 |         u1_0.number,
+2026-01-04 18:16:01.102 |         u1_0.client_address_postal_code,
+2026-01-04 18:16:01.102 |         u1_0.client_address_province,
+2026-01-04 18:16:01.102 |         u1_0.client_address_street,
+2026-01-04 18:16:01.102 |         u1_0.client_email,
+2026-01-04 18:16:01.102 |         u1_0.client_name,
+2026-01-04 18:16:01.102 |         u1_0.client_phone,
+2026-01-04 18:16:01.102 |         u1_0.created_at,
+2026-01-04 18:16:01.102 |         u1_0.email,
+2026-01-04 18:16:01.102 |         u1_0.is_deleted,
+2026-01-04 18:16:01.102 |         u1_0.password,
+2026-01-04 18:16:01.102 |         u1_0.telefono,
+2026-01-04 18:16:01.102 |         u1_0.updated_at,
+2026-01-04 18:16:01.102 |         u1_0.user_name,
+2026-01-04 18:16:01.102 |         f1_0.user_id,
+2026-01-04 18:16:01.102 |         f1_0.favs 
+2026-01-04 18:16:01.102 |     from
+2026-01-04 18:16:01.102 |         users u1_0 
+2026-01-04 18:16:01.102 |     left join
+2026-01-04 18:16:01.102 |         user_favs f1_0 
+2026-01-04 18:16:01.102 |             on u1_0.id=f1_0.user_id 
+2026-01-04 18:16:01.102 |     where
+2026-01-04 18:16:01.102 |         u1_0.id=?
+2026-01-04 18:16:01.106 | Hibernate: 
+2026-01-04 18:16:01.106 |     select
+2026-01-04 18:16:01.106 |         r1_0.user_id,
+2026-01-04 18:16:01.106 |         r1_0.roles 
+2026-01-04 18:16:01.106 |     from
+2026-01-04 18:16:01.106 |         user_roles r1_0 
+2026-01-04 18:16:01.106 |     where
+2026-01-04 18:16:01.106 |         r1_0.user_id=?
+2026-01-04 18:16:01.161 | 2026-01-04T17:16:01.161Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : ===== isAdmin() CALLED =====
+2026-01-04 18:16:01.161 | 2026-01-04T17:16:01.161Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : isAdmin - User: admin, Roles: [ADMIN], Result: true
+2026-01-04 18:16:01.164 | Hibernate: 
+2026-01-04 18:16:01.164 |     select
+2026-01-04 18:16:01.164 |         c1_0.id,
+2026-01-04 18:16:01.164 |         c1_0.created_at,
+2026-01-04 18:16:01.164 |         c1_0.name,
+2026-01-04 18:16:01.164 |         c1_0.updated_at 
+2026-01-04 18:16:01.164 |     from
+2026-01-04 18:16:01.164 |         category c1_0
+2026-01-04 18:16:01.166 | 2026-01-04T17:16:01.166Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : ===== GlobalFuncionController.getCurrentUser() =====
+2026-01-04 18:16:01.166 | 2026-01-04T17:16:01.166Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : Authentication: org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+2026-01-04 18:16:01.166 | 2026-01-04T17:16:01.166Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : isAuthenticated: true
+2026-01-04 18:16:01.166 | 2026-01-04T17:16:01.166Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : Principal type: dev.luisvives.dawazon.users.models.User
+2026-01-04 18:16:01.166 | 2026-01-04T17:16:01.166Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : Returning user: ID=1, Username=admin
+2026-01-04 18:16:01.166 | 2026-01-04T17:16:01.166Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : ===== isManager() CALLED =====
+2026-01-04 18:16:01.167 | 2026-01-04T17:16:01.166Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : isManager - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:16:01.167 | 2026-01-04T17:16:01.166Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : ===== isUser() CALLED =====
+2026-01-04 18:16:01.167 | 2026-01-04T17:16:01.166Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.c.GlobalFuncionController        : isUser - User: admin, Roles: [ADMIN], Result: false
+2026-01-04 18:16:01.167 | 2026-01-04T17:16:01.167Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero default.png
+2026-01-04 18:16:01.168 | 2026-01-04T17:16:01.167Z  INFO 1 --- [dawazon] [nio-3000-exec-4] d.l.d.c.s.s.FileSystemStorageService     : Cargando fichero default.png

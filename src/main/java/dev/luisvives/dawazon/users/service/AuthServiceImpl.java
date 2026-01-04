@@ -15,6 +15,7 @@ import dev.luisvives.dawazon.users.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -221,7 +222,15 @@ public class AuthServiceImpl implements AuthService {
             user.setTelefono(updateUser.getTelefono());
 
             if (updateUser.getRoles() != null && !updateUser.getRoles().isEmpty()) {
-                user.setRoles(List.of(Role.valueOf(updateUser.getRoles())));
+                log.info("[AuthService.updateAdminCurrentUser] Updating roles from {} to {}",
+                        user.getRoles(), updateUser.getRoles());
+                user.setRoles(new ArrayList<>(
+                        updateUser.getRoles().stream()
+                                .map(Role::valueOf)
+                                .toList()));
+                log.info("[AuthService.updateAdminCurrentUser] Roles updated to: {}", user.getRoles());
+            } else {
+                log.warn("[AuthService.updateAdminCurrentUser] No roles provided in DTO");
             }
 
             if (updateUser.getCalle() != null || updateUser.getCiudad() != null ||

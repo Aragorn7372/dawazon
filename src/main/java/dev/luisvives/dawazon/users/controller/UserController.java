@@ -4,6 +4,7 @@ import dev.luisvives.dawazon.cart.dto.CartStockRequestDto;
 import dev.luisvives.dawazon.cart.dto.ClientDto;
 import dev.luisvives.dawazon.cart.dto.LineRequestDto;
 import dev.luisvives.dawazon.cart.models.Cart;
+import dev.luisvives.dawazon.cart.models.Address;
 import dev.luisvives.dawazon.cart.models.Client;
 import dev.luisvives.dawazon.cart.models.Status;
 import dev.luisvives.dawazon.cart.service.CartServiceImpl;
@@ -216,7 +217,8 @@ public class UserController {
     }
 
     /**
-     * Obtiene y muestra el listado de productos con filtros y paginación del Manager actual.
+     * Obtiene y muestra el listado de productos con filtros y paginación del
+     * Manager actual.
      * <p>
      * Endpoint público accesible desde la raíz, /products y /products/.
      * Permite filtrar por nombre y categoría, con soporte de paginación y
@@ -233,17 +235,19 @@ public class UserController {
     @PreAuthorize("hasRole('MANAGER')")
     @GetMapping({ "/products", "/products/" })
     public String getProducts(Model model,
-                              @RequestParam(defaultValue = "0") int page,
-                              @RequestParam(defaultValue = "10") int size,
-                              @RequestParam(defaultValue = "id") String sortBy,
-                              @RequestParam(defaultValue = "asc") String direction) {
-        val id=(Long)model.getAttribute("currentUserId");
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction) {
+        val id = (Long) model.getAttribute("currentUserId");
         // Creamos el objeto de ordenación
         Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
         // Creamos cómo va a ser la paginación
         Pageable pageable = PageRequest.of(page, size, sort);
-        val products = mapper.pageToDTO(productService.findAll(Optional.empty(),Optional.empty() ,Optional.of(id), pageable), sortBy, direction);
+        val products = mapper.pageToDTO(
+                productService.findAll(Optional.empty(), Optional.empty(), Optional.of(id), pageable), sortBy,
+                direction);
         model.addAttribute("productos", products);
         return "web/productos/lista";
     }
@@ -351,7 +355,6 @@ public class UserController {
         productService.deleteById(id);
         return "redirect:/products/" + id;
     }
-
 
     /**
      * Añade un producto a los favoritos del usuario (solo USER).
@@ -689,6 +692,32 @@ public class UserController {
     @GetMapping("/users/{id}")
     public String getUsers(Model model, @PathVariable Long id) {
         val users = authService.findById(id);
+
+        if (users.getClient() == null) {
+            users.setClient(Client.builder()
+                    .name("")
+                    .email("")
+                    .phone("")
+                    .address(Address.builder()
+                            .street("")
+                            .city("")
+                            .province("")
+                            .country("")
+                            .postalCode(null)
+                            .number(null)
+                            .build())
+                    .build());
+        } else if (users.getClient().getAddress() == null) {
+            users.getClient().setAddress(Address.builder()
+                    .street("")
+                    .city("")
+                    .province("")
+                    .country("")
+                    .postalCode(null)
+                    .number(null)
+                    .build());
+        }
+
         model.addAttribute("user", users);
         return "web/user/userProfile";
     }
@@ -706,32 +735,46 @@ public class UserController {
     public String getEditUsers(Model model, @PathVariable Long id, Authentication authentication) {
         log.info("[GET /auth/me/users/edit/{}] Iniciando edición de usuario", id);
 
-        val users = authService.findById(id);
+        val user = authService.findById(id);
         log.info("[GET /auth/me/users/edit/{}] Usuario encontrado: ID={}, Username={}, Email={}",
-                id, users.getId(), users.getUsername(), users.getEmail());
+                id, user.getId(), user.getUsername(), user.getEmail());
 
-        if (users.getClient() != null) {
-            log.info("[GET /auth/me/users/edit/{}] Client: name={}, email={}",
-                    id, users.getClient().getName(), users.getClient().getEmail());
-            if (users.getClient().getAddress() != null) {
-                log.info("[GET /auth/me/users/edit/{}] Address: street={}, city={}",
-                        id, users.getClient().getAddress().getStreet(), users.getClient().getAddress().getCity());
+        if (user.getClient() == null) {
+            log.warn("[GET /auth/me/users/edit/{}] Client is NULL, initializing", id);
+            user.setClient(Client.builder()
+                    .name(user.getUsername())
+                    .email(user.getEmail())
+                    .phone(user.getTelefono() != null ? user.getTelefono() : "")
+                    .address(Address.builder()
+                            .street("")
+                            .city("")
+                            .province("")
+                            .country("")
+                            .postalCode(null)
+                            .number(null)
+                            .build())
+                    .build());
+        } else {
+            log.info("[GET /auth/me/users/edit/{}] Client exists: name={}",
+                    id, user.getClient().getName());
+
+            if (user.getClient().getAddress() == null) {
+                log.warn("[GET /auth/me/users/edit/{}] Address is NULL, initializing", id);
+                user.getClient().setAddress(Address.builder()
+                        .street("")
+                        .city("")
+                        .province("")
+                        .country("")
+                        .postalCode(null)
+                        .number(null)
+                        .build());
             } else {
-                log.warn("[GET /auth/me/users/edit/{}] Address is NULL", id);
+                log.info("[GET /auth/me/users/edit/{}] Address exists: street={}",
+                        id, user.getClient().getAddress().getStreet());
             }
-        } else {
-            log.warn("[GET /auth/me/users/edit/{}] Client is NULL", id);
         }
 
-        if (authentication != null) {
-            val currentUser = (User) authentication.getPrincipal();
-            log.info("[GET /auth/me/users/edit/{}] CurrentUser: ID={}, Username={}",
-                    id, currentUser.getId(), currentUser.getUsername());
-        } else {
-            log.warn("[GET /auth/me/users/edit/{}] Authentication is NULL!", id);
-        }
-
-        model.addAttribute("user", users);
+        model.addAttribute("user", user);
         log.info("[GET /auth/me/users/edit/{}] Model attributes set, returning view", id);
         return "web/user/editUserAdmin";
     }
@@ -747,17 +790,65 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/users/edit/{id}")
     public String getEditUsers(Model model, @Valid @ModelAttribute("user") UserAdminRequestDto user,
-            BindingResult bindingResult) {
+            BindingResult bindingResult, @RequestParam("avatar") MultipartFile avatar) {
+        log.info("[POST /auth/me/users/edit/{}] Iniciando guardado", user.getId());
+        log.info("[POST /auth/me/users/edit/{}] DTO recibido: nombre={}, email={}, roles={}",
+                user.getId(), user.getNombre(), user.getEmail(), user.getRoles());
+
         if (bindingResult.hasErrors()) {
+            log.warn("[POST /auth/me/users/edit/{}] VALIDATION ERRORS FOUND: {}",
+                    user.getId(), bindingResult.getAllErrors());
+
+            // Reload the full User entity for template rendering
+            val fullUser = authService.findById(user.getId());
+            log.info("[POST /auth/me/users/edit/{}] Reloaded user for error display", user.getId());
+
+            // Initialize client and address if null
+            if (fullUser.getClient() == null) {
+                fullUser.setClient(Client.builder()
+                        .name("")
+                        .email("")
+                        .phone("")
+                        .address(Address.builder()
+                                .street("")
+                                .city("")
+                                .province("")
+                                .country("")
+                                .postalCode(null)
+                                .number(null)
+                                .build())
+                        .build());
+            } else if (fullUser.getClient().getAddress() == null) {
+                fullUser.getClient().setAddress(Address.builder()
+                        .street("")
+                        .city("")
+                        .province("")
+                        .country("")
+                        .postalCode(null)
+                        .number(null)
+                        .build());
+            }
+
+            model.addAttribute("user", fullUser);
             model.addAttribute("status", 400);
-            model.addAttribute("title", "El producto no es válido");
+            model.addAttribute("title", "El usuario no es válido");
             model.addAttribute("message",
                     bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage));
+            log.info("[POST /auth/me/users/edit/{}] Returning to form with errors", user.getId());
             return "web/user/editUserAdmin";
         }
-        val userEdit = authService.updateAdminCurrentUser(user.getId(), user);
+
+        log.info("[POST /auth/me/users/edit/{}] No validation errors, proceeding to save", user.getId());
+        var userEdit = authService.updateAdminCurrentUser(user.getId(), user);
+
+        if (avatar != null && !avatar.isEmpty()) {
+            log.info("[POST /auth/me/users/edit/{}] Updating avatar...", user.getId());
+            userEdit = authService.updateImage(user.getId(), avatar);
+        }
+
+        log.info("[POST /auth/me/users/edit/{}] User saved successfully, redirecting to profile", user.getId());
         model.addAttribute("user", userEdit);
-        return "redirect:web/user/users";
+        return "redirect:/auth/me/users/" + user.getId();
     }
 
     /**
