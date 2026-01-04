@@ -32,7 +32,7 @@ public class UserRequestDto {
     @Email
     @NotNull
     private String email;
-    @Pattern(regexp = "^\\d{9}$")
+    @Pattern(regexp = "^(\\d{9})?$", message = "El teléfono debe tener 9 dígitos o estar vacío")
     private String telefono;
 
     // Campos de dirección del cliente
@@ -40,4 +40,33 @@ public class UserRequestDto {
     private String ciudad;
     private String codigoPostal;
     private String provincia;
+
+    /**
+     * Setter personalizado para teléfono que limpia el formato.
+     * Elimina +34, espacios, guiones y otros caracteres no numéricos.
+     */
+    public void setTelefono(String telefono) {
+        if (telefono == null || telefono.trim().isEmpty()) {
+            this.telefono = "";
+            return;
+        }
+
+        // Eliminar espacios, guiones, paréntesis, etc.
+        String cleaned = telefono.replaceAll("[\\s\\-().]", "");
+
+        // Si empieza con +34, quitarlo
+        if (cleaned.startsWith("+34")) {
+            cleaned = cleaned.substring(3);
+        }
+        // Si empieza con 0034, quitarlo
+        else if (cleaned.startsWith("0034")) {
+            cleaned = cleaned.substring(4);
+        }
+        // Si empieza con 34 (sin +) y tiene más de 9 dígitos, asumir que es prefijo
+        else if (cleaned.startsWith("34") && cleaned.length() > 9) {
+            cleaned = cleaned.substring(2);
+        }
+
+        this.telefono = cleaned;
+    }
 }
