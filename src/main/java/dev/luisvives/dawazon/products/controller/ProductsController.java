@@ -93,7 +93,7 @@ public class ProductsController {
             @RequestParam(required = false) Optional<String> name,
             @RequestParam(value = "categoria", required = false) Optional<String> category,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "9") int size,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String direction) {
         log.info("Buscando todos los Productos por nombre: " + name);
@@ -102,7 +102,8 @@ public class ProductsController {
                 : Sort.by(sortBy).descending();
         // Creamos cómo va a ser la paginación
         Pageable pageable = PageRequest.of(page, size, sort);
-        val products = mapper.pageToDTO(productService.findAll(name, category,Optional.empty(), pageable), sortBy, direction);
+        val products = mapper.pageToDTO(productService.findAll(name, category, Optional.empty(), pageable), sortBy,
+                direction);
         model.addAttribute("productos", products);
         return "web/productos/lista";
     }

@@ -25,7 +25,8 @@ import java.util.Optional;
  * <ul>
  * <li><b>R</b>: {@link GenericProductResponseDto} – tipo de respuesta para get,
  * save, update y patch.</li>
- * <li><b>ID</b>: <code>String</code> – tipo del identificador del producto.</li>
+ * <li><b>ID</b>: <code>String</code> – tipo del identificador del
+ * producto.</li>
  * <li><b>P</b>: {@link PostProductRequestDto} – DTO para crear o actualizar
  * completamente un producto.</li>
  * </ul>
@@ -72,4 +73,12 @@ public interface ProductService extends Service<GenericProductResponseDto, Strin
      * @param comment   Comentario a agregar
      */
     void addComment(String productId, Comment comment);
+
+    /**
+     * Obtiene el ID del usuario creador de un producto.
+     *
+     * @param id ID del producto
+     * @return ID del usuario creador del producto
+     */
+    Long getUserProductId(String id);
 }

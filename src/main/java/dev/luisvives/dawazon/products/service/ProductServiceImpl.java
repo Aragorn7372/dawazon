@@ -25,6 +25,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.multipart.MultipartFile;
 import dev.luisvives.dawazon.products.exception.ProductException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -128,9 +129,9 @@ public class ProductServiceImpl implements ProductService {
         Specification<Product> specCategory = (root, query, criteriaBuilder) -> category
                 .map(c -> criteriaBuilder.equal(root.get("category").get("name"), c))
                 .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
-        Specification<Product> specIdCreator =(root,query,criteriaBuilder)->
-                idCreator.map(id -> criteriaBuilder.equal(root.get("creatorId"),id
-                )).orElseGet(()->criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
+        Specification<Product> specIdCreator = (root, query, criteriaBuilder) -> idCreator
+                .map(id -> criteriaBuilder.equal(root.get("creatorId"), id))
+                .orElseGet(() -> criteriaBuilder.isTrue(criteriaBuilder.literal(true)));
         Specification<Product> criterio = Specification.allOf(
                 specNameProducto,
                 specIsDeleted,
@@ -223,11 +224,11 @@ public class ProductServiceImpl implements ProductService {
     public GenericProductResponseDto update(String id, PostProductRequestDto productoDto) {
         log.info("SERVICE: Actualizando Producto con id: " + id);
 
-        Optional<Product> foundProducto = repository.findById(id);
-        if (foundProducto.isEmpty()) {
-            log.warning("SERVICE: No se encontró producto con id: " + id);
-            throw new ProductException.NotFoundException("SERVICE: No se encontró producto con id: " + id);
-        }
+        Product foundProducto = repository.findById(id)
+                .orElseThrow(() -> {
+                    log.warning("SERVICE: No se encontró producto con id: " + id);
+                    return new ProductException.NotFoundException("SERVICE: No se encontró producto con id: " + id);
+                });
 
         var existingCategory = categoryRepository.findByNameIgnoreCase(productoDto.getCategory());
         if (existingCategory.isEmpty()) {
@@ -235,12 +236,18 @@ public class ProductServiceImpl implements ProductService {
             throw new ProductException.ValidationException("La categoría " + productoDto.getCategory() + " no existe.");
         }
 
-        Product productoModel = mapper.postPutDTOToModel(productoDto);
-        productoModel.setId(id);
-        productoModel.setCreatedAt(foundProducto.get().getCreatedAt());
-        productoModel.setCategory(existingCategory.get());
+        // Modificar el producto existente directamente para preservar el version de
+        // Hibernate
+        foundProducto.setName(productoDto.getName());
+        foundProducto.setDescription(productoDto.getDescription());
+        foundProducto.setPrice(productoDto.getPrice());
+        foundProducto.setStock(productoDto.getStock());
+        foundProducto.setCategory(existingCategory.get());
+        foundProducto.setCreatorId(productoDto.getCreatorId());
+        // No modificamos images aquí, eso lo hace updateOrSaveImage
+        // No modificamos id, createdAt ni version - Hibernate los maneja
 
-        Product updatedProductos = repository.save(productoModel);
+        Product updatedProductos = repository.save(foundProducto);
 
         log.info("SERVICE: Producto con id " + updatedProductos.getId() + " actualizado correctamente");
         val commentsDto = mapearComentarios(updatedProductos);
@@ -293,27 +300,32 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new ProductException.NotFoundException("Producto no encontrado con id: " + id));
         log.info("Actualizando imagen de producto por id: " + id);
 
+        // Filtrar archivos vacíos
+        List<MultipartFile> validImages = image.stream()
+                .filter(file -> file != null && !file.isEmpty())
+                .toList();
+
+        // Si no hay archivos válidos, no hacer nada y retornar el producto sin cambios
+        if (validImages.isEmpty()) {
+            log.info("No se subieron imágenes nuevas, manteniendo las existentes");
+            val commentsDto = mapearComentarios(foundProducto);
+            return mapper.modelToGenericResponseDTO(foundProducto, commentsDto);
+        }
+
+        // Si hay imágenes válidas, eliminar las antiguas del almacenamiento
         if (foundProducto.getImages() != null) {
             foundProducto.getImages().forEach(storageService::delete);
         }
 
-        List<String> imageStored = image.stream().map(storageService::store).toList();
+        // Guardar las nuevas imágenes en el almacenamiento (usar ArrayList mutable para
+        // Hibernate)
+        List<String> imageStored = new ArrayList<>(validImages.stream().map(storageService::store).toList());
 
-        Product productoToUpdate = Product.builder()
-                .id(foundProducto.getId())
-                .name(foundProducto.getName())
-                .price(foundProducto.getPrice())
-                .stock(foundProducto.getStock())
-                .category(foundProducto.getCategory())
-                .description(foundProducto.getDescription())
-                .creatorId(foundProducto.getCreatorId())
-                .images(imageStored)
-                .comments(foundProducto.getComments())
-                .createdAt(foundProducto.getCreatedAt())
-                .updatedAt(foundProducto.getUpdatedAt())
-                .build();
+        // Modificar directamente el producto encontrado para evitar conflictos de
+        // versión
+        foundProducto.setImages(imageStored);
 
-        var updatedProducto = repository.save(productoToUpdate);
+        var updatedProducto = repository.save(foundProducto);
         val commentsDto = mapearComentarios(updatedProducto);
         return mapper.modelToGenericResponseDTO(updatedProducto, commentsDto);
     }

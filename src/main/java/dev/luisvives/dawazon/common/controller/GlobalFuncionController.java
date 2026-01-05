@@ -6,6 +6,7 @@ import dev.luisvives.dawazon.cart.service.CartService;
 import dev.luisvives.dawazon.products.service.ProductService;
 import dev.luisvives.dawazon.users.models.Role;
 import dev.luisvives.dawazon.users.models.User;
+import dev.luisvives.dawazon.users.service.FavService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -419,6 +420,114 @@ public class GlobalFuncionController {
             }
             return compraError;
         }
+        return null;
+    }
+
+    /**
+     * Verifica si el producto actual está en el carrito del usuario.
+     *
+     * @param request Petición HTTP
+     * @param cart    Carrito del usuario
+     * @return true si el producto está en el carrito
+     */
+    @ModelAttribute("isCart")
+    public boolean isCart(HttpServletRequest request, Authentication authentication) {
+        // Solo aplicable si el usuario tiene rol USER
+        if (!isUser(authentication)) {
+            return false;
+        }
+
+        String productId = extractProductIdFromPath(request);
+        if (productId == null) {
+            return false;
+        }
+
+        Cart cart = getCarrito(request, authentication);
+        if (cart == null || cart.getCartLines() == null) {
+            return false;
+        }
+
+        return cart.getCartLines().stream()
+                .anyMatch(line -> line.getProductId().equals(productId));
+    }
+
+    /**
+     * Verifica si el producto actual está en los favoritos del usuario.
+     *
+     * @param request        Petición HTTP
+     * @param authentication Información de autenticación
+     * @return true si el producto está en favoritos
+     */
+    @ModelAttribute("isFav")
+    public boolean isFav(HttpServletRequest request, Authentication authentication) {
+        String productId = extractProductIdFromPath(request);
+        if (productId == null) {
+            return false;
+        }
+
+        User user = getCurrentUser(authentication);
+        if (user == null || user.getFavs() == null) {
+            return false;
+        }
+
+        return user.getFavs().contains(productId);
+    }
+
+    /**
+     * Verifica si el producto actual pertenece al manager autenticado.
+     *
+     * @param request        Petición HTTP
+     * @param authentication Información de autenticación
+     * @return true si el manager autenticado es el creador del producto
+     */
+    @ModelAttribute("isMine")
+    public boolean isMine(HttpServletRequest request, Authentication authentication) {
+        // Solo aplicable si el usuario es manager
+        if (!isManager(authentication)) {
+            return false;
+        }
+
+        String productId = extractProductIdFromPath(request);
+        if (productId == null) {
+            return false;
+        }
+
+        User user = getCurrentUser(authentication);
+        if (user == null) {
+            return false;
+        }
+
+        try {
+            Long productCreatorId = productService.getUserProductId(productId);
+            return productCreatorId != null && productCreatorId.equals(user.getId());
+        } catch (Exception e) {
+            log.error("Error al verificar propietario del producto: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Extrae el ID del producto de la ruta de la petición.
+     * Soporta rutas como /products/{id} y /auth/me/products/edit/{id}
+     *
+     * @param request Petición HTTP
+     * @return ID del producto o null si no se encuentra
+     */
+    private String extractProductIdFromPath(HttpServletRequest request) {
+        String path = request.getRequestURI();
+
+        // regex para /products/{id}
+        if (path.matches(".*/products/[a-zA-Z0-9]+$")) {
+            String[] parts = path.split("/");
+            return parts[parts.length - 1];
+        }
+
+        // regex para /auth/me/products/edit/{id} o /auth/me/products/delete/{id}
+        if (path.matches(".*/auth/me/products/(edit|delete)/[a-zA-Z0-9]+$")) {
+            String[] parts = path.split("/");
+            return parts[parts.length - 1];
+        }
+
         return null;
     }
 

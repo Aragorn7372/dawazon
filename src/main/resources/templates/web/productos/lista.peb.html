@@ -42,6 +42,70 @@
         </div>
         {% endfor %}
     </div>
+
+    {# Pagination Section #}
+    {% if not productos.empty and productos.totalPages > 1 %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <nav aria-label="Navegación de páginas">
+                <ul class="pagination justify-content-center">
+                    {# First Page Button #}
+                    <li class="page-item {% if productos.first %}disabled{% endif %}">
+                        <a class="page-link" 
+                           href="?page=0{% if productos.sortBy %}&sortBy={{ productos.sortBy }}{% endif %}{% if productos.direction %}&direction={{ productos.direction }}{% endif %}{% if param.name %}&name={{ param.name }}{% endif %}{% if param.categoria %}&categoria={{ param.categoria }}{% endif %}"
+                           aria-label="Primera">
+                            <span aria-hidden="true">&laquo;&laquo;</span>
+                        </a>
+                    </li>
+
+                    {# Previous Page Button #}
+                    <li class="page-item {% if productos.first %}disabled{% endif %}">
+                        <a class="page-link" 
+                           href="?page={{ productos.pageNumber - 1 }}{% if productos.sortBy %}&sortBy={{ productos.sortBy }}{% endif %}{% if productos.direction %}&direction={{ productos.direction }}{% endif %}{% if param.name %}&name={{ param.name }}{% endif %}{% if param.categoria %}&categoria={{ param.categoria }}{% endif %}"
+                           aria-label="Anterior">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    {# Current Page Info #}
+                    <li class="page-item active">
+                        <span class="page-link">
+                            Página {{ productos.pageNumber + 1 }} de {{ productos.totalPages }}
+                        </span>
+                    </li>
+
+                    {# Next Page Button #}
+                    <li class="page-item {% if productos.last %}disabled{% endif %}">
+                        <a class="page-link" 
+                           href="?page={{ productos.pageNumber + 1 }}{% if productos.sortBy %}&sortBy={{ productos.sortBy }}{% endif %}{% if productos.direction %}&direction={{ productos.direction }}{% endif %}{% if param.name %}&name={{ param.name }}{% endif %}{% if param.categoria %}&categoria={{ param.categoria }}{% endif %}"
+                           aria-label="Siguiente">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+
+                    {# Last Page Button #}
+                    <li class="page-item {% if productos.last %}disabled{% endif %}">
+                        <a class="page-link" 
+                           href="?page={{ productos.totalPages - 1 }}{% if productos.sortBy %}&sortBy={{ productos.sortBy }}{% endif %}{% if productos.direction %}&direction={{ productos.direction }}{% endif %}{% if param.name %}&name={{ param.name }}{% endif %}{% if param.categoria %}&categoria={{ param.categoria }}{% endif %}"
+                           aria-label="Última">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    {# Optional: Show total results info #}
+    <div class="row">
+        <div class="col-12 text-center text-muted">
+            <small>
+                Mostrando {{ productos.totalPageElements }} de {{ productos.totalElements }} productos
+            </small>
+        </div>
+    </div>
+    {% endif %}
+
     <script>
         function save(element) {
             window.location.href = `/auth/me/products/save`;
