@@ -227,7 +227,7 @@ public class UserController {
      *
      * @param model     Modelo de Spring MVC para pasar datos a la vista
      * @param page      Número de página (por defecto 0)
-     * @param size      Tamaño de página (por defecto 10)
+     * @param size      Tamaño de página (por defecto 9)
      * @param sortBy    Campo de ordenamiento (por defecto "id")
      * @param direction Dirección de ordenamiento: asc o desc (por defecto "asc")
      * @return Nombre de la vista Thymeleaf "web/productos/lista"
@@ -236,7 +236,7 @@ public class UserController {
     @GetMapping({ "/products", "/products/" })
     public String getProducts(Model model,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "9") int size,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String direction) {
         val id = (Long) model.getAttribute("currentUserId");
@@ -348,7 +348,13 @@ public class UserController {
             throw new UserException.UserPermissionDeclined("No puedes editar el producto de otro usuario");
         }
         val savedProduct = productService.update(product.getId(), product);
-        productService.updateOrSaveImage(savedProduct.getId(), file);
+
+        // Solo actualizar imágenes si se subieron archivos nuevos (no vacíos)
+        boolean hasNewImages = file != null && file.stream().anyMatch(f -> f != null && !f.isEmpty());
+        if (hasNewImages) {
+            productService.updateOrSaveImage(savedProduct.getId(), file);
+        }
+
         return "redirect:/products/" + savedProduct.getId();
     }
 
@@ -375,7 +381,7 @@ public class UserController {
             throw new UserException.UserPermissionDeclined("No puedes eliminar el producto de otro usuario");
         }
         productService.deleteById(id);
-        return "redirect:/products/" + id;
+        return "redirect:/auth/me/products";
     }
 
     /**
@@ -422,7 +428,7 @@ public class UserController {
     @GetMapping("/fav")
     public String fav(Model model,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "9") int size,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String direction) {
         log.info("");
@@ -533,7 +539,7 @@ public class UserController {
     @GetMapping({ "/pedidos", "/pedidos/" })
     public String getPedidos(Model model,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "9") int size,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String direction) {
         Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
@@ -588,7 +594,7 @@ public class UserController {
     public String getVentas(Model model,
             @RequestParam(required = false) Optional<String> status,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "9") int size,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String direction) {
         Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
@@ -653,7 +659,7 @@ public class UserController {
         val userId = (Long) model.getAttribute("currentUserId");
         val line = cartService.update(lineRequestDto);
         model.addAttribute("venta", line);
-        return "redirect:auth/me/ventas/" + lineRequestDto.getCartId() + "/" + lineRequestDto.getProductId();
+        return "redirect:/auth/me/ventas/" + lineRequestDto.getCartId() + "/" + lineRequestDto.getProductId();
     }
 
     /**
@@ -673,7 +679,7 @@ public class UserController {
                 .cartId(new ObjectId(cartId)).productId(productId).status(Status.CANCELADO).build();
         val lineFinal = cartService.update(lineRequestDto);
         model.addAttribute("venta", lineFinal);
-        return "redirect:auth/me/ventas";
+        return "redirect:/auth/me/ventas";
     }
 
     /**
@@ -692,7 +698,7 @@ public class UserController {
     public String getUsers(Model model,
             @RequestParam(required = false) Optional<String> userNameOrEmail,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "9") int size,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String direction) {
         Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
