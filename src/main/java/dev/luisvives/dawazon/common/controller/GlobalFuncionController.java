@@ -482,24 +482,34 @@ public class GlobalFuncionController {
      */
     @ModelAttribute("isMine")
     public boolean isMine(HttpServletRequest request, Authentication authentication) {
+        log.info("===== isMine() CALLED =====");
+
         // Solo aplicable si el usuario es manager
         if (!isManager(authentication)) {
+            log.info("isMine - User is not a manager, returning false");
             return false;
         }
 
         String productId = extractProductIdFromPath(request);
+        log.info("isMine - Extracted product ID: {}", productId);
         if (productId == null) {
+            log.info("isMine - Product ID is null, returning false");
             return false;
         }
 
         User user = getCurrentUser(authentication);
         if (user == null) {
+            log.info("isMine - Current user is null, returning false");
             return false;
         }
+        log.info("isMine - Current user ID: {}", user.getId());
 
         try {
             Long productCreatorId = productService.getUserProductId(productId);
-            return productCreatorId != null && productCreatorId.equals(user.getId());
+            log.info("isMine - Product creator ID: {}", productCreatorId);
+            boolean result = productCreatorId != null && productCreatorId.equals(user.getId());
+            log.info("isMine - Result: {}", result);
+            return result;
         } catch (Exception e) {
             log.error("Error al verificar propietario del producto: " + e.getMessage());
             return false;
@@ -515,19 +525,27 @@ public class GlobalFuncionController {
      */
     private String extractProductIdFromPath(HttpServletRequest request) {
         String path = request.getRequestURI();
+        log.info("extractProductIdFromPath - Request URI: {}", path);
 
-        // regex para /products/{id}
-        if (path.matches(".*/products/[a-zA-Z0-9]+$")) {
+        // regex para /products/{id} - ahora soporta guiones y guiones bajos en el ID
+        // Excluye rutas reservadas como /products/save, /products/create, etc.
+        if (path.matches(".*/products/(?!save$)[a-zA-Z0-9\\-_]+$")) {
             String[] parts = path.split("/");
-            return parts[parts.length - 1];
+            String productId = parts[parts.length - 1];
+            log.info("extractProductIdFromPath - Matched /products/{id}, extracted ID: {}", productId);
+            return productId;
         }
 
         // regex para /auth/me/products/edit/{id} o /auth/me/products/delete/{id}
-        if (path.matches(".*/auth/me/products/(edit|delete)/[a-zA-Z0-9]+$")) {
+        if (path.matches(".*/auth/me/products/(edit|delete)/[a-zA-Z0-9\\-_]+$")) {
             String[] parts = path.split("/");
-            return parts[parts.length - 1];
+            String productId = parts[parts.length - 1];
+            log.info("extractProductIdFromPath - Matched /auth/me/products/(edit|delete)/{id}, extracted ID: {}",
+                    productId);
+            return productId;
         }
 
+        log.info("extractProductIdFromPath - No match found, returning null");
         return null;
     }
 

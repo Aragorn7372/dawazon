@@ -387,30 +387,50 @@ public class UserController {
     /**
      * Añade un producto a los favoritos del usuario (solo USER).
      *
-     * @param model Modelo de Spring MVC
-     * @param id    ID del producto
+     * @param model          Modelo de Spring MVC
+     * @param id             ID del producto
+     * @param authentication Información de autenticación
      * @return Redirección a la página del producto
      */
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/fav/add/{id}")
-    public String addFav(Model model, @PathVariable String id) {
+    public String addFav(Model model, @PathVariable String id, Authentication authentication) {
         val userId = (Long) model.getAttribute("currentUserId");
         favService.addFav(id, userId);
+
+        // Actualizar el usuario en el contexto de seguridad
+        User updatedUser = authService.findById(userId);
+        Authentication newAuth = new UsernamePasswordAuthenticationToken(
+                updatedUser,
+                authentication.getCredentials(),
+                authentication.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+
         return "redirect:/products/" + id;
     }
 
     /**
      * Elimina un producto de los favoritos del usuario (solo USER).
      *
-     * @param model Modelo de Spring MVC
-     * @param id    ID del producto
+     * @param model          Modelo de Spring MVC
+     * @param id             ID del producto
+     * @param authentication Información de autenticación
      * @return Redirección a la página del producto
      */
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/fav/remove/{id}")
-    public String removeFav(Model model, @PathVariable String id) {
+    public String removeFav(Model model, @PathVariable String id, Authentication authentication) {
         val userId = (Long) model.getAttribute("currentUserId");
-        favService.addFav(id, userId);
+        favService.removeFav(id, userId);
+
+        // Actualizar el usuario en el contexto de seguridad
+        User updatedUser = authService.findById(userId);
+        Authentication newAuth = new UsernamePasswordAuthenticationToken(
+                updatedUser,
+                authentication.getCredentials(),
+                authentication.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+
         return "redirect:/products/" + id;
     }
 
@@ -437,7 +457,10 @@ public class UserController {
         // Creamos cómo va a ser la paginación
         Pageable pageable = PageRequest.of(page, size, sort);
         val userId = (Long) model.getAttribute("currentUserId");
-        model.addAttribute("productos", favService.getFavs(userId, pageable));
+
+        // Usar mapper.pageToDTO igual que ProductsController
+        val products = mapper.pageToDTO(favService.getFavs(userId, pageable), sortBy, direction);
+        model.addAttribute("productos", products);
         return "web/productos/lista";
     }
 
@@ -643,23 +666,22 @@ public class UserController {
         val userId = (Long) model.getAttribute("currentUserId");
         val line = cartService.getSaleLineByIds(cartId, productId, userId, false);
         model.addAttribute("venta", line);
-        return "web/cart/ventas-edit";
+        return "web/cart/venta-edit";
     }
 
     /**
      * Procesa la edición de una línea de venta (solo MANAGER).
      *
-     * @param model          Modelo de Spring MVC
      * @param lineRequestDto DTO con datos de la línea
-     * @return Redirección al detalle de la venta
+     * @param bindingResult  Resultado de validación
+     * @return Redirección al listado de ventas del manager
      */
     @PreAuthorize("hasRole('MANAGER')")
     @PostMapping("/venta/edit")
-    public String postVentaEdit(Model model, @Valid @ModelAttribute("line") LineRequestDto lineRequestDto) {
-        val userId = (Long) model.getAttribute("currentUserId");
-        val line = cartService.update(lineRequestDto);
-        model.addAttribute("venta", line);
-        return "redirect:/auth/me/ventas/" + lineRequestDto.getCartId() + "/" + lineRequestDto.getProductId();
+    public String postVentaEdit(@Valid @ModelAttribute("producto") LineRequestDto lineRequestDto,
+            BindingResult bindingResult) {
+        cartService.update(lineRequestDto);
+        return "redirect:/auth/me/ventas";
     }
 
     /**

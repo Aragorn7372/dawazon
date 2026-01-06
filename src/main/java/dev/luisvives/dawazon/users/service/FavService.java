@@ -1,6 +1,6 @@
 package dev.luisvives.dawazon.users.service;
 
-import dev.luisvives.dawazon.products.dto.GenericProductResponseDto;
+import dev.luisvives.dawazon.products.models.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -31,5 +31,5 @@ public interface FavService {
      * @param pageable Configuración de paginación
      * @return Página de productos favoritos
      */
-    public Page<GenericProductResponseDto> getFavs(Long userId, Pageable pageable);
+    public Page<Product> getFavs(Long userId, Pageable pageable);
 }
