@@ -1,7 +1,6 @@
 package dev.luisvives.dawazon.users.service;
 
-import dev.luisvives.dawazon.products.dto.GenericProductResponseDto;
-import dev.luisvives.dawazon.products.mapper.ProductMapper;
+import dev.luisvives.dawazon.products.models.Product;
 import dev.luisvives.dawazon.products.repository.ProductRepository;
 import dev.luisvives.dawazon.users.exceptions.UserException;
 import dev.luisvives.dawazon.users.repository.UserRepository;
@@ -26,21 +25,17 @@ import java.util.Objects;
 public class FavServiceImpl implements FavService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
-    private final ProductMapper productMapper;
 
     /**
      * Constructor con inyección de dependencias.
      *
      * @param userRepository    Repositorio de usuarios
      * @param productRepository Repositorio de productos
-     * @param productMapper     Mapper de productos
      */
     @Autowired
-    public FavServiceImpl(UserRepository userRepository, ProductRepository productRepository,
-            ProductMapper productMapper) {
+    public FavServiceImpl(UserRepository userRepository, ProductRepository productRepository) {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
-        this.productMapper = productMapper;
     }
 
     /**
@@ -93,29 +88,24 @@ public class FavServiceImpl implements FavService {
     /**
      * Obtiene los productos favoritos de un usuario de forma paginada.
      * <p>
-     * Recupera todos los productos favoritos del usuario, filtra los que no
-     * existen,
-     * y los convierte a DTOs con sus comentarios completos.
+     * Recupera todos los productos favoritos del usuario y filtra los que no
+     * existen.
      * </p>
      *
      * @param userId   ID del usuario
      * @param pageable Configuración de paginación
-     * @return Página de productos favoritos como DTOs
+     * @return Página de productos favoritos
      * @throws UserException.UserNotFoundException Si el usuario no existe
      */
     @Override
-    public Page<GenericProductResponseDto> getFavs(Long userId, Pageable pageable) {
+    public Page<Product> getFavs(Long userId, Pageable pageable) {
         val user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserException.UserNotFoundException("no encontrado usuario con id" + userId));
-        val products = user.getFavs().stream().map(it -> productRepository.findById(it).orElse(null));
+        val products = user.getFavs().stream()
+                .map(it -> productRepository.findById(it).orElse(null))
+                .filter(Objects::nonNull)
+                .toList();
 
-        return new PageImpl<>(products.toList().stream().filter(Objects::nonNull)
-                .map((it) -> productMapper.modelToGenericResponseDTO(
-                        it, it.getComments().stream()
-                                .map((comment) -> productMapper.commentToCommentDto(comment,
-                                        userRepository.findActiveById(comment.getUserId()).getUsername()))
-                                .toList()))
-                .toList(),
-                pageable, user.getFavs().size());
+        return new PageImpl<>(products, pageable, products.size());
     }
 }
