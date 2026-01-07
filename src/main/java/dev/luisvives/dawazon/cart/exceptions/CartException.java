@@ -61,4 +61,13 @@ public abstract class CartException extends RuntimeException {
             super(message);
         }
     }
+
+    /**
+     * Excepción lanzada cuando no hay stock suficiente para la cantidad solicitada.
+     */
+    public static class InsufficientStockException extends CartException {
+        public InsufficientStockException(String message) {
+            super(message);
+        }
+    }
 }

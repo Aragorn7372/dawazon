@@ -14,6 +14,19 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     {% endif %}
+
+    {% if error is not empty %}
+    <div class="alert alert-danger alert-dismissible fade show mb-4 shadow-sm" role="alert">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
+            <div>
+                <strong>¡Error!</strong>
+                {{ error }}
+            </div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
     <div class="row">
         <div class="col-12 mb-3">
             <h2 class="fw-bold">Tu carrito de Dawazon</h2>
@@ -36,10 +49,17 @@
                 {% else %}
                 {% for line in carrito.cartLines %}
 
-                <div class="cart-item row py-3 border-bottom align-items-center
+                <div
+                    class="cart-item row py-3 border-bottom align-items-center
                             {% if line.stockStatus == 'ADJUSTED' or line.stockStatus == 'LOW' %} item-stock-warning {% endif %}">
                     <div class="col-6 col-md-8">
-                        <h5 class="product-link mb-1">Producto ID: {{ line.productId }}</h5>
+                        <h5 class="product-link mb-1">
+                            {% if productMap[line.productId] is not null %}
+                            {{ productMap[line.productId].name }}
+                            {% else %}
+                            Producto ID: {{ line.productId }}
+                            {% endif %}
+                        </h5>
 
                         {% if line.stockStatus == 'ADJUSTED' %}
                         <div class="small text-danger mb-1 fw-bold">
@@ -54,14 +74,36 @@
                         {% endif %}
 
                         <div class="d-flex align-items-center gap-3">
-                            <div class="quantity-control d-flex align-items-center border rounded px-2">
-                                <span class="small text-muted me-2">Cant: </span>
-                                <span class="fw-bold">{{ line.quantity }}</span>
+                            <div class="quantity-control d-flex align-items-center border rounded">
+                                <form action="/auth/me/cart/updateQuantity" method="post" class="d-inline">
+                                    <input type="hidden" name="{{ csrfParamName }}" value="{{ csrfToken }}">
+                                    <input type="hidden" name="cartId" value="{{ carrito.id }}">
+                                    <input type="hidden" name="productId" value="{{ line.productId }}">
+                                    <input type="hidden" name="quantity" value="{{ line.quantity - 1 }}">
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary border-0 px-2" {% if
+                                        line.quantity <=1 %}disabled{% endif %}
+                                        title="{% if line.quantity <= 1 %}Cantidad mínima alcanzada{% else %}Reducir cantidad{% endif %}">
+                                        <i class="bi bi-dash"></i>
+                                    </button>
+                                </form>
+
+                                <span class="fw-bold px-3">{{ line.quantity }}</span>
+
+                                <form action="/auth/me/cart/updateQuantity" method="post" class="d-inline">
+                                    <input type="hidden" name="{{ csrfParamName }}" value="{{ csrfToken }}">
+                                    <input type="hidden" name="cartId" value="{{ carrito.id }}">
+                                    <input type="hidden" name="productId" value="{{ line.productId }}">
+                                    <input type="hidden" name="quantity" value="{{ line.quantity + 1 }}">
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary border-0 px-2"
+                                        title="Aumentar cantidad">
+                                        <i class="bi bi-plus"></i>
+                                    </button>
+                                </form>
                             </div>
                             <span class="text-muted">|</span>
                             <form action="/auth/me/carrito/remove/{{ line.productId }}" method="get" class="m-0">
                                 <button type="submit"
-                                        class="btn btn-link text-decoration-none text-danger p-0 delete-btn">
+                                    class="btn btn-link text-decoration-none text-danger p-0 delete-btn">
                                     <i class="bi bi-trash"></i> Eliminar
                                 </button>
                             </form>
@@ -69,9 +111,9 @@
                     </div>
 
                     <div class="col-3 col-md-2 text-end">
-                                <span class="fw-bold fs-5">
-                                    {{ line.totalPrice | numberformat("#,##0.00") }} €
-                                </span>
+                        <span class="fw-bold fs-5">
+                            {{ line.totalPrice | numberformat("#,##0.00") }} €
+                        </span>
                     </div>
                 </div>
                 {% endfor %}
@@ -100,7 +142,8 @@
                 </div>
 
                 <form action="/auth/me/cart/checkout" method="get">
-                    <button type="submit" class="btn btn-gradient w-100 shadow-sm" {% if carrito.cartLines is empty %}disabled{% endif %}>
+                    <button type="submit" class="btn btn-gradient w-100 shadow-sm" {% if carrito.cartLines is empty
+                        %}disabled{% endif %}>
                         Continuar con el pago
                     </button>
                 </form>

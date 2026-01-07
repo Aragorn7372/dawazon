@@ -267,17 +267,29 @@ public class CartServiceImpl implements CartService {
             log.warn("Producto no encontrado con id: " + productId);
             return new ProductException.NotFoundException(productId);
         });
-        val line = new CartLine().builder()
+        val line = CartLine.builder()
                 .quantity(1)
                 .productPrice(product.getPrice())
                 .productId(productId)
                 .status(Status.EN_CARRITO)
+                .totalPrice(1 * product.getPrice())
                 .build();
         cartRepository.addCartLine(id, line);
-        return cartRepository.findById(id).orElseThrow(() -> {
+
+        // Recuperar carrito y recalcular totales
+        Cart cart = cartRepository.findById(id).orElseThrow(() -> {
             log.warn("Cart no encontrado con id: " + id);
             return new CartException.NotFoundException("Cart no encontrado con id: " + id);
         });
+
+        // Recalcular totalItems y total
+        cart.setTotalItems(cart.getCartLines().size());
+        cart.setTotal(cart.getCartLines().stream()
+                .mapToDouble(CartLine::getTotalPrice)
+                .sum());
+
+        // Guardar el carrito con los totales actualizados
+        return cartRepository.save(cart);
     }
 
     /**
@@ -333,17 +345,29 @@ public class CartServiceImpl implements CartService {
             log.warn("Cart no encontrado con id: " + id);
             return new CartException.NotFoundException("Cart no encontrado con id: " + id);
         }).getCartLines().stream().filter((it) -> it.getProductId().equals(productId)).findFirst().get();
-        val line = new CartLine().builder()
+        val line = CartLine.builder()
                 .quantity(cartLine.getQuantity())
                 .productPrice(cartLine.getProductPrice())
                 .productId(productId)
                 .status(Status.EN_CARRITO)
+                .totalPrice(cartLine.getQuantity() * cartLine.getProductPrice())
                 .build();
         cartRepository.removeCartLine(id, line);
-        return cartRepository.findById(id).orElseThrow(() -> {
+
+        // Recuperar carrito y recalcular totales
+        Cart cart = cartRepository.findById(id).orElseThrow(() -> {
             log.warn("Cart no encontrado con id: " + id);
             return new CartException.NotFoundException("Cart no encontrado con id: " + id);
         });
+
+        // Recalcular totalItems y total
+        cart.setTotalItems(cart.getCartLines().size());
+        cart.setTotal(cart.getCartLines().stream()
+                .mapToDouble(CartLine::getTotalPrice)
+                .sum());
+
+        // Guardar el carrito con los totales actualizados
+        return cartRepository.save(cart);
     }
 
     /**
@@ -381,6 +405,7 @@ public class CartServiceImpl implements CartService {
 
     /**
      * Envía email de confirmación en un hilo separado
+     * 
      * @param pedido El {@link Cart} para el cual se enviará el email de
      *               confirmación.
      */
@@ -427,6 +452,61 @@ public class CartServiceImpl implements CartService {
                 .setQuantity(entity.getQuantity());
         cartRepository.save(cart);
         return cart;
+    }
+
+    /**
+     * Actualiza la cantidad de un producto en el carrito con validaciones.
+     * <p>
+     * Valida que la cantidad sea al menos 1 y que haya stock suficiente.
+     * Recalcula los totales del carrito automáticamente.
+     * </p>
+     *
+     * @param entity DTO con datos de actualización de stock
+     * @return Carrito actualizado
+     * @throws CartException.NotFoundException          Si el carrito no existe
+     * @throws CartException.InsufficientStockException Si no hay stock suficiente
+     * @throws IllegalArgumentException                 Si la cantidad es menor que
+     *                                                  1
+     */
+    @Transactional
+    public Cart updateStockWithValidation(CartStockRequestDto entity) {
+        // Buscamos el carrito
+        Cart cart = cartRepository.findById(entity.getCartId())
+                .orElseThrow(() -> new CartException.NotFoundException(
+                        "Cart no encontrado con id: " + entity.getCartId()));
+
+        // Validamos la cantidad mínima
+        if (entity.getQuantity() < 1) {
+            throw new IllegalArgumentException("La cantidad mínima es 1");
+        }
+
+        // Buscamos el producto para verificar stock
+        Product product = productRepository.findById(entity.getProductId())
+                .orElseThrow(() -> new ProductException.NotFoundException(entity.getProductId()));
+
+        // Verificamos el stock disponible
+        if (product.getStock() < entity.getQuantity()) {
+            throw new CartException.InsufficientStockException(
+                    "Stock insuficiente. Solo hay " + product.getStock() + " unidades disponibles.");
+        }
+
+        // Buscamos y actualizamos la línea del carrito
+        cart.getCartLines().stream()
+                .filter(line -> line.getProductId().equals(entity.getProductId()))
+                .findFirst()
+                .ifPresent(line -> {
+                    line.setQuantity(entity.getQuantity());
+                    // setQuantity ya calcula totalPrice automáticamente
+                });
+
+        // Recalculamos los totales del carrito
+        cart.setTotalItems(cart.getCartLines().size());
+        cart.setTotal(cart.getCartLines().stream()
+                .mapToDouble(CartLine::getTotalPrice)
+                .sum());
+
+        // Guardamos el carrito
+        return cartRepository.save(cart);
     }
 
     /**
@@ -617,7 +697,7 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public void cancelSale(String ventaId, String productId, Long managerId, boolean isAdmin) {
-  
+
         ObjectId cartObjectId = new ObjectId(ventaId);
         Cart cart = cartRepository.findById(cartObjectId)
                 .orElseThrow(() -> new CartException.NotFoundException("Venta no encontrada"));

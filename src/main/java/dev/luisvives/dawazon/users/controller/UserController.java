@@ -3,13 +3,16 @@ package dev.luisvives.dawazon.users.controller;
 import dev.luisvives.dawazon.cart.dto.CartStockRequestDto;
 import dev.luisvives.dawazon.cart.dto.ClientDto;
 import dev.luisvives.dawazon.cart.dto.LineRequestDto;
+import dev.luisvives.dawazon.cart.exceptions.CartException;
 import dev.luisvives.dawazon.cart.models.Cart;
+import dev.luisvives.dawazon.cart.models.CartLine;
 import dev.luisvives.dawazon.cart.models.Address;
 import dev.luisvives.dawazon.cart.models.Client;
 import dev.luisvives.dawazon.cart.models.Status;
 import dev.luisvives.dawazon.cart.service.CartServiceImpl;
 import dev.luisvives.dawazon.products.dto.PostProductRequestDto;
 import dev.luisvives.dawazon.products.mapper.ProductMapper;
+import dev.luisvives.dawazon.products.models.Product;
 import dev.luisvives.dawazon.products.service.ProductServiceImpl;
 import dev.luisvives.dawazon.users.dto.UserAdminRequestDto;
 import dev.luisvives.dawazon.users.dto.UserRequestDto;
@@ -42,7 +45,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Controlador principal del panel de usuario autenticado.
@@ -520,6 +525,25 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/cart")
     public String getCart(Model model) {
+        Cart cart = (Cart) model.getAttribute("cart");
+
+        // Si el carrito tiene productos, buscar los detalles
+        if (cart != null && !cart.getCartLines().isEmpty()) {
+            // Obtener todos los IDs de productos del carrito
+            List<String> productIds = cart.getCartLines().stream()
+                    .map(CartLine::getProductId)
+                    .collect(Collectors.toList());
+
+            // Buscar todos los productos
+            List<Product> products = cartService.variosPorId(productIds);
+
+            // Crear un mapa para búsqueda fácil en la plantilla
+            Map<String, Product> productMap = products.stream()
+                    .collect(Collectors.toMap(Product::getId, product -> product));
+
+            model.addAttribute("productMap", productMap);
+        }
+
         return "web/cart/cart";
     }
 
@@ -545,6 +569,56 @@ public class UserController {
 
         Cart cart = cartService.updateStock(line);
         model.addAttribute("carrito", cart);
+        return "redirect:/auth/me/cart";
+    }
+
+    /**
+     * Actualiza la cantidad de un producto en el carrito con validación (solo
+     * USER).
+     *
+     * @param cartId             ID del carrito
+     * @param productId          ID del producto
+     * @param quantity           Nueva cantidad
+     * @param redirectAttributes Atributos para mensajes flash
+     * @param model              Modelo de Spring MVC
+     * @return Redirección al carrito
+     */
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping("/cart/updateQuantity")
+    public String updateQuantity(
+            @RequestParam String cartId,
+            @RequestParam String productId,
+            @RequestParam Integer quantity,
+            RedirectAttributes redirectAttributes,
+            HttpSession session,
+            Model model) {
+
+        // Validar cantidad mínima
+        if (quantity < 1) {
+            redirectAttributes.addFlashAttribute("error",
+                    "La cantidad mínima es 1. Para eliminar el producto usa el botón Eliminar.");
+            return "redirect:/auth/me/cart";
+        }
+
+        try {
+            CartStockRequestDto dto = CartStockRequestDto.builder()
+                    .cartId(new ObjectId(cartId))
+                    .productId(productId)
+                    .quantity(quantity)
+                    .build();
+
+            Cart updatedCart = cartService.updateStockWithValidation(dto);
+
+            // Actualizamos el carrito en la sesión para que los cambios se reflejen
+            session.setAttribute("cart", updatedCart);
+
+        } catch (CartException.InsufficientStockException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error",
+                    "Error al actualizar la cantidad");
+        }
+
         return "redirect:/auth/me/cart";
     }
 
