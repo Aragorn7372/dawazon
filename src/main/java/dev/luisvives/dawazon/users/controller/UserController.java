@@ -1018,6 +1018,7 @@ public class UserController {
         val currentUserId = (Long) model.getAttribute("currentUserId");
         val existing = authService.findById(currentUserId);
         existing.setClient(client);
+        authService.edit(existing);
         return "redirect:/auth/me/";
     }
 
@@ -1057,7 +1058,25 @@ public class UserController {
         // La plantilla se encargará de pre-rellenar los campos si user.client existe
         return "web/cart/checkout";
     }
-
+    /**
+     * Actualiza los datos de cliente del usuario actual.
+     *
+     * @param model     Modelo de Spring MVC
+     * @param clientDto DTO con datos del cliente
+     * @return Redirección al perfil
+     */
+    @PreAuthorize("hasAnyRole('USER')")
+    @PostMapping("/cart/checkout/userdata")
+    public String payData(Model model, @Valid @ModelAttribute("client") ClientDto clientDto) {
+        log.info("user data "+clientDto);
+        Client client = userMapper.toClient(clientDto);
+        val currentUserId = (Long) model.getAttribute("currentUserId");
+        val existing = authService.findById(currentUserId);
+        existing.setClient(client);
+        authService.edit(existing);
+        log.info("user data "+existing);
+        return "redirect:/auth/me/cart/checkout/pay";
+    }
     /**
      * Inicia el proceso de pago con Stripe (solo USER).
      *
@@ -1068,19 +1087,25 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/cart/checkout/pay")
     public String checkoutPay(Model model, RedirectAttributes redirectAttributes) {
-        val user = (User) model.getAttribute("currentUser");
+        log.info("funcion de pago");
+        val userId = (Long) model.getAttribute("currentUserId");
+        val user = authService.findById(userId);
         val cart = (Cart) model.getAttribute("cart");
+        log.info("user "+user+" cart "+cart);
         if (cart.getTotal() <= 0) {
             return "redirect:/";
         }
+
         if (user.getClient() == null) {
+            log.info("fallo volviendo a checkout");
             redirectAttributes.addFlashAttribute("status", 301);
             redirectAttributes.addFlashAttribute("title", "faltan los datos de cliente");
             redirectAttributes.addFlashAttribute("message", "introduce tus datos");
-            return "redirect:/auth/me/client";
+            return "redirect:/auth/me/cart/checkout";
         }
         model.addAttribute("client", user.getClient());
         val stripe = cartService.checkout(new ObjectId(cart.getId()), cart);
+        log.info("datos correctos redirigiendo a stripe "+stripe);
         return "redirect:" + stripe;
     }
 

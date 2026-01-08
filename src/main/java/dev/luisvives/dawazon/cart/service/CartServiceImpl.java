@@ -562,6 +562,13 @@ public class CartServiceImpl implements CartService {
     public String checkout(ObjectId id, Cart entity) {
         entity.setCheckoutInProgress(true);
         entity.setCheckoutStartedAt(LocalDateTime.now());
+        val user=userRepository.findById(entity.getUserId()).orElseThrow(()->{
+            log.warn("User no encontrado con id: " + entity.getUserId());
+            return new UserException.UserNotFoundException("User no encontrado con id: " + entity.getUserId()) {
+            };
+        });
+        val cart=entity;
+        cart.setClient(user.getClient());
         cartRepository.save(entity);
         // Procesamos el stock de cada línea
         entity.getCartLines().forEach((it) -> {
