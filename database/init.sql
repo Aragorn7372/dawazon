@@ -104,7 +104,7 @@ VALUES ('aB3xT9kL2pQm', 'Electrónica', NOW(), NOW()),
        ('pL9dF2nB6vCx', 'Hogar', NOW(), NOW()),
        ('mK5tR8hJ1zWq', 'Deportes', NOW(), NOW());
 
--- Insertar usuarios (password es 'password123' hasheado con BCrypt)
+-- Insertar usuarios (password es 'admin y manager respectivamente' hasheado con BCrypt)
 -- Admin y Manager sin información de cliente (no compran)
 INSERT INTO users ( user_name, email, password, telefono, avatar, is_deleted)
 VALUES ( 'admin', 'admin@dawazon.com', '$2a$12$lCscGZz/fkYBFUms.kgn2OhnPo3dnZh794OLCMulNpLSJFTqC9/D2',
@@ -113,32 +113,32 @@ VALUES ( 'admin', 'admin@dawazon.com', '$2a$12$lCscGZz/fkYBFUms.kgn2OhnPo3dnZh79
        ( 'manager_jose', 'jose.manager@dawazon.com', '$2a$12$nca74X1GHKl98exObCRNVea.73rwakP9JNV/Luoc6zXjgmjIv4R3O',
         '+34666222333', 'default.png', FALSE);
 
--- Usuarios normales con información de cliente completa
+-- Usuarios normales con información de cliente completa contraseña es user
 INSERT INTO users ( user_name, email, password, client_name, client_email, client_phone,
                    client_address_number, client_address_street, client_address_city,
                    client_address_province, client_address_country, client_address_postal_code,
                    telefono, avatar, is_deleted)
-VALUES ( 'john_doe', 'john.doe@email.com', '$2a$12$xNh7ShFISlT27.NU.oSCp.YxNIytRgw4PlzUmwjKd2bNzy0KaCfme',
+VALUES ( 'john_doe', 'john.doe@email.com', '$2a$12$edBLLsEM4gxLlxGRrvBZ4OGEqnyTyjKeHWx5F8I1OSfoUdhBQDOMy',
         'John Doe', 'john.doe@email.com', '+34666333444',
         42, 'Gran Vía', 'Madrid', 'Madrid', 'España', 28013,
         '+34666333444', 'default.png', FALSE),
 
-       ( 'jane_smith', 'jane.smith@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
+       ( 'jane_smith', 'jane.smith@email.com', '$2a$12$edBLLsEM4gxLlxGRrvBZ4OGEqnyTyjKeHWx5F8I1OSfoUdhBQDOMy',
         'Jane Smith', 'jane.smith@email.com', '+34666555666',
         15, 'Paseo de Gracia', 'Barcelona', 'Barcelona', 'España', 8007,
         '+34666555666', 'default.png', FALSE),
 
-       ( 'carlos_ruiz', 'carlos.ruiz@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
+       ( 'carlos_ruiz', 'carlos.ruiz@email.com', '$2a$12$edBLLsEM4gxLlxGRrvBZ4OGEqnyTyjKeHWx5F8I1OSfoUdhBQDOMy',
         'Carlos Ruiz', 'carlos.ruiz@email.com', '+34666777888',
         8, 'Calle Larios', 'Málaga', 'Málaga', 'España', 29015,
         '+34666777888', 'default.png', FALSE),
 
-       ( 'maria_garcia', 'maria.garcia@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
+       ( 'maria_garcia', 'maria.garcia@email.com', '$2a$12$edBLLsEM4gxLlxGRrvBZ4OGEqnyTyjKeHWx5F8I1OSfoUdhBQDOMy',
         'María García', 'maria.garcia@email.com', '+34666999000',
         23, 'Calle Sierpes', 'Sevilla', 'Sevilla', 'España', 41004,
         '+34666999000', 'default.png', FALSE),
 
-       ( 'pedro_lopez', 'pedro.lopez@email.com', '$2a$10$xRlQkVD5z0L5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5xKxV5x',
+       ( 'pedro_lopez', 'pedro.lopez@email.com', '$2a$12$edBLLsEM4gxLlxGRrvBZ4OGEqnyTyjKeHWx5F8I1OSfoUdhBQDOMy',
         'Pedro López', 'pedro.lopez@email.com', '+34666000111',
         50, 'Calle Mayor', 'Valencia', 'Valencia', 'España', 46001,
         '+34666000111', 'default.png', FALSE);

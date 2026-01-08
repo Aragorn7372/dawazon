@@ -1122,7 +1122,7 @@ public class UserController {
      * @return Vista de éxito o redirección si error
      */
     @PreAuthorize("hasRole('USER')")
-    @GetMapping("/cart/checkout/success")
+    @GetMapping({"/cart/checkout/success/"})
     public String checkoutSuccess(
             @RequestParam("session_id") String sessionId,
             Model model,
