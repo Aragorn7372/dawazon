@@ -1,0 +1,311 @@
+{% include "common/header" %}
+{% include "common/navbar" %}
+
+<main class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Título y breadcrumb -->
+            <div class="mb-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                        <li class="breadcrumb-item"><a href="/auth/me/carrito">Carrito</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Datos de envío</li>
+                    </ol>
+                </nav>
+                <h2 class="fw-bold">Datos de envío</h2>
+                <p class="text-muted">Completa los datos para procesar tu pedido</p>
+            </div>
+
+            <!-- Tarjeta del formulario -->
+            <div class="card shadow-sm border">
+                <div class="card-header bg-white border-bottom">
+                    <h5 class="mb-0">
+                        <i class="bi bi-person-lines-fill me-2 text-primary"></i>
+                        Información del cliente
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <!-- Mostrar errores si existen -->
+                    {% if error is not empty %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-exclamation-triangle-fill fs-5 me-3"></i>
+                            <div>
+                                <strong>¡Error!</strong>
+                                {{ error }}
+                            </div>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endif %}
+
+                    <form action="/auth/me/cart/checkout" method="post" id="checkoutForm">
+                        <input type="hidden" name="{{ csrfParamName }}" value="{{ csrfToken }}">
+
+                        <!-- Datos personales -->
+                        <div class="mb-4">
+                            <h6 class="text-muted mb-3">
+                                <i class="bi bi-person-fill me-1"></i>
+                                Datos personales
+                            </h6>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="name" class="form-label">Nombre completo <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="name" name="name"
+                                        value="{% if currentUser.client is not null and currentUser.client.name is not empty %}{{ currentUser.client.name }}{% endif %}"
+                                        required>
+                                    <div class="invalid-feedback">
+                                        Por favor, introduce tu nombre completo
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">Correo electrónico <span
+                                            class="text-danger">*</span></label>
+                                    <input type="email" class="form-control" id="email" name="email"
+                                        value="{% if currentUser.client is not null and currentUser.client.email is not empty %}{{ currentUser.client.email }}{% else %}{{ currentUser.email }}{% endif %}"
+                                        required>
+                                    <div class="invalid-feedback">
+                                        Por favor, introduce un correo electrónico válido
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Teléfono <span
+                                        class="text-danger">*</span></label>
+                                <input type="tel" class="form-control" id="phone" name="phone"
+                                    value="{% if currentUser.client is not null and currentUser.client.phone is not empty %}{{ currentUser.client.phone }}{% elseif currentUser.telefono is not empty %}{{ currentUser.telefono }}{% endif %}"
+                                    pattern="[0-9]{9,15}" required>
+                                <div class="form-text">Número de contacto para el envío</div>
+                                <div class="invalid-feedback">
+                                    Por favor, introduce un número de teléfono válido (9-15 dígitos)
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Dirección de envío -->
+                        <div class="mb-4">
+                            <h6 class="text-muted mb-3">
+                                <i class="bi bi-geo-alt-fill me-1"></i>
+                                Dirección de envío
+                            </h6>
+
+                            <div class="row">
+                                <div class="col-md-8 mb-3">
+                                    <label for="street" class="form-label">Calle <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="street" name="street"
+                                        value="{% if currentUser.client is not null and currentUser.client.address is not null and currentUser.client.address.street is not empty %}{{ currentUser.client.address.street }}{% endif %}"
+                                        required>
+                                    <div class="invalid-feedback">
+                                        Por favor, introduce el nombre de la calle
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label for="number" class="form-label">Número <span
+                                            class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="number" name="number"
+                                        value="{% if currentUser.client is not null and currentUser.client.address is not null and currentUser.client.address.number is not null %}{{ currentUser.client.address.number }}{% endif %}"
+                                        min="0" required>
+                                    <div class="invalid-feedback">
+                                        Por favor, introduce el número
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="city" class="form-label">Ciudad <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="city" name="city"
+                                        value="{% if currentUser.client is not null and currentUser.client.address is not null and currentUser.client.address.city is not empty %}{{ currentUser.client.address.city }}{% endif %}"
+                                        required>
+                                    <div class="invalid-feedback">
+                                        Por favor, introduce la ciudad
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="province" class="form-label">Provincia <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="province" name="province"
+                                        value="{% if currentUser.client is not null and currentUser.client.address is not null and currentUser.client.address.province is not empty %}{{ currentUser.client.address.province }}{% endif %}"
+                                        required>
+                                    <div class="invalid-feedback">
+                                        Por favor, introduce la provincia
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="country" class="form-label">País <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="country" name="country"
+                                        value="{% if currentUser.client is not null and currentUser.client.address is not null and currentUser.client.address.country is not empty %}{{ currentUser.client.address.country }}{% else %}España{% endif %}"
+                                        required>
+                                    <div class="invalid-feedback">
+                                        Por favor, introduce el país
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="postalCode" class="form-label">Código postal <span
+                                            class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="postalCode" name="postalCode"
+                                        value="{% if currentUser.client is not null and currentUser.client.address is not null and currentUser.client.address.postalCode is not null %}{{ currentUser.client.address.postalCode }}{% endif %}"
+                                        min="0" required>
+                                    <div class="invalid-feedback">
+                                        Por favor, introduce el código postal
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Información adicional -->
+                        <div class="alert alert-info d-flex align-items-start">
+                            <i class="bi bi-info-circle-fill fs-5 me-3 mt-1"></i>
+                            <div>
+                                <strong>Información importante:</strong>
+                                <ul class="mb-0 mt-2">
+                                    <li>Todos los campos marcados con <span class="text-danger">*</span> son
+                                        obligatorios</li>
+                                    <li>Revisa cuidadosamente los datos antes de continuar</li>
+                                    <li>Recibirás confirmación del pedido en tu correo electrónico</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Botones de acción -->
+                        <div class="d-flex gap-3 justify-content-between mt-4">
+                            <a href="/auth/me/carrito" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-2"></i>
+                                Volver al carrito
+                            </a>
+                            <button type="submit" class="btn btn-gradient shadow-sm">
+                                Continuar con el pago
+                                <i class="bi bi-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Información de seguridad -->
+            <div class="text-center mt-4">
+                <p class="text-muted small">
+                    <i class="bi bi-shield-check me-1"></i>
+                    Tus datos están protegidos y serán utilizados únicamente para procesar tu pedido
+                </p>
+            </div>
+        </div>
+
+        <!-- Resumen del pedido (sidebar) -->
+        <div class="col-lg-4 mt-4 mt-lg-0">
+            <div class="card shadow-sm border sticky-top" style="top: 20px;">
+                <div class="card-header bg-light">
+                    <h6 class="mb-0">
+                        <i class="bi bi-cart-check me-2"></i>
+                        Resumen del pedido
+                    </h6>
+                </div>
+                <div class="card-body">
+                    {% if carrito is not null and carrito.cartLines is not empty %}
+                    <div class="mb-3">
+                        {% for line in carrito.cartLines %}
+                        <div
+                            class="d-flex justify-content-between align-items-start mb-2 pb-2 {% if not loop.last %}border-bottom{% endif %}">
+                            <div class="flex-grow-1">
+                                <div class="fw-semibold small">
+                                    {% if productMap[line.productId] is not null %}
+                                    {{ productMap[line.productId].name }}
+                                    {% else %}
+                                    Producto ID: {{ line.productId }}
+                                    {% endif %}
+                                </div>
+                                <div class="text-muted small">Cantidad: {{ line.quantity }}</div>
+                            </div>
+                            <div class="text-end ms-2">
+                                <span class="fw-bold">{{ line.totalPrice | numberformat("#,##0.00") }} €</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Subtotal ({{ carrito.totalItems }} productos):</span>
+                        <span class="fw-bold">{{ carrito.total | numberformat("#,##0.00") }} €</span>
+                    </div>
+
+                    {% if carrito.total > 29 %}
+                    <div class="d-flex justify-content-between mb-2 text-success">
+                        <span>Envío:</span>
+                        <span class="fw-bold">GRATIS</span>
+                    </div>
+                    {% else %}
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Envío:</span>
+                        <span class="fw-bold">3,95 €</span>
+                    </div>
+                    {% endif %}
+
+                    <hr>
+
+                    <div class="d-flex justify-content-between fs-5">
+                        <span class="fw-bold">Total:</span>
+                        <span class="fw-bold text-primary">
+                            {% if carrito.total > 29 %}
+                            {{ carrito.total | numberformat("#,##0.00") }} €
+                            {% else %}
+                            {{ (carrito.total + 3.95) | numberformat("#,##0.00") }} €
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    {% if carrito.total > 29 %}
+                    <div class="alert alert-success mt-3 mb-0 py-2 px-3">
+                        <small>
+                            <i class="bi bi-check-circle-fill me-1"></i>
+                            ¡Envío GRATIS!
+                        </small>
+                    </div>
+                    {% endif %}
+                    {% else %}
+                    <p class="text-muted text-center">No hay productos en el carrito</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    // Validación Bootstrap
+    (function () {
+        'use strict';
+
+        const form = document.getElementById('checkoutForm');
+
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            form.classList.add('was-validated');
+        }, false);
+    })();
+</script>
+
+{% include "common/footer" %}

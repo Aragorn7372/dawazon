@@ -1022,28 +1022,40 @@ public class UserController {
     }
 
     /**
-     * Muestra página de checkout con validación de datos de cliente (solo USER).
+     * Muestra página de checkout con formulario de datos de cliente (solo USER).
      *
      * @param model              Modelo de Spring MVC
      * @param redirectAttributes Atributos de redirección
-     * @return Vista de checkout si datos válidos, redirección si faltan datos
+     * @return Vista de checkout con formulario de datos del cliente
      */
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/cart/checkout")
     public String checkout(Model model, RedirectAttributes redirectAttributes) {
         val user = (User) model.getAttribute("currentUser");
         val cart = (Cart) model.getAttribute("cart");
-        if (cart.getTotal() <= 0) {
-            return "redirect:/";
+
+        // Validar que el carrito tenga productos y total válido
+        if (cart == null || cart.getCartLines().isEmpty() || cart.getTotal() <= 0) {
+            redirectAttributes.addFlashAttribute("error", "Tu carrito está vacío");
+            return "redirect:/auth/me/cart";
         }
-        if (user.getClient() == null) {
-            redirectAttributes.addFlashAttribute("status", 301);
-            redirectAttributes.addFlashAttribute("title", "faltan los datos de cliente");
-            redirectAttributes.addFlashAttribute("message", "introduce tus datos");
-            return "redirect:/auth/me/client";
+
+        // Obtener detalles de productos para mostrar en el resumen
+        if (!cart.getCartLines().isEmpty()) {
+            List<String> productIds = cart.getCartLines().stream()
+                    .map(CartLine::getProductId)
+                    .collect(Collectors.toList());
+
+            List<Product> products = cartService.variosPorId(productIds);
+            Map<String, Product> productMap = products.stream()
+                    .collect(Collectors.toMap(Product::getId, product -> product));
+
+            model.addAttribute("productMap", productMap);
         }
-        model.addAttribute("client", user.getClient());
-        return "web/user/checkout";
+
+        // El usuario y carrito ya están en el modelo gracias al GlobalModelAttributes
+        // La plantilla se encargará de pre-rellenar los campos si user.client existe
+        return "web/cart/checkout";
     }
 
     /**
