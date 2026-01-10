@@ -21,12 +21,30 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     /**
+     * Busca un usuario activo por nombre de usuario.
+     *
+     * @param value Nombre de usuario
+     * @return Usuario opcional
+     */
+    @Query("SELECT u FROM User u WHERE u.isDeleted=false AND u.userName= :value")
+    Optional<User> findByUserNameAndIsDeletedFalse(String value);
+
+    /**
      * Busca un usuario por nombre de usuario.
      *
      * @param value Nombre de usuario
      * @return Usuario opcional
      */
     Optional<User> findByUserName(String value);
+
+    /**
+     * Busca un usuario activo por email.
+     *
+     * @param email Email del usuario
+     * @return Usuario opcional
+     */
+    @Query("SELECT u FROM User u WHERE u.isDeleted=false AND u.email= :email")
+    Optional<User> findByEmailAndIsDeletedFalse(String email);
 
     /**
      * Busca un usuario por email.

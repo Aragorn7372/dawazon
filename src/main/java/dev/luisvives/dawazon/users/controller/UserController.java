@@ -670,8 +670,19 @@ public class UserController {
             throw new UserException.UserPermissionDeclined("El usuario con ID: " + userId
                     + " ha intentado acceder al carrito del usuario con ID: " + existingCart.getUserId());
         }
+
+        // Cargar detalles de productos para mostrar nombres
+        List<String> productIds = existingCart.getCartLines().stream()
+                .map(CartLine::getProductId)
+                .collect(Collectors.toList());
+
+        List<Product> products = cartService.variosPorId(productIds);
+        Map<String, Product> productMap = products.stream()
+                .collect(Collectors.toMap(Product::getId, product -> product));
+
         model.addAttribute("order", existingCart);
-        return "web/cart/orderDetail";
+        model.addAttribute("productMap", productMap);
+        return "web/cart/orderDetails";
     }
 
     /**
@@ -1058,6 +1069,7 @@ public class UserController {
         // La plantilla se encargará de pre-rellenar los campos si user.client existe
         return "web/cart/checkout";
     }
+
     /**
      * Actualiza los datos de cliente del usuario actual.
      *
@@ -1068,15 +1080,16 @@ public class UserController {
     @PreAuthorize("hasAnyRole('USER')")
     @PostMapping("/cart/checkout/userdata")
     public String payData(Model model, @Valid @ModelAttribute("client") ClientDto clientDto) {
-        log.info("user data "+clientDto);
+        log.info("user data " + clientDto);
         Client client = userMapper.toClient(clientDto);
         val currentUserId = (Long) model.getAttribute("currentUserId");
         val existing = authService.findById(currentUserId);
         existing.setClient(client);
         authService.edit(existing);
-        log.info("user data "+existing);
+        log.info("user data " + existing);
         return "redirect:/auth/me/cart/checkout/pay";
     }
+
     /**
      * Inicia el proceso de pago con Stripe (solo USER).
      *
@@ -1091,7 +1104,7 @@ public class UserController {
         val userId = (Long) model.getAttribute("currentUserId");
         val user = authService.findById(userId);
         val cart = (Cart) model.getAttribute("cart");
-        log.info("user "+user+" cart "+cart);
+        log.info("user " + user + " cart " + cart);
         if (cart.getTotal() <= 0) {
             return "redirect:/";
         }
@@ -1105,7 +1118,7 @@ public class UserController {
         }
         model.addAttribute("client", user.getClient());
         val stripe = cartService.checkout(new ObjectId(cart.getId()), cart);
-        log.info("datos correctos redirigiendo a stripe "+stripe);
+        log.info("datos correctos redirigiendo a stripe " + stripe);
         return "redirect:" + stripe;
     }
 
@@ -1122,55 +1135,71 @@ public class UserController {
      * @return Vista de éxito o redirección si error
      */
     @PreAuthorize("hasRole('USER')")
-    @GetMapping({"/cart/checkout/success/"})
+    @GetMapping({ "/cart/checkout/success/" })
     public String checkoutSuccess(
-            @RequestParam("session_id") String sessionId,
             Model model,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            HttpSession session) {
 
         try {
             val user = (User) model.getAttribute("currentUser");
             val cart = (Cart) model.getAttribute("cart");
 
-            log.info("Procesando pago exitoso - Usuario: {} - Session: {}",
-                    user.getId(), sessionId);
+            log.info("Procesando pago exitoso - Usuario: {}", user.getId());
 
             if (cart.isCheckoutExpired()) {
                 log.warn("Checkout expirado ({} minutos) - Carrito: {}",
                         cart.getMinutesSinceCheckoutStarted(), cart.getId());
                 redirectAttributes.addFlashAttribute("errorMessage",
                         "La sesión de pago ha expirado. Por favor, intenta de nuevo.");
-                return "redirect:/cart";
+                return "redirect:/auth/me/cart";
             }
 
             // Verificar que el carrito tenga items
             if (cart.getCartLines().isEmpty()) {
                 redirectAttributes.addFlashAttribute("errorMessage",
                         "El carrito está vacío");
-                return "redirect:/cart";
+                return "redirect:/auth/me/cart";
             }
 
-            // Marcar el carrito como comprado (save ya resetea los flags de checkout)
+            // Marcar el carrito como comprado (save ya resetea los flags de checkout y crea
+            // nuevo carrito)
             Cart purchasedCart = cartService.save(cart);
 
-            // Enviar email de confirmación de forma asíncrona
+            log.info("Pedido completado - ID: {} - Total: {}€",
+                    purchasedCart.getId(), purchasedCart.getTotal());
+
+            // Obtener el nuevo carrito vacío que fue creado por save()
+            Cart newCart = cartService.getCartByUserId(user.getId());
+
+            // Actualizar la sesión con el nuevo carrito vacío
+            session.setAttribute("cart", newCart);
+            session.setAttribute("carrito", newCart);
+
+            // Enviar email de confirmación de forma asíncrona con el carrito comprado
             cartService.sendConfirmationEmailAsync(purchasedCart);
+
+            // Cargar detalles de productos para mostrar nombres en la plantilla
+            List<String> productIds = purchasedCart.getCartLines().stream()
+                    .map(CartLine::getProductId)
+                    .collect(Collectors.toList());
+
+            List<Product> products = cartService.variosPorId(productIds);
+            Map<String, Product> productMap = products.stream()
+                    .collect(Collectors.toMap(Product::getId, product -> product));
 
             // Pasar datos a la vista
             model.addAttribute("order", purchasedCart);
             model.addAttribute("client", user.getClient());
-            model.addAttribute("sessionId", sessionId);
+            model.addAttribute("productMap", productMap);
 
-            log.info("Pedido completado - ID: {} - Total: {}€",
-                    purchasedCart.getId(), purchasedCart.getTotal());
-            cartService.createNewCart(user.getId());
-            return "cart/checkout-success";
+            return "web/cart/checkout-success";
 
         } catch (Exception e) {
             log.error("Error procesando checkout success: {}", e.getMessage(), e);
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Error procesando tu pedido:  " + e.getMessage());
-            return "redirect:/cart";
+            return "redirect:/auth/me/cart";
         }
     }
 
@@ -1188,7 +1217,6 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/cart/checkout/cancel")
     public String checkoutCancel(
-            @RequestParam(value = "session_id", required = false) String sessionId,
             Model model,
             RedirectAttributes redirectAttributes) {
 
@@ -1196,8 +1224,7 @@ public class UserController {
             val user = (User) model.getAttribute("currentUser");
             val cart = (Cart) model.getAttribute("cart");
 
-            log.warn("Pago cancelado por usuario: {} - Session ID: {}",
-                    user.getId(), sessionId);
+            log.warn("Pago cancelado por usuario: {}", user.getId());
 
             cartService.restoreStock(new ObjectId(cart.getId()));
 
@@ -1208,13 +1235,13 @@ public class UserController {
 
             log.info("Stock restaurado para carrito: {}", cart.getId());
 
-            return "redirect:/cart";
+            return "redirect:/auth/me/cart";
 
         } catch (Exception e) {
             log.error("Eror procesando cancelación:  {}", e.getMessage(), e);
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Error al cancelar el pago");
-            return "redirect:/cart";
+            return "redirect:/auth/me/cart";
         }
     }
 

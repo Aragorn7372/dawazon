@@ -63,8 +63,7 @@ public class OrderEmailServiceImpl implements OrderEmailService {
             emailService.sendHtmlEmail(
                     pedido.getClient().getEmail(),
                     subject,
-                    htmlBody
-            );
+                    htmlBody);
 
             logger.info("✅ Email HTML simple de confirmación enviado correctamente para el pedido {}", pedido.getId());
 
@@ -95,8 +94,7 @@ public class OrderEmailServiceImpl implements OrderEmailService {
             emailService.sendHtmlEmail(
                     pedido.getClient().getEmail(),
                     subject,
-                    htmlBody
-            );
+                    htmlBody);
 
             logger.info("✅ Email HTML completo de confirmación enviado correctamente para el pedido {}", pedido.getId());
 
@@ -111,11 +109,11 @@ public class OrderEmailServiceImpl implements OrderEmailService {
      * <p>
      * Incluye:
      * <ul>
-     *     <li>Información del pedido (número, fecha, estado)</li>
-     *     <li>Datos del cliente (nombre, email, teléfono)</li>
-     *     <li>Dirección de entrega</li>
-     *     <li>Lista de productos con cantidad, precio y total</li>
-     *     <li>Resumen final del pedido</li>
+     * <li>Información del pedido (número, fecha, estado)</li>
+     * <li>Datos del cliente (nombre, email, teléfono)</li>
+     * <li>Dirección de entrega</li>
+     * <li>Lista de productos con cantidad, precio y total</li>
+     * <li>Resumen final del pedido</li>
      * </ul>
      * </p>
      *
@@ -128,85 +126,86 @@ public class OrderEmailServiceImpl implements OrderEmailService {
 
         String lineasPedidoHtml = pedido.getCartLines().stream()
                 .map(linea -> String.format("""
-                <li>
-                    <strong>Producto ID:</strong> %d | 
-                    <strong>Cantidad:</strong> %d | 
-                    <strong>Precio:</strong> %s | 
-                    <strong>Total:</strong> %s
-                </li>
-                """,
+                        <li>
+                            <strong>Producto ID:</strong> %s |
+                            <strong>Cantidad:</strong> %d |
+                            <strong>Precio:</strong> %s |
+                            <strong>Total:</strong> %s
+                        </li>
+                        """,
                         linea.getProductId(),
-                        linea.getProductPrice(),
+                        linea.getQuantity(),
                         currencyFormatter.format(linea.getProductPrice()),
                         currencyFormatter.format(linea.getTotalPrice())))
                 .collect(Collectors.joining(""));
 
-        return String.format("""
-            <!DOCTYPE html>
-            <html lang="es">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Confirmación de Pedido</title>
-            </head>
-            <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 20px;">
-                <div style="max-width: 600px; margin: 0 auto;">
-                    
-                    <h1 style="color: #4CAF50; text-align: center;">¡Pedido Confirmado! 🎉</h1>
-                    
-                    <p><strong>¡Hola %s!</strong></p>
-                    <p>Tu pedido ha sido confirmado y está siendo procesado.</p>
-                    
-                    <hr style="border: 1px solid #ddd; margin: 20px 0;">
-                    
-                    <h2 style="color: #4CAF50;">📝 Información del Pedido</h2>
-                    <ul>
-                        <li><strong>Número:</strong> #%s</li>
-                        <li><strong>Fecha:</strong> %s</li>
-                        <li><strong>Estado:</strong> <span style="color: #4CAF50;">Confirmado</span></li>
-                    </ul>
-                    
-                    <h2 style="color: #4CAF50;">👤 Datos del Cliente</h2>
-                    <ul>
-                        <li><strong>Nombre:</strong> %s</li>
-                        <li><strong>Email:</strong> %s</li>
-                        <li><strong>Teléfono:</strong> %s</li>
-                    </ul>
-                    
-                    <h2 style="color: #4CAF50;">🚚 Dirección de Entrega</h2>
-                    <p>
-                        %s, %s<br>
-                        %s %s<br>
-                        %s, %s
-                    </p>
-                    
-                    <h2 style="color: #4CAF50;">🛒 Detalles del Pedido</h2>
-                    <ul>
-                        %s
-                    </ul>
-                    
-                    <div style="background-color: #4CAF50; color: white; padding: 15px; text-align: center; border-radius: 5px; margin: 20px 0;">
-                        <h3 style="margin: 0;">Total de artículos: %d | TOTAL: %s</h3>
-                    </div>
-                    
-                    <p><strong>🕐 Tu pedido será procesado en las próximas 24-48 horas.</strong></p>
-                    <p>📧 Te mantendremos informado sobre el estado de tu envío.</p>
-                    
-                    <hr style="border: 1px solid #ddd; margin: 20px 0;">
-                    
-                    <p style="text-align: center;">
-                        <strong>¡Gracias por confiar en nosotros!</strong><br>
-                        <em>El equipo de Tienda</em>
-                    </p>
-                    
-                    <p style="text-align: center; font-size: 12px; color: #666;">
-                        Este es un email automático, por favor no respondas a este mensaje.
-                    </p>
-                    
-                </div>
-            </body>
-            </html>
-            """,
+        return String.format(
+                """
+                        <!DOCTYPE html>
+                        <html lang="es">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <title>Confirmación de Pedido</title>
+                        </head>
+                        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 20px;">
+                            <div style="max-width: 600px; margin: 0 auto;">
+
+                                <h1 style="color: #4CAF50; text-align: center;">¡Pedido Confirmado! 🎉</h1>
+
+                                <p><strong>¡Hola %s!</strong></p>
+                                <p>Tu pedido ha sido confirmado y está siendo procesado.</p>
+
+                                <hr style="border: 1px solid #ddd; margin: 20px 0;">
+
+                                <h2 style="color: #4CAF50;">📝 Información del Pedido</h2>
+                                <ul>
+                                    <li><strong>Número:</strong> #%s</li>
+                                    <li><strong>Fecha:</strong> %s</li>
+                                    <li><strong>Estado:</strong> <span style="color: #4CAF50;">Confirmado</span></li>
+                                </ul>
+
+                                <h2 style="color: #4CAF50;">👤 Datos del Cliente</h2>
+                                <ul>
+                                    <li><strong>Nombre:</strong> %s</li>
+                                    <li><strong>Email:</strong> %s</li>
+                                    <li><strong>Teléfono:</strong> %s</li>
+                                </ul>
+
+                                <h2 style="color: #4CAF50;">🚚 Dirección de Entrega</h2>
+                                <p>
+                                    %s, %s<br>
+                                    %s %s<br>
+                                    %s, %s
+                                </p>
+
+                                <h2 style="color: #4CAF50;">🛒 Detalles del Pedido</h2>
+                                <ul>
+                                    %s
+                                </ul>
+
+                                <div style="background-color: #4CAF50; color: white; padding: 15px; text-align: center; border-radius: 5px; margin: 20px 0;">
+                                    <h3 style="margin: 0;">Total de artículos: %d | TOTAL: %s</h3>
+                                </div>
+
+                                <p><strong>🕐 Tu pedido será procesado en las próximas 24-48 horas.</strong></p>
+                                <p>📧 Te mantendremos informado sobre el estado de tu envío.</p>
+
+                                <hr style="border: 1px solid #ddd; margin: 20px 0;">
+
+                                <p style="text-align: center;">
+                                    <strong>¡Gracias por confiar en nosotros!</strong><br>
+                                    <em>El equipo de Tienda</em>
+                                </p>
+
+                                <p style="text-align: center; font-size: 12px; color: #666;">
+                                    Este es un email automático, por favor no respondas a este mensaje.
+                                </p>
+
+                            </div>
+                        </body>
+                        </html>
+                        """,
                 pedido.getClient().getName(),
                 pedido.getId(),
                 pedido.getCreatedAt().format(formatter),
@@ -221,8 +220,7 @@ public class OrderEmailServiceImpl implements OrderEmailService {
                 pedido.getClient().getAddress().getCountry(),
                 lineasPedidoHtml,
                 pedido.getTotalItems(),
-                currencyFormatter.format(pedido.getTotal())
-        );
+                currencyFormatter.format(pedido.getTotal()));
     }
 
     /**
