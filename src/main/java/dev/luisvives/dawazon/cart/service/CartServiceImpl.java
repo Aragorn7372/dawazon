@@ -389,7 +389,7 @@ public class CartServiceImpl implements CartService {
      * Guarda un carrito como pedido completado y crea uno nuevo para el usuario.
      *
      * @param entity Carrito a guardar como pedido
-     * @return Nuevo carrito vacío para el usuario
+     * @return Carrito guardado con purchased=true
      */
     @Override
     public Cart save(Cart entity) {
@@ -399,8 +399,9 @@ public class CartServiceImpl implements CartService {
         entity.setPurchased(true);
         entity.setCheckoutInProgress(false);
         entity.setCheckoutStartedAt(null);
-        cartRepository.save(entity);
-        return createNewCart(entity.getUserId());
+        val savedCart = cartRepository.save(entity);
+        createNewCart(entity.getUserId());
+        return savedCart;
     }
 
     /**

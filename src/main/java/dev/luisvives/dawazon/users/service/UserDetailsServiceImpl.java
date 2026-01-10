@@ -34,12 +34,12 @@ public class UserDetailsServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String value) throws UsernameNotFoundException {
         if (value.contains("@")) {
-            return repositorio.findByEmail(value)
+            return repositorio.findByEmailAndIsDeletedFalse(value)
                     .orElseThrow(() -> new UsernameNotFoundException("Email no encontrado: " + value));
         }
 
         // Si no es email → es username
-        return repositorio.findByUserName(value)
+        return repositorio.findByUserNameAndIsDeletedFalse(value)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + value));
     }
 }
