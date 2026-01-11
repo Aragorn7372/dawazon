@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Repositorio para operaciones CRUD sobre la entidad {@link Product}.
@@ -36,6 +35,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 
     /**
      * Busca productos creados en un rango de fechas.
+     * 
      * @param ultimaEjecucion Fecha y hora de inicio del rango
      * @param ahora           Fecha y hora de fin del rango
      * @return Lista de productos creados en el rango especificado
@@ -53,11 +53,11 @@ public interface ProductRepository extends JpaRepository<Product, String> {
      * @param id      ID del producto
      * @param amount  Cantidad a restar del stock
      * @param version Versión actual del producto para control de concurrencia
-     * @return Optional con el producto actualizado si la operación fue exitosa
+     * @return Número de filas afectadas (1 si se actualizó, 0 si no)
      */
     @Modifying
     @Query("UPDATE Product p SET p.stock = p.stock - :amount WHERE p.id = :id AND p.stock >= :amount AND p.isDeleted = FALSE AND p.version= :version")
-    Optional<Product> substractStock(String id, int amount, Long version);
+    int substractStock(String id, int amount, Long version);
 
     /**
      * Busca productos por ID del creador con paginación.
