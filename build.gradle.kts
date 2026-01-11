@@ -138,9 +138,15 @@ tasks.named<JacocoReport>("jacocoTestReport") {
             fileTree(it) {
                 exclude(
                     "**/config/**",
-                    "**/notificaciones/**",
                     "**/handler/**",
-
+                    "**/controllers/**",
+                    "**/controller/**",
+                    "**/models/**",
+                    "**/model/**",
+                    "**/dto/**",
+                    "**/exception/**",
+                    "**/exceptions/**",
+                    "**/stripe/**"
                     )
             }
         })
