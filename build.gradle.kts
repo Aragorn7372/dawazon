@@ -138,7 +138,6 @@ tasks.named<JacocoReport>("jacocoTestReport") {
             fileTree(it) {
                 exclude(
                     "**/config/**",
-                    "**/email/**",
                     "**/notificaciones/**",
                     "**/handler/**",
 
