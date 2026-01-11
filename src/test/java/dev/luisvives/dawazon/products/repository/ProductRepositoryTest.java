@@ -3,6 +3,7 @@ package dev.luisvives.dawazon.products.repository;
 import dev.luisvives.dawazon.BaseRepositoryTest;
 import dev.luisvives.dawazon.products.models.Category;
 import dev.luisvives.dawazon.products.models.Product;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ class ProductRepositoryTest extends BaseRepositoryTest {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     private Category testCategory;
 
@@ -132,7 +136,7 @@ class ProductRepositoryTest extends BaseRepositoryTest {
         // When
         int rowsAffected = productRepository.substractStock(productId, 5, version);
         productRepository.flush();
-
+        entityManager.clear();
         // Then
         assertThat(rowsAffected).isEqualTo(1); // 1 row affected
         Product updated = productRepository.findById(productId).orElseThrow();
@@ -161,21 +165,26 @@ class ProductRepositoryTest extends BaseRepositoryTest {
         // Given
         Product product = createAndSaveProduct("Product", 100.0, 10, 1L);
         String productId = product.getId();
-        Long version = product.getVersion();
 
         // Mark product as deleted
         productRepository.deleteByIdLogical(productId);
         productRepository.flush();
+        entityManager.clear();
 
-        // When
-        int rowsAffected = productRepository.substractStock(productId, 5, version);
+        // Get updated product with new version after logical delete
+        Product deletedProduct = productRepository.findById(productId).orElseThrow();
+        Long newVersion = deletedProduct.getVersion();
+
+        // When - Try to subtract stock with new version
+        int rowsAffected = productRepository.substractStock(productId, 5, newVersion);
         productRepository.flush();
 
         // Then - No rows affected because product is deleted
         assertThat(rowsAffected).isEqualTo(0); // 0 rows affected
-        Product deleted = productRepository.findById(productId).orElseThrow();
-        assertThat(deleted.getStock()).isEqualTo(0); // Stock remains 0 from logical delete
-        assertThat(deleted.isDeleted()).isTrue();
+        entityManager.clear();
+        Product stillDeleted = productRepository.findById(productId).orElseThrow();
+        assertThat(stillDeleted.getStock()).isEqualTo(0); // Stock remains 0 from logical delete
+        assertThat(stillDeleted.isDeleted()).isTrue();
     }
 
     @Test
@@ -241,6 +250,7 @@ class ProductRepositoryTest extends BaseRepositoryTest {
         // When
         productRepository.deleteByIdLogical(productId);
         productRepository.flush();
+        entityManager.clear();
 
         // Then
         Product deleted = productRepository.findById(productId).orElseThrow();
@@ -257,6 +267,7 @@ class ProductRepositoryTest extends BaseRepositoryTest {
         // When
         productRepository.deleteByIdLogical(productId);
         productRepository.flush();
+        entityManager.clear();
 
         // Then - Product still exists in database
         Optional<Product> stillExists = productRepository.findById(productId);
