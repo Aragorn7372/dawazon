@@ -98,7 +98,7 @@ public class AuthServiceImpl implements AuthService {
     public User changePassword(UserChangePasswordDto userDto, Long id) {
         val user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         if (passwordEncoder.matches(userDto.getOldPassword(), user.getPassword())
-                && passwordEncoder.matches(userDto.getNewPassword(), user.getPassword())
+                && !passwordEncoder.matches(userDto.getNewPassword(), user.getPassword())
                 && userDto.getNewPassword().equals(userDto.getConfirmPassword())) {
             user.setPassword(passwordEncoder.encode(userDto.getNewPassword()));
             return userRepository.save(user);
