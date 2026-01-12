@@ -12,7 +12,7 @@ public abstract class ProductException extends IllegalArgumentException {
      *
      * @param message Mensaje descriptivo del error
      */
-    public ProductException(String message) {
+    protected ProductException(String message) {
         super(message);
     }
 
@@ -24,7 +24,7 @@ public abstract class ProductException extends IllegalArgumentException {
         /**
          * Constructor que acepta un mensaje de validación.
          *
-         * @param message Mensaje descriptivo del error de validación
+         * @param message Mensaje descriptivo del error de validación.
          */
         public ValidationException(String message) {
             super(message);
@@ -39,7 +39,7 @@ public abstract class ProductException extends IllegalArgumentException {
          * Constructor que acepta un mensaje indicando que el producto no fue
          * encontrado.
          *
-         * @param message Mensaje descriptivo del error de búsqueda
+         * @param message Mensaje descriptivo del error de búsqueda.
          */
         public NotFoundException(String message) {
             super(message);

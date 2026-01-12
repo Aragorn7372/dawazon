@@ -16,16 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
-/**
- * Test unitario para EmailServiceImpl siguiendo principios FIRST.
- * <p>
- * - Fast: Tests rápidos usando solo mocks
- * - Independent: Cada test es independiente y no depende de otros
- * - Repeatable: Se pueden ejecutar múltiples veces con los mismos resultados
- * - Self-validating: Cada test tiene una validación clara
- * - Timely: Tests escritos junto con el código de producción
- * </p>
- */
+
 @ExtendWith(MockitoExtension.class)
 class EmailServiceImplTest {
 
@@ -47,32 +38,25 @@ class EmailServiceImplTest {
         testSubject = "Test Subject";
         testBody = "Test Body";
 
-        // Establecer el valor de fromEmail usando ReflectionTestUtils
         ReflectionTestUtils.setField(emailService, "fromEmail", testFromEmail);
     }
 
     @Test
-    void constructor_whenDependenciesProvided_createsEmailService() {
-        // Given
+    void constructorwhenDependenciesProvidedcreatesEmailService() {
         JavaMailSender mockMailSender = mock(JavaMailSender.class);
         String fromEmail = "test@example.com";
 
-        // When
         EmailServiceImpl service = new EmailServiceImpl(mockMailSender, fromEmail);
 
-        // Then
         assertThat(service).isNotNull();
     }
 
     @Test
-    void sendSimpleEmail_whenValidParameters_sendsEmailSuccessfully() {
-        // Given
+    void sendSimpleEmailwhenValidParameterssendsEmailSuccessfully() {
         ArgumentCaptor<SimpleMailMessage> messageCaptor = ArgumentCaptor.forClass(SimpleMailMessage.class);
 
-        // When
         emailService.sendSimpleEmail(testToEmail, testSubject, testBody);
 
-        // Then
         verify(mailSender, times(1)).send(messageCaptor.capture());
 
         SimpleMailMessage capturedMessage = messageCaptor.getValue();
@@ -83,13 +67,11 @@ class EmailServiceImplTest {
     }
 
     @Test
-    void sendSimpleEmail_whenMailSenderThrowsException_throwsRuntimeException() {
-        // Given
+    void sendSimpleEmailwhenMailSenderThrowsExceptionthrowsRuntimeException() {
         String errorMessage = "SMTP server error";
         doThrow(new RuntimeException(errorMessage))
                 .when(mailSender).send(any(SimpleMailMessage.class));
 
-        // When & Then
         assertThatThrownBy(() -> emailService.sendSimpleEmail(testToEmail, testSubject, testBody))
                 .isInstanceOf(RuntimeException.class);
 
@@ -97,35 +79,29 @@ class EmailServiceImplTest {
     }
 
     @Test
-    void sendSimpleEmail_whenCalledMultipleTimes_sendsMultipleEmails() {
-        // When
+    void sendSimpleEmailwhenCalledMultipleTimessendsMultipleEmails() {
         emailService.sendSimpleEmail(testToEmail, testSubject, testBody);
         emailService.sendSimpleEmail("another@example.com", "Another Subject", "Another Body");
         emailService.sendSimpleEmail("third@example.com", "Third Subject", "Third Body");
 
-        // Then
         verify(mailSender, times(3)).send(any(SimpleMailMessage.class));
     }
 
     @Test
-    void sendHtmlEmail_whenValidParameters_sendsHtmlEmailSuccessfully() {
-        // Given
+    void sendHtmlEmailwhenValidParameterssendsHtmlEmailSuccessfully() {
         String htmlBody = "<html><body><h1>Test HTML</h1></body></html>";
         MimeMessage mockMimeMessage = mock(MimeMessage.class);
 
         when(mailSender.createMimeMessage()).thenReturn(mockMimeMessage);
 
-        // When
         emailService.sendHtmlEmail(testToEmail, testSubject, htmlBody);
 
-        // Then
         verify(mailSender, times(1)).createMimeMessage();
         verify(mailSender, times(1)).send(mockMimeMessage);
     }
 
     @Test
-    void sendHtmlEmail_whenMessagingExceptionOccurs_throwsRuntimeException() {
-        // Given
+    void sendHtmlEmailWhenMessagingExceptionOccursThrowsRuntimeException() {
         String htmlBody = "<html><body><h1>Test HTML</h1></body></html>";
         MimeMessage mockMimeMessage = mock(MimeMessage.class);
 
@@ -133,7 +109,6 @@ class EmailServiceImplTest {
         doThrow(new RuntimeException("Messaging error"))
                 .when(mailSender).send(any(MimeMessage.class));
 
-        // When & Then
         assertThatThrownBy(() -> emailService.sendHtmlEmail(testToEmail, testSubject, htmlBody))
                 .isInstanceOf(RuntimeException.class);
 
@@ -142,44 +117,36 @@ class EmailServiceImplTest {
     }
 
     @Test
-    void sendHtmlEmail_whenCalledMultipleTimes_sendsMultipleHtmlEmails() {
-        // Given
+    void sendHtmlEmailWhenCalledMultipleTimesSendsMultipleHtmlEmails() {
         String htmlBody = "<html><body><h1>Test HTML</h1></body></html>";
         MimeMessage mockMimeMessage = mock(MimeMessage.class);
 
         when(mailSender.createMimeMessage()).thenReturn(mockMimeMessage);
 
-        // When
         emailService.sendHtmlEmail(testToEmail, testSubject, htmlBody);
         emailService.sendHtmlEmail("another@example.com", "Another Subject", htmlBody);
 
-        // Then
         verify(mailSender, times(2)).createMimeMessage();
         verify(mailSender, times(2)).send(mockMimeMessage);
     }
 
     @Test
-    void sendSimpleEmail_verifyNoOtherInteractions() {
-        // When
+    void sendSimpleEmailVerifyNoOtherInteractions() {
         emailService.sendSimpleEmail(testToEmail, testSubject, testBody);
 
-        // Then
         verify(mailSender).send(any(SimpleMailMessage.class));
         verifyNoMoreInteractions(mailSender);
     }
 
     @Test
-    void sendHtmlEmail_verifyNoOtherInteractions() {
-        // Given
+    void sendHtmlEmailVerifyNoOtherInteractions() {
         String htmlBody = "<html><body><h1>Test HTML</h1></body></html>";
         MimeMessage mockMimeMessage = mock(MimeMessage.class);
 
         when(mailSender.createMimeMessage()).thenReturn(mockMimeMessage);
 
-        // When
         emailService.sendHtmlEmail(testToEmail, testSubject, htmlBody);
 
-        // Then
         verify(mailSender).createMimeMessage();
         verify(mailSender).send(mockMimeMessage);
         verifyNoMoreInteractions(mailSender);

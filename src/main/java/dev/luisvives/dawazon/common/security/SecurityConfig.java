@@ -35,7 +35,7 @@ public class SecurityConfig {
     /**
      * Constructor con inyección de dependencias.
      *
-     * @param userDetailsService Servicio de detalles de usuario
+     * @param userDetailsService Servicio de detalles de usuario.
      */
     @Autowired
     public SecurityConfig(UserDetailsService userDetailsService) {
@@ -45,7 +45,7 @@ public class SecurityConfig {
     /**
      * Bean del codificador de contraseñas BCrypt.
      *
-     * @return Codificador BCrypt
+     * @return Codificador BCrypt.
      */
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -55,7 +55,7 @@ public class SecurityConfig {
     /**
      * Configura el proveedor de autenticación DAO.
      *
-     * @return Proveedor de autenticación configurado
+     * @return Proveedor de autenticación configurado.
      */
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -68,9 +68,9 @@ public class SecurityConfig {
     /**
      * Bean del administrador de autenticación.
      *
-     * @param authConfig Configuración de autenticación
-     * @return Administrador de autenticación
-     * @throws Exception Si hay error en la configuración
+     * @param authConfig Configuración de autenticación.
+     * @return Administrador de autenticación.
+     * @throws Exception Sí hay error en la configuración.
      */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
@@ -86,9 +86,9 @@ public class SecurityConfig {
      * - Gestión de sesiones con máximo 1 sesión concurrente
      * </p>
      *
-     * @param http Configurador de seguridad HTTP
-     * @return Cadena de filtros configurada
-     * @throws Exception Si hay error en la configuración
+     * @param http Configurador de seguridad HTTP.
+     * @return Cadena de filtros configurada.
+     * @throws Exception Sí hay error en la configuración.
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

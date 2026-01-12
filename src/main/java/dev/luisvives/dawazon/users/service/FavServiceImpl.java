@@ -29,8 +29,8 @@ public class FavServiceImpl implements FavService {
     /**
      * Constructor con inyección de dependencias.
      *
-     * @param userRepository    Repositorio de usuarios
-     * @param productRepository Repositorio de productos
+     * @param userRepository    Repositorio de usuarios.
+     * @param productRepository Repositorio de productos.
      */
     @Autowired
     public FavServiceImpl(UserRepository userRepository, ProductRepository productRepository) {
@@ -44,11 +44,10 @@ public class FavServiceImpl implements FavService {
      * Verifica que el usuario existe y que el producto no esté ya en favoritos.
      * </p>
      *
-     * @param productId ID del producto
-     * @param userId    ID del usuario
-     * @throws UserException.UserNotFoundException          Si el usuario no existe
-     * @throws UserException.UserHasThatFavProductException Si el producto ya está
-     *                                                      en favoritos
+     * @param productId ID del producto.
+     * @param userId    ID del usuario.
+     * @throws UserException.UserNotFoundException          Si el usuario no existe.
+     * @throws UserException.UserHasThatFavProductException Si el producto ya está en favoritos
      */
     @Override
     public void addFav(String productId, Long userId) {
@@ -68,11 +67,10 @@ public class FavServiceImpl implements FavService {
      * eliminarlo.
      * </p>
      *
-     * @param productId ID del producto
-     * @param userId    ID del usuario
-     * @throws UserException.UserNotFoundException          Si el usuario no existe
-     * @throws UserException.UserHasThatFavProductException Si el producto no estaba
-     *                                                      en favoritos
+     * @param productId ID del producto.
+     * @param userId    ID del usuario.
+     * @throws UserException.UserNotFoundException          Si el usuario no existe.
+     * @throws UserException.UserHasThatFavProductException Si el producto no estaba en favoritos.
      */
     @Override
     public void removeFav(String productId, Long userId) {
@@ -92,10 +90,10 @@ public class FavServiceImpl implements FavService {
      * existen.
      * </p>
      *
-     * @param userId   ID del usuario
-     * @param pageable Configuración de paginación
-     * @return Página de productos favoritos
-     * @throws UserException.UserNotFoundException Si el usuario no existe
+     * @param userId   ID del usuario.
+     * @param pageable Configuración de paginación.
+     * @return Página de productos favoritos.
+     * @throws UserException.UserNotFoundException Si el usuario no existe.
      */
     @Override
     public Page<Product> getFavs(Long userId, Pageable pageable) {

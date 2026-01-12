@@ -111,7 +111,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void findAll_debeRetornarPaginaDeProductosCuandoNoHayFiltros() {
+        void findAlldebeRetornarPaginaDeProductosCuandoNoHayFiltros() {
                 Pageable pageable = PageRequest.of(0, 10);
                 Page<Product> expectedPage = new PageImpl<>(List.of(testProduct));
 
@@ -131,7 +131,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void findAll_debeRetornarPaginaDeProductosCuandoSeFiltrarPorNombre() {
+        void findAlldebeRetornarPaginaDeProductosCuandoSeFiltrarPorNombre() {
                 Pageable pageable = PageRequest.of(0, 10);
                 Page<Product> expectedPage = new PageImpl<>(List.of(testProduct));
 
@@ -150,7 +150,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void findAll_debeRetornarPaginaDeProductosCuandoSeFiltrarPorCategoria() {
+        void findAlldebeRetornarPaginaDeProductosCuandoSeFiltrarPorCategoria() {
                 Pageable pageable = PageRequest.of(0, 10);
                 Page<Product> expectedPage = new PageImpl<>(List.of(testProduct));
 
@@ -169,7 +169,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void findAll_debeRetornarPaginaDeProductosCuandoSeFiltrarPorCreadorId() {
+        void findAlldebeRetornarPaginaDeProductosCuandoSeFiltrarPorCreadorId() {
                 Pageable pageable = PageRequest.of(0, 10);
                 Page<Product> expectedPage = new PageImpl<>(List.of(testProduct));
 
@@ -188,7 +188,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void getById_debeRetornarProductoCuandoExiste() {
+        void getByIddebeRetornarProductoCuandoExiste() {
                 when(productRepository.findById("test-id-123")).thenReturn(Optional.of(testProduct));
                 when(productMapper.modelToGenericResponseDTO(eq(testProduct), anyList()))
                                 .thenReturn(testResponseDto);
@@ -203,7 +203,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void getById_debeLanzarExcepcionCuandoProductoNoExiste() {
+        void getByIddebeLanzarExcepcionCuandoProductoNoExiste() {
                 when(productRepository.findById("non-existent-id")).thenReturn(Optional.empty());
 
                 ProductException.NotFoundException exception = assertThrows(
@@ -216,7 +216,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void getUserProductId_debeRetornarIdDelCreadorCuandoExiste() {
+        void getUserProductIddebeRetornarIdDelCreadorCuandoExiste() {
                 when(productRepository.findById("test-id-123")).thenReturn(Optional.of(testProduct));
 
                 Long result = productService.getUserProductId("test-id-123");
@@ -227,7 +227,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void getUserProductId_debeLanzarExcepcionCuandoProductoNoExiste() {
+        void getUserProductIddebeLanzarExcepcionCuandoProductoNoExiste() {
                 when(productRepository.findById("non-existent-id")).thenReturn(Optional.empty());
 
                 ProductException.NotFoundException exception = assertThrows(
@@ -239,7 +239,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void save_debeGuardarProductoCuandoCategoriaExiste() {
+        void savedebeGuardarProductoCuandoCategoriaExiste() {
                 when(categoryRepository.findByNameIgnoreCase("Electronics"))
                                 .thenReturn(Optional.of(testCategory));
                 when(productMapper.postPutDTOToModel(testProductDto)).thenReturn(testProduct);
@@ -258,7 +258,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void save_debeLanzarExcepcionCuandoCategoriaNoExiste() {
+        void savedebeLanzarExcepcionCuandoCategoriaNoExiste() {
                 when(categoryRepository.findByNameIgnoreCase("NonExistentCategory"))
                                 .thenReturn(Optional.empty());
 
@@ -274,7 +274,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void update_debeActualizarProductoCuandoExisteYCategoriaEsValida() {
+        void updatedebeActualizarProductoCuandoExisteYCategoriaEsValida() {
                 when(productRepository.findById("test-id-123")).thenReturn(Optional.of(testProduct));
                 when(categoryRepository.findByNameIgnoreCase("Electronics"))
                                 .thenReturn(Optional.of(testCategory));
@@ -291,7 +291,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void update_debeLanzarExcepcionCuandoProductoNoExiste() {
+        void updatedebeLanzarExcepcionCuandoProductoNoExiste() {
                 when(productRepository.findById("non-existent-id")).thenReturn(Optional.empty());
 
                 ProductException.NotFoundException exception = assertThrows(
@@ -304,7 +304,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void update_debeLanzarExcepcionCuandoCategoriaNoExiste() {
+        void updatedebeLanzarExcepcionCuandoCategoriaNoExiste() {
                 when(productRepository.findById("test-id-123")).thenReturn(Optional.of(testProduct));
                 when(categoryRepository.findByNameIgnoreCase("NonExistentCategory"))
                                 .thenReturn(Optional.empty());
@@ -322,7 +322,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void getAllCategorias_debeRetornarListaDeNombresDeCategorias() {
+        void getAllCategoriasdebeRetornarListaDeNombresDeCategorias() {
                 Category cat1 = new Category();
                 cat1.setName("Electronics");
                 Category cat2 = new Category();
@@ -343,7 +343,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void deleteById_debeEliminarProductoCuandoExiste() {
+        void deleteByIddebeEliminarProductoCuandoExiste() {
                 when(productRepository.findById("test-id-123")).thenReturn(Optional.of(testProduct));
                 doNothing().when(productRepository).deleteByIdLogical("test-id-123");
 
@@ -354,7 +354,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void deleteById_debeLanzarExcepcionCuandoProductoNoExiste() {
+        void deleteByIddebeLanzarExcepcionCuandoProductoNoExiste() {
                 when(productRepository.findById("non-existent-id")).thenReturn(Optional.empty());
 
                 ProductException.NotFoundException exception = assertThrows(
@@ -367,7 +367,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void updateOrSaveImage_debeActualizarImagenesCuandoSonValidas() {
+        void updateOrSaveImagedebeActualizarImagenesCuandoSonValidas() {
                 MultipartFile mockFile1 = mock(MultipartFile.class);
                 MultipartFile mockFile2 = mock(MultipartFile.class);
                 List<MultipartFile> newImages = List.of(mockFile1, mockFile2);
@@ -392,7 +392,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void updateOrSaveImage_debeLanzarExcepcionCuandoProductoNoExiste() {
+        void updateOrSaveImagedebeLanzarExcepcionCuandoProductoNoExiste() {
                 MultipartFile mockFile = mock(MultipartFile.class);
                 List<MultipartFile> newImages = List.of(mockFile);
 
@@ -409,7 +409,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void updateOrSaveImage_noDebeModificarImagenesCuandoListaEstaVacia() {
+        void updateOrSaveImagenoDebeModificarImagenesCuandoListaEstaVacia() {
                 List<MultipartFile> emptyImages = new ArrayList<>();
 
                 when(productRepository.findById("test-id-123")).thenReturn(Optional.of(testProduct));
@@ -426,7 +426,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void updateOrSaveImage_debeFiltrarArchivosVaciosYProcesarSoloValidos() {
+        void updateOrSaveImagedebeFiltrarArchivosVaciosYProcesarSoloValidos() {
                 MultipartFile mockFileEmpty = mock(MultipartFile.class);
                 MultipartFile mockFileValid = mock(MultipartFile.class);
                 List<MultipartFile> mixedImages = List.of(mockFileEmpty, mockFileValid);
@@ -450,7 +450,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void findByCreatedAtBetween_debeRetornarProductosEnRangoDeFechas() {
+        void findByCreatedAtBetweendebeRetornarProductosEnRangoDeFechas() {
                 LocalDateTime start = LocalDateTime.now().minusDays(7);
                 LocalDateTime end = LocalDateTime.now();
                 List<Product> expectedProducts = List.of(testProduct);
@@ -467,7 +467,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void addComment_debeAgregarComentarioCuandoProductoExiste() {
+        void addCommentdebeAgregarComentarioCuandoProductoExiste() {
                 Comment testComment = Comment.builder()
                                 .content("Great product!")
                                 .userId(1L)
@@ -486,7 +486,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void addComment_debeLanzarExcepcionCuandoProductoNoExiste() {
+        void addCommentdebeLanzarExcepcionCuandoProductoNoExiste() {
                 Comment testComment = Comment.builder()
                                 .content("Great product!")
                                 .userId(1L)
@@ -507,8 +507,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void getById_debeMappearComentariosCorrectamente() {
-                // Test para cubrir la rama de mapearComentarios (línea 264)
+        void getByIddebeMappearComentariosCorrectamente() {
                 Comment testComment = Comment.builder()
                                 .content("Excelente producto")
                                 .userId(1L)
@@ -533,8 +532,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void updateOrSaveImage_debeManejarArchivosNullEnLaLista() {
-                // Test para cubrir la rama donde file == null (línea 305)
+        void updateOrSaveImagedebeManejarArchivosNullEnLaLista() {
                 MultipartFile mockFileValid = mock(MultipartFile.class);
                 List<MultipartFile> imagesWithNull = new ArrayList<>();
                 imagesWithNull.add(null);
@@ -557,8 +555,7 @@ class ProductServiceImplTest {
         }
 
         @Test
-        void updateOrSaveImage_debeManejarProductoConImagenesNull() {
-                // Test para cubrir la rama donde foundProducto.getImages() == null (línea 316)
+        void updateOrSaveImagedebeManejarProductoConImagenesNull() {
                 Product productWithoutImages = Product.builder()
                                 .id("test-id-456")
                                 .name("Product Without Images")
@@ -567,7 +564,7 @@ class ProductServiceImplTest {
                                 .stock(5)
                                 .category(testCategory)
                                 .creatorId(1L)
-                                .images(null) // Imágenes null
+                                .images(null)
                                 .comments(new ArrayList<>())
                                 .isDeleted(false)
                                 .createdAt(LocalDateTime.now())
@@ -588,7 +585,7 @@ class ProductServiceImplTest {
 
                 assertNotNull(result);
                 verify(productRepository, times(1)).findById("test-id-456");
-                verify(storageService, never()).delete(anyString()); // No debe intentar eliminar si images es null
+                verify(storageService, never()).delete(anyString());
                 verify(storageService, times(1)).store(mockFile);
                 verify(productRepository, times(1)).save(any(Product.class));
         }

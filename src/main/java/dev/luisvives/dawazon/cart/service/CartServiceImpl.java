@@ -89,19 +89,19 @@ public class CartServiceImpl implements CartService {
      * @param stripeService     Servicio de Stripe
      * @param mongoTemplate     Template de MongoDB
      * @param cartMapper        Mapper de carritos
-     * @param mailservice       Servicio de emails
+     * @param emailService       Servicio de emails
      */
     @Autowired
     public CartServiceImpl(ProductRepository productRepository, CartRepository cartRepository,
             UserRepository userRepository, StripeService stripeService, MongoTemplate mongoTemplate,
-            CartMapper cartMapper, OrderEmailService mailservice) {
+            CartMapper cartMapper, OrderEmailService emailService) {
         this.productRepository = productRepository;
         this.cartRepository = cartRepository;
         this.userRepository = userRepository;
         this.stripeService = stripeService;
         this.mongoTemplate = mongoTemplate;
         this.mapper = cartMapper;
-        this.mailService = mailservice;
+        this.mailService = emailService;
     }
 
     /**
@@ -169,11 +169,11 @@ public class CartServiceImpl implements CartService {
         filteredLines.sort(Comparator.comparing(SaleLineDto::getCreatedAt).reversed());
         // Obtenemos el desfase y lo usamos como primer elemento
         int start = (int) pageable.getOffset();
-        // Obtenemos el numero del ultimo elemento de la pagina
+        // Obtenemos el número del último elemento de la página
         int end = Math.min(start + pageable.getPageSize(), filteredLines.size());
-        // creamos la lista y verificamos que exista es decir que si falla el filtro ya
-        // que en el indice
-        // inicial y en el índice final no hay lineas de pedido devuelve una lista vacia
+        // creamos la lista y verificamos que exista es decir que si falla el filtro, ya
+        // que en el índice
+        // inicial y en el índice final no hay líneas de pedido devuelve una lista vacía
         List<SaleLineDto> paginatedLines = start < filteredLines.size()
                 ? filteredLines.subList(start, end)
                 : Collections.emptyList();
@@ -228,8 +228,7 @@ public class CartServiceImpl implements CartService {
         // Filtro por User ID (si está presente)
         userId.ifPresent(id -> criteriaList.add(Criteria.where("userId").is(id)));
         // Filtro por Estado de Compra (purchased)
-        // El input es String ("true"/"false"), pero en BD es boolean. Hacemos el
-        // parseo.
+        // El input es String ("true"/"false"), pero en BD es boolean. Hacemos el parseo.
         purchased.ifPresent(p -> {
             boolean isPurchased = Boolean.parseBoolean(p);
             criteriaList.add(Criteria.where("purchased").is(isPurchased));
@@ -239,7 +238,7 @@ public class CartServiceImpl implements CartService {
             query.addCriteria(new Criteria().andOperator(criteriaList.toArray(new Criteria[0])));
         }
         // Contar el total de elementos (necesario para el objeto Page)
-        // Esto se hace ANTES de aplicar la paginación a la query
+        // Esto se hace antes de aplicar la paginación a la query
         long count = mongoTemplate.count(query, Cart.class);
         // Aplicar paginación y ordenación
         query.with(pageable);
@@ -252,11 +251,11 @@ public class CartServiceImpl implements CartService {
     /**
      * Añade un producto al carrito.
      *
-     * @param id        ID del carrito
-     * @param productId ID del producto a añadir
-     * @return Carrito actualizado
-     * @throws ProductException.NotFoundException Si el producto no existe
-     * @throws CartException.NotFoundException    Si el carrito no existe
+     * @param id        ID del carrito.
+     * @param productId ID del producto a añadir.
+     * @return Carrito actualizado.
+     * @throws ProductException.NotFoundException Si el producto no existe.
+     * @throws CartException.NotFoundException    Si el carrito no existe.
      */
     @Override
     @Transactional
@@ -295,13 +294,13 @@ public class CartServiceImpl implements CartService {
     /**
      * Obtiene una línea de venta específica por IDs.
      *
-     * @param cartId    ID del carrito
-     * @param productId ID del producto
-     * @param managerId ID del vendedor
-     * @param isAdmin   Si el usuario es administrador
-     * @return DTO de línea de venta
-     * @throws CartException.NotFoundException     Si no se encuentra
-     * @throws CartException.UnauthorizedException Si no tiene permisos
+     * @param cartId    ID del carrito.
+     * @param productId ID del producto.
+     * @param managerId ID del vendedor.
+     * @param isAdmin   Si el usuario es administrador.
+     * @return DTO de línea de venta.
+     * @throws CartException.NotFoundException     Si no se encuentra.
+     * @throws CartException.UnauthorizedException Si no tiene permisos.
      */
     public SaleLineDto getSaleLineByIds(String cartId, String productId, Long managerId, boolean isAdmin) {
         ObjectId objectId = new ObjectId(cartId);
@@ -332,10 +331,10 @@ public class CartServiceImpl implements CartService {
     /**
      * Elimina un producto del carrito.
      *
-     * @param id        ID del carrito
-     * @param productId ID del producto a eliminar
-     * @return Carrito actualizado
-     * @throws CartException.NotFoundException Si el carrito no existe
+     * @param id        ID del carrito.
+     * @param productId ID del producto a eliminar.
+     * @return Carrito actualizado.
+     * @throws CartException.NotFoundException Si el carrito no existe.
      */
     @Override
     @Transactional
@@ -373,9 +372,9 @@ public class CartServiceImpl implements CartService {
     /**
      * Obtiene un carrito por su ID.
      *
-     * @param id ID del carrito
-     * @return Carrito encontrado
-     * @throws CartException.NotFoundException Si el carrito no existe
+     * @param id ID del carrito.
+     * @return Carrito encontrado.
+     * @throws CartException.NotFoundException Si el carrito no existe.
      */
     @Override
     public Cart getById(ObjectId id) {
@@ -388,14 +387,12 @@ public class CartServiceImpl implements CartService {
     /**
      * Guarda un carrito como pedido completado y crea uno nuevo para el usuario.
      *
-     * @param entity Carrito a guardar como pedido
-     * @return Carrito guardado con purchased=true
+     * @param entity Carrito a guardar como pedido.
+     * @return Carrito guardado con purchased=true.
      */
     @Override
     public Cart save(Cart entity) {
-        entity.getCartLines().forEach((it) -> {
-            it.setStatus(Status.PREPARADO);
-        });
+        entity.getCartLines().forEach((it) -> it.setStatus(Status.PREPARADO));
         entity.setPurchased(true);
         entity.setCheckoutInProgress(false);
         entity.setCheckoutStartedAt(null);
@@ -405,7 +402,7 @@ public class CartServiceImpl implements CartService {
     }
 
     /**
-     * Envía email de confirmación en un hilo separado
+     * Envía email de confirmación en un hilo separado.
      * 
      * @param pedido El {@link Cart} para el cual se enviará el email de
      *               confirmación.
@@ -415,7 +412,7 @@ public class CartServiceImpl implements CartService {
             try {
                 log.info("Iniciando envío de email en hilo separado para pedido: {}", pedido.getId());
 
-                // Enviar el email (irá a Mailtrap en desarrollo)
+                // Enviar el email (irá a Mailtrap)
                 mailService.enviarConfirmacionPedidoHtml(pedido);
 
                 log.info("Email de confirmación enviado correctamente para pedido: {}", pedido.getId());
@@ -424,13 +421,13 @@ public class CartServiceImpl implements CartService {
                 log.warn("Error enviando email de confirmación para pedido {}: {}",
                         pedido.getId(), e.getMessage());
 
-                // El error no se propaga - el pedido ya está guardado
+                // El error no se propaga el pedido ya está guardado
             }
         });
 
         // Configurar el hilo
         emailThread.setName("EmailSender-Pedido-" + pedido.getId());
-        emailThread.setDaemon(true); // No impide que la aplicación se cierre
+        emailThread.setDaemon(true);
 
         // Iniciar el hilo (no bloqueante)
         emailThread.start();
@@ -441,9 +438,9 @@ public class CartServiceImpl implements CartService {
     /**
      * Actualiza la cantidad de stock de un producto en el carrito.
      *
-     * @param entity DTO con datos de actualización de stock
-     * @return Carrito actualizado
-     * @throws CartException.NotFoundException Si el carrito no existe
+     * @param entity DTO con datos de actualización de stock.
+     * @return Carrito actualizado.
+     * @throws CartException.NotFoundException Si el carrito no existe.
      */
     @Override
     public Cart updateStock(CartStockRequestDto entity) {
@@ -462,12 +459,11 @@ public class CartServiceImpl implements CartService {
      * Recalcula los totales del carrito automáticamente.
      * </p>
      *
-     * @param entity DTO con datos de actualización de stock
-     * @return Carrito actualizado
-     * @throws CartException.NotFoundException          Si el carrito no existe
-     * @throws CartException.InsufficientStockException Si no hay stock suficiente
-     * @throws IllegalArgumentException                 Si la cantidad es menor que
-     *                                                  1
+     * @param entity DTO con datos de actualización de stock.
+     * @return Carrito actualizado..
+     * @throws CartException.NotFoundException          Si el carrito no existe.
+     * @throws CartException.InsufficientStockException Si no hay stock suficiente.
+     * @throws IllegalArgumentException                 Si la cantidad es menor que 1.
      */
     @Transactional
     public Cart updateStockWithValidation(CartStockRequestDto entity) {
@@ -497,7 +493,6 @@ public class CartServiceImpl implements CartService {
                 .findFirst()
                 .ifPresent(line -> {
                     line.setQuantity(entity.getQuantity());
-                    // setQuantity ya calcula totalPrice automáticamente
                 });
 
         // Recalculamos los totales del carrito
@@ -513,8 +508,9 @@ public class CartServiceImpl implements CartService {
     /**
      * Crea un nuevo carrito vacío para un usuario.
      *
-     * @param userId ID del usuario
-     * @return Nuevo carrito creado
+     * @param userId ID del usuario.
+     * @return Nuevo carrito creado.
+     * @see Cart
      */
     public Cart createNewCart(Long userId) {
         val user = userRepository.findById(userId).get();
@@ -529,9 +525,9 @@ public class CartServiceImpl implements CartService {
     /**
      * Actualiza el estado de una línea de carrito.
      *
-     * @param line DTO con datos de la línea a actualizar
-     * @return Carrito actualizado
-     * @throws CartException.NotFoundException Si el carrito no existe
+     * @param line DTO con datos de la línea a actualizar.
+     * @return Carrito actualizado.
+     * @throws CartException.NotFoundException Si el carrito no existe.
      */
     @Transactional
     public Cart update(LineRequestDto line) {
@@ -549,15 +545,13 @@ public class CartServiceImpl implements CartService {
      * en caso de conflictos de concurrencia, y crea la sesión de pago en Stripe.
      * </p>
      *
-     * @param id     ID del carrito
-     * @param entity Carrito a procesar
-     * @return URL de pago de Stripe
-     * @throws ProductException.NotFoundException             Si un producto no
-     *                                                        existe
-     * @throws CartException.ProductQuantityExceededException Si no hay stock
-     *                                                        suficiente
-     * @throws CartException.AttemptAmountExceededException   Si se superan los
-     *                                                        reintentos
+     * @param id     ID del carrito.
+     * @param entity Carrito a procesar.
+     * @return URL de pago de Stripe.
+     * @throws ProductException.NotFoundException             Si un producto no existe
+     * @throws CartException.ProductQuantityExceededException Si no hay stock suficiente
+     * @throws CartException.AttemptAmountExceededException   Si se superan los reintentos
+     * @see Cart
      */
     @Transactional
     public String checkout(ObjectId id, Cart entity) {
@@ -611,13 +605,14 @@ public class CartServiceImpl implements CartService {
      * </p>
      *
      * @param cartId ID del carrito
+     * @see Cart
      */
     @Transactional
     public void restoreStock(ObjectId cartId) {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Carrito no encontrado"));
 
-        // Solo se devuelve stock si NO se ha marcado como comprado todavía
+        // Solo se devuelve stock si no se ha marcado como comprado todavía
         if (!cart.isPurchased()) {
             cart.getCartLines().forEach(line -> {
                 productRepository.findById(line.getProductId()).ifPresent(product -> {
@@ -636,8 +631,9 @@ public class CartServiceImpl implements CartService {
     /**
      * Vacía un carrito eliminando todas sus líneas.
      *
-     * @param id ID del carrito a vaciar
-     * @throws CartException.NotFoundException Si el carrito no existe
+     * @param id ID del carrito a vaciar.
+     * @throws CartException.NotFoundException Si el carrito no existe.
+     * @see Cart
      */
     @Override
     @Transactional
@@ -653,9 +649,9 @@ public class CartServiceImpl implements CartService {
     /**
      * Obtiene múltiples productos por sus IDs.
      *
-     * @param productsIds Lista de IDs de productos
-     * @return Lista de productos encontrados
-     * @throws ProductException.NotFoundException Si algún producto no existe
+     * @param productsIds Lista de IDs de productos.
+     * @return Lista de productos encontrados.
+     * @throws ProductException.NotFoundException Si algún producto no existe.
      */
     @Override
     public List<Product> variosPorId(List<String> productsIds) {
@@ -664,27 +660,25 @@ public class CartServiceImpl implements CartService {
 
         productsIds.forEach(id -> {
             val product = productRepository.findById(id)
-                    .orElseThrow(
-                            () -> new ProductException.NotFoundException("No se encontró el producto con id: " + id) {
-                            });
+                    .orElseThrow(() -> new ProductException.NotFoundException("No se encontró el producto con id: " + id));
             products.add(product);
         });
-
         return products;
     }
 
     /**
      * Obtiene el carrito activo (no comprado) de un usuario.
      *
-     * @param userId ID del usuario
-     * @return Carrito activo del usuario
-     * @throws CartException.NotFoundException Si no existe carrito activo
+     * @param userId ID del usuario.
+     * @return Carrito activo del usuario.
+     * @throws CartException.NotFoundException Si no existe carrito activo.
+     * @see Cart
      */
     @Override
     public Cart getCartByUserId(Long userId) {
         return cartRepository.findByUserIdAndPurchased(userId, false)
                 .orElseThrow(() -> {
-                    log.error("Carrito no encontrado para userId: " + userId);
+                    log.warn("Carrito no encontrado para userId: " + userId);
                     return new CartException.NotFoundException("Carrito no encontrado para userId: " + userId);
                 });
     }
@@ -695,12 +689,12 @@ public class CartServiceImpl implements CartService {
      * Verifica permisos y solo cancela si no estaba ya cancelada.
      * </p>
      *
-     * @param ventaId   ID del carrito/venta
-     * @param productId ID del producto
-     * @param managerId ID del vendedor actual
-     * @param isAdmin   Si el usuario es administrador
-     * @throws CartException.NotFoundException     Si no se encuentra
-     * @throws CartException.UnauthorizedException Si no tiene permisos
+     * @param ventaId   ID del carrito/venta.
+     * @param productId ID del producto.
+     * @param managerId ID del vendedor actual.
+     * @param isAdmin   Si el usuario es administrador.
+     * @throws CartException.NotFoundException     Si no se encuentra.
+     * @throws CartException.UnauthorizedException Si no tiene permisos.
      */
     @Override
     @Transactional
@@ -740,7 +734,7 @@ public class CartServiceImpl implements CartService {
      * durante el proceso de pago.
      * </p>
      *
-     * @return Número de carritos limpiados exitosamente
+     * @return Número de carritos limpiados exitosamente.
      */
     @Transactional
     public int cleanupExpiredCheckouts() {

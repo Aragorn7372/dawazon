@@ -61,25 +61,25 @@ public class ProductServiceImpl implements ProductService {
     private final Logger log = Logger.getLogger(ProductServiceImpl.class.getName());
 
     /**
-     * Repositorio de productos para operaciones CRUD
+     * Repositorio de productos para operaciones CRUD.
      */
     private final ProductRepository repository;
 
     /**
-     * Repositorio de categorías para validaciones de integridad referencial
+     * Repositorio de categorías para validaciones de integridad referencial.
      */
     private final CategoryRepository categoryRepository;
     /**
-     * Repositorio de categorías para validaciones de integridad referencial
+     * Repositorio de categorías para validaciones de integridad referencial.
      */
     private final UserRepository userRepository;
     /**
-     * Servicio de almacenamiento para manejar imágenes
+     * Servicio de almacenamiento para manejar imágenes.
      */
     private final StorageService storageService;
 
     /**
-     * Mapper de Jackson para serializar objetos a JSON
+     * Mapper de Jackson para serializar objetos a JSON.
      */
     ObjectMapper jacksonMapper;
     ProductMapper mapper;
@@ -87,9 +87,9 @@ public class ProductServiceImpl implements ProductService {
     /**
      * Constructor que inyecta dependencias necesarias.
      *
-     * @param repository         Repositorio de productos
-     * @param categoryRepository Repositorio de categorías
-     * @param storageService     Servicio de almacenamiento de imágenes
+     * @param repository         Repositorio de productos.
+     * @param categoryRepository Repositorio de categorías.
+     * @param storageService     Servicio de almacenamiento de imágenes.
      */
     @Autowired
     public ProductServiceImpl(ProductRepository repository,
@@ -109,9 +109,9 @@ public class ProductServiceImpl implements ProductService {
      * Busca productos aplicando filtros opcionales por nombre, precio máximo y
      * categoría.
      *
-     * @param name     Filtro opcional por nombre
-     * @param pageable Paginación y ordenación
-     * @return Página de productos que cumplen los filtros
+     * @param name     Filtro opcional por nombre.
+     * @param pageable Paginación y ordenación.
+     * @return Página de productos que cumplen los filtros.
      */
     @Override
     public Page<Product> findAll(Optional<String> name,
@@ -147,9 +147,9 @@ public class ProductServiceImpl implements ProductService {
      * Se utiliza caché para mejorar el rendimiento.
      * </p>
      *
-     * @param id Identificador del producto
-     * @return DTO genérico del producto
-     * @throws ProductException.NotFoundException si no existe el producto
+     * @param id Identificador del producto.
+     * @return DTO genérico del producto.
+     * @throws ProductException.NotFoundException si no existe el producto.
      */
     @Override
     @Cacheable(key = "#id")
@@ -185,9 +185,9 @@ public class ProductServiceImpl implements ProductService {
      * creación.
      * </p>
      *
-     * @param productoDto DTO con datos del producto
-     * @return DTO genérico del producto creado
-     * @throws ProductException.ValidationException si la categoría no existe
+     * @param productoDto DTO con datos del producto.
+     * @return DTO genérico del producto creado.
+     * @throws ProductException.ValidationException si la categoría no existe.
      */
     @Override
     @Transactional
@@ -212,11 +212,11 @@ public class ProductServiceImpl implements ProductService {
     /**
      * Actualiza completamente un producto existente.
      *
-     * @param id          ID del producto a actualizar
-     * @param productoDto DTO con los datos nuevos
-     * @return DTO genérico del producto actualizado
-     * @throws ProductException.NotFoundException   si no existe el producto
-     * @throws ProductException.ValidationException si la categoría no existe
+     * @param id          ID del producto a actualizar.
+     * @param productoDto DTO con los datos nuevos.
+     * @return DTO genérico del producto actualizado.
+     * @throws ProductException.NotFoundException   si no existe el producto.
+     * @throws ProductException.ValidationException si la categoría no existe.
      */
     @Override
     @CacheEvict(key = "#result.id")
@@ -236,8 +236,7 @@ public class ProductServiceImpl implements ProductService {
             throw new ProductException.ValidationException("La categoría " + productoDto.getCategory() + " no existe.");
         }
 
-        // Modificar el producto existente directamente para preservar el version de
-        // Hibernate
+        // Modificar el producto existente directamente para preservar la version de Hibernate
         foundProducto.setName(productoDto.getName());
         foundProducto.setDescription(productoDto.getDescription());
         foundProducto.setPrice(productoDto.getPrice());
@@ -245,7 +244,7 @@ public class ProductServiceImpl implements ProductService {
         foundProducto.setCategory(existingCategory.get());
         foundProducto.setCreatorId(productoDto.getCreatorId());
         // No modificamos images aquí, eso lo hace updateOrSaveImage
-        // No modificamos id, createdAt ni version - Hibernate los maneja
+        // No modificamos id, createdAt ni version  Hibernate los maneja
 
         Product updatedProductos = repository.save(foundProducto);
 
@@ -268,8 +267,8 @@ public class ProductServiceImpl implements ProductService {
     /**
      * Elimina un producto por su ID.
      *
-     * @param id ID del producto
-     * @throws ProductException.NotFoundException si no existe el producto
+     * @param id ID del producto.
+     * @throws ProductException.NotFoundException si no existe el producto.
      */
     @Override
     @CacheEvict(key = "#id")
@@ -288,17 +287,17 @@ public class ProductServiceImpl implements ProductService {
     /**
      * Actualiza la imagen de un producto.
      *
-     * @param id    ID del producto
-     * @param image Archivo de imagen a actualizar
-     * @return DTO genérico del producto actualizado
-     * @throws ProductException.NotFoundException si no existe el producto
+     * @param id    ID del producto.
+     * @param image Archivo de imagen a actualizar.
+     * @return DTO genérico del producto actualizado.
+     * @throws ProductException.NotFoundException si no existe el producto.
      */
     @Override
     @Transactional
     public GenericProductResponseDto updateOrSaveImage(String id, List<MultipartFile> image) {
         val foundProducto = repository.findById(id)
                 .orElseThrow(() -> new ProductException.NotFoundException("Producto no encontrado con id: " + id));
-        log.info("Actualizando imagen de producto por id: " + id);
+        log.info("SERVICE: Actualizando imagen de producto por id: " + id);
 
         // Filtrar archivos vacíos
         List<MultipartFile> validImages = image.stream()
@@ -307,7 +306,7 @@ public class ProductServiceImpl implements ProductService {
 
         // Si no hay archivos válidos, no hacer nada y retornar el producto sin cambios
         if (validImages.isEmpty()) {
-            log.info("No se subieron imágenes nuevas, manteniendo las existentes");
+            log.info("SERVICE: No se subieron imágenes nuevas, manteniendo las existentes");
             val commentsDto = mapearComentarios(foundProducto);
             return mapper.modelToGenericResponseDTO(foundProducto, commentsDto);
         }
@@ -317,12 +316,10 @@ public class ProductServiceImpl implements ProductService {
             foundProducto.getImages().forEach(storageService::delete);
         }
 
-        // Guardar las nuevas imágenes en el almacenamiento (usar ArrayList mutable para
-        // Hibernate)
+        // Guardar las nuevas imágenes en el almacenamiento
         List<String> imageStored = new ArrayList<>(validImages.stream().map(storageService::store).toList());
 
-        // Modificar directamente el producto encontrado para evitar conflictos de
-        // versión
+        // Modificar directamente el producto encontrado para evitar conflictos de versión
         foundProducto.setImages(imageStored);
 
         var updatedProducto = repository.save(foundProducto);
@@ -337,12 +334,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @CacheEvict(key = "#productId")
     public void addComment(String productId, Comment comment) {
-        log.info("Agregando comentario al producto con ID: " + productId);
+        log.info("SERVICE: Agregando comentario al producto con ID: " + productId);
 
         // Obtener el producto
         Product product = repository.findById(productId)
                 .orElseThrow(() -> {
-                    log.warning("Producto no encontrado con ID: " + productId);
+                    log.warning("SERVICE: Producto no encontrado con ID: " + productId);
                     return new ProductException.NotFoundException("Producto no encontrado con ID: " + productId);
                 });
 
@@ -352,6 +349,6 @@ public class ProductServiceImpl implements ProductService {
         // Guardar el producto actualizado
         repository.save(product);
 
-        log.info("Comentario agregado exitosamente al producto: " + productId);
+        log.info("SERVICE: Comentario agregado exitosamente al producto: " + productId);
     }
 }

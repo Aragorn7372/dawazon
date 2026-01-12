@@ -74,7 +74,7 @@ class UserRepositoryTest extends BaseRepositoryTest {
     }
 
     @Test
-    void findByUserNameAndIsDeletedFalse_returnUser_whenUserExistsAndNotDeleted() {
+    void findByUserNameAndIsDeletedFalsereturnUserwhenUserExistsAndNotDeleted() {
         Optional<User> result = userRepository.findByUserNameAndIsDeletedFalse("testUser1");
 
         assertTrue(result.isPresent());
@@ -84,21 +84,21 @@ class UserRepositoryTest extends BaseRepositoryTest {
     }
 
     @Test
-    void findByUserNameAndIsDeletedFalse_returnEmpty_whenUserDoesNotExist() {
+    void findByUserNameAndIsDeletedFalsereturnEmptywhenUserDoesNotExist() {
         Optional<User> result = userRepository.findByUserNameAndIsDeletedFalse("nonExistentUser");
 
         assertTrue(result.isEmpty());
     }
 
     @Test
-    void findByUserNameAndIsDeletedFalse_returnEmpty_whenUserIsDeleted() {
+    void findByUserNameAndIsDeletedFalsereturnEmptywhenUserIsDeleted() {
         Optional<User> result = userRepository.findByUserNameAndIsDeletedFalse("deletedUser");
 
         assertTrue(result.isEmpty());
     }
 
     @Test
-    void findByUserName_returnUser_whenUserExists() {
+    void findByUserNamereturnUserwhenUserExists() {
         Optional<User> result = userRepository.findByUserName("testUser1");
 
         assertTrue(result.isPresent());
@@ -106,7 +106,7 @@ class UserRepositoryTest extends BaseRepositoryTest {
     }
 
     @Test
-    void findByUserName_returnDeletedUser_whenUserIsDeleted() {
+    void findByUserNamereturnDeletedUserwhenUserIsDeleted() {
         Optional<User> result = userRepository.findByUserName("deletedUser");
 
         assertTrue(result.isPresent());
@@ -115,7 +115,7 @@ class UserRepositoryTest extends BaseRepositoryTest {
     }
 
     @Test
-    void findByEmailAndIsDeletedFalse_returnUser_whenEmailExistsAndNotDeleted() {
+    void findByEmailAndIsDeletedFalsereturnUserwhenEmailExistsAndNotDeleted() {
         Optional<User> result = userRepository.findByEmailAndIsDeletedFalse("test1@example.com");
 
         assertTrue(result.isPresent());
@@ -125,21 +125,21 @@ class UserRepositoryTest extends BaseRepositoryTest {
     }
 
     @Test
-    void findByEmailAndIsDeletedFalse_returnEmpty_whenEmailDoesNotExist() {
+    void findByEmailAndIsDeletedFalsereturnEmptywhenEmailDoesNotExist() {
         Optional<User> result = userRepository.findByEmailAndIsDeletedFalse("nonexistent@example.com");
 
         assertTrue(result.isEmpty());
     }
 
     @Test
-    void findByEmailAndIsDeletedFalse_returnEmpty_whenUserWithEmailIsDeleted() {
+    void findByEmailAndIsDeletedFalsereturnEmptywhenUserWithEmailIsDeleted() {
         Optional<User> result = userRepository.findByEmailAndIsDeletedFalse("deleted@example.com");
 
         assertTrue(result.isEmpty());
     }
 
     @Test
-    void findByEmail_returnUser_whenEmailExists() {
+    void findByEmailreturnUserwhenEmailExists() {
         Optional<User> result = userRepository.findByEmail("test1@example.com");
 
         assertTrue(result.isPresent());
@@ -147,7 +147,7 @@ class UserRepositoryTest extends BaseRepositoryTest {
     }
 
     @Test
-    void findByEmail_returnDeletedUser_whenEmailExistsForDeletedUser() {
+    void findByEmailreturnDeletedUserwhenEmailExistsForDeletedUser() {
         Optional<User> result = userRepository.findByEmail("deleted@example.com");
 
         assertTrue(result.isPresent());
@@ -156,7 +156,7 @@ class UserRepositoryTest extends BaseRepositoryTest {
     }
 
     @Test
-    void findAllActive_returnOnlyNonDeletedUsers_whenUsersExist() {
+    void findAllActivereturnOnlyNonDeletedUserswhenUsersExist() {
         List<User> result = userRepository.findAllActive();
 
         assertEquals(2, result.size());
@@ -167,7 +167,7 @@ class UserRepositoryTest extends BaseRepositoryTest {
     }
 
     @Test
-    void findAllActive_returnEmptyList_whenNoActiveUsersExist() {
+    void findAllActivereturnEmptyListwhenNoActiveUsersExist() {
         userRepository.deleteAll();
         User onlyDeletedUser = User.builder()
                 .userName("onlyDeleted")
@@ -183,7 +183,7 @@ class UserRepositoryTest extends BaseRepositoryTest {
     }
 
     @Test
-    void findActiveById_returnUser_whenUserExistsAndNotDeleted() {
+    void findActiveByIdreturnUserwhenUserExistsAndNotDeleted() {
         Long userId = testUser1.getId();
 
         User result = userRepository.findActiveById(userId);
@@ -195,14 +195,14 @@ class UserRepositoryTest extends BaseRepositoryTest {
     }
 
     @Test
-    void findActiveById_returnNull_whenUserDoesNotExist() {
+    void findActiveByIdreturnNullwhenUserDoesNotExist() {
         User result = userRepository.findActiveById(999L);
 
         assertNull(result);
     }
 
     @Test
-    void findActiveById_returnNull_whenUserIsDeleted() {
+    void findActiveByIdreturnNullwhenUserIsDeleted() {
         Long deletedUserId = deletedUser.getId();
 
         User result = userRepository.findActiveById(deletedUserId);
@@ -211,7 +211,7 @@ class UserRepositoryTest extends BaseRepositoryTest {
     }
 
     @Test
-    void softDelete_markUserAsDeleted_whenUserExists() {
+    void softDeletemarkUserAsDeletedwhenUserExists() {
         Long userId = testUser1.getId();
 
         userRepository.softDelete(userId);
@@ -224,7 +224,7 @@ class UserRepositoryTest extends BaseRepositoryTest {
     }
 
     @Test
-    void softDelete_notAffectOtherUsers_whenDeletingOneUser() {
+    void softDeletenotAffectOtherUserswhenDeletingOneUser() {
         Long userId = testUser1.getId();
         Long otherUserId = testUser2.getId();
 
@@ -243,7 +243,7 @@ class UserRepositoryTest extends BaseRepositoryTest {
     }
 
     @Test
-    void findAll_returnPagedResults_whenUsingSpecificationAndPageable() {
+    void findAllreturnPagedResultswhenUsingSpecificationAndPageable() {
         Pageable pageable = PageRequest.of(0, 10);
         Specification<User> spec = (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("isDeleted"),
                 false);
@@ -256,7 +256,7 @@ class UserRepositoryTest extends BaseRepositoryTest {
     }
 
     @Test
-    void findAll_filterByUsername_whenUsingSpecification() {
+    void findAllfilterByUsernamewhenUsingSpecification() {
         Pageable pageable = PageRequest.of(0, 10);
         Specification<User> spec = (root, query, criteriaBuilder) -> criteriaBuilder
                 .like(criteriaBuilder.lower(root.get("userName")), "%testuser1%");
@@ -269,7 +269,7 @@ class UserRepositoryTest extends BaseRepositoryTest {
     }
 
     @Test
-    void findAll_supportPagination_whenMultiplePagesExist() {
+    void findAllsupportPaginationwhenMultiplePagesExist() {
         // Crear más usuarios para probar paginación
         for (int i = 3; i <= 10; i++) {
             User user = User.builder()
@@ -294,7 +294,7 @@ class UserRepositoryTest extends BaseRepositoryTest {
     }
 
     @Test
-    void save_persistUser_whenValidUserProvided() {
+    void savepersistUserwhenValidUserProvided() {
         User newUser = User.builder()
                 .userName("newUser")
                 .email("new@example.com")
@@ -317,7 +317,7 @@ class UserRepositoryTest extends BaseRepositoryTest {
     }
 
     @Test
-    void save_updateExistingUser_whenUserAlreadyExists() {
+    void saveupdateExistingUserwhenUserAlreadyExists() {
         testUser1.setEmail("updated@example.com");
         testUser1.setTelefono("999999999");
 
@@ -332,7 +332,7 @@ class UserRepositoryTest extends BaseRepositoryTest {
     }
 
     @Test
-    void deleteById_removeUserPermanently_whenUserExists() {
+    void deleteByIdremoveUserPermanentlywhenUserExists() {
         Long userId = testUser1.getId();
 
         userRepository.deleteById(userId);
@@ -342,7 +342,7 @@ class UserRepositoryTest extends BaseRepositoryTest {
     }
 
     @Test
-    void findById_returnUser_whenUserExists() {
+    void findByIdreturnUserwhenUserExists() {
         Long userId = testUser1.getId();
 
         Optional<User> result = userRepository.findById(userId);
@@ -352,7 +352,7 @@ class UserRepositoryTest extends BaseRepositoryTest {
     }
 
     @Test
-    void findById_returnDeletedUser_whenUserIsDeleted() {
+    void findByIdreturnDeetedUserwhenUserIsDeleted() {
         Long deletedUserId = deletedUser.getId();
 
         Optional<User> result = userRepository.findById(deletedUserId);
@@ -362,7 +362,7 @@ class UserRepositoryTest extends BaseRepositoryTest {
     }
 
     @Test
-    void count_returnCorrectCount_whenUsersExist() {
+    void countreturnCorrectCountwhenUsersExist() {
         long count = userRepository.count();
 
         assertEquals(3, count); // testUser1, testUser2, deletedUser

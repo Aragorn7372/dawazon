@@ -11,16 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-/**
- * Test unitario para CartCleanupScheduler siguiendo principios FIRST.
- * <p>
- * - Fast: Tests rápidos usando solo mocks
- * - Independent: Cada test es independiente y no depende de otros
- * - Repeatable: Se pueden ejecutar múltiples veces con los mismos resultados
- * - Self-validating: Cada test tiene una validación clara
- * - Timely: Tests escritos junto con el código de producción
- * </p>
- */
+
 @ExtendWith(MockitoExtension.class)
 class CartCleanupSchedulerTest {
 
@@ -32,49 +23,38 @@ class CartCleanupSchedulerTest {
 
     @BeforeEach
     void setUp() {
-        // No es necesario configurar datos de prueba ya que el scheduler
-        // solo delega al servicio
     }
 
     @Test
-    void constructor_whenCartServiceProvided_createsScheduler() {
-        // Given
+    void constructorWhenCartServiceProvidedCreatesScheduler() {
         CartServiceImpl mockService = mock(CartServiceImpl.class);
 
-        // When
         CartCleanupScheduler scheduler = new CartCleanupScheduler(mockService);
 
-        // Then
         assertThat(scheduler).isNotNull();
     }
 
     @Test
-    void cleanupExpiredCheckoutsAlternative_whenInvoked_callsCartServiceCleanup() {
-        // When
+    void cleanupExpiredCheckoutsAlternativeWhenInvokedCallsCartServiceCleanup() {
         cartCleanupScheduler.cleanupExpiredCheckoutsAlternative();
 
-        // Then
         verify(cartService, times(1)).cleanupExpiredCheckouts();
     }
 
     @Test
     void cleanupExpiredCheckoutsAlternative_whenInvokedMultipleTimes_callsServiceEachTime() {
-        // When
         cartCleanupScheduler.cleanupExpiredCheckoutsAlternative();
         cartCleanupScheduler.cleanupExpiredCheckoutsAlternative();
         cartCleanupScheduler.cleanupExpiredCheckoutsAlternative();
 
-        // Then
         verify(cartService, times(3)).cleanupExpiredCheckouts();
     }
 
     @Test
-    void cleanupExpiredCheckoutsAlternative_whenServiceThrowsException_exceptionPropagates() {
-        // Given
+    void cleanupExpiredCheckoutsAlternativeWhenServiceThrowsExceptionExceptionPropagates() {
         RuntimeException expectedException = new RuntimeException("Service error");
         doThrow(expectedException).when(cartService).cleanupExpiredCheckouts();
 
-        // When & Then
         try {
             cartCleanupScheduler.cleanupExpiredCheckoutsAlternative();
         } catch (RuntimeException e) {
@@ -86,11 +66,9 @@ class CartCleanupSchedulerTest {
     }
 
     @Test
-    void cleanupExpiredCheckoutsAlternative_verifyNoOtherInteractions() {
-        // When
+    void cleanupExpiredCheckoutsAlternativeVerifyNoOtherInteractions() {
         cartCleanupScheduler.cleanupExpiredCheckoutsAlternative();
 
-        // Then
         verify(cartService).cleanupExpiredCheckouts();
         verifyNoMoreInteractions(cartService);
     }

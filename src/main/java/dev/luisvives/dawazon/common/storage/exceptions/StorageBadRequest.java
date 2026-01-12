@@ -28,7 +28,7 @@ public class StorageBadRequest extends StorageException {
     /**
      * Constructor con mensaje de error.
      *
-     * @param mensaje Mensaje descriptivo de la excepción
+     * @param mensaje Mensaje descriptivo de la excepción.
      */
     public StorageBadRequest(String mensaje) {
         super(mensaje);

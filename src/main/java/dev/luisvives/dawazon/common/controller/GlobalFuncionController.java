@@ -6,7 +6,6 @@ import dev.luisvives.dawazon.cart.service.CartService;
 import dev.luisvives.dawazon.products.service.ProductService;
 import dev.luisvives.dawazon.users.models.Role;
 import dev.luisvives.dawazon.users.models.User;
-import dev.luisvives.dawazon.users.service.FavService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -36,24 +35,24 @@ public class GlobalFuncionController {
     /**
      * Servicio de productos.
      */
-    private ProductService productService;
+    private final ProductService productService;
 
     /**
      * Servicio de carritos.
      */
-    private CartService cartService;
+    private final CartService cartService;
 
     /**
      * Repositorio de carritos.
      */
-    private CartRepository cartRepository;
+    private final CartRepository cartRepository;
 
     /**
      * Constructor con inyección de dependencias.
      *
-     * @param productService Servicio de productos
-     * @param cartService    Servicio de carritos
-     * @param cartRepository Repositorio de carritos
+     * @param productService Servicio de productos.
+     * @param cartService    Servicio de carritos.
+     * @param cartRepository Repositorio de carritos.
      */
     @Autowired
     public GlobalFuncionController(ProductService productService, CartService cartService,
@@ -66,7 +65,7 @@ public class GlobalFuncionController {
     /**
      * Proporciona la lista de categorías disponibles.
      *
-     * @return Lista de nombres de categorías
+     * @return Lista de nombres de categorías.
      */
     @ModelAttribute("categorias")
     public List<String> categorias() {
@@ -76,33 +75,33 @@ public class GlobalFuncionController {
     /**
      * Proporciona el usuario actualmente autenticado.
      *
-     * @param authentication Información de autenticación
-     * @return Usuario autenticado o null si no hay sesión
+     * @param authentication Información de autenticación.
+     * @return Usuario autenticado o null si no hay sesión.
      */
     @ModelAttribute("currentUser")
     public User getCurrentUser(Authentication authentication) {
-        log.info("===== GlobalFuncionController.getCurrentUser() =====");
+        log.info("GlobalFuncionController.getCurrentUser()");
         log.info("Authentication: " + (authentication != null ? authentication.getClass().getName() : "NULL"));
-        log.info("isAuthenticated: " + (authentication != null ? authentication.isAuthenticated() : "N/A"));
-        log.info("Principal type: " + (authentication != null && authentication.getPrincipal() != null
+        log.info("isAuthenticated: " + (authentication != null ? authentication.isAuthenticated() : "No"));
+        log.info("tipo principal: " + (authentication != null && authentication.getPrincipal() != null
                 ? authentication.getPrincipal().getClass().getName()
                 : "NULL"));
 
         if (authentication != null && authentication.isAuthenticated()
                 && !(authentication.getPrincipal() instanceof String)) {
             User user = (User) authentication.getPrincipal();
-            log.info("Returning user: ID=" + user.getId() + ", Username=" + user.getUsername());
+            log.info("devolviendo user: ID=" + user.getId() + ", Username=" + user.getUsername());
             return user;
         }
-        log.info("Returning NULL user");
+        log.info("devolviendo null");
         return null;
     }
 
     /**
      * Indica si existe un usuario autenticado.
      *
-     * @param authentication Información de autenticación
-     * @return true si hay usuario autenticado
+     * @param authentication Información de autenticación.
+     * @return true si hay usuario autenticado.
      */
     @ModelAttribute("isAuthenticated")
     public boolean isAuthenticated(Authentication authentication) {
@@ -113,71 +112,71 @@ public class GlobalFuncionController {
     /**
      * Verifica si el usuario actual tiene rol de admin.
      *
-     * @param authentication Información de autenticación
-     * @return true si el usuario es admin
+     * @param authentication Información de autenticación.
+     * @return true si el usuario es admin.
      */
     @ModelAttribute("isAdmin")
     public Boolean isAdmin(Authentication authentication) {
-        log.info("===== isAdmin() CALLED =====");
+        log.info("isAdmin() LLAMADO");
         if (authentication != null && authentication.isAuthenticated()
                 && !(authentication.getPrincipal() instanceof String)) {
             User user = (User) authentication.getPrincipal();
             boolean result = user.getRoles() != null && user.getRoles().contains(Role.ADMIN);
             log.info(
-                    "isAdmin - User: " + user.getUsername() + ", Roles: " + user.getRoles() + ", Result: " + result);
+                    "es administrador el User: " + user.getUsername() + ", Roles: " + user.getRoles() + ", Result: " + result);
             return result;
         }
-        log.info("isAdmin - No auth, returning false");
+        log.info("admin no autorizado, devolviendo false");
         return false;
     }
 
     /**
      * Verifica si el usuario actual tiene rol de manager.
      *
-     * @param authentication Información de autenticación
-     * @return true si el usuario es manager
+     * @param authentication Información de autenticación.
+     * @return true si el usuario es manager.
      */
     @ModelAttribute("isManager")
     public Boolean isManager(Authentication authentication) {
-        log.info("===== isManager() CALLED =====");
+        log.info("isManager() llamado");
         if (authentication != null && authentication.isAuthenticated()
                 && !(authentication.getPrincipal() instanceof String)) {
             User user = (User) authentication.getPrincipal();
             boolean result = user.getRoles() != null && user.getRoles().contains(Role.MANAGER);
             log.info(
-                    "isManager - User: " + user.getUsername() + ", Roles: " + user.getRoles() + ", Result: " + result);
+                    "es manager el User: " + user.getUsername() + ", Roles: " + user.getRoles() + ", Result: " + result);
             return result;
         }
-        log.info("isManager - No auth, returning false");
+        log.info("manager no autorizado, devolviendo false");
         return false;
     }
 
     /**
      * Verifica si el usuario actual tiene rol de usuario regular.
      *
-     * @param authentication Información de autenticación
-     * @return true si el usuario tiene rol USER
+     * @param authentication Información de autenticación.
+     * @return true si el usuario tiene rol USER.
      */
     @ModelAttribute("isUser")
     public Boolean isUser(Authentication authentication) {
-        log.info("===== isUser() CALLED =====");
+        log.info("isUser() llamado");
         if (authentication != null && authentication.isAuthenticated()
                 && !(authentication.getPrincipal() instanceof String)) {
             User user = (User) authentication.getPrincipal();
             boolean result = user.getRoles() != null && user.getRoles().contains(Role.USER);
             log.info(
-                    "isUser - User: " + user.getUsername() + ", Roles: " + user.getRoles() + ", Result: " + result);
+                    "es usuario normal el User: " + user.getUsername() + ", Roles: " + user.getRoles() + ", Result: " + result);
             return result;
         }
-        log.info("isUser - No auth, returning false");
+        log.info("user no autorizado, devolviendo false");
         return false;
     }
 
     /**
      * Proporciona el nombre de usuario del usuario autenticado.
      *
-     * @param authentication Información de autenticación
-     * @return Nombre de usuario o null
+     * @param authentication Información de autenticación.
+     * @return Nombre de usuario o null.
      */
     @ModelAttribute("username")
     public String getUsername(Authentication authentication) {
@@ -192,8 +191,8 @@ public class GlobalFuncionController {
     /**
      * Proporciona el token CSRF de la petición actual.
      *
-     * @param request Petición HTTP
-     * @return Token CSRF o cadena vacía
+     * @param request Petición HTTP.
+     * @return Token CSRF o cadena vacía.
      */
     @ModelAttribute("csrfToken")
     public String getCsrfToken(HttpServletRequest request) {
@@ -204,8 +203,8 @@ public class GlobalFuncionController {
     /**
      * Proporciona el nombre del parámetro CSRF.
      *
-     * @param request Petición HTTP
-     * @return Nombre del parámetro CSRF
+     * @param request Petición HTTP.
+     * @return Nombre del parámetro CSRF.
      */
     @ModelAttribute("csrfParamName")
     public String getCsrfParamName(HttpServletRequest request) {
@@ -216,8 +215,8 @@ public class GlobalFuncionController {
     /**
      * Proporciona el nombre del header CSRF.
      *
-     * @param request Petición HTTP
-     * @return Nombre del header CSRF
+     * @param request Petición HTTP.
+     * @return Nombre del header CSRF.
      */
     @ModelAttribute("csrfHeaderName")
     public String getCsrfHeaderName(HttpServletRequest request) {
@@ -228,8 +227,8 @@ public class GlobalFuncionController {
     /**
      * Proporciona el ID del usuario autenticado.
      *
-     * @param authentication Información de autenticación
-     * @return ID del usuario o null
+     * @param authentication Información de autenticación.
+     * @return ID del usuario o null.
      */
     @ModelAttribute("currentUserId")
     public Long getCurrentUserId(Authentication authentication) {
@@ -244,8 +243,8 @@ public class GlobalFuncionController {
     /**
      * Proporciona el número de ítems en el carrito.
      *
-     * @param request Petición HTTP
-     * @return Número de productos en el carrito
+     * @param request Petición HTTP.
+     * @return Número de productos en el carrito.
      */
     @ModelAttribute("cartItemCount")
     public int getCartItemCount(HttpServletRequest request) {
@@ -266,8 +265,8 @@ public class GlobalFuncionController {
     /**
      * Indica si el carrito tiene ítems.
      *
-     * @param request Petición HTTP
-     * @return true si hay ítems en el carrito
+     * @param request Petición HTTP.
+     * @return true si hay ítems en el carrito.
      */
     @ModelAttribute("hasCartItems")
     public boolean hasCartItems(HttpServletRequest request) {
@@ -281,9 +280,9 @@ public class GlobalFuncionController {
      * existe.
      * </p>
      *
-     * @param request        Petición HTTP
-     * @param authentication Información de autenticación
-     * @return Carrito del usuario o carrito vacío
+     * @param request        Petición HTTP.
+     * @param authentication Información de autenticación.
+     * @return Carrito del usuario o carrito vacío.
      */
     @ModelAttribute("carrito")
     public Cart getCarrito(HttpServletRequest request, Authentication authentication) {
@@ -297,7 +296,7 @@ public class GlobalFuncionController {
             return emptyCart;
         }
 
-        // Si hay sesión, buscar en la sesión primero
+        // Sí hay sesión, buscar en la sesión primero
         if (session != null) {
             Cart sessionCart = (Cart) session.getAttribute("cart");
             if (sessionCart != null) {
@@ -321,11 +320,11 @@ public class GlobalFuncionController {
             cart = cartRepository.save(cart);
         }
 
-        // Guardar en sesión para futuras peticiones
+        // Guardar en sesión para futuras peticiones.
         if (session != null) {
             session.setAttribute("cart", cart);
         } else {
-            // Crear sesión si no existe
+            // Crear sesión si no existe.
             HttpSession newSession = request.getSession(true);
             newSession.setAttribute("cart", cart);
         }
@@ -336,21 +335,20 @@ public class GlobalFuncionController {
     /**
      * Alias de getCarrito para consistencia.
      *
-     * @param request        Petición HTTP
-     * @param authentication Información de autenticación
-     * @return Carrito del usuario
+     * @param request        Petición HTTP.
+     * @param authentication Información de autenticación.
+     * @return Carrito del usuario.
      */
     @ModelAttribute("cart")
     public Cart getCart(HttpServletRequest request, Authentication authentication) {
-        // Reutilizar el mismo método para consistencia
         return getCarrito(request, authentication);
     }
 
     /**
      * Proporciona el número de ítems del carrito como String.
      *
-     * @param request Petición HTTP
-     * @return Número de ítems como String, o cadena vacía si es 0
+     * @param request Petición HTTP.
+     * @return Número de ítems como String, o cadena vacía si es 0.
      */
     @ModelAttribute("items_carrito")
     public String itemsCarrito(HttpServletRequest request) {
@@ -371,7 +369,7 @@ public class GlobalFuncionController {
     /**
      * Proporciona la fecha y hora actual.
      *
-     * @return LocalDateTime actual
+     * @return LocalDateTime actual.
      */
     @ModelAttribute("currentDateTime")
     public java.time.LocalDateTime getCurrentDateTime() {
@@ -381,7 +379,7 @@ public class GlobalFuncionController {
     /**
      * Proporciona el año actual.
      *
-     * @return Año actual
+     * @return Año actual.
      */
     @ModelAttribute("currentYear")
     public int getCurrentYear() {
@@ -391,7 +389,7 @@ public class GlobalFuncionController {
     /**
      * Proporciona el mes actual en español.
      *
-     * @return Nombre del mes en español
+     * @return Nombre del mes en español.
      */
     @ModelAttribute("currentMonth")
     public String getCurrentMonth() {
@@ -406,15 +404,15 @@ public class GlobalFuncionController {
      * Implementa patrón flash attribute: se elimina después de mostrarlo.
      * </p>
      *
-     * @param request Petición HTTP
-     * @return Mensaje de error o null
+     * @param request Petición HTTP.
+     * @return Mensaje de error o null.
      */
     @ModelAttribute("compraError")
     public String getCompraError(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
             String compraError = (String) session.getAttribute("compra_error");
-            // Quitar el error tras mostrarlo (flash attribute)
+            // Quitar el error tras mostrarlo
             if (compraError != null) {
                 session.removeAttribute("compra_error");
             }
@@ -426,13 +424,12 @@ public class GlobalFuncionController {
     /**
      * Verifica si el producto actual está en el carrito del usuario.
      *
-     * @param request Petición HTTP
-     * @param cart    Carrito del usuario
-     * @return true si el producto está en el carrito
+     * @param request Petición HTTP.
+     * @return true si el producto está en el carrito.
      */
     @ModelAttribute("isCart")
     public boolean isCart(HttpServletRequest request, Authentication authentication) {
-        // Solo aplicable si el usuario tiene rol USER
+        // Solo aplicable si el usuario tiene rol USER.
         if (!isUser(authentication)) {
             return false;
         }
@@ -454,9 +451,9 @@ public class GlobalFuncionController {
     /**
      * Verifica si el producto actual está en los favoritos del usuario.
      *
-     * @param request        Petición HTTP
-     * @param authentication Información de autenticación
-     * @return true si el producto está en favoritos
+     * @param request        Petición HTTP.
+     * @param authentication Información de autenticación.
+     * @return true si el producto está en favoritos.
      */
     @ModelAttribute("isFav")
     public boolean isFav(HttpServletRequest request, Authentication authentication) {
@@ -476,13 +473,13 @@ public class GlobalFuncionController {
     /**
      * Verifica si el producto actual pertenece al manager autenticado.
      *
-     * @param request        Petición HTTP
-     * @param authentication Información de autenticación
-     * @return true si el manager autenticado es el creador del producto
+     * @param request        Petición HTTP.
+     * @param authentication Información de autenticación.
+     * @return true si el manager autenticado es el creador del producto.
      */
     @ModelAttribute("isMine")
     public boolean isMine(HttpServletRequest request, Authentication authentication) {
-        log.info("===== isMine() CALLED =====");
+        log.info("isMine() LLAMADO");
 
         // Solo aplicable si el usuario es manager
         if (!isManager(authentication)) {
@@ -491,24 +488,24 @@ public class GlobalFuncionController {
         }
 
         String productId = extractProductIdFromPath(request);
-        log.info("isMine - Extracted product ID: {}", productId);
+        log.info("isMine ID de producto extraído: {}", productId);
         if (productId == null) {
-            log.info("isMine - Product ID is null, returning false");
+            log.info("isMine ID de producto es null, devolviendo false");
             return false;
         }
 
         User user = getCurrentUser(authentication);
         if (user == null) {
-            log.info("isMine - Current user is null, returning false");
+            log.info("isMine El usuario es nulo, devolviendo false");
             return false;
         }
-        log.info("isMine - Current user ID: {}", user.getId());
+        log.info("isMine ID: {}", user.getId());
 
         try {
             Long productCreatorId = productService.getUserProductId(productId);
-            log.info("isMine - Product creator ID: {}", productCreatorId);
+            log.info("isMine ID del creador del producto: {}", productCreatorId);
             boolean result = productCreatorId != null && productCreatorId.equals(user.getId());
-            log.info("isMine - Result: {}", result);
+            log.info("isMine Result: {}", result);
             return result;
         } catch (Exception e) {
             log.error("Error al verificar propietario del producto: " + e.getMessage());
@@ -520,8 +517,8 @@ public class GlobalFuncionController {
      * Extrae el ID del producto de la ruta de la petición.
      * Soporta rutas como /products/{id} y /auth/me/products/edit/{id}
      *
-     * @param request Petición HTTP
-     * @return ID del producto o null si no se encuentra
+     * @param request Petición HTTP.
+     * @return ID del producto o null si no se encuentra.
      */
     private String extractProductIdFromPath(HttpServletRequest request) {
         String path = request.getRequestURI();
@@ -532,7 +529,7 @@ public class GlobalFuncionController {
         if (path.matches(".*/products/(?!save$)[a-zA-Z0-9\\-_]+$")) {
             String[] parts = path.split("/");
             String productId = parts[parts.length - 1];
-            log.info("extractProductIdFromPath - Matched /products/{id}, extracted ID: {}", productId);
+            log.info("extractProductIdFromPath Coincide /products/{id}, ID extraído: {}", productId);
             return productId;
         }
 
@@ -540,12 +537,12 @@ public class GlobalFuncionController {
         if (path.matches(".*/auth/me/products/(edit|delete)/[a-zA-Z0-9\\-_]+$")) {
             String[] parts = path.split("/");
             String productId = parts[parts.length - 1];
-            log.info("extractProductIdFromPath - Matched /auth/me/products/(edit|delete)/{id}, extracted ID: {}",
+            log.info("extractProductIdFromPath Coincide /auth/me/products/(edit|delete)/{id}, ID extraído: {}",
                     productId);
             return productId;
         }
 
-        log.info("extractProductIdFromPath - No match found, returning null");
+        log.info("extractProductIdFromPath Sin coincidencias, devolviendo null");
         return null;
     }
 

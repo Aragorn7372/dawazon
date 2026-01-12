@@ -92,7 +92,7 @@ class OrderEmailServiceImplTest {
     }
 
     @Test
-    void constructor_whenDependenciesProvided_createsOrderEmailService() {
+    void constructor_whenDependenciesProvidedcreatesOrderEmailService() {
         // Given
         EmailService mockEmailService = mock(EmailService.class);
 
@@ -104,7 +104,7 @@ class OrderEmailServiceImplTest {
     }
 
     @Test
-    void enviarConfirmacionPedido_whenValidCart_sendsSimpleHtmlEmail() {
+    void enviarConfirmacionPedido_whenValidCartsendsSimpleHtmlEmail() {
         // Given
         ArgumentCaptor<String> toCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> subjectCaptor = ArgumentCaptor.forClass(String.class);
@@ -131,7 +131,7 @@ class OrderEmailServiceImplTest {
     }
 
     @Test
-    void enviarConfirmacionPedido_whenEmailServiceThrowsException_logsErrorAndDoesNotThrow() {
+    void enviarConfirmacionPedidowhenEmailServiceThrowsExceptionlogsErrorAndDoesNotThrow() {
         // Given
         doThrow(new RuntimeException("Email service error"))
                 .when(emailService).sendHtmlEmail(anyString(), anyString(), anyString());
@@ -143,7 +143,7 @@ class OrderEmailServiceImplTest {
     }
 
     @Test
-    void enviarConfirmacionPedidoHtml_whenValidCart_sendsCompleteHtmlEmail() {
+    void enviarConfirmacionPedidoHtmlwhenValidCartsendsCompleteHtmlEmail() {
         // Given
         ArgumentCaptor<String> toCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> subjectCaptor = ArgumentCaptor.forClass(String.class);
@@ -159,7 +159,7 @@ class OrderEmailServiceImplTest {
                 bodyCaptor.capture());
 
         assertThat(toCaptor.getValue()).isEqualTo("juan.perez@example.com");
-        assertThat(subjectCaptor.getValue()).contains("✅ Confirmación de tu pedido");
+        assertThat(subjectCaptor.getValue()).contains("Confirmación de tu pedido");
         assertThat(subjectCaptor.getValue()).contains(testCart.getId().toString());
 
         String htmlBody = bodyCaptor.getValue();

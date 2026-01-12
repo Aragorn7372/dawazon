@@ -27,18 +27,18 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     /**
      * Busca productos aplicando especificaciones (filtros) y paginación.
      *
-     * @param criterio Especificación JPA con los criterios de búsqueda
-     * @param pageable Configuración de paginación y ordenamiento
-     * @return Página de productos que cumplen el criterio
+     * @param criterio Especificación JPA con los criterios de búsqueda.
+     * @param pageable Configuración de paginación y ordenamiento.
+     * @return Página de productos que cumplen el criterio.
      */
     Page<Product> findAll(Specification<Product> criterio, Pageable pageable);
 
     /**
      * Busca productos creados en un rango de fechas.
      * 
-     * @param ultimaEjecucion Fecha y hora de inicio del rango
-     * @param ahora           Fecha y hora de fin del rango
-     * @return Lista de productos creados en el rango especificado
+     * @param ultimaEjecucion Fecha y hora de inicio del rango.
+     * @param ahora           Fecha y hora de fin del rango.
+     * @return Lista de productos creados en el rango especificado.
      */
     List<Product> findAllBycreatedAtBetween(LocalDateTime ultimaEjecucion, LocalDateTime ahora);
 
@@ -50,10 +50,10 @@ public interface ProductRepository extends JpaRepository<Product, String> {
      * Usa control de concurrencia optimista mediante {@code version}.
      * </p>
      *
-     * @param id      ID del producto
-     * @param amount  Cantidad a restar del stock
-     * @param version Versión actual del producto para control de concurrencia
-     * @return Número de filas afectadas (1 si se actualizó, 0 si no)
+     * @param id      ID del producto.
+     * @param amount  Cantidad a restar del stock.
+     * @param version Versión actual del producto para control de concurrencia.
+     * @return Número de filas afectadas (1 si se actualizó, 0 si no).
      */
     @Modifying
     @Query("UPDATE Product p SET p.stock = p.stock - :amount WHERE p.id = :id AND p.stock >= :amount AND p.isDeleted = FALSE AND p.version= :version")
@@ -65,9 +65,9 @@ public interface ProductRepository extends JpaRepository<Product, String> {
      * Permite a un vendedor/administrador ver sus propios productos.
      * </p>
      *
-     * @param userId   ID del usuario creador
-     * @param pageable Configuración de paginación
-     * @return Página de productos creados por el usuario
+     * @param userId   ID del usuario creador.
+     * @param pageable Configuración de paginación.
+     * @return Página de productos creados por el usuario.
      */
     Page<Product> findAllByCreatorId(Long userId, Pageable pageable);
 
@@ -79,7 +79,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
      * sin eliminarlo físicamente de la base de datos.
      * </p>
      *
-     * @param id ID del producto a eliminar
+     * @param id ID del producto a eliminar.
      */
     @Modifying
     @Query("UPDATE Product p SET p.isDeleted=true, p.stock=0 WHERE p.id= :id")

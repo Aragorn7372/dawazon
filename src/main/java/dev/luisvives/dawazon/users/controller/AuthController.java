@@ -35,9 +35,9 @@ public class AuthController {
     /**
      * Constructor con inyección de dependencias.
      *
-     * @param usuarioServicio Servicio de usuarios y autenticación
-     * @param storageService  Servicio de almacenamiento de archivos
-     * @param cartService     Servicio de carritos de compra
+     * @param usuarioServicio Servicio de usuarios y autenticación.
+     * @param storageService  Servicio de almacenamiento de archivos.
+     * @param cartService     Servicio de carritos de compra.
      */
     @Autowired
     public AuthController(AuthService usuarioServicio, StorageService storageService,CartServiceImpl cartService) {
@@ -49,8 +49,8 @@ public class AuthController {
     /**
      * Muestra la página de inicio de sesión.
      *
-     * @param model Modelo de Spring MVC
-     * @return Vista de autenticación
+     * @param model Modelo de Spring MVC.
+     * @return Vista de autenticación.
      */
     @GetMapping("/auth/signin")
     public String login(Model model) {
@@ -61,8 +61,8 @@ public class AuthController {
     /**
      * Muestra el formulario de registro de nuevos usuarios.
      *
-     * @param model Modelo de Spring MVC
-     * @return Vista de autenticación/registro
+     * @param model Modelo de Spring MVC.
+     * @return Vista de autenticación/registro.
      */
     @GetMapping("/auth/signup")
     public String register(Model model) {
@@ -73,15 +73,15 @@ public class AuthController {
     /**
      * Procesa el registro de un nuevo usuario.
      * <p>
-     * Valida los datos del formulario, verifica que las contraseñas coincidan,
+     * Válida los datos del formulario, verifica que las contraseñas coincidan,
      * crea el usuario, procesa la imagen de avatar si se proporciona,
      * y crea un carrito vacío para el nuevo usuario.
      * </p>
      *
-     * @param registerDto   DTO con datos de registro
-     * @param bindingResult Resultado de validación
-     * @param model         Modelo de Spring MVC
-     * @return Redirección a login si éxito, vista de registro si error
+     * @param registerDto   DTO con datos de registro.
+     * @param bindingResult Resultado de validación.
+     * @param model         Modelo de Spring MVC.
+     * @return Redirección a login si éxito, vista de registro si error.
      */
     @PostMapping("/auth/signup")
     public String register(@Valid @ModelAttribute UserRegisterDto registerDto,
@@ -125,8 +125,8 @@ public class AuthController {
      * Requiere autenticación previa (cualquier rol).
      * </p>
      *
-     * @param model Modelo de Spring MVC
-     * @return Vista de cambio de contraseña
+     * @param model Modelo de Spring MVC.
+     * @return Vista de cambio de contraseña.
      */
     @PreAuthorize("hasAnyAuthority()")
     @GetMapping("/auth/me/changepassword")
@@ -143,10 +143,10 @@ public class AuthController {
      * Requiere autenticación previa y valida la contraseña antigua.
      * </p>
      *
-     * @param model   Modelo de Spring MVC
-     * @param usuario DTO con contraseñas (antigua, nueva, confirmación)
-     * @param id      ID del usuario actual
-     * @return Redirección a la página principal
+     * @param model   Modelo de Spring MVC.
+     * @param usuario DTO con contraseñas (antigua, nueva, confirmación).
+     * @param id      ID del usuario actual.
+     * @return Redirección a la página principal.
      */
     @PreAuthorize("hasAnyAuthority()")
     @PostMapping("/auth/me/changepassword")

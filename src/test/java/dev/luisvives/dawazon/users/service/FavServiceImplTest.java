@@ -60,7 +60,7 @@ class FavServiceImplTest {
     }
 
     @Test
-    void addFav_addProductToFavorites_whenUserExistsAndProductNotInFavorites() {
+    void addFavaddProductToFavoriteswhenUserExistsAndProductNotInFavorites() {
         when(userRepository.findById(userId)).thenReturn(Optional.of(testUser));
         when(userRepository.save(any(User.class))).thenReturn(testUser);
 
@@ -72,7 +72,7 @@ class FavServiceImplTest {
     }
 
     @Test
-    void addFav_throwUserNotFoundException_whenUserDoesNotExist() {
+    void addFavthrowUserNotFoundExceptionwhenUserDoesNotExist() {
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
         assertThrows(UserException.UserNotFoundException.class,
@@ -83,7 +83,7 @@ class FavServiceImplTest {
     }
 
     @Test
-    void addFav_throwUserHasThatFavProductException_whenProductAlreadyInFavorites() {
+    void addFavthrowUserHasThatFavProductExceptionwhenProductAlreadyInFavorites() {
         testUser.getFavs().add(productId);
         when(userRepository.findById(userId)).thenReturn(Optional.of(testUser));
 
@@ -95,7 +95,7 @@ class FavServiceImplTest {
     }
 
     @Test
-    void removeFav_removeProductFromFavorites_whenUserExistsAndProductInFavorites() {
+    void removeFaremoveProductFromFavoriteswhenUserExistsAndProductInFavorites() {
         testUser.getFavs().add(productId);
         when(userRepository.findById(userId)).thenReturn(Optional.of(testUser));
         when(userRepository.save(any(User.class))).thenReturn(testUser);
@@ -108,7 +108,7 @@ class FavServiceImplTest {
     }
 
     @Test
-    void removeFav_throwUserNotFoundException_whenUserDoesNotExist() {
+    void removeFavthrowUserNotFoundExceptionwhenUserDoesNotExist() {
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
         assertThrows(UserException.UserNotFoundException.class,
@@ -119,7 +119,7 @@ class FavServiceImplTest {
     }
 
     @Test
-    void removeFav_throwUserHasThatFavProductException_whenProductNotInFavorites() {
+    void removeFavthrowUserHasThatFavProductExceptionwhenProductNotInFavorites() {
         when(userRepository.findById(userId)).thenReturn(Optional.of(testUser));
 
         assertThrows(UserException.UserHasThatFavProductException.class,
@@ -130,7 +130,7 @@ class FavServiceImplTest {
     }
 
     @Test
-    void getFavs_returnPageOfProducts_whenUserHasFavoritesAndAllProductsExist() {
+    void getFavsreturnPageOfProductswhenUserHasFavoritesAndAllProductsExist() {
         String product1Id = "product-1";
         String product2Id = "product-2";
         testUser.getFavs().add(product1Id);
@@ -158,7 +158,7 @@ class FavServiceImplTest {
     }
 
     @Test
-    void getFavs_returnEmptyPage_whenUserHasNoFavorites() {
+    void getFavsreturnEmptyPagewhenUserHasNoFavorites() {
         Pageable pageable = PageRequest.of(0, 10);
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(testUser));
@@ -173,7 +173,7 @@ class FavServiceImplTest {
     }
 
     @Test
-    void getFavs_filterOutNonExistentProducts_whenSomeProductsDoNotExist() {
+    void getFavsfilterOutNonExistentProductswhenSomeProductsDoNotExist() {
         String product1Id = "product-1";
         String product2Id = "product-nonexistent";
         String product3Id = "product-3";
@@ -206,7 +206,7 @@ class FavServiceImplTest {
     }
 
     @Test
-    void getFavs_throwUserNotFoundException_whenUserDoesNotExist() {
+    void getFavsthrowUserNotFoundExceptionwhenUserDoesNotExist() {
         Pageable pageable = PageRequest.of(0, 10);
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
@@ -218,7 +218,7 @@ class FavServiceImplTest {
     }
 
     @Test
-    void addFav_maintainMultipleFavorites_whenAddingSecondProduct() {
+    void addFavmaintainMultipleFavoriteswhenAddingSecondProduct() {
         String existingProductId = "product-existing";
         testUser.getFavs().add(existingProductId);
 
@@ -234,7 +234,7 @@ class FavServiceImplTest {
     }
 
     @Test
-    void removeFav_maintainOtherFavorites_whenRemovingOneProduct() {
+    void removeFavmaintainOtherFavoriteswhenRemovingOneProduct() {
         String otherProductId = "product-other";
         testUser.getFavs().add(productId);
         testUser.getFavs().add(otherProductId);

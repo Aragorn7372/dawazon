@@ -26,8 +26,8 @@ public class StorageController {
     /**
      * Devuelve el archivo almacenado.
      *
-     * @param filename Nombre del archivo
-     * @return Recurso del archivo
+     * @param filename Nombre del archivo.
+     * @return Recurso del archivo.
      */
     @GetMapping("/files/{filename:.+}")
     @ResponseBody

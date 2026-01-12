@@ -16,8 +16,8 @@ public class UserMapper {
     /**
      * Convierte un ClientDto a entidad Client.
      *
-     * @param dto DTO con datos del cliente
-     * @return Entidad Client con dirección embebida
+     * @param dto DTO con datos del cliente.
+     * @return Entidad Client con dirección embebida.
      */
     public Client toClient(ClientDto dto) {
         return Client.builder()
@@ -39,8 +39,8 @@ public class UserMapper {
     /**
      * Convierte un User a UserAdminRequestDto.
      *
-     * @param user Entidad User
-     * @return DTO UserAdminRequestDto con datos planos
+     * @param user Entidad User.
+     * @return DTO UserAdminRequestDto con datos planos.
      */
     public UserAdminRequestDto toUserAdminRequestDto(User user) {
         return UserAdminRequestDto.builder()
@@ -72,8 +72,8 @@ public class UserMapper {
     /**
      * Convierte un User a UserRequestDto.
      *
-     * @param user Entidad User
-     * @return DTO UserRequestDto con datos planos
+     * @param user Entidad User.
+     * @return DTO UserRequestDto con datos planos.
      */
     public UserRequestDto toUserRequestDto(User user) {
         return UserRequestDto.builder()

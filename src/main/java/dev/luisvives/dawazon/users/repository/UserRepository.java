@@ -23,8 +23,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     /**
      * Busca un usuario activo por nombre de usuario.
      *
-     * @param value Nombre de usuario
-     * @return Usuario opcional
+     * @param value Nombre de usuario.
+     * @return Usuario opcional.
      */
     @Query("SELECT u FROM User u WHERE u.isDeleted=false AND u.userName= :value")
     Optional<User> findByUserNameAndIsDeletedFalse(String value);
@@ -32,16 +32,16 @@ public interface UserRepository extends JpaRepository<User, Long> {
     /**
      * Busca un usuario por nombre de usuario.
      *
-     * @param value Nombre de usuario
-     * @return Usuario opcional
+     * @param value Nombre de usuario.
+     * @return Usuario opcional.
      */
     Optional<User> findByUserName(String value);
 
     /**
      * Busca un usuario activo por email.
      *
-     * @param email Email del usuario
-     * @return Usuario opcional
+     * @param email Email del usuario.
+     * @return Usuario opcional.
      */
     @Query("SELECT u FROM User u WHERE u.isDeleted=false AND u.email= :email")
     Optional<User> findByEmailAndIsDeletedFalse(String email);
@@ -49,15 +49,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
     /**
      * Busca un usuario por email.
      *
-     * @param email Email del usuario
-     * @return Usuario opcional
+     * @param email Email del usuario.
+     * @return Usuario opcional.
      */
     Optional<User> findByEmail(String email);
 
     /**
      * Obtiene todos los usuarios activos (no borrados).
      *
-     * @return Lista de usuarios activos
+     * @return Lista de usuarios activos.
      */
     @Query("SELECT u FROM User u WHERE u.isDeleted=false")
     List<User> findAllActive();
@@ -65,8 +65,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     /**
      * Busca un usuario activo por ID.
      *
-     * @param id ID del usuario
-     * @return Usuario activo o null
+     * @param id ID del usuario.
+     * @return Usuario activo o null.
      */
     @Query("SELECT u FROM  User u WHERE u.id= :id AND u.isDeleted=false")
     User findActiveById(Long id);
@@ -74,7 +74,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     /**
      * Realiza un borrado lógico de un usuario.
      *
-     * @param id ID del usuario a eliminar
+     * @param id ID del usuario a eliminar.
      */
     @Modifying
     @Query("UPDATE User u SET u.isDeleted=true WHERE u.id=:id")
@@ -83,9 +83,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     /**
      * Busca usuarios con criterios y paginación.
      *
-     * @param criterio Especificación de criterios de búsqueda
-     * @param pageable Configuración de paginación
-     * @return Página de usuarios
+     * @param criterio Especificación de criterios de búsqueda.
+     * @param pageable Configuración de paginación.
+     * @return Página de usuarios.
      */
     Page<User> findAll(Specification<User> criterio, Pageable pageable);
 }

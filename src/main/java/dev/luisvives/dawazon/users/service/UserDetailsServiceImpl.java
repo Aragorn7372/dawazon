@@ -27,9 +27,9 @@ public class UserDetailsServiceImpl implements UserService {
      * usuario.
      * </p>
      *
-     * @param value Nombre de usuario o email
-     * @return Detalles del usuario
-     * @throws UsernameNotFoundException Si no se encuentra el usuario
+     * @param value Nombre de usuario o email.
+     * @return Detalles del usuario.
+     * @throws UsernameNotFoundException Si no se encuentra el usuario.
      */
     @Override
     public UserDetails loadUserByUsername(String value) throws UsernameNotFoundException {

@@ -28,53 +28,53 @@ public interface StorageService {
     void init();
 
     /**
-     * Almacena un fichero en el sistema de ficheros
+     * Almacena un fichero en el sistema de ficheros.
      *
-     * @param file fichero a almacenar
-     * @return nombre del fichero almacenado
+     * @param file fichero a almacenar.
+     * @return nombre del fichero almacenado.
      */
     String store(MultipartFile file);
 
     /**
-     * Devuelve un Stream de todos los ficheros almacenados
+     * Devuelve un Stream de todos los ficheros almacenados.
      *
-     * @return Stream de Paths
+     * @return Stream de Paths.
      */
     Stream<Path> loadAll();
 
     /**
-     * Devuelve el Path del fichero
+     * Devuelve el Path del fichero.
      *
-     * @param filename nombre del fichero
-     * @return Path del fichero
+     * @param filename nombre del fichero.
+     * @return Path del fichero.
      */
     Path load(String filename);
 
     /**
-     * Devuelve un recurso del fichero
+     * Devuelve un recurso del fichero.
      *
-     * @param filename nombre del fichero
-     * @return Recurso del fichero
+     * @param filename nombre del fichero.
+     * @return Recurso del fichero.
      */
     Resource loadAsResource(String filename);
 
     /**
-     * Borra un fichero del sistema de ficheros
+     * Borra un fichero del sistema de ficheros.
      *
-     * @param filename nombre del fichero
+     * @param filename nombre del fichero.
      */
     void delete(String filename);
 
     /**
-     * Borra todos los ficheros del sistema de ficheros
+     * Borra todos los ficheros del sistema de ficheros.
      */
     void deleteAll();
 
     /**
-     * Devuelve la URL del fichero
+     * Devuelve la URL del fichero.
      *
-     * @param filename nombre del fichero
-     * @return URL del fichero
+     * @param filename nombre del fichero.
+     * @return URL del fichero.
      */
     String getUrl(String filename);
 

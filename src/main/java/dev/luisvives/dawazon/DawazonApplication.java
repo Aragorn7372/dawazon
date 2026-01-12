@@ -21,7 +21,7 @@ public class DawazonApplication {
     /**
      * Punto de entrada de la aplicación.
      *
-     * @param args Argumentos de línea de comandos
+     * @param args Argumentos de línea de comandos.
      */
     public static void main(String[] args) {
         SpringApplication.run(DawazonApplication.class, args);

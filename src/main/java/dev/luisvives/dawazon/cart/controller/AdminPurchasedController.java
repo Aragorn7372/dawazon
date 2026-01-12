@@ -43,7 +43,6 @@ public class AdminPurchasedController {
      * Muestra el listado de ventas con filtros y paginación.
      *
      * @param model     Modelo de Spring MVC
-     * @param name      Filtro opcional por nombre
      * @param status    Filtro opcional por estado
      * @param page      Número de página
      * @param size      Tamaño de página
@@ -53,7 +52,6 @@ public class AdminPurchasedController {
      */
     @GetMapping({ "/ventas", "/ventas/" })
     public String sales(Model model,
-            @RequestParam(required = false) Optional<String> name,
             @RequestParam(required = false) Optional<String> status,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -63,7 +61,6 @@ public class AdminPurchasedController {
                 : Sort.by(sortBy).descending();
         // Creamos cómo va a ser la paginación
         Pageable pageable = PageRequest.of(page, size, sort);
-        // TODO: Implementar filtrado por status en el servicio
         val ventas = cartService.findAllSalesAsLines(Optional.empty(), true, pageable);
         val ganancias = cartService.calculateTotalEarnings(Optional.empty(), true);
         model.addAttribute("ventas", ventas);
@@ -77,7 +74,7 @@ public class AdminPurchasedController {
      *
      * @param ventaId   ID del carrito/venta
      * @param productId ID del producto
-     * @param CurrentId ID del usuario actual
+     * @param currentId ID del usuario actual
      * @param isAdmin   Si el usuario es administrador
      * @param model     Modelo de Spring MVC
      * @return Nombre de la vista "web/cart/venta-detalle"
@@ -85,10 +82,10 @@ public class AdminPurchasedController {
     @GetMapping("/ventas/{ventaId}/{productId}")
     public String saleDetails(@PathVariable String ventaId,
             @PathVariable String productId,
-            @ModelAttribute("currentUserId") Long CurrentId,
+            @ModelAttribute("currentUserId") Long currentId,
             @ModelAttribute("isAdmin") boolean isAdmin,
             Model model) {
-        val cartDto = cartService.getSaleLineByIds(ventaId, productId, CurrentId, isAdmin);
+        val cartDto = cartService.getSaleLineByIds(ventaId, productId, currentId, isAdmin);
         model.addAttribute("venta", cartDto);
         return "web/cart/venta-detalle";
     }
@@ -98,7 +95,7 @@ public class AdminPurchasedController {
      *
      * @param ventaId   ID del carrito/venta
      * @param productId ID del producto
-     * @param CurrentId ID del usuario actual
+     * @param currentId ID del usuario actual
      * @param isAdmin   Si el usuario es administrador
      * @param model     Modelo de Spring MVC
      * @return Redirección al listado de ventas
@@ -106,10 +103,10 @@ public class AdminPurchasedController {
     @GetMapping("/ventas/cancel/{ventaId}/{productId}")
     public String cancel(@PathVariable String ventaId,
             @PathVariable String productId,
-            @ModelAttribute("currentUserId") Long CurrentId,
+            @ModelAttribute("currentUserId") Long currentId,
             @ModelAttribute("isAdmin") boolean isAdmin,
             Model model) {
-        cartService.cancelSale(ventaId, productId, CurrentId, isAdmin);
+        cartService.cancelSale(ventaId, productId, currentId, isAdmin);
         return "redirect:/admin/ventas";
     }
 
@@ -118,7 +115,7 @@ public class AdminPurchasedController {
      *
      * @param ventaId   ID del carrito/venta
      * @param productId ID del producto
-     * @param CurrentId ID del usuario actual
+     * @param currentId ID del usuario actual
      * @param isAdmin   Si el usuario es administrador
      * @param model     Modelo de Spring MVC
      * @return Nombre de la vista "web/cart/venta-edit"
@@ -126,10 +123,10 @@ public class AdminPurchasedController {
     @GetMapping("/ventas/edit/{ventaId}/{productId}")
     public String edit(@PathVariable String ventaId,
             @PathVariable String productId,
-            @ModelAttribute("currentUserId") Long CurrentId,
+            @ModelAttribute("currentUserId") Long currentId,
             @ModelAttribute("isAdmin") boolean isAdmin,
             Model model) {
-        val cartDto = cartService.getSaleLineByIds(ventaId, productId, CurrentId, isAdmin);
+        val cartDto = cartService.getSaleLineByIds(ventaId, productId, currentId, isAdmin);
         model.addAttribute("venta", cartDto);
         return "web/cart/venta-edit";
     }

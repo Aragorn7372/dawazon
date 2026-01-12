@@ -15,9 +15,9 @@ public interface UserService extends UserDetailsService {
     /**
      * Carga un usuario por su nombre de usuario o email.
      *
-     * @param value Nombre de usuario o email
-     * @return Detalles del usuario
-     * @throws UsernameNotFoundException Si no se encuentra el usuario
+     * @param value Nombre de usuario o email.
+     * @return Detalles del usuario.
+     * @throws UsernameNotFoundException Si no se encuentra el usuario.
      */
     public UserDetails loadUserByUsername(String value) throws UsernameNotFoundException;
 }

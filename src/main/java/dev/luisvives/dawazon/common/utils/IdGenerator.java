@@ -23,7 +23,7 @@ public class IdGenerator implements IdentifierGenerator {
     /**
      * Genera un ID aleatorio con la longitud parametrizada.
      *
-     * @return ID alfanumérico generado
+     * @return ID alfanumérico generado.
      */
     private String generateId() {
         String charArray = "QWRTYPSDFGHJKLZXCVBNMqwrtypsdfghjklzxcvbnm1234567890-_";
@@ -38,9 +38,9 @@ public class IdGenerator implements IdentifierGenerator {
     /**
      * Método llamado por Hibernate para generar el ID de la entidad.
      *
-     * @param session Sesión de Hibernate
-     * @param object  Entidad para la que se genera el ID
-     * @return ID generado
+     * @param session Sesión de Hibernate.
+     * @param object  Entidad para la que se genera el ID.
+     * @return ID generado.
      */
     @Override
     public Object generate(SharedSessionContractImplementor session, Object object) {

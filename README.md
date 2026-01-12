@@ -236,12 +236,12 @@ Una vez desplegado, accede a:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    Spring Boot Application                   │
-│                         (Puerto 80)                          │
-└────────┬─────────────────────────────────────────────────────┘
+│                    Spring Boot Application                  │
+│                         (Puerto 80)                         │
+└────────┬────────────────────────────────────────────────────┘
          │
-    ┌────▼────────────────────────────────────────────┐
-    │         Spring Boot MVC Application             │
+    ┌────▼───────────────────────────────────────────┐
+    │         Spring Boot MVC Application            │
     │  ┌──────────┐  ┌──────────┐  ┌──────────┐      │
     │  │Controller│  │ Service  │  │Repository│      │
     │  └─────┬────┘  └─────┬────┘  └─────┬────┘      │
@@ -461,7 +461,7 @@ dawazon/
 │   │   │   │       ├── 📁 controller/
 │   │   │   │       │   └── StorageController.java
 │   │   │   │       └── 📁 service/
-│   │   │   │           └── StorageService. java
+│   │   │   │           └── StorageService.java
 │   │   │   │
 │   │   │   ├── 📁 config/                    # Configuración
 │   │   │   │   ├── SecurityConfig.java
@@ -507,7 +507,6 @@ dawazon/
 │   │   │
 │   │   └── 📁 resources/
 │   │       ├── application.properties
-│   │       ├── application. yml
 │   │       └── 📁 templates/                 # Plantillas Pebble
 │   │           └── 📁 web/
 │   │               ├── 📁 auth/
@@ -520,7 +519,7 @@ dawazon/
 │           └── (tests con Testcontainers)
 │
 ├── 📁 database/                              # Scripts DB
-│   ├── init. sql                              # Schema PostgreSQL
+│   ├── init.sql                              # Schema PostgreSQL
 │   └── tienda.js                             # Collections MongoDB
 │
 ├── 📁 storage-dir/                           # Almacenamiento
@@ -534,13 +533,13 @@ dawazon/
 ├── 📁 gradle/                                # Gradle wrapper
 ├── 📄 docker-compose.yml                     # Orquestación Docker
 ├── 📄 dockerfile                             # Dockerfile multi-stage
-├── 📄 build.gradle. kts                       # Build Gradle
+├── 📄 build.gradle.kts                       # Build Gradle
 ├── 📄 settings.gradle.kts                    # Settings Gradle
 ├── 📄 gradlew                                # Gradle wrapper script
-├── 📄 . env                                   # Variables de entorno
-├── 📄 . gitignore
+├── 📄 .env                                   # Variables de entorno
+├── 📄 .gitignore
 ├── 📄 LICENCE
-├── 📄 TERMS_OF_USE. md
+├── 📄 TERMS_OF_USE.md
 └── 📄 README.md
 ```
 
@@ -594,13 +593,5 @@ Este proyecto está bajo la licencia especificada en el archivo `LICENCE`.
 
 **Repositorio**:  [https://github.com/Aragorn7372/dawazon](https://github.com/Aragorn7372/dawazon)
 
----
 
-## 🎯 Notas
-
-Este README ha sido actualizado para reflejar con precisión:
-- ✅ Los endpoints **realmente implementados** en los controladores
-- ✅ La estructura de carpetas **real** del proyecto
-- ✅ Las tecnologías **realmente utilizadas** según `build.gradle.kts`
-- ✅ Las funcionalidades **disponibles** actualmente
 

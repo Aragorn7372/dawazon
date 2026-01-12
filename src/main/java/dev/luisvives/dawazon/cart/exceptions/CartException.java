@@ -5,6 +5,10 @@ package dev.luisvives.dawazon.cart.exceptions;
  *
  * @see NotFoundException
  * @see ProductQuantityExceededException
+ * @see NotFoundException
+ * @see AttemptAmountExceededException
+ * @see UnauthorizedException
+ * @see InsufficientStockException
  */
 public abstract class CartException extends RuntimeException {
     /**
@@ -12,7 +16,7 @@ public abstract class CartException extends RuntimeException {
      *
      * @param message Mensaje descriptivo del error
      */
-    public CartException(String message) {
+    protected CartException(String message) {
         super(message);
     }
 
@@ -44,7 +48,7 @@ public abstract class CartException extends RuntimeException {
      */
     public static class AttemptAmountExceededException extends CartException {
         public AttemptAmountExceededException() {
-            super("La cantidad de tries supera el stock");
+            super("La cantidad de tries superado, vuelva a intentarlo");
         }
     }
 

@@ -98,7 +98,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void addProduct_whenProductAndCartExist_addsProductSuccessfully() {
+    void addProductwhenProductAndCartExistaddsProductSuccessfully() {
         when(productRepository.findById(testProductId)).thenReturn(Optional.of(testProduct));
         when(cartRepository.findById(testCartId)).thenReturn(Optional.of(testCart));
         when(cartRepository.save(any(Cart.class))).thenReturn(testCart);
@@ -113,7 +113,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void addProduct_whenProductNotFound_throwsProductNotFoundException() {
+    void addProductwhenProductNotFoundthrowsProductNotFoundException() {
         when(productRepository.findById(testProductId)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> cartService.addProduct(testCartId, testProductId))
@@ -124,7 +124,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void addProduct_whenCartNotFound_throwsCartNotFoundException() {
+    void addProductwhenCartNotFoundthrowsCartNotFoundException() {
         when(productRepository.findById(testProductId)).thenReturn(Optional.of(testProduct));
         when(cartRepository.findById(testCartId)).thenReturn(Optional.empty());
 
@@ -137,7 +137,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void removeProduct_whenProductInCart_removesSuccessfully() {
+    void removeProductwhenProductInCartremovesSuccessfully() {
         CartLine existingLine = CartLine.builder()
                 .productId(testProductId)
                 .quantity(2)
@@ -160,7 +160,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void removeProduct_whenCartNotFound_throwsCartNotFoundException() {
+    void removeProductwhenCartNotFoundthrowsCartNotFoundException() {
         when(cartRepository.findById(testCartId)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> cartService.removeProduct(testCartId, testProductId))
@@ -171,7 +171,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void getById_whenCartExists_returnsCart() {
+    void getByIdwhenCartExistsreturnsCart() {
         when(cartRepository.findById(testCartId)).thenReturn(Optional.of(testCart));
 
         Cart result = cartService.getById(testCartId);
@@ -181,7 +181,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void getById_whenCartNotFound_throwsCartNotFoundException() {
+    void getByIdwhenCartNotFoundthrowsCartNotFoundException() {
         when(cartRepository.findById(testCartId)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> cartService.getById(testCartId))
@@ -191,7 +191,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void save_whenCartSaved_marksAsPurchasedAndCreatesNewCart() {
+    void saveWhenCartSavedmarksAsPurchasedAndCreatesNewCart() {
         CartLine line = CartLine.builder()
                 .productId(testProductId)
                 .quantity(1)
@@ -213,7 +213,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void save_whenCartSaved_setsAllLinesToPreparado() {
+    void savewhenCartSavedsetsAllLinesToPreparado() {
         CartLine line1 = CartLine.builder()
                 .productId("PROD-1")
                 .quantity(1)
@@ -239,7 +239,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void updateStockWithValidation_whenValidQuantity_updatesSuccessfully() {
+    void updateStockWithValidationwhenValidQuantityupdatesSuccessfully() {
         CartLine existingLine = CartLine.builder()
                 .productId(testProductId)
                 .quantity(1)
@@ -268,7 +268,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void updateStockWithValidation_whenQuantityLessThanOne_throwsIllegalArgumentException() {
+    void updateStockWithValidationwhenQuantityLessThanOnethrowsIllegalArgumentException() {
         CartStockRequestDto requestDto = new CartStockRequestDto();
         requestDto.setCartId(testCartId);
         requestDto.setProductId(testProductId);
@@ -285,7 +285,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void updateStockWithValidation_whenInsufficientStock_throwsInsufficientStockException() {
+    void updateStockWithValidationwhenInsufficientStockthrowsInsufficientStockException() {
         CartLine existingLine = CartLine.builder()
                 .productId(testProductId)
                 .quantity(1)
@@ -313,7 +313,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void updateStockWithValidation_whenProductNotFound_throwsProductNotFoundException() {
+    void updateStockWithValidationwhenProductNotFoundthrowsProductNotFoundException() {
         CartStockRequestDto requestDto = new CartStockRequestDto();
         requestDto.setCartId(testCartId);
         requestDto.setProductId(testProductId);
@@ -330,7 +330,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void createNewCart_whenUserExists_createsNewCart() {
+    void createNewCartwhenUserExistscreatesNewCart() {
         when(userRepository.findById(testUserId)).thenReturn(Optional.of(testUser));
         when(cartRepository.save(any(Cart.class))).thenReturn(testCart);
 
@@ -342,7 +342,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void checkout_whenStockAvailable_processesCheckoutSuccessfully() {
+    void checkoutwhenStockAvailableprocessesCheckoutSuccessfully() {
         CartLine line = CartLine.builder()
                 .productId(testProductId)
                 .quantity(2)
@@ -371,7 +371,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void checkout_whenInsufficientStock_throwsProductQuantityExceededException() {
+    void checkoutwhenInsufficientStockthrowsProductQuantityExceededException() {
         CartLine line = CartLine.builder()
                 .productId(testProductId)
                 .quantity(20)
@@ -396,7 +396,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void restoreStock_whenCartNotPurchased_restoresStock() {
+    void restoreStockwhenCartNotPurchasedrestoresStock() {
         CartLine line = CartLine.builder()
                 .productId(testProductId)
                 .quantity(3)
@@ -422,7 +422,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void restoreStock_whenCartPurchased_doesNotRestoreStock() {
+    void restoreStockwhenCartPurchaseddoesNotRestoreStock() {
         testCart.setPurchased(true);
 
         when(cartRepository.findById(testCartId)).thenReturn(Optional.of(testCart));
@@ -436,7 +436,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void deleteById_whenCartExists_emptiesCart() {
+    void deleteByIdwhenCartExistsemptiesCart() {
         CartLine line = CartLine.builder()
                 .productId(testProductId)
                 .quantity(2)
@@ -455,7 +455,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void deleteById_whenCartNotFound_throwsCartNotFoundException() {
+    void deleteByIdwhenCartNotFoundthrowsCartNotFoundException() {
         when(cartRepository.findById(testCartId)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> cartService.deleteById(testCartId))
@@ -466,7 +466,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void variosPorId_whenAllProductsExist_returnsAllProducts() {
+    void variosPorIdwhenAllProductsExistreturnsAllProducts() {
         String productId1 = "PROD-1";
         String productId2 = "PROD-2";
         List<String> productIds = List.of(productId1, productId2);
@@ -486,7 +486,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void variosPorId_whenProductNotFound_throwsProductNotFoundException() {
+    void variosPorIdwhenProductNotFoundthrowsProductNotFoundException() {
         String productId1 = "PROD-1";
         String productId2 = "PROD-MISSING";
         List<String> productIds = List.of(productId1, productId2);
@@ -504,7 +504,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void getCartByUserId_whenUserHasActiveCart_returnsCart() {
+    void getCartByUserIdwhenUserHasActiveCartreturnsCart() {
         when(cartRepository.findByUserIdAndPurchased(testUserId, false))
                 .thenReturn(Optional.of(testCart));
 
@@ -515,7 +515,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void getCartByUserId_whenNoActiveCart_throwsCartNotFoundException() {
+    void getCartByUserIdwhenNoActiveCartthrowsCartNotFoundException() {
         when(cartRepository.findByUserIdAndPurchased(testUserId, false))
                 .thenReturn(Optional.empty());
 
@@ -526,7 +526,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void cancelSale_whenAdminCancels_cancelsSuccessfully() {
+    void cancelSalewhenAdminCancelcancelsSuccessfully() {
         String cartIdStr = testCartId.toHexString();
         CartLine line = CartLine.builder()
                 .productId(testProductId)
@@ -551,7 +551,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void cancelSale_whenManagerOwnsProduct_cancelsSuccessfully() {
+    void cancelSalewhenManagerOwnsProductcancelsSuccessfully() {
         String cartIdStr = testCartId.toHexString();
         CartLine line = CartLine.builder()
                 .productId(testProductId)
@@ -577,7 +577,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void cancelSale_whenUnauthorized_throwsUnauthorizedException() {
+    void cancelSalewhenUnauthorizedthrowsUnauthorizedException() {
         String cartIdStr = testCartId.toHexString();
         Long unauthorizedUserId = 999L;
 
@@ -603,7 +603,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void cancelSale_whenAlreadyCanceled_doesNotRestoreStockAgain() {
+    void cancelSalewhenAlreadyCanceleddoesNotRestoreStockAgain() {
         String cartIdStr = testCartId.toHexString();
         CartLine line = CartLine.builder()
                 .productId(testProductId)
@@ -625,7 +625,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void update_whenLineExists_updatesStatusSuccessfully() {
+    void updatewhenLineExistsupdatesStatusSuccessfully() {
         CartLine line = CartLine.builder()
                 .productId(testProductId)
                 .quantity(2)
@@ -647,7 +647,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void update_whenCartNotFound_throwsCartNotFoundException() {
+    void updatewhenCartNotFoundthrowsCartNotFoundException() {
         dev.luisvives.dawazon.cart.dto.LineRequestDto lineRequestDto = new dev.luisvives.dawazon.cart.dto.LineRequestDto(
                 testCartId, testProductId, Status.ENVIADO);
 
@@ -661,7 +661,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void updateStock_whenCartAndLineExist_updatesQuantitySuccessfully() {
+    void updateStockwhenCartAndLineExistupdatesQuantitySuccessfully() {
         CartLine existingLine = CartLine.builder()
                 .productId(testProductId)
                 .quantity(2)
@@ -688,7 +688,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void updateStock_whenCartNotFound_throwsCartNotFoundException() {
+    void updateStockwhenCartNotFoundthrowsCartNotFoundException() {
         CartStockRequestDto requestDto = new CartStockRequestDto();
         requestDto.setCartId(testCartId);
         requestDto.setProductId(testProductId);
@@ -703,7 +703,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void getSaleLineByIds_whenAdminRequests_returnsSaleLineDto() {
+    void getSaleLineByIdswhenAdminRequestsreturnsSaleLineDto() {
         String cartIdStr = testCartId.toHexString();
         CartLine line = CartLine.builder()
                 .productId(testProductId)
@@ -730,7 +730,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void getSaleLineByIds_whenManagerOwnsProduct_returnsSaleLineDto() {
+    void getSaleLineByIdswhenManagerOwnsProductreturnsSaleLineDto() {
         String cartIdStr = testCartId.toHexString();
         CartLine line = CartLine.builder()
                 .productId(testProductId)
@@ -757,7 +757,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void getSaleLineByIds_whenUnauthorized_throwsUnauthorizedException() {
+    void getSaleLineByIdswhenUnauthorizedthrowsUnauthorizedException() {
         String cartIdStr = testCartId.toHexString();
         Long unauthorizedUserId = 999L;
 
@@ -781,7 +781,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void getSaleLineByIds_whenCartNotFound_throwsCartNotFoundException() {
+    void getSaleLineByIdswhenCartNotFoundthrowsCartNotFoundException() {
         String cartIdStr = testCartId.toHexString();
 
         when(cartRepository.findById(testCartId)).thenReturn(Optional.empty());
@@ -793,7 +793,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void getSaleLineByIds_whenLineNotFound_throwsCartNotFoundException() {
+    void getSaleLineByIdswhenLineNotFoundthrowsCartNotFoundException() {
         String cartIdStr = testCartId.toHexString();
         String wrongProductId = "WRONG-PRODUCT";
 
@@ -808,7 +808,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void findAll_whenNoFilters_returnsAllCarts() {
+    void findAllwhenNoFiltersreturnsAllCarts() {
         List<Cart> carts = List.of(testCart);
         long count = 1;
 
@@ -829,7 +829,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void findAll_whenFilterByUserId_returnsUserCarts() {
+    void findAllwhenFilterByUserIdreturnsUserCarts() {
         List<Cart> carts = List.of(testCart);
         long count = 1;
 
@@ -848,7 +848,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void findAll_whenFilterByPurchased_returnsPurchasedCarts() {
+    void findAllwhenFilterByPurchasedreturnsPurchasedCarts() {
         testCart.setPurchased(true);
         List<Cart> carts = List.of(testCart);
         long count = 1;
@@ -868,7 +868,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void calculateTotalEarnings_whenAdminWithNoManager_returnsAllEarnings() {
+    void calculateTotalEarningswhenAdminWithNoManagerreturnsAllEarnings() {
         CartLine line = CartLine.builder()
                 .productId(testProductId)
                 .quantity(2)
@@ -890,7 +890,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void calculateTotalEarnings_whenManagerWithProducts_returnsManagerEarnings() {
+    void calculateTotalEarningswhenManagerWithProductsreturnsManagerEarnings() {
         CartLine line = CartLine.builder()
                 .productId(testProductId)
                 .quantity(2)
@@ -913,7 +913,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void cleanupExpiredCheckouts_whenNoExpiredCarts_returnsZero() {
+    void cleanupExpiredCheckoutswhenNoExpiredCartsreturnsZero() {
         when(mongoTemplate.find(any(org.springframework.data.mongodb.core.query.Query.class), eq(Cart.class)))
                 .thenReturn(List.of());
 
@@ -924,7 +924,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void cleanupExpiredCheckouts_whenExpiredCartExists_restoresStockAndReturnsCount() {
+    void cleanupExpiredCheckoutswhenExpiredCartExistsrestoresStockAndReturnsCount() {
         CartLine line = CartLine.builder()
                 .productId(testProductId)
                 .quantity(3)
@@ -952,17 +952,15 @@ class CartServiceImplTest {
     }
 
     @Test
-    void sendConfirmationEmailAsync_whenCalled_startsThreadSuccessfully() throws InterruptedException {
+    void sendConfirmationEmailAsyncwhenCalledstartsThreadSuccessfully() throws InterruptedException {
         cartService.sendConfirmationEmailAsync(testCart);
 
         Thread.sleep(100);
 
-        // No verification needed, just ensure it doesn't throw an exception
-        // The method creates a daemon thread and returns immediately
     }
 
     @Test
-    void findAllSalesAsLines_whenAdminWithNoFilter_returnsAllSalesLines() {
+    void findAllSalesAsLineswhenAdminWithNoFilterreturnsAllSalesLines() {
         CartLine line = CartLine.builder()
                 .productId(testProductId)
                 .quantity(2)
@@ -991,7 +989,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void findAllSalesAsLines_whenManagerFilteredNotAdmin_returnsOnlyManagerSales() {
+    void findAllSalesAsLineswhenManagerFilteredNotAdminreturnsOnlyManagerSales() {
         CartLine line1 = CartLine.builder()
                 .productId(testProductId)
                 .quantity(2)
@@ -1021,7 +1019,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void findAllSalesAsLines_whenErrorProcessingLine_skipsLineAndContinues() {
+    void findAllSalesAsLineswhenErrorProcessingLineskipsLineAndContinues() {
         CartLine line1 = CartLine.builder()
                 .productId(testProductId)
                 .quantity(2)
@@ -1052,12 +1050,11 @@ class CartServiceImplTest {
                         true,
                         org.springframework.data.domain.PageRequest.of(0, 10));
 
-        // Should only have 1 line (the one that succeeded)
         assertThat(result.getContent()).hasSize(1);
     }
 
     @Test
-    void calculateTotalEarnings_whenManagerNotAdminWithoutManagerId_returnsZero() {
+    void calculateTotalEarningswhenManagerNotAdminWithoutManagerIdreturnsZero() {
         CartLine line = CartLine.builder()
                 .productId(testProductId)
                 .quantity(2)
@@ -1078,7 +1075,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void getSaleLineByIds_whenUserNotFound_throwsUserNotFoundException() {
+    void getSaleLineByIdswhenUserNotFoundthrowsUserNotFoundException() {
         String cartIdStr = testCartId.toHexString();
         CartLine line = CartLine.builder()
                 .productId(testProductId)
@@ -1100,7 +1097,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void checkout_whenUserNotFound_throwsUserNotFoundException() {
+    void checkoutwhenUserNotFoundthrowsUserNotFoundException() {
         testCart.setCartLines(new ArrayList<>());
 
         when(userRepository.findById(testUserId)).thenReturn(Optional.empty());
@@ -1112,7 +1109,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void cleanupExpiredCheckouts_whenExceptionDuringCleanup_logsErrorAndContinues() {
+    void cleanupExpiredCheckoutswhenExceptionDuringCleanuplogsErrorAndContinues() {
         CartLine line = CartLine.builder()
                 .productId(testProductId)
                 .quantity(3)
@@ -1132,13 +1129,12 @@ class CartServiceImplTest {
 
         int result = cartService.cleanupExpiredCheckouts();
 
-        assertThat(result).isZero(); // Should be 0 because the cleanup failed
+        assertThat(result).isZero();
         verify(mongoTemplate).find(any(org.springframework.data.mongodb.core.query.Query.class), eq(Cart.class));
     }
 
     @Test
-    void findAllSalesAsLines_whenPaginationBeyondSize_returnsEmptyList() {
-        // Empty cart list - ensures pagination returns empty when start >= size
+    void findAllSalesAsLineswhenPaginationBeyondSizereturnsEmptyList() {
         when(mongoTemplate.find(any(org.springframework.data.mongodb.core.query.Query.class), eq(Cart.class)))
                 .thenReturn(List.of());
 
@@ -1146,7 +1142,7 @@ class CartServiceImplTest {
                 .findAllSalesAsLines(
                         Optional.empty(),
                         true,
-                        org.springframework.data.domain.PageRequest.of(10, 10) // Page 10, way beyond the data
+                        org.springframework.data.domain.PageRequest.of(10, 10)
                 );
 
         assertThat(result.getContent()).isEmpty();
@@ -1154,7 +1150,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void calculateTotalEarnings_whenProductNotFoundReturnsNull_filtersOut() {
+    void calculateTotalEarningswhenProductNotFoundReturnsNullfiltersOut() {
         CartLine line1 = CartLine.builder()
                 .productId(testProductId)
                 .quantity(2)
@@ -1180,28 +1176,23 @@ class CartServiceImplTest {
 
         Double result = cartService.calculateTotalEarnings(Optional.of(testUserId), false);
 
-        // Should only count the first product (100.0), second one is filtered out as
-        // null
         assertThat(result).isEqualTo(100.0);
     }
 
     @Test
-    void sendConfirmationEmailAsync_whenEmailServiceThrowsException_logsWarning() throws InterruptedException {
+    void sendConfirmationEmailAsyncwhenEmailServiceThrowsExceptionlogsWarning() throws InterruptedException {
         doThrow(new RuntimeException("Email service error"))
                 .when(orderEmailService).enviarConfirmacionPedidoHtml(any(Cart.class));
 
-        // Should not throw exception, just log warning
         cartService.sendConfirmationEmailAsync(testCart);
 
-        // Wait for async thread to complete
         Thread.sleep(200);
 
-        // No exception should be thrown, method completes successfully
         verify(orderEmailService).enviarConfirmacionPedidoHtml(testCart);
     }
 
     @Test
-    void getSaleLineByIds_whenProductNotFound_throwsProductNotFoundException() {
+    void getSaleLineByIdswhenProductNotFoundthrowsProductNotFoundException() {
         String cartIdStr = testCartId.toHexString();
         CartLine line = CartLine.builder()
                 .productId("MISSING-PRODUCT")
@@ -1222,7 +1213,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void updateStockWithValidation_whenCartNotFound_throwsCartNotFoundException() {
+    void updateStockWithValidationwhenCartNotFoundthrowsCartNotFoundException() {
         CartStockRequestDto requestDto = new CartStockRequestDto();
         requestDto.setCartId(testCartId);
         requestDto.setProductId(testProductId);
@@ -1237,7 +1228,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void checkout_whenProductNotFoundInLoop_throwsProductNotFoundException() {
+    void checkoutwhenProductNotFoundInLoopthrowsProductNotFoundException() {
         CartLine line = CartLine.builder()
                 .productId("MISSING-PRODUCT")
                 .quantity(2)
@@ -1258,7 +1249,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void restoreStock_whenCartNotFound_throwsRuntimeException() {
+    void restoreStockwhenCartNotFoundthrowsRuntimeException() {
         when(cartRepository.findById(testCartId)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> cartService.restoreStock(testCartId))
@@ -1269,7 +1260,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void cancelSale_whenCartNotFound_throwsCartNotFoundException() {
+    void cancelSalewhenCartNotFoundthrowsCartNotFoundException() {
         String cartIdStr = testCartId.toHexString();
 
         when(cartRepository.findById(testCartId)).thenReturn(Optional.empty());
@@ -1282,9 +1273,9 @@ class CartServiceImplTest {
     }
 
     @Test
-    void cancelSale_whenProductLineNotFound_throwsCartNotFoundException() {
+    void cancelSalewhenProductLineNotFoundthrowsCartNotFoundException() {
         String cartIdStr = testCartId.toHexString();
-        testCart.setCartLines(new ArrayList<>()); // Empty lines
+        testCart.setCartLines(new ArrayList<>());
 
         when(cartRepository.findById(testCartId)).thenReturn(Optional.of(testCart));
 
@@ -1296,7 +1287,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void cancelSale_whenProductNotFound_throwsProductNotFoundException() {
+    void cancelSalewhenProductNotFoundthrowsProductNotFoundException() {
         String cartIdStr = testCartId.toHexString();
         CartLine line = CartLine.builder()
                 .productId(testProductId)
@@ -1317,7 +1308,7 @@ class CartServiceImplTest {
     }
 
     @Test
-    void removeProduct_whenSecondFindByIdFails_throwsCartNotFoundException() {
+    void removeProductwhenSecondFindByIdFailsthrowsCartNotFoundException() {
         CartLine existingLine = CartLine.builder()
                 .productId(testProductId)
                 .quantity(2)
@@ -1327,10 +1318,9 @@ class CartServiceImplTest {
 
         testCart.setCartLines(new ArrayList<>(List.of(existingLine)));
 
-        // First findById succeeds, second one fails
         when(cartRepository.findById(testCartId))
-                .thenReturn(Optional.of(testCart)) // First call succeeds
-                .thenReturn(Optional.empty()); // Second call fails
+                .thenReturn(Optional.of(testCart))
+                .thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> cartService.removeProduct(testCartId, testProductId))
                 .isInstanceOf(CartException.NotFoundException.class)

@@ -13,14 +13,14 @@ public interface OrderEmailService {
     /**
      * Envía email de confirmación de pedido en HTML simple.
      *
-     * @param pedido El pedido para el cual enviar la confirmación
+     * @param pedido El pedido para el cual enviar la confirmación.
      */
     void enviarConfirmacionPedido(Cart pedido);
 
     /**
      * Envía email de confirmación de pedido en formato HTML completo y estilizado.
      *
-     * @param pedido El pedido para el cual enviar la confirmación
+     * @param pedido El pedido para el cual enviar la confirmación.
      */
     void enviarConfirmacionPedidoHtml(Cart pedido);
 }

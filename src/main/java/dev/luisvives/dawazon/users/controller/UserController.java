@@ -21,7 +21,6 @@ import dev.luisvives.dawazon.users.mapper.UserMapper;
 import dev.luisvives.dawazon.users.models.User;
 import dev.luisvives.dawazon.users.service.AuthService;
 import dev.luisvives.dawazon.users.service.FavService;
-import dev.luisvives.dawazon.users.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -46,6 +45,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -68,54 +68,51 @@ public class UserController {
     private final FavService favService;
     private final CartServiceImpl cartService;
     private final UserMapper userMapper;
-    private final UserService userService;
     private final ProductMapper mapper;
 
     /**
      * Constructor con inyección de dependencias.
      *
-     * @param authService    Servicio de autenticación y usuarios
-     * @param productService Servicio de productos
-     * @param favService     Servicio de favoritos
-     * @param cartService    Servicio de carritos
-     * @param userMapper     Mapper de usuarios
-     * @param userService    Servicio de UserDetails
+     * @param authService    Servicio de autenticación y usuarios.
+     * @param productService Servicio de productos.
+     * @param favService     Servicio de favoritos.
+     * @param cartService    Servicio de carritos.
+     * @param userMapper     Mapper de usuarios.
      */
     @Autowired
     public UserController(AuthService authService, ProductServiceImpl productService, FavService favService,
-            CartServiceImpl cartService, UserMapper userMapper, UserService userService, ProductMapper mapper) {
+            CartServiceImpl cartService, UserMapper userMapper, ProductMapper mapper) {
         this.authService = authService;
         this.productService = productService;
         this.favService = favService;
         this.cartService = cartService;
         this.userMapper = userMapper;
-        this.userService = userService;
         this.mapper = mapper;
     }
 
     /**
      * Muestra el perfil del usuario autenticado.
      *
-     * @param model Modelo de Spring MVC
-     * @return Vista del perfil de usuario
+     * @param model Modelo de Spring MVC.
+     * @return Vista del perfil de usuario.
      */
     @GetMapping({ "", "/" })
     public String index(Model model) {
-        log.info("[GET /auth/me] Cargando perfil de ususario");
+        log.info("userController: Cargando perfil de usuario");
 
         val sessionUser = (User) model.getAttribute("currentUser");
         if (sessionUser == null) {
-            log.error("El usuario actual es nulo");
-            throw new RuntimeException("El usuario actual es nulo - no autenticado");
+            log.error("userController: El usuario actual es nulo");
+            throw new RuntimeException("userController: El usuario actual es nulo - no autenticado");
         }
 
         val freshUser = authService.findById(sessionUser.getId());
         if (freshUser == null) {
-            throw new RuntimeException("Usuario no encontrado en la bd: ID=" + sessionUser.getId());
+            throw new RuntimeException("userController: Usuario no encontrado en la bd: ID=" + sessionUser.getId());
         }
 
-        log.info("[GET /auth/me] Usuario cargado: ID={}, Username={}", freshUser.getId(), freshUser.getUsername());
-        log.info("[GET /auth/me] Datos de cliente: {}", freshUser.getClient());
+        log.info("userController:  Usuario cargado: ID={}, Username={}", freshUser.getId(), freshUser.getUsername());
+        log.info("userController:  Datos de cliente: {}", freshUser.getClient());
 
         model.addAttribute("user", freshUser);
         return "web/user/userProfile";
@@ -124,14 +121,14 @@ public class UserController {
     /**
      * Muestra el formulario de edición del perfil de usuario.
      *
-     * @param model Modelo de Spring MVC
-     * @return Vista de edición de usuario
+     * @param model Modelo de Spring MVC.
+     * @return Vista de edición de usuario.
      */
     @GetMapping("/edit")
     public String edit(Model model) {
-        log.info("[GET /auth/me/edit] Cargando formulario de edicion de usuario");
+        log.info("userController:  Cargando formulario de edicion de usuario");
         val user = (User) model.getAttribute("currentUser");
-        log.info("[GET /auth/me/edit] Usuario actual: ID={}, Username={}", user.getId(), user.getUsername());
+        log.info("userController:  Usuario actual: ID={}, Username={}", user.getId(), user.getUsername());
         model.addAttribute("user", user);
         return "web/user/editUserAdmin";
     }
@@ -143,24 +140,24 @@ public class UserController {
      * y actualiza la sesión de seguridad con los nuevos datos.
      * </p>
      *
-     * @param updateUser    DTO con datos actualizados
-     * @param bindingResult Resultado de validación
-     * @param model         Modelo de Spring MVC
-     * @param file          Archivo de avatar opcional
-     * @return Redirección al perfil, a la vista de edición en caso de error
+     * @param updateUser    DTO con datos actualizados.
+     * @param bindingResult Resultado de validación.
+     * @param model         Modelo de Spring MVC.
+     * @param file          Archivo de avatar opcional.
+     * @return Redirección al perfil, a la vista de edición en caso de error.
      */
     @PostMapping("/edit")
     public String edit(@Valid @ModelAttribute("user") UserRequestDto updateUser,
             BindingResult bindingResult, Model model,
             @RequestParam(value = "avatar", required = false) MultipartFile file) {
-        log.info("[POST /auth/me/edit] Editar request de usuario");
-        log.info("[POST /auth/me/edit] UpdateUser data: nombre={}, email={}, telefono={}",
+        log.info("userController:  Editar request de usuario");
+        log.info("userController:  UpdateUser datos: nombre={}, email={}, telefono={}",
                 updateUser.getNombre(), updateUser.getEmail(), updateUser.getTelefono());
-        log.info("[POST /auth/me/edit] Archivo de avatar: {}, size: {}",
+        log.info("userController:  Archivo de avatar: {}, size: {}",
                 file != null && !file.isEmpty(), file != null ? file.getSize() : 0);
 
         if (bindingResult.hasErrors()) {
-            log.error("[POST /auth/me/edit] Errores de validacion: {}", bindingResult.getAllErrors());
+            log.error("userController:  Errores de validación: {}", bindingResult.getAllErrors());
             // Volver a mostrar el formulario de edición con los errores
             val currentUser = (User) model.getAttribute("currentUser");
             model.addAttribute("user", currentUser);
@@ -168,31 +165,31 @@ public class UserController {
         }
 
         val id = (Long) model.getAttribute("currentUserId");
-        log.info("[POST /auth/me/edit] ID del usuario actual: {}", id);
+        log.info("userController:  ID del usuario actual: {}", id);
 
-        log.info("[POST /auth/me/edit] Llamando a authService.updateCurrentUser...");
+        log.info("userController: Llamando a authService.updateCurrentUser...");
         val userUpdated = authService.updateCurrentUser(id, updateUser);
-        log.info("[POST /auth/me/edit] Usuario actualizado cone exito: ID={}, Username={}",
+        log.info("userController:  Usuario actualizado cone éxito: ID={}, Username={}",
                 userUpdated.getId(), userUpdated.getUsername());
 
         User finalUser;
         if (file != null && !file.isEmpty()) {
-            log.info("[POST /auth/me/edit] Llamando a authService.updateImage...");
+            log.info("userController:  Llamando a authService.updateImage...");
             finalUser = authService.updateImage(id, file);
-            log.info("[POST /auth/me/edit] Imagen actualizada correctamente, nuevo avatar: {}",
+            log.info("userController:  Imagen actualizada correctamente, nuevo avatar: {}",
                     finalUser.getAvatar());
         } else {
-            log.info("[POST /auth/me/edit] No hay avatar para actualizar");
+            log.info("userController:  No hay avatar para actualizar");
             finalUser = userUpdated;
         }
 
-        log.info("[POST /auth/me/edit] Actualizando sesion de spring con nuevos datos de usuario");
+        log.info("userController:  Actualizando sesión de spring con nuevos datos de usuario");
         val authentication = new UsernamePasswordAuthenticationToken(
                 finalUser, finalUser.getPassword(), finalUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        log.info("[POST /auth/me/edit] SecurityContext actualizado correctamente");
+        log.info("userController:  SecurityContext actualizado correctamente");
 
-        log.info("[POST /auth/me/edit] Redirect a /auth/me");
+        log.info("userController: Redirect a /auth/me");
         return "redirect:/auth/me";
     }
 
@@ -235,7 +232,7 @@ public class UserController {
      * @param size      Tamaño de página (por defecto 9)
      * @param sortBy    Campo de ordenamiento (por defecto "id")
      * @param direction Dirección de ordenamiento: asc o desc (por defecto "asc")
-     * @return Nombre de la vista Thymeleaf "web/productos/lista"
+     * @return Nombre de la vista "web/productos/lista"
      */
     @PreAuthorize("hasRole('MANAGER')")
     @GetMapping({ "/products", "/products/" })
@@ -271,17 +268,15 @@ public class UserController {
     public String saveProduct(@Valid @ModelAttribute("producto") PostProductRequestDto product,
             BindingResult bindingResult, Model model,
             @RequestParam("file") List<MultipartFile> file) {
-        log.info("===== saveProduct CALLED =====");
-        log.info("Product data received: name={}, category={}, price={}, stock={}, description length={}",
+        log.info("saveProduct llamado");
+        log.info("Datos de producto: name={}, category={}, price={}, stock={}, description length={}",
                 product.getName(), product.getCategory(), product.getPrice(), product.getStock(),
                 product.getDescription() != null ? product.getDescription().length() : 0);
-        log.info("Number of files uploaded: {}", file != null ? file.size() : 0);
+        log.info("Número de archivos subidos: {}", file != null ? file.size() : 0);
 
         if (bindingResult.hasErrors()) {
-            log.error("Validation errors found:");
-            bindingResult.getAllErrors().forEach(error -> {
-                log.error("  - {}", error.getDefaultMessage());
-            });
+            log.error("Errores de validación:");
+            bindingResult.getAllErrors().forEach(error -> log.error(" error: - {}", error.getDefaultMessage()));
             model.addAttribute("status", 400);
             model.addAttribute("title", "El producto no es válido");
             model.addAttribute("message",
@@ -290,19 +285,19 @@ public class UserController {
         }
 
         Long userId = (Long) model.getAttribute("currentUserId");
-        log.info("Setting creator ID: {}", userId);
+        log.info("Fijando ID de usuario: {}", userId);
         product.setCreatorId(userId);
 
-        log.info("Calling productService.save()...");
+        log.info("Llamando a productService.save()...");
         val savedProduct = productService.save(product);
-        log.info("Product saved successfully with ID: {}", savedProduct.getId());
+        log.info("Se ha guardado con éxito el producto con id: {}", savedProduct.getId());
 
-        log.info("Uploading images for product ID: {}", savedProduct.getId());
+        log.info("Actualizando las imágenes del producto con ID: {}", savedProduct.getId());
         productService.updateOrSaveImage(savedProduct.getId(), file);
-        log.info("Images uploaded successfully");
+        log.info("Imágenes subidas correctamente");
 
         String redirectUrl = "redirect:/products/" + savedProduct.getId();
-        log.info("Redirecting to: {}", redirectUrl);
+        log.info("Redirigiendo a: {}", redirectUrl);
         return redirectUrl;
     }
 
@@ -349,7 +344,7 @@ public class UserController {
         }
         product.setCreatorId((Long) model.getAttribute("currentUserId"));
         val userId = productService.getUserProductId(product.getId());
-        if (userId != product.getCreatorId()) {
+        if (!Objects.equals(userId, product.getCreatorId())) {
             throw new UserException.UserPermissionDeclined("No puedes editar el producto de otro usuario");
         }
         val savedProduct = productService.update(product.getId(), product);
@@ -440,7 +435,7 @@ public class UserController {
     }
 
     /**
-     * Lista productos favoritos del usuario con paginación (solo USER).
+     * Lista de productos favoritos del usuario con paginación (solo USER).
      *
      * @param model     Modelo de Spring MVC
      * @param page      Número de página
@@ -463,7 +458,6 @@ public class UserController {
         Pageable pageable = PageRequest.of(page, size, sort);
         val userId = (Long) model.getAttribute("currentUserId");
 
-        // Usar mapper.pageToDTO igual que ProductsController
         val products = mapper.pageToDTO(favService.getFavs(userId, pageable), sortBy, direction);
         model.addAttribute("productos", products);
         return "web/productos/lista";
@@ -686,7 +680,7 @@ public class UserController {
     }
 
     /**
-     * Lista ventas del manager con paginación y cálculo de ganancias (solo
+     * Lista de ventas del manager con paginación y cálculo de ganancias (solo
      * MANAGER).
      *
      * @param model     Modelo de Spring MVC
@@ -790,7 +784,7 @@ public class UserController {
     }
 
     /**
-     * Lista usuarios con paginación y filtro opcional (solo ADMIN).
+     * Lista de usuarios con paginación y filtro opcional (solo ADMIN).
      *
      * @param model           Modelo de Spring MVC
      * @param userNameOrEmail Filtro opcional por nombre o email
@@ -875,7 +869,7 @@ public class UserController {
                 id, user.getId(), user.getUsername(), user.getEmail());
 
         if (user.getClient() == null) {
-            log.warn("[GET /auth/me/users/edit/{}] Client is NULL, initializing", id);
+            log.warn("[GET /auth/me/users/edit/{}] Client es null, inicializando", id);
             user.setClient(Client.builder()
                     .name(user.getUsername())
                     .email(user.getEmail())
@@ -890,11 +884,11 @@ public class UserController {
                             .build())
                     .build());
         } else {
-            log.info("[GET /auth/me/users/edit/{}] Client exists: name={}",
+            log.info("[GET /auth/me/users/edit/{}] Client existe: name={}",
                     id, user.getClient().getName());
 
             if (user.getClient().getAddress() == null) {
-                log.warn("[GET /auth/me/users/edit/{}] Address is NULL, initializing", id);
+                log.warn("[GET /auth/me/users/edit/{}] Address es null, inicializando", id);
                 user.getClient().setAddress(Address.builder()
                         .street("")
                         .city("")
@@ -904,7 +898,7 @@ public class UserController {
                         .number(null)
                         .build());
             } else {
-                log.info("[GET /auth/me/users/edit/{}] Address exists: street={}",
+                log.info("[GET /auth/me/users/edit/{}] Direccion existe: street={}",
                         id, user.getClient().getAddress().getStreet());
             }
         }
@@ -931,12 +925,12 @@ public class UserController {
                 user.getId(), user.getNombre(), user.getEmail(), user.getRoles());
 
         if (bindingResult.hasErrors()) {
-            log.warn("[POST /auth/me/users/edit/{}] VALIDATION ERRORS FOUND: {}",
+            log.warn("[POST /auth/me/users/edit/{}] ERRORES DE VALIDACIÓN ENCONTRADOS: {}",
                     user.getId(), bindingResult.getAllErrors());
 
             // Reload the full User entity for template rendering
             val fullUser = authService.findById(user.getId());
-            log.info("[POST /auth/me/users/edit/{}] Reloaded user for error display", user.getId());
+            log.info("[POST /auth/me/users/edit/{}] Usuario recargado para mostrar error", user.getId());
 
             // Initialize client and address if null
             if (fullUser.getClient() == null) {
@@ -969,19 +963,19 @@ public class UserController {
             model.addAttribute("title", "El usuario no es válido");
             model.addAttribute("message",
                     bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage));
-            log.info("[POST /auth/me/users/edit/{}] Returning to form with errors", user.getId());
+            log.info("[POST /auth/me/users/edit/{}] Volviendo al formulario con errores", user.getId());
             return "web/user/editUserAdmin";
         }
 
-        log.info("[POST /auth/me/users/edit/{}] No validation errors, proceeding to save", user.getId());
+        log.info("[POST /auth/me/users/edit/{}] Sin errores de validacion, procediendo al guardado", user.getId());
         var userEdit = authService.updateAdminCurrentUser(user.getId(), user);
 
         if (avatar != null && !avatar.isEmpty()) {
-            log.info("[POST /auth/me/users/edit/{}] Updating avatar...", user.getId());
+            log.info("[POST /auth/me/users/edit/{}] Actualizando avatar...", user.getId());
             userEdit = authService.updateImage(user.getId(), avatar);
         }
 
-        log.info("[POST /auth/me/users/edit/{}] User saved successfully, redirecting to profile", user.getId());
+        log.info("[POST /auth/me/users/edit/{}] Usuario guardado correctamente, redirigiendo al perfil...", user.getId());
         model.addAttribute("user", userEdit);
         return "redirect:/auth/me/users/" + user.getId();
     }
@@ -1129,7 +1123,6 @@ public class UserController {
      * envía email de confirmación y crea un nuevo carrito para el usuario.
      * </p>
      *
-     * @param sessionId          ID de sesión de Stripe
      * @param model              Modelo de Spring MVC
      * @param redirectAttributes Atributos de redirección
      * @return Vista de éxito o redirección si error
@@ -1209,7 +1202,7 @@ public class UserController {
      * Restaura el stock de los productos y mantiene el carrito del usuario.
      * </p>
      *
-     * @param sessionId          ID de sesión de Stripe (opcional)
+
      * @param model              Modelo de Spring MVC
      * @param redirectAttributes Atributos de redirección
      * @return Redirección al carrito con mensaje informativo

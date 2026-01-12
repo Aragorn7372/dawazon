@@ -18,7 +18,7 @@ import java.util.Set;
  * <li><b>email</b> (String): Email válido</li>
  * <li><b>telefono</b> (String): Teléfono</li>
  * <li><b>roles</b> (String): Roles del usuario</li>
- * <li><b>calle, ciudad, codigoPostal, provincia</b>: Direccióndel usuario</li>
+ * <li><b>calle, ciudad, codigoPostal, provincia</b>: Dirección del usuario</li>
  * </ul>
  * </p>
  */

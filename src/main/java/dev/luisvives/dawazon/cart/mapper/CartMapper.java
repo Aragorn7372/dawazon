@@ -20,6 +20,12 @@ public class CartMapper {
      * @param line    Línea de carrito a convertir
      * @param manager Usuario vendedor del producto
      * @return DTO de línea de venta
+     * 
+     * @see SaleLineDto
+     * @see Cart
+     * @see Product
+     * @see CartLine
+     * @see User
      */
     public SaleLineDto cartlineToSaleLineDto(Cart cart, Product product, CartLine line, User manager) {
         return SaleLineDto.builder()

@@ -24,7 +24,9 @@ import java.time.LocalDateTime;
  * <li><b>managerId</b> (<code>Long</code>): ID del vendedor.</li>
  * <li><b>managerName</b> (<code>String</code>): Nombre del vendedor.</li>
  * <li><b>client</b> ({@link Client}): Información del cliente.</li>
- * <li><b>userId</b> (<code>Long</code>): ID del usuario comprador.</li>
+ * <li><b>userId</b> (<code>Long</code>): ID del comprador.</li>
+ * <li><b>createdAt</b> (<code>LocalDateTime</code>): Fecha y hora a la que se creó.</li>
+ * <li><b>uptatedAt</b> (<code>LocalDateTime</code>): Fecha y hora a la que se actualizó.</li>
  * </ul>
  */
 @Data
@@ -45,12 +47,9 @@ public class SaleLineDto {
     // Información del cliente
     private Client client;
     private Long userId;
-
-    // Timestamps
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // Para facilitar el renderizado
     public String getUserName() {
         return client != null ? client.getName() : "";
     }

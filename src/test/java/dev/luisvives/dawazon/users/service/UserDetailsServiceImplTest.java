@@ -51,7 +51,7 @@ class UserDetailsServiceImplTest {
     }
 
     @Test
-    void loadUserByUsername_returnUserDetails_whenUsernameExistsAndNotDeleted() {
+    void loadUserByUsernamereturnUserDetailswhenUsernameExistsAndNotDeleted() {
         when(repositorio.findByUserNameAndIsDeletedFalse(username)).thenReturn(Optional.of(testUser));
 
         UserDetails result = userDetailsService.loadUserByUsername(username);
@@ -63,7 +63,7 @@ class UserDetailsServiceImplTest {
     }
 
     @Test
-    void loadUserByUsername_returnUserDetails_whenEmailExistsAndNotDeleted() {
+    void loadUserByUsernamereturnUserDetailswhenEmailExistsAndNotDeleted() {
         when(repositorio.findByEmailAndIsDeletedFalse(email)).thenReturn(Optional.of(testUser));
 
         UserDetails result = userDetailsService.loadUserByUsername(email);
@@ -75,7 +75,7 @@ class UserDetailsServiceImplTest {
     }
 
     @Test
-    void loadUserByUsername_throwUsernameNotFoundException_whenUsernameDoesNotExist() {
+    void loadUserByUsernamethrowUsernameNotFoundExceptionwhenUsernameDoesNotExist() {
         when(repositorio.findByUserNameAndIsDeletedFalse(username)).thenReturn(Optional.empty());
 
         UsernameNotFoundException exception = assertThrows(UsernameNotFoundException.class,
@@ -87,7 +87,7 @@ class UserDetailsServiceImplTest {
     }
 
     @Test
-    void loadUserByUsername_throwUsernameNotFoundException_whenEmailDoesNotExist() {
+    void loadUserByUsernamethrowUsernameNotFoundExceptionwhenEmailDoesNotExist() {
         when(repositorio.findByEmailAndIsDeletedFalse(email)).thenReturn(Optional.empty());
 
         UsernameNotFoundException exception = assertThrows(UsernameNotFoundException.class,
@@ -99,7 +99,7 @@ class UserDetailsServiceImplTest {
     }
 
     @Test
-    void loadUserByUsername_searchByEmail_whenValueContainsAtSymbol() {
+    void loadUserByUsernamesearchByEmailwhenValueContainsAtSymbol() {
         String emailValue = "user@domain.com";
         when(repositorio.findByEmailAndIsDeletedFalse(emailValue)).thenReturn(Optional.of(testUser));
 
@@ -111,7 +111,7 @@ class UserDetailsServiceImplTest {
     }
 
     @Test
-    void loadUserByUsername_searchByUsername_whenValueDoesNotContainAtSymbol() {
+    void loadUserByUsernamesearchByUsernamewhenValueDoesNotContainAtSymbol() {
         String usernameValue = "simpleUsername";
         when(repositorio.findByUserNameAndIsDeletedFalse(usernameValue)).thenReturn(Optional.of(testUser));
 
@@ -123,7 +123,7 @@ class UserDetailsServiceImplTest {
     }
 
     @Test
-    void loadUserByUsername_throwUsernameNotFoundException_whenUserIsDeleted() {
+    void loadUserByUsernamethrowUsernameNotFoundExceptionwhenUserIsDeleted() {
         when(repositorio.findByUserNameAndIsDeletedFalse(username)).thenReturn(Optional.empty());
 
         assertThrows(UsernameNotFoundException.class,
@@ -133,7 +133,7 @@ class UserDetailsServiceImplTest {
     }
 
     @Test
-    void loadUserByUsername_distinguishBetweenEmailAndUsername_whenBothLookSimilar() {
+    void loadUserByUsernamedistinguishBetweenEmailAndUsernamewhenBothLookSimilar() {
         String emailLike = "test@company";
         when(repositorio.findByEmailAndIsDeletedFalse(emailLike)).thenReturn(Optional.of(testUser));
 
@@ -145,7 +145,7 @@ class UserDetailsServiceImplTest {
     }
 
     @Test
-    void loadUserByUsername_handleComplexEmail_whenEmailHasMultipleAtSymbols() {
+    void loadUserByUsernamehandleComplexEmailwhenEmailHasMultipleAtSymbols() {
         String complexEmail = "user+tag@sub.domain.com";
         when(repositorio.findByEmailAndIsDeletedFalse(complexEmail)).thenReturn(Optional.of(testUser));
 
@@ -157,7 +157,7 @@ class UserDetailsServiceImplTest {
     }
 
     @Test
-    void loadUserByUsername_returnUserWithAllProperties_whenUserFound() {
+    void loadUserByUsernamereturnUserWithAllPropertieswhenUserFound() {
         testUser.getRoles().add(Role.ADMIN);
         when(repositorio.findByUserNameAndIsDeletedFalse(username)).thenReturn(Optional.of(testUser));
 

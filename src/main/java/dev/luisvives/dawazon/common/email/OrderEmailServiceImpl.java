@@ -17,9 +17,6 @@ import java.util.stream.Collectors;
  * </p>
  *
  * <p>Utiliza {@link EmailService} para el envío real de los correos.</p>
- *
- * @author
- * @version 1.0
  */
 @Service
 public class OrderEmailServiceImpl implements OrderEmailService {
@@ -54,7 +51,7 @@ public class OrderEmailServiceImpl implements OrderEmailService {
     @Override
     public void enviarConfirmacionPedido(Cart pedido) {
         try {
-            logger.info("📧 Enviando confirmación HTML simple de pedido {} al cliente {}",
+            logger.info("Enviando confirmación HTML simple de pedido {} al cliente {}",
                     pedido.getId(), pedido.getClient().getEmail());
 
             String subject = "Confirmación de tu pedido #" + pedido.getId();
@@ -65,10 +62,10 @@ public class OrderEmailServiceImpl implements OrderEmailService {
                     subject,
                     htmlBody);
 
-            logger.info("✅ Email HTML simple de confirmación enviado correctamente para el pedido {}", pedido.getId());
+            logger.info("Email HTML simple de confirmación enviado correctamente para el pedido {}", pedido.getId());
 
         } catch (Exception e) {
-            logger.error("❌ Error enviando email de confirmación para el pedido {}: {}",
+            logger.error("Error enviando email de confirmación para el pedido {}: {}",
                     pedido.getId(), e.getMessage());
         }
     }
@@ -85,10 +82,10 @@ public class OrderEmailServiceImpl implements OrderEmailService {
     @Override
     public void enviarConfirmacionPedidoHtml(Cart pedido) {
         try {
-            logger.info("📧 Enviando confirmación HTML completa de pedido {} al cliente {}",
+            logger.info("Enviando confirmación HTML completa de pedido {} al cliente {}",
                     pedido.getId(), pedido.getClient().getEmail());
 
-            String subject = "✅ Confirmación de tu pedido #" + pedido.getId();
+            String subject = "Confirmación de tu pedido #" + pedido.getId();
             String htmlBody = crearCuerpoEmailPedidoHtmlCompleto(pedido);
 
             emailService.sendHtmlEmail(
@@ -96,10 +93,10 @@ public class OrderEmailServiceImpl implements OrderEmailService {
                     subject,
                     htmlBody);
 
-            logger.info("✅ Email HTML completo de confirmación enviado correctamente para el pedido {}", pedido.getId());
+            logger.info("Email HTML completo de confirmación enviado correctamente para el pedido {}", pedido.getId());
 
         } catch (Exception e) {
-            logger.error("❌ Error enviando email HTML de confirmación para el pedido {}: {}",
+            logger.error("Error enviando email HTML de confirmación para el pedido {}: {}",
                     pedido.getId(), e.getMessage());
         }
     }
@@ -158,7 +155,7 @@ public class OrderEmailServiceImpl implements OrderEmailService {
 
                                 <hr style="border: 1px solid #ddd; margin: 20px 0;">
 
-                                <h2 style="color: #4CAF50;">📝 Información del Pedido</h2>
+                                <h2 style="color: #4CAF50;">Información del Pedido</h2>
                                 <ul>
                                     <li><strong>Número:</strong> #%s</li>
                                     <li><strong>Fecha:</strong> %s</li>

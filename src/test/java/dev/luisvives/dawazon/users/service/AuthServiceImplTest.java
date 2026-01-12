@@ -87,7 +87,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void register_encryptPasswordAndSaveUser_whenValidUserProvided() {
+    void registerencryptPasswordAndSaveUserwhenValidUserProvided() {
         String rawPassword = "rawPassword123";
         String encodedPassword = "encodedPassword123";
         User newUser = User.builder()
@@ -108,7 +108,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void changePassword_updatePassword_whenOldPasswordMatchesAndNewPasswordsMatch() {
+    void changePasswordupdatePasswordwhenOldPasswordMatchesAndNewPasswordsMatch() {
         Long userId = 1L;
         String oldPassword = "oldPassword123";
         String newPassword = "newPassword123";
@@ -137,7 +137,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void changePassword_throwUsernameNotFoundException_whenUserNotFound() {
+    void changePasswordthrowUsernameNotFoundExceptionwhenUserNotFound() {
         Long userId = 999L;
         UserChangePasswordDto changePasswordDto = UserChangePasswordDto.builder()
                 .oldPassword("old")
@@ -154,7 +154,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void changePassword_throwUserPasswordNotMatchException_whenOldPasswordDoesNotMatch() {
+    void changePasswordthrowUserPasswordNotMatchExceptionwhenOldPasswordDoesNotMatch() {
         Long userId = 1L;
         UserChangePasswordDto changePasswordDto = UserChangePasswordDto.builder()
                 .oldPassword("wrongOldPassword")
@@ -172,7 +172,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void changePassword_throwUserPasswordNotMatchException_whenConfirmPasswordDoesNotMatch() {
+    void changePasswordthrowUserPasswordNotMatchExceptionwhenConfirmPasswordDoesNotMatch() {
         Long userId = 1L;
         UserChangePasswordDto changePasswordDto = UserChangePasswordDto.builder()
                 .oldPassword("oldPassword")
@@ -191,7 +191,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void changePassword_throwUserPasswordNotMatchException_whenNewPasswordEqualsOldPassword() {
+    void changePasswordthrowUserPasswordNotMatchExceptionwhenNewPasswordEqualsOldPassword() {
         Long userId = 1L;
         String oldPassword = "samePassword123";
         String hashedPassword = "hashedSamePassword";
@@ -213,7 +213,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void updateCurrentUser_updateBasicFields_whenNoAddressDataProvided() {
+    void updateCurrentUserupdateBasicFieldswhenNoAddressDataProvided() {
         Long userId = 1L;
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(testUser));
@@ -230,7 +230,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void updateCurrentUser_createClientAndAddress_whenAddressDataProvidedAndClientIsNull() {
+    void updateCurrentUsercreateClientAndAddresswhenAddressDataProvidedAndClientIsNull() {
         Long userId = 1L;
         userRequestDto.setCalle("Main Street");
         userRequestDto.setCiudad("Madrid");
@@ -253,7 +253,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void updateCurrentUser_updateExistingClientAndAddress_whenAddressDataProvidedAndClientExists() {
+    void updateCurrentUserupdateExistingClientAndAddresswhenAddressDataProvidedAndClientExists() {
         Long userId = 1L;
         Client existingClient = new Client();
         existingClient.setName("oldName");
@@ -280,7 +280,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void updateCurrentUser_throwUsernameNotFoundException_whenUserNotFound() {
+    void updateCurrentUserthrowUsernameNotFoundExceptionwhenUserNotFound() {
         Long userId = 999L;
 
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
@@ -292,7 +292,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void updateCurrentUser_updateOnlyStreetAndCity_whenPostalCodeAndProvinceAreNull() {
+    void updateCurrentUseupdateOnlyStreetAndCitywhenPostalCodeAndProvinceAreNull() {
         Long userId = 1L;
         userRequestDto.setCalle("Only Street");
         userRequestDto.setCiudad("Only City");
@@ -313,7 +313,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void updateCurrentUser_skipPostalCodeUpdate_whenPostalCodeIsEmpty() {
+    void updateCurrentUserskipPostalCodeUpdatewhenPostalCodeIsEmpty() {
         Long userId = 1L;
         userRequestDto.setCalle("Street");
         userRequestDto.setCodigoPostal("");
@@ -329,7 +329,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void updateCurrentUser_logWarningAndSkipPostalCode_whenPostalCodeIsInvalid() {
+    void updateCurrentUserlogWarningAndSkipPostalCodewhenPostalCodeIsInvalid() {
         Long userId = 1L;
         userRequestDto.setCalle("Test Street");
         userRequestDto.setCodigoPostal("INVALID_CODE");
@@ -343,12 +343,11 @@ class AuthServiceImplTest {
         assertNotNull(testUser.getClient());
         assertNotNull(testUser.getClient().getAddress());
         assertEquals("Test Street", testUser.getClient().getAddress().getStreet());
-        // El código postal queda en 0 (valor por defecto) porque no se pudo parsear
         verify(userRepository).save(testUser);
     }
 
     @Test
-    void updateAdminCurrentUser_updateUserWithRoles_whenValidAdminRequestProvided() {
+    void updateAdminCurrentUserupdateUserWithRoleswhenValidAdminRequestProvided() {
         Long userId = 1L;
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(testUser));
@@ -366,7 +365,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void updateAdminCurrentUser_notUpdateRoles_whenRolesAreEmpty() {
+    void updateAdminCurrentUsernotUpdateRoleswhenRolesAreEmpty() {
         Long userId = 1L;
         userAdminRequestDto.setRoles(Set.of());
         List<Role> originalRoles = new ArrayList<>(testUser.getRoles());
@@ -382,7 +381,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void updateAdminCurrentUser_notUpdateRoles_whenNoRolesProvided() {
+    void updateAdminCurrentUsernotUpdateRoleswhenNoRolesProvided() {
         Long userId = 1L;
         userAdminRequestDto.setRoles(null);
         List<Role> originalRoles = new ArrayList<>(testUser.getRoles());
@@ -398,7 +397,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void updateAdminCurrentUser_updateExistingClientWithoutAddress_whenAddressDataProvided() {
+    void updateAdminCurrentUserupdateExistingClientWithoutAddresswhenAddressDataProvided() {
         Long userId = 1L;
         Client existingClient = new Client();
         existingClient.setName("OldClient");
@@ -423,7 +422,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void updateAdminCurrentUser_skipPostalCodeUpdate_whenPostalCodeIsEmpty() {
+    void updateAdminCurrentUserskipPostalCodeUpdatewhenPostalCodeIsEmpty() {
         Long userId = 1L;
         userAdminRequestDto.setCalle("Admin Street");
         userAdminRequestDto.setCodigoPostal("");
@@ -439,7 +438,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void updateAdminCurrentUser_logWarningAndSkipPostalCode_whenPostalCodeIsInvalid() {
+    void updateAdminCurrentUserlogWarningAndSkipPostalCodewhenPostalCodeIsInvalid() {
         Long userId = 1L;
         userAdminRequestDto.setCalle("Admin Street");
         userAdminRequestDto.setCodigoPostal("NOT_A_NUMBER");
@@ -453,12 +452,11 @@ class AuthServiceImplTest {
         assertNotNull(testUser.getClient());
         assertNotNull(testUser.getClient().getAddress());
         assertEquals("Admin Street", testUser.getClient().getAddress().getStreet());
-        // El código postal queda en 0 (valor por defecto) porque no se pudo parsear
         verify(userRepository).save(testUser);
     }
 
     @Test
-    void updateAdminCurrentUser_createClientAndAddress_whenAddressDataProvided() {
+    void updateAdminCurrentUsercreateClientAndAddresswhenAddressDataProvided() {
         Long userId = 1L;
         userAdminRequestDto.setCalle("Admin Street");
         userAdminRequestDto.setCiudad("Valencia");
@@ -479,7 +477,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void updateAdminCurrentUser_throwUsernameNotFoundException_whenUserNotFound() {
+    void updateAdminCurrentUserthrowUsernameNotFoundExceptionwhenUserNotFound() {
         Long userId = 999L;
 
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
@@ -491,7 +489,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void updateImage_replaceOldImageAndSaveNewOne_whenNonDefaultAvatarExists() {
+    void updateImagereplaceOldImageAndSaveNewOnewhenNonDefaultAvatarExists() {
         Long userId = 1L;
         String oldAvatar = "old-avatar.jpg";
         String newImageName = "new-avatar.jpg";
@@ -513,7 +511,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void updateImage_notDeleteOldImage_whenAvatarIsNull() {
+    void updateImagenotDeleteOldImagewhenAvatarIsNull() {
         Long userId = 1L;
         String newImageName = "new-avatar.jpg";
         testUser.setAvatar(null);
@@ -534,7 +532,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void updateImage_notDeleteOldImage_whenDefaultAvatarIsSet() {
+    void updateImagenotDeleteOldImagewhenDefaultAvatarIsSet() {
         Long userId = 1L;
         String newImageName = "new-avatar.jpg";
         testUser.setAvatar(IMAGE_DEFAULT);
@@ -555,7 +553,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void updateImage_throwNotFoundException_whenUserNotFound() {
+    void updateImagethrowNotFoundExceptionwhenUserNotFound() {
         Long userId = 999L;
         MultipartFile mockFile = new MockMultipartFile("file", "avatar.jpg",
                 "image/jpeg", "test image content".getBytes());
@@ -570,7 +568,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void findById_returnUser_whenUserExists() {
+    void findByIdreturnUserwhenUserExists() {
         Long userId = 1L;
         when(userRepository.findById(userId)).thenReturn(Optional.of(testUser));
 
@@ -582,7 +580,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void findById_returnNull_whenUserDoesNotExist() {
+    void findByIdreturnNullwhenUserDoesNotExist() {
         Long userId = 999L;
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
@@ -593,7 +591,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void findByEmail_returnUser_whenEmailExists() {
+    void findByEmailreturnUserwhenEmailExists() {
         String email = "test@example.com";
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(testUser));
 
@@ -605,7 +603,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void findByEmail_throwUsernameNotFoundException_whenEmailDoesNotExist() {
+    void findByEmailthrowUsernameNotFoundExceptionwhenEmailDoesNotExist() {
         String email = "nonexistent@example.com";
         when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
 
@@ -615,7 +613,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void findByUsername_returnUser_whenUsernameExists() {
+    void findByUsernamereturnUserwhenUsernameExists() {
         String username = "testUser";
         when(userRepository.findByUserName(username)).thenReturn(Optional.of(testUser));
 
@@ -627,7 +625,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void findByUsername_throwUsernameNotFoundException_whenUsernameDoesNotExist() {
+    void findByUsernamethrowUsernameNotFoundExceptionwhenUsernameDoesNotExist() {
         String username = "nonexistentUser";
         when(userRepository.findByUserName(username)).thenReturn(Optional.empty());
 
@@ -637,7 +635,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void findAll_returnActiveUsersList_whenUsersExist() {
+    void findAllreturnActiveUsersListwhenUsersExist() {
         List<User> users = List.of(testUser,
                 User.builder().id(2L).userName("user2").build());
 
@@ -651,7 +649,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void edit_saveAndReturnUser_whenValidUserProvided() {
+    void editsaveAndReturnUserwhenValidUserProvided() {
         when(userRepository.save(testUser)).thenReturn(testUser);
 
         User result = authService.edit(testUser);
@@ -662,7 +660,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void delete_removeUserFromDatabase_whenUserIdProvided() {
+    void deleteremoveUserFromDatabasewhenUserIdProvided() {
         Long userId = 1L;
         doNothing().when(userRepository).deleteById(userId);
 
@@ -672,7 +670,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void deleteLogical_markUserAsDeleted_whenUserIdProvided() {
+    void deleteLogicalmarkUserAsDeletedwhenUserIdProvided() {
         Long userId = 1L;
         doNothing().when(userRepository).softDelete(userId);
 
@@ -682,7 +680,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void findByIdOptional_returnActiveUser_whenUserExistsAndIsActive() {
+    void findByIdOptionalreturnActiveUserwhenUserExistsAndIsActive() {
         Long userId = 1L;
         when(userRepository.findActiveById(userId)).thenReturn(testUser);
 
@@ -694,7 +692,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void findByIdOptional_returnNull_whenUserDoesNotExistOrIsDeleted() {
+    void findByIdOptionalreturnNullwhenUserDoesNotExistOrIsDeleted() {
         Long userId = 999L;
         when(userRepository.findActiveById(userId)).thenReturn(null);
 
@@ -705,7 +703,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void softDelete_markUserAsDeletedAndEvictCache_whenUserIdProvided() {
+    void softDeletemarkUserAsDeletedAndEvictCachewhenUserIdProvided() {
         Long userId = 1L;
         doNothing().when(userRepository).softDelete(userId);
 
@@ -715,7 +713,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void findAllPaginated_returnAllUsers_whenNoFilterProvided() {
+    void findAllPaginatedreturnAllUserswhenNoFilterProvided() {
         Pageable pageable = PageRequest.of(0, 10);
         List<User> users = List.of(testUser);
         Page<User> page = new PageImpl<>(users, pageable, users.size());
@@ -730,7 +728,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void findAllPaginated_searchByEmail_whenFilterContainsAtSymbol() {
+    void findAllPaginatedsearchByEmailwhenFilterContainsAtSymbol() {
         Pageable pageable = PageRequest.of(0, 10);
         String emailFilter = "test@example.com";
         List<User> users = List.of(testUser);
@@ -747,7 +745,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void findAllPaginated_searchByUsername_whenFilterDoesNotContainAtSymbol() {
+    void findAllPaginatedsearchByUsernamewhenFilterDoesNotContainAtSymbol() {
         Pageable pageable = PageRequest.of(0, 10);
         String usernameFilter = "testUser";
         List<User> users = List.of(testUser);

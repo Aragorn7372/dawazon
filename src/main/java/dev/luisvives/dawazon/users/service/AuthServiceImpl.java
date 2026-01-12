@@ -51,10 +51,10 @@ public class AuthServiceImpl implements AuthService {
     /**
      * Constructor con inyección de dependencias.
      *
-     * @param repositorio     Repositorio de usuarios
-     * @param passwordEncoder Codificador de contraseñas BCrypt
-     * @param userRepository  Repositorio de usuarios (inyección adicional)
-     * @param storage         Servicio de almacenamiento de archivos
+     * @param repositorio     Repositorio de usuarios.
+     * @param passwordEncoder Codificador de contraseñas BCrypt.
+     * @param userRepository  Repositorio de usuarios.
+     * @param storage         Servicio de almacenamiento de archivos.
      */
     @Autowired
     public AuthServiceImpl(UserRepository repositorio,
@@ -69,8 +69,8 @@ public class AuthServiceImpl implements AuthService {
     /**
      * Registra un nuevo usuario encriptando su contraseña.
      *
-     * @param u Usuario a registrar
-     * @return Usuario guardado con contraseña encriptada
+     * @param u Usuario a registrar.
+     * @return Usuario guardado con contraseña encriptada.
      */
     @CacheEvict(value = "usuarios", allEntries = true)
     @Override
@@ -86,12 +86,11 @@ public class AuthServiceImpl implements AuthService {
      * esté confirmada correctamente antes de realizar el cambio.
      * </p>
      *
-     * @param userDto DTO con contraseñas (antigua, nueva, confirmación)
-     * @param id      ID del usuario
-     * @return Usuario con contraseña actualizada
-     * @throws UsernameNotFoundException                   Si el usuario no existe
-     * @throws UserException.UserPasswordNotMatchException Si las contraseñas no
-     *                                                     coinciden
+     * @param userDto DTO con contraseñas (antigua, nueva, confirmación).
+     * @param id      ID del usuario.
+     * @return Usuario con contraseña actualizada.
+     * @throws UsernameNotFoundException                   Si el usuario no existe.
+     * @throws UserException.UserPasswordNotMatchException Si las contraseñas no coinciden.
      */
     @CacheEvict(value = "usuarios", allEntries = true)
     @Override
@@ -115,10 +114,10 @@ public class AuthServiceImpl implements AuthService {
      * existen.
      * </p>
      *
-     * @param id         ID del usuario a actualizar
-     * @param updateUser DTO con datos a actualizar
-     * @return Usuario actualizado
-     * @throws UsernameNotFoundException Si el usuario no existe
+     * @param id         ID del usuario a actualizar.
+     * @param updateUser DTO con datos a actualizar.
+     * @return Usuario actualizado.
+     * @throws UsernameNotFoundException Si el usuario no existe.
      */
     @Override
     public User updateCurrentUser(Long id, UserRequestDto updateUser) {
@@ -126,7 +125,6 @@ public class AuthServiceImpl implements AuthService {
         log.info("[AuthService.updateCurrentUser] Actualizar datos: nombre={}, email={}, telefono={}",
                 updateUser.getNombre(), updateUser.getEmail(), updateUser.getTelefono());
 
-        try {
             var user = userRepository.findById(id).orElseThrow(() -> {
                 log.error("[AuthService.updateCurrentUser] Usuario no encontrado con ID: {}", id);
                 return new UsernameNotFoundException("User not found");
@@ -183,23 +181,21 @@ public class AuthServiceImpl implements AuthService {
                     savedUser.getId(), savedUser.getUsername());
 
             return savedUser;
-        } catch (Exception e) {
-            throw e;
-        }
+
     }
 
     /**
      * Actualiza los datos del usuario desde el panel de administración.
      * <p>
-     * Similar a updateCurrentUser pero con capacidad adicional de actualizar roles
+     * Similar a updateCurrentUser, pero con capacidad adicional de actualizar roles
      * del usuario.
      * Permite gestión completa del perfil desde administración.
      * </p>
      *
-     * @param id         ID del usuario a actualizar
-     * @param updateUser DTO con datos a actualizar (incluye roles)
-     * @return Usuario actualizado
-     * @throws UsernameNotFoundException Si el usuario no existe
+     * @param id         ID del usuario a actualizar.
+     * @param updateUser DTO con datos a actualizar (incluye roles).
+     * @return Usuario actualizado.
+     * @throws UsernameNotFoundException Si el usuario no existe.
      */
     @Override
     public User updateAdminCurrentUser(Long id, UserAdminRequestDto updateUser) {
@@ -207,7 +203,6 @@ public class AuthServiceImpl implements AuthService {
         log.info("[AuthService.updateAdminCurrentUser] Actualizar datos: nombre={}, email={}, telefono={}",
                 updateUser.getNombre(), updateUser.getEmail(), updateUser.getTelefono());
 
-        try {
             var user = userRepository.findById(id).orElseThrow(() -> {
                 log.error("[AuthService.updateAdminCurrentUser] Usuario no encontrado con ID: {}", id);
                 return new UsernameNotFoundException("User no encontrado");
@@ -278,9 +273,7 @@ public class AuthServiceImpl implements AuthService {
                     savedUser.getId(), savedUser.getUsername());
 
             return savedUser;
-        } catch (Exception e) {
-            throw e;
-        }
+
     }
 
     /**
@@ -291,10 +284,10 @@ public class AuthServiceImpl implements AuthService {
      * en el almacenamiento y actualiza la referencia en el usuario.
      * </p>
      *
-     * @param id    ID del usuario
-     * @param image Archivo de imagen nuevo
-     * @return Usuario con avatar actualizado
-     * @throws ProductException.NotFoundException Si el usuario no existe
+     * @param id    ID del usuario.
+     * @param image Archivo de imagen nuevo.
+     * @return Usuario con avatar actualizado.
+     * @throws ProductException.NotFoundException Si el usuario no existe.
      */
     @Override
     public User updateImage(Long id, MultipartFile image) {
@@ -303,8 +296,6 @@ public class AuthServiceImpl implements AuthService {
                 image != null ? image.getOriginalFilename() : "null",
                 image != null ? image.getSize() : 0,
                 image != null ? image.getContentType() : "null");
-
-        try {
             val user = userRepository.findById(id)
                     .orElseThrow(() -> {
                         log.error("[AuthService.updateImage] Usuario no encontrado con id: {}", id);
@@ -341,16 +332,13 @@ public class AuthServiceImpl implements AuthService {
             log.info("[AuthService.updateImage] User guardado correctamente con avatar: {}", savedUser.getAvatar());
 
             return savedUser;
-        } catch (Exception e) {
-            throw e;
-        }
     }
 
     /**
      * Busca un usuario por su ID.
      *
-     * @param id ID del usuario
-     * @return Usuario encontrado o null si no existe
+     * @param id ID del usuario.
+     * @return Usuario encontrado o null si no existe.
      */
     @Override
     public User findById(long id) {
@@ -360,9 +348,9 @@ public class AuthServiceImpl implements AuthService {
     /**
      * Busca un usuario por email con caché.
      *
-     * @param email Email del usuario
-     * @return Usuario encontrado
-     * @throws UsernameNotFoundException Si no se encuentra el usuario
+     * @param email Email del usuario.
+     * @return Usuario encontrado.
+     * @throws UsernameNotFoundException Si no se encuentra el usuario.
      */
     @Override
     @Cacheable(value = "usuarios", key = "#email")
@@ -376,9 +364,9 @@ public class AuthServiceImpl implements AuthService {
     /**
      * Busca un usuario por nombre de usuario con caché.
      *
-     * @param userName Nombre de usuario
-     * @return Usuario encontrado
-     * @throws UsernameNotFoundException Si no se encuentra el usuario
+     * @param userName Nombre de usuario.
+     * @return Usuario encontrado.
+     * @throws UsernameNotFoundException Si no se encuentra el usuario.
      */
     @Override
     @Cacheable(value = "usuarios", key = "#email")
@@ -392,7 +380,7 @@ public class AuthServiceImpl implements AuthService {
     /**
      * Obtiene todos los usuarios activos (no eliminados lógicamente) con caché.
      *
-     * @return Lista de usuarios activos
+     * @return Lista de usuarios activos.
      */
     @Override
     @Cacheable(value = "usuarios")
@@ -403,8 +391,8 @@ public class AuthServiceImpl implements AuthService {
     /**
      * Edita/actualiza un usuario e invalida el caché.
      *
-     * @param u Usuario a actualizar
-     * @return Usuario actualizado
+     * @param u Usuario a actualizar.
+     * @return Usuario actualizado.
      */
     @Override
     @CacheEvict(value = "usuarios", allEntries = true)
@@ -415,7 +403,7 @@ public class AuthServiceImpl implements AuthService {
     /**
      * Elimina físicamente un usuario e invalida el caché.
      *
-     * @param id ID del usuario a eliminar
+     * @param id ID del usuario a eliminar.
      */
     @Override
     @CacheEvict(value = "usuarios", allEntries = true)
@@ -426,7 +414,7 @@ public class AuthServiceImpl implements AuthService {
     /**
      * Elimina lógicamente un usuario (marca isDeleted=true).
      *
-     * @param id ID del usuario
+     * @param id ID del usuario.
      */
     public void deleteLogical(Long id) {
         userRepository.softDelete(id);
@@ -435,8 +423,8 @@ public class AuthServiceImpl implements AuthService {
     /**
      * Busca un usuario activo por ID (no deletado lógicamente).
      *
-     * @param id ID del usuario
-     * @return Usuario activo o null
+     * @param id ID del usuario.
+     * @return Usuario activo o null.
      */
     @Override
     public User findByIdOptional(Long id) {
@@ -446,7 +434,7 @@ public class AuthServiceImpl implements AuthService {
     /**
      * Elimina lógicamente un usuario e invalida el caché.
      *
-     * @param id ID del usuario
+     * @param id ID del usuario.
      */
     @Override
     @CacheEvict(value = "usuarios", allEntries = true)
@@ -463,9 +451,9 @@ public class AuthServiceImpl implements AuthService {
      * y aplica la búsqueda correspondiente usando Specifications.
      * </p>
      *
-     * @param userNameOrEmail Filtro opcional: nombre de usuario o email
-     * @param pageable        Configuración de paginación
-     * @return Página de usuarios
+     * @param userNameOrEmail Filtro opcional: nombre de usuario o email.
+     * @param pageable        Configuración de paginación.
+     * @return Página de usuarios.
      */
     @Override
     public Page<User> findAllPaginated(Optional<String> userNameOrEmail, Pageable pageable) {

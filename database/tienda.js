@@ -7,14 +7,13 @@ db.cart.drop();
 // Crear la colección
 db.createCollection("cart");
 
-// ============================================
-// IMPORTANTE:
-// - ADMIN (userId:  1) y MANAGER (userId: 2) NO tienen carritos
-// - Todos los usuarios normales (USER) tienen SIEMPRE un carrito activo (purchased:  false)
-// - Los usuarios pueden tener carritos históricos (purchased: true)
-// ============================================
 
-// Carrito activo de John Doe (userId: 3 - USER)
+// IMPORTANTE:
+// - ADMIN (userId: 1) y MANAGER (userId: 2) NO tienen carritos
+// - Todos los usuarios normales (USER) tienen SIEMPRE un carrito activo (purchased: false)
+// - Los usuarios pueden tener carritos históricos (purchased: true)
+
+// Carrito activo de John Doe (userId: 3)
 db.cart.insertOne({
     _id: ObjectId(),
     userId: NumberLong(3),
@@ -35,14 +34,14 @@ db.cart.insertOne({
     cartLines: [
         {
             quantity: 1,
-            productId: "Hx9Lp2Ks4TnB",  // Laptop HP Pavilion 15
+            productId: "Hx9Lp2Ks4TnB",
             productPrice: 699.99,
             status: "EN_CARRITO",
             totalPrice: 699.99
         },
         {
             quantity: 2,
-            productId: "Fp2Jk7Xm4YzT",  // Camiseta Nike Dri-FIT
+            productId: "Fp2Jk7Xm4YzT",
             productPrice: 29.99,
             status: "EN_CARRITO",
             totalPrice: 59.98
@@ -75,14 +74,14 @@ db.cart.insertOne({
     cartLines: [
         {
             quantity: 2,
-            productId: "Dk5Mn8Pj2WcX",  // Don Quijote de la Mancha
+            productId: "Dk5Mn8Pj2WcX",
             productPrice: 19.99,
             status: "RECIBIDO",
             totalPrice: 39.98
         },
         {
             quantity: 1,
-            productId: "Gn7Qs4Lv8BxZ",  // Cien Años de Soledad
+            productId: "Gn7Qs4Lv8BxZ",
             productPrice: 22.99,
             status: "RECIBIDO",
             totalPrice: 22.99
@@ -90,8 +89,8 @@ db.cart.insertOne({
     ],
     totalItems: 2,
     total: 62.97,
-    createdAt: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000), // Hace 45 días
-    updatedAt: new Date(Date.now() - 35 * 24 * 60 * 60 * 1000)  // Hace 35 días
+    createdAt: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000),
+    updatedAt: new Date(Date.now() - 35 * 24 * 60 * 60 * 1000)
 });
 
 // Carrito activo de Jane Smith (userId: 4 - USER)
@@ -115,14 +114,14 @@ db.cart.insertOne({
     cartLines: [
         {
             quantity: 1,
-            productId: "Yw3Zq7Vm1RfG",  // iPhone 14 Pro 128GB
+            productId: "Yw3Zq7Vm1RfG",
             productPrice: 1099.99,
             status: "EN_CARRITO",
             totalPrice: 1099.99
         },
         {
             quantity: 1,
-            productId: "Qs1Zw8Ty3NlJ",  // Lámpara Philips Hue White
+            productId: "Qs1Zw8Ty3NlJ",
             productPrice: 59.99,
             status: "EN_CARRITO",
             totalPrice: 59.99
@@ -155,7 +154,7 @@ db.cart.insertOne({
     cartLines: [
         {
             quantity: 1,
-            productId: "Vb4Gx9Hs6MqK",  // Sofá IKEA KIVIK 3 plazas
+            productId: "Vb4Gx9Hs6MqK",
             productPrice: 449.99,
             status: "CANCELADO",
             totalPrice: 449.99
@@ -163,8 +162,8 @@ db.cart.insertOne({
     ],
     totalItems: 1,
     total: 449.99,
-    createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000), // Hace 15 días
-    updatedAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000)  // Hace 10 días
+    createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000),
+    updatedAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000)
 });
 
 // Carrito activo de Carlos Ruiz (userId: 5 - USER)
@@ -188,7 +187,7 @@ db.cart.insertOne({
     cartLines: [
         {
             quantity: 1,
-            productId: "Mx7Pk2Vn5RbD",  // Bicicleta Trek Marlin 5
+            productId: "Mx7Pk2Vn5RbD",
             productPrice: 599.99,
             status: "EN_CARRITO",
             totalPrice: 599.99
@@ -221,14 +220,14 @@ db.cart.insertOne({
     cartLines: [
         {
             quantity: 3,
-            productId: "Rt6Bv9Nh3QsL",  // 1984 - George Orwell
+            productId: "Rt6Bv9Nh3QsL",
             productPrice: 15.99,
             status: "ENVIADO",
             totalPrice: 47.97
         },
         {
             quantity: 2,
-            productId: "Fp2Jk7Xm4YzT",  // Camiseta Nike Dri-FIT
+            productId: "Fp2Jk7Xm4YzT",
             productPrice: 29.99,
             status: "ENVIADO",
             totalPrice: 59.98
@@ -236,8 +235,8 @@ db.cart.insertOne({
     ],
     totalItems: 2,
     total: 107.95,
-    createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // Hace 7 días
-    updatedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000)  // Hace 5 días
+    createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+    updatedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000)
 });
 
 // Carrito activo de María García (userId: 6 - USER)
@@ -261,14 +260,14 @@ db.cart.insertOne({
     cartLines: [
         {
             quantity: 1,
-            productId: "Ln8Cv5Dt1WpR",  // Jeans Levis 501 Original
+            productId: "Ln8Cv5Dt1WpR",
             productPrice: 89.99,
             status: "EN_CARRITO",
             totalPrice: 89.99
         },
         {
             quantity: 2,
-            productId: "Jt3Lw6Fh9CmY",  // Balón Adidas UCL Finale
+            productId: "Jt3Lw6Fh9CmY",
             productPrice: 34.99,
             status: "EN_CARRITO",
             totalPrice: 69.98
@@ -301,7 +300,7 @@ db.cart.insertOne({
     cartLines: [
         {
             quantity: 1,
-            productId: "Vb4Gx9Hs6MqK",  // Sofá IKEA KIVIK 3 plazas
+            productId: "Vb4Gx9Hs6MqK",
             productPrice: 449.99,
             status: "RECIBIDO",
             totalPrice: 449.99
@@ -309,8 +308,8 @@ db.cart.insertOne({
     ],
     totalItems: 1,
     total: 449.99,
-    createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // Hace 30 días
-    updatedAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000)  // Hace 20 días
+    createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+    updatedAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000)
 });
 
 // Carrito activo de Pedro López (userId: 7 - USER) - VACÍO
@@ -359,7 +358,7 @@ db.cart.insertOne({
     cartLines: [
         {
             quantity: 1,
-            productId: "Tx5Wr9Km2NhP",  // Samsung Galaxy S23 Ultra
+            productId: "Tx5Wr9Km2NhP",
             productPrice: 1199.99,
             status: "PREPARADO",
             totalPrice: 1199.99
@@ -367,8 +366,8 @@ db.cart.insertOne({
     ],
     totalItems: 1,
     total: 1199.99,
-    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // Hace 2 días
-    updatedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000)  // Hace 1 día
+    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+    updatedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000)
 });
 
 // Crear índices para mejorar el rendimiento
@@ -378,13 +377,13 @@ db.cart.createIndex({"createdAt": -1});
 db.cart.createIndex({"userId": 1, "purchased": 1});
 
 // Validación y estadísticas
-print("\n✅ Colección 'cart' creada e inicializada correctamente");
+print("\nColección 'cart' creada e inicializada correctamente");
 print("═══════════════════════════════════════════════════════");
-print("📊 Total de documentos de carrito: " + db.cart.countDocuments());
-print("🛒 Carritos activos (purchased:  false): " + db.cart.countDocuments({purchased: false}));
-print("📦 Pedidos completados (purchased: true): " + db.cart.countDocuments({purchased: true}));
+print("Total de documentos de carrito: " + db.cart.countDocuments());
+print("Carritos activos (purchased:  false): " + db.cart.countDocuments({purchased: false}));
+print("Pedidos completados (purchased: true): " + db.cart.countDocuments({purchased: true}));
 print("═══════════════════════════════════════════════════════");
-print("\n👥 CARRITOS POR USUARIO:");
+print("\nCARRITOS POR USUARIO:");
 print("   - John Doe (userId: 3): " + db.cart.countDocuments({userId: NumberLong(3)}) + " carritos (1 activo, " + (db.cart.countDocuments({userId: NumberLong(3)}) - 1) + " históricos)");
 print("   - Jane Smith (userId: 4): " + db.cart.countDocuments({userId: NumberLong(4)}) + " carritos (1 activo, " + (db.cart.countDocuments({userId: NumberLong(4)}) - 1) + " históricos)");
 print("   - Carlos Ruiz (userId: 5): " + db.cart.countDocuments({userId: NumberLong(5)}) + " carritos (1 activo, " + (db.cart.countDocuments({userId: NumberLong(5)}) - 1) + " históricos)");

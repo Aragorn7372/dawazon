@@ -19,7 +19,7 @@ import java.io.Serial;
 public abstract class StorageException extends RuntimeException {
 
     /**
-     * Identificador de versión para serialización
+     * Identificador de versión para serialización.
      */
     @Serial
     private static final long serialVersionUID = 43876691117560211L;
@@ -27,7 +27,7 @@ public abstract class StorageException extends RuntimeException {
     /**
      * Constructor con mensaje de error.
      *
-     * @param mensaje Mensaje descriptivo de la excepción
+     * @param mensaje Mensaje descriptivo de la excepción.
      */
     public StorageException(String mensaje) {
         super(mensaje);

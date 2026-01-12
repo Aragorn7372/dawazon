@@ -104,7 +104,7 @@ public class Cart {
     /**
      * Obtiene el ID del carrito en formato hexadecimal.
      *
-     * @return ID como String hexadecimal
+     * @return ID como String hexadecimal.
      */
     @JsonProperty("id")
     public String getId() {
@@ -144,7 +144,7 @@ public class Cart {
     /**
      * Verifica si el proceso de checkout ha expirado (más de 5 minutos).
      *
-     * @return {@code true} si el checkout ha expirado
+     * @return {@code true} si el checkout ha expirado.
      */
     public boolean isCheckoutExpired() {
         return checkoutInProgress &&

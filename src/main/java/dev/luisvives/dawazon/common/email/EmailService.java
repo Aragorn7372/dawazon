@@ -11,18 +11,18 @@ public interface EmailService {
     /**
      * Envía un email simple en formato texto plano.
      *
-     * @param to      Destinatario
-     * @param subject Asunto del email
-     * @param body    Cuerpo del mensaje en texto plano
+     * @param to      Destinatario.
+     * @param subject Asunto del email.
+     * @param body    Cuerpo del mensaje en texto plano.
      */
     void sendSimpleEmail(String to, String subject, String body);
 
     /**
      * Envía un email con contenido HTML.
      *
-     * @param to       Destinatario
-     * @param subject  Asunto del email
-     * @param htmlBody Cuerpo del mensaje en formato HTML
+     * @param to       Destinatario.
+     * @param subject  Asunto del email.
+     * @param htmlBody Cuerpo del mensaje en formato HTML.
      */
     void sendHtmlEmail(String to, String subject, String htmlBody);
 }

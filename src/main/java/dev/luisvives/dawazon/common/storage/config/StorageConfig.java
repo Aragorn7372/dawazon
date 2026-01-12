@@ -32,7 +32,7 @@ public class StorageConfig {
     /**
      * Constructor con inyección de dependencias.
      *
-     * @param storageService Servicio de almacenamiento
+     * @param storageService Servicio de almacenamiento.
      */
     @Autowired
     public StorageConfig(StorageService storageService) {

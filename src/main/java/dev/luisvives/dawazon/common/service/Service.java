@@ -40,7 +40,6 @@ public interface Service<R, ID, P > {
      * Elimina un recurso por su identificador.
      *
      * @param id Identificador del recurso a eliminar.
-     * @return Objeto de respuesta que indica el resultado de la eliminación.
      */
     void deleteById(ID id);
 }

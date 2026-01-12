@@ -49,7 +49,7 @@ public class CartLine {
     @NotNull
     private Status status;
     /**
-     * Precio total de esta línea (cantidad x precio unitario).
+     * Precio total de esta línea (cantidad por el precio unitario).
      */
     @NotNull
     @Setter

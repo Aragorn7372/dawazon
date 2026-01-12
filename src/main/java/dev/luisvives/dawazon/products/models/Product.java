@@ -164,7 +164,7 @@ public class Product {
          * <p>
          * Previene conflictos cuando múltiples usuarios intentan modificar el mismo
          * producto
-         * simultáneamente. Hibernate incrementa este valor automáticamente en cada
+         * simultáneamente. Hibérnate incrementa este valor automáticamente en cada
          * actualización.
          * </p>
          */

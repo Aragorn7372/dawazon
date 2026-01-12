@@ -62,8 +62,8 @@ public class ProductsController {
     /**
      * Constructor con inyección de dependencias.
      *
-     * @param productService Servicio de productos
-     * @param mapper         Mapper de productos
+     * @param productService Servicio de productos.
+     * @param mapper         Mapper de productos.
      */
     @Autowired
     public ProductsController(ProductService productService, ProductMapper mapper) {
@@ -79,14 +79,14 @@ public class ProductsController {
      * ordenamiento.
      * </p>
      *
-     * @param model     Modelo de Spring MVC para pasar datos a la vista
-     * @param name      Filtro opcional por nombre de producto
-     * @param category  Filtro opcional por categoría
-     * @param page      Número de página (por defecto 0)
-     * @param size      Tamaño de página (por defecto 10)
-     * @param sortBy    Campo de ordenamiento (por defecto "id")
-     * @param direction Dirección de ordenamiento: asc o desc (por defecto "asc")
-     * @return Nombre de la vista Thymeleaf "web/productos/lista"
+     * @param model     Modelo de Spring MVC para pasar datos a la vista.
+     * @param name      Filtro opcional por nombre de producto.
+     * @param category  Filtro opcional por categoría.
+     * @param page      Número de página (por defecto 0).
+     * @param size      Tamaño de página (por defecto 10).
+     * @param sortBy    Campo de ordenamiento (por defecto "id").
+     * @param direction Dirección de ordenamiento: asc o desc (por defecto "asc").
+     * @return Nombre de la vista Thymeleaf "web/productos/lista".
      */
     @GetMapping({ "/", "/products", "/products/" })
     public String getProducts(Model model,
@@ -111,9 +111,9 @@ public class ProductsController {
     /**
      * Muestra el detalle de un producto específico.
      *
-     * @param model Modelo de Spring MVC
-     * @param id    ID del producto a mostrar
-     * @return Nombre de la vista Thymeleaf "web/productos/producto"
+     * @param model Modelo de Spring MVC.
+     * @param id    ID del producto a mostrar.
+     * @return Nombre de la vista Thymeleaf "web/productos/producto".
      */
     @GetMapping("/products/{id}")
     public String getProduct(Model model, @PathVariable String id) {
@@ -129,9 +129,9 @@ public class ProductsController {
      * Solo accesible para usuarios con rol ADMIN.
      * </p>
      *
-     * @param model Modelo de Spring MVC
-     * @param id    ID del producto a editar
-     * @return Nombre de la vista Thymeleaf "web/productos/productSaveEdit"
+     * @param model Modelo de Spring MVC.
+     * @param id    ID del producto a editar.
+     * @return Nombre de la vista Thymeleaf "web/productos/productSaveEdit".
      */
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/products/edit/{id}")
@@ -151,10 +151,10 @@ public class ProductsController {
      * Actualiza los datos del producto y sus imágenes. Solo para ADMIN.
      * </p>
      *
-     * @param product       DTO con los nuevos datos del producto
-     * @param files         Archivos de imágenes a actualizar
-     * @param bindingResult Resultado de validación
-     * @return Redirección a la página de detalle del producto
+     * @param product       DTO con los nuevos datos del producto.
+     * @param files         Archivos de imágenes a actualizar.
+     * @param bindingResult Resultado de validación.
+     * @return Redirección a la página de detalle del producto.
      */
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/products/edit/")
@@ -162,7 +162,7 @@ public class ProductsController {
             @RequestParam("file") List<MultipartFile> files,
             BindingResult bindingResult) {
         val productoEdit = productService.update(product.getId(), product);
-        val productSaveImg = productService.updateOrSaveImage(product.getId(), files);
+        productService.updateOrSaveImage(product.getId(), files);
         return "redirect:/products/" + productoEdit.getId();
     }
 
@@ -173,11 +173,11 @@ public class ProductsController {
      * El comentario se crea como no verificado por defecto.
      * </p>
      *
-     * @param id         ID del producto a comentar
-     * @param comment    Contenido del comentario
-     * @param recomended Si el usuario recomienda el producto
-     * @param model      Modelo con información del usuario actual
-     * @return ResponseEntity con el resultado de la operación (success/error)
+     * @param id         ID del producto a comentar.
+     * @param comment    Contenido del comentario.
+     * @param recomended Si el usuario recomienda el producto.
+     * @param model      Modelo con información del usuario actual.
+     * @return ResponseEntity con el resultado de la operación (success/error).
      */
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/products/{id}/comentarios")
@@ -220,13 +220,13 @@ public class ProductsController {
     /**
      * Elimina lógicamente un producto.
      * <p>
-     * Solo usuarios ADMIN pueden eliminar productos.
-     * El producto se marca como eliminado pero no se borra de la base de datos.
+     * Solo usuarios admins pueden eliminar productos.
+     * El producto se marca como eliminado, pero no se borra de la base de datos.
      * </p>
      *
-     * @param model Modelo de Spring MVC
-     * @param id    ID del producto a eliminar
-     * @return Redirección al listado de productos
+     * @param model Modelo de Spring MVC.
+     * @param id    ID del producto a eliminar.
+     * @return Redirección al listado de productos.
      */
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/products/delete/{id}")

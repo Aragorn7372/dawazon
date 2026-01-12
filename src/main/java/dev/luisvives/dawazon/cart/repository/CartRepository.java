@@ -65,7 +65,7 @@ public interface CartRepository extends MongoRepository<Cart, ObjectId> {
      * Busca un carrito por usuario y estado de compra.
      *
      * @param userId ID del usuario
-     * @param b      Estado de compra (true si ya fue comprado)
+     * @param b      Estado de compra (true se ha comprado)
      * @return Optional con el carrito si existe
      */
     Optional<Cart> findByUserIdAndPurchased(Long userId, boolean b);

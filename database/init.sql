@@ -38,7 +38,7 @@ CREATE TABLE users
     is_deleted                 BOOLEAN      NOT NULL DEFAULT FALSE
 );
 
--- Tabla de roles de usuarios (NOMBRE CORREGIDO: user_roles en lugar de users_roles)
+-- Tabla de roles de usuarios
 CREATE TABLE user_roles
 (
     user_id BIGINT      NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE user_roles
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
--- Tabla de favoritos de usuarios (NOMBRE CORREGIDO: user_favs en lugar de users_favs)
+-- Tabla de favoritos de usuarios
 CREATE TABLE user_favs
 (
     user_id BIGINT NOT NULL,
@@ -92,9 +92,7 @@ CREATE TABLE product_comments
     FOREIGN KEY (product_id) REFERENCES product (id) ON DELETE CASCADE
 );
 
--- ============================================
 -- INSERCIÓN DE DATOS
--- ============================================
 
 -- Insertar categorías (IDs generados con formato del IdGenerator)
 INSERT INTO category (id, name, created_at, updated_at)
@@ -105,7 +103,7 @@ VALUES ('aB3xT9kL2pQm', 'Electrónica', NOW(), NOW()),
        ('mK5tR8hJ1zWq', 'Deportes', NOW(), NOW());
 
 -- Insertar usuarios (password es 'admin y manager respectivamente' hasheado con BCrypt)
--- Admin y Manager sin información de cliente (no compran)
+-- Admin y Manager sin información de cliente
 INSERT INTO users ( user_name, email, password, telefono, avatar, is_deleted)
 VALUES ( 'admin', 'admin@dawazon.com', '$2a$12$lCscGZz/fkYBFUms.kgn2OhnPo3dnZh794OLCMulNpLSJFTqC9/D2',
         '666111222', 'default.png', FALSE),

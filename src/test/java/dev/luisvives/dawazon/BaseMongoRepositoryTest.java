@@ -12,7 +12,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 @DataMongoTest
 public abstract class BaseMongoRepositoryTest {
 
-    @MockitoBean  // ✅ Como field, no como parámetro de la anotación de clase
+    @MockitoBean  // Como field, no como parámetro de la anotación de clase
     private JpaMetamodelMappingContext jpaMetamodelMappingContext;
 
     private static final dev.luisvives.dawazon.TestContainersConfig containers =

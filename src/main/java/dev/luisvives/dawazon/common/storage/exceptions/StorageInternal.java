@@ -29,7 +29,7 @@ public class StorageInternal extends StorageException {
     /**
      * Constructor con mensaje de error.
      *
-     * @param mensaje Mensaje descriptivo de la excepción
+     * @param mensaje Mensaje descriptivo de la excepción.
      */
     public StorageInternal(String mensaje) {
         super(mensaje);

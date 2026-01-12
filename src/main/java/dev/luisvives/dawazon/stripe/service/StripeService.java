@@ -52,9 +52,9 @@ public class StripeService {
      * configura URLs de éxito/cancelación y crea la sesión de pago.
      * </p>
      *
-     * @param cart Carrito de compra para el que crear la sesión
-     * @return URL de la sesión de checkout de Stripe
-     * @throws RuntimeException Si hay error al crear la sesión
+     * @param cart Carrito de compra para el que crear la sesión.
+     * @return URL de la sesión de checkout de Stripe.
+     * @throws RuntimeException Si hay error al crear la sesión.
      */
     public String createCheckoutSession(Cart cart) {
         try {
@@ -76,8 +76,7 @@ public class StripeService {
                         .build());
             }
 
-            // URL a la que vuelve si paga bien. Pasamos el ID del carrito para cerrarlo
-            // luego.
+            // URL a la que vuelve si paga bien. Pasamos el ID del carrito para cerrarlo luego.
             String successUrl = serverUrl + "/auth/me/cart/checkout/success/";
             String cancelUrl = serverUrl + "/auth/me/cart/checkout/cancel/";
 

@@ -80,9 +80,9 @@ public class User implements UserDetails {
     private String telefono="";
 
     @Column(nullable = false)
-    @ElementCollection(fetch = FetchType.EAGER) // Pocos datos, tipo eaguer para ir mas rapido
-    @Enumerated(EnumType.STRING) // Guardar el nombre del enum en lugar de el "indice" del valor Ej.: Tipo[0] =
-                                 // ADMIN / Tipo[1] = USER
+    @ElementCollection(fetch = FetchType.EAGER) // Pocos datos, tipo eager para ir más rápido
+    @Enumerated(EnumType.STRING) // Guardar el nombre del enum en lugar de el "índice" del valor
+
     @Builder.Default
     private List<Role> roles=List.of(Role.USER);
 
@@ -90,9 +90,8 @@ public class User implements UserDetails {
     @Builder.Default
     private String avatar = IMAGE_DEFAULT;
     @Column()
-    @ElementCollection(fetch = FetchType.EAGER) // Pocos datos, tipo eaguer para ir mas rapido
-    @Enumerated(EnumType.STRING) // Guardar el nombre del enum en lugar de el "indice" del valor Ej.: Tipo[0] =
-                                 // ADMIN / Tipo[1] = USER
+    @ElementCollection(fetch = FetchType.EAGER) // Pocos datos, tipo eager para ir más rápido
+    @Enumerated(EnumType.STRING) // Guardar el nombre del enum en lugar de el "índice" del valor
     private List<String> favs;
     @Column(nullable = false)
     @CreatedDate
@@ -123,7 +122,7 @@ public class User implements UserDetails {
     /**
      * Obtiene el nombre de usuario para Spring Security.
      *
-     * @return Nombre de usuario
+     * @return Nombre de usuario.
      */
     @Override
     public String getUsername() {

@@ -28,11 +28,6 @@ import java.util.stream.Stream;
  * Implementación de un {@link StorageService} que almacena
  * los ficheros subidos dentro del servidor donde se ha desplegado
  * la apliacación.
- * <p>
- * ESTO SE REALIZA ASÍ PARA NO HACER MÁS COMPLEJO EL EJEMPLO.
- * EN UNA APLICACIÓN EN PRODUCCIÓN POSIBLEMENTE SE UTILICE
- * UN ALMACÉN REMOTO, solo habría que cambiar la implementación de estos
- * métodos.
  *
  * @author Equipo de desarrollo de Spring
  */
@@ -57,15 +52,15 @@ public class FileSystemStorageService implements StorageService {
     /**
      * Método que almacena un fichero en el almacenamiento secundario
      *
-     * @param file fichero a almacenar
-     * @return nombre del fichero almacenado
-     * @throws StorageBadRequest si el fichero está vacío
-     * @throws StorageInternal   si hay un error al almacenar el fichero
-     * @throws StorageBadRequest si el fichero contiene caracteres no permitidos
+     * @param file fichero a almacenar.
+     * @return nombre del fichero almacenado.
+     * @throws StorageBadRequest si el fichero está vacío.
+     * @throws StorageInternal   si hay un error al almacenar el fichero.
+     * @throws StorageBadRequest si el fichero contiene caracteres no permitidos.
      */
     @Override
     public String store(MultipartFile file) {
-        String filename = StringUtils.cleanPath(file.getOriginalFilename()); // Ruta entera C:\\ruta\ruta [...]
+        String filename = StringUtils.cleanPath(file.getOriginalFilename());
         String extension = StringUtils.getFilenameExtension(filename); // Se queda con lo de después del "."
         String justFilename = filename.replace("." + extension, "");
         String storedFilename = System.currentTimeMillis() + "_" + justFilename + "." + extension;
@@ -114,8 +109,8 @@ public class FileSystemStorageService implements StorageService {
     /**
      * Carga la ruta de un fichero por su nombre.
      *
-     * @param filename Nombre del fichero
-     * @return Path del fichero
+     * @param filename Nombre del fichero.
+     * @return Path del fichero.
      */
     @Override
     public Path load(String filename) {
@@ -126,9 +121,9 @@ public class FileSystemStorageService implements StorageService {
     /**
      * Carga un fichero como recurso por su nombre.
      *
-     * @param filename Nombre del fichero
-     * @return Recurso del fichero
-     * @throws StorageNotFound Si el fichero no existe o no es legible
+     * @param filename Nombre del fichero.
+     * @return Recurso del fichero.
+     * @throws StorageNotFound Si el fichero no existe o no es legible.
      */
     @Override
     public Resource loadAsResource(String filename) {
@@ -158,7 +153,7 @@ public class FileSystemStorageService implements StorageService {
     /**
      * Inicializa el sistema de almacenamiento creando el directorio raíz.
      *
-     * @throws StorageInternal Si no se puede crear el directorio
+     * @throws StorageInternal Si no se puede crear el directorio.
      */
     @Override
     public void init() {
@@ -173,8 +168,8 @@ public class FileSystemStorageService implements StorageService {
     /**
      * Elimina un fichero específico del almacenamiento.
      *
-     * @param filename Nombre del fichero a eliminar
-     * @throws StorageInternal Si no se puede eliminar el fichero
+     * @param filename Nombre del fichero a eliminar.
+     * @throws StorageInternal Si no se puede eliminar el fichero.
      */
     @Override
     public void delete(String filename) {
@@ -192,8 +187,8 @@ public class FileSystemStorageService implements StorageService {
     /**
      * Obtiene la URL pública de un fichero.
      *
-     * @param filename Nombre del fichero
-     * @return URL del fichero
+     * @param filename Nombre del fichero.
+     * @return URL del fichero.
      */
     @Override
     public String getUrl(String filename) {

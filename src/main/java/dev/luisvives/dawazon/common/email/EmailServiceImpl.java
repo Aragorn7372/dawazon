@@ -25,9 +25,6 @@ import org.springframework.stereotype.Service;
  * Admite el envío de correos con remitente configurable mediante la propiedad
  * <code>app.mail.from</code> del archivo de configuración.
  * </p>
- *
- * @author
- * @version 1.0
  */
 @Service
 public class EmailServiceImpl implements EmailService {
@@ -51,9 +48,9 @@ public class EmailServiceImpl implements EmailService {
     /**
      * Constructor de la clase.
      *
-     * @param mailSender instancia de {@link JavaMailSender} inyectada por Spring para el envío de correos
+     * @param mailSender instancia de {@link JavaMailSender} inyectada por Spring para el envío de correos.
      * @param fromEmail  dirección de correo electrónico del remitente, configurable mediante la propiedad
-     *                   <code>app.mail.from</code> en <code>application.properties</code> o <code>application.yml</code>
+     *                   <code>app.mail.from</code> en <code>application.properties</code> o <code>application.yml</code>.
      */
     public EmailServiceImpl(JavaMailSender mailSender,
                             @Value("${app.mail.from:noreply@tienda.dev}") String fromEmail) {
@@ -68,15 +65,15 @@ public class EmailServiceImpl implements EmailService {
      * el {@link JavaMailSender} configurado por Spring Boot.
      * </p>
      *
-     * @param to      dirección de correo electrónico del destinatario
-     * @param subject asunto del correo
-     * @param body    cuerpo del mensaje en texto plano
-     * @throws RuntimeException si ocurre un error al enviar el correo
+     * @param to      dirección de correo electrónico del destinatario.
+     * @param subject asunto del correo.
+     * @param body    cuerpo del mensaje en texto plano.
+     * @throws RuntimeException si ocurre un error al enviar el correo.
      */
     @Override
     public void sendSimpleEmail(String to, String subject, String body) {
         try {
-            logger.info("📧 Enviando email simple a: {}", to);
+            logger.info("Enviando email simple a: {}", to);
 
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(to);
@@ -85,10 +82,10 @@ public class EmailServiceImpl implements EmailService {
             message.setFrom(fromEmail);
 
             mailSender.send(message);
-            logger.info("✅ Email simple enviado correctamente a: {}", to);
+            logger.info("Email simple enviado correctamente a: {}", to);
 
         } catch (Exception e) {
-            logger.error("❌ Error enviando email simple a {}: {}", to, e.getMessage(), e);
+            logger.error("Error enviando email simple a {}: {}", to, e.getMessage(), e);
             throw new RuntimeException("Error enviando email: " + e.getMessage(), e);
         }
     }
@@ -108,7 +105,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendHtmlEmail(String to, String subject, String htmlBody) {
         try {
-            logger.info("📧 Enviando email HTML a: {}", to);
+            logger.info("Enviando email HTML a: {}", to);
 
             var message = mailSender.createMimeMessage();
             var helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -119,10 +116,10 @@ public class EmailServiceImpl implements EmailService {
             helper.setFrom(fromEmail);
 
             mailSender.send(message);
-            logger.info("✅ Email HTML enviado correctamente a: {}", to);
+            logger.info("Email HTML enviado correctamente a: {}", to);
 
         } catch (MessagingException e) {
-            logger.error("❌ Error enviando email HTML a {}: {}", to, e.getMessage(), e);
+            logger.error("Error enviando email HTML a {}: {}", to, e.getMessage(), e);
             throw new RuntimeException("Error enviando email HTML: " + e.getMessage(), e);
         }
     }

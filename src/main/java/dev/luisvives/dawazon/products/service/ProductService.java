@@ -69,16 +69,16 @@ public interface ProductService extends Service<GenericProductResponseDto, Strin
     /**
      * Agrega un comentario a un producto.
      *
-     * @param productId ID del producto
-     * @param comment   Comentario a agregar
+     * @param productId ID del producto.
+     * @param comment   Comentario a agregar.
      */
     void addComment(String productId, Comment comment);
 
     /**
      * Obtiene el ID del usuario creador de un producto.
      *
-     * @param id ID del producto
-     * @return ID del usuario creador del producto
+     * @param id ID del producto.
+     * @return ID del usuario creador del producto.
      */
     Long getUserProductId(String id);
 }

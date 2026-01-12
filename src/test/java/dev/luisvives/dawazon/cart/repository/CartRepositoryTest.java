@@ -48,7 +48,7 @@ class CartRepositoryTest extends BaseMongoRepositoryTest {
     }
 
     @Test
-    void findByUserId_whenUserHasNoCarts_returnsEmptyPage() {
+    void findByUserIdwhenUserHasNoCartsreturnsEmptyPage() {
         Long userId = 99L;
         Pageable pageable = PageRequest.of(0, 10);
 
@@ -59,7 +59,7 @@ class CartRepositoryTest extends BaseMongoRepositoryTest {
     }
 
     @Test
-    void findByUserId_withPagination_returnsCorrectPageSize() {
+    void findByUserIdwithPaginationreturnsCorrectPageSize() {
         Long userId = 2L;
         for (int i = 0; i < 5; i++) {
             cartRepository.save(createSampleCart(userId, false));
@@ -74,7 +74,7 @@ class CartRepositoryTest extends BaseMongoRepositoryTest {
     }
 
     @Test
-    void findByUserIdAndPurchased_whenActiveCartExists_returnsActiveCart() {
+    void findByUserIdAndPurchasedwhenActiveCartExistsreturnsActiveCart() {
         Long userId = 3L;
         Cart activeCart = createSampleCart(userId, false);
         cartRepository.save(activeCart);
@@ -87,7 +87,7 @@ class CartRepositoryTest extends BaseMongoRepositoryTest {
     }
 
     @Test
-    void findByUserIdAndPurchased_whenPurchasedCartExists_returnsPurchasedCart() {
+    void findByUserIdAndPurchasedwhenPurchasedCartExistsreturnsPurchasedCart() {
         Long userId = 4L;
         Cart purchasedCart = createSampleCart(userId, true);
         Cart activeCart = createSampleCart(userId, false);
@@ -101,7 +101,7 @@ class CartRepositoryTest extends BaseMongoRepositoryTest {
     }
 
     @Test
-    void findByUserIdAndPurchased_whenNoMatchingCart_returnsEmpty() {
+    void findByUserIdAndPurchasedwhenNoMatchingCartreturnsEmpty() {
         Long userId = 5L;
         Cart purchasedCart = createSampleCart(userId, true);
         cartRepository.save(purchasedCart);
@@ -112,7 +112,7 @@ class CartRepositoryTest extends BaseMongoRepositoryTest {
     }
 
     @Test
-    void addCartLine_whenCartExists_addsNewLineSuccessfully() {
+    void addCartLinewhenCartExistsaddsNewLineSuccessfully() {
         Long userId = 6L;
         ObjectId cartId = new ObjectId();
         Cart cart = createSampleCartWithId(cartId, userId, false);
@@ -132,7 +132,7 @@ class CartRepositoryTest extends BaseMongoRepositoryTest {
     }
 
     @Test
-    void addCartLine_toEmptyCart_addsFirstLine() {
+    void addCartLinetoEmptyCartaddsFirstLine() {
         Long userId = 7L;
         ObjectId cartId = new ObjectId();
         Cart cart = createCartWithEmptyLinesWithId(cartId, userId);
@@ -149,7 +149,7 @@ class CartRepositoryTest extends BaseMongoRepositoryTest {
     }
 
     @Test
-    void addCartLine_whenCartNotFound_returnsZeroModified() {
+    void addCartLinewhenCartNotFoundreturnsZeroModified() {
         ObjectId nonExistentId = new ObjectId();
         CartLine newLine = createCartLine("PROD-999", 1, 10.0, Status.EN_CARRITO);
 
@@ -159,7 +159,7 @@ class CartRepositoryTest extends BaseMongoRepositoryTest {
     }
 
     @Test
-    void removeCartLine_whenLineExists_removesLineSuccessfully() {
+    void removeCartLinewhenLineExistsremovesLineSuccessfully() {
         Long userId = 8L;
         ObjectId cartId = new ObjectId();
         CartLine lineToRemove = createCartLine("PROD-REMOVE", 2, 75.0, Status.EN_CARRITO);
@@ -176,7 +176,7 @@ class CartRepositoryTest extends BaseMongoRepositoryTest {
     }
 
     @Test
-    void removeCartLine_whenLineNotFound_returnsZeroModified() {
+    void removeCartLinewhenLineNotFoundreturnsZeroModified() {
         Long userId = 9L;
         ObjectId cartId = new ObjectId();
         Cart cart = createSampleCartWithId(cartId, userId, false);
@@ -189,7 +189,7 @@ class CartRepositoryTest extends BaseMongoRepositoryTest {
     }
 
     @Test
-    void removeCartLine_fromCartWithMultipleLines_removesOnlySpecifiedLine() {
+    void removeCartLinefromCartWithMultipleLinesremovesOnlySpecifiedLine() {
         Long userId = 10L;
         ObjectId cartId = new ObjectId();
         CartLine lineToKeep = createCartLine("PROD-KEEP", 3, 30.0, Status.EN_CARRITO);
@@ -208,7 +208,7 @@ class CartRepositoryTest extends BaseMongoRepositoryTest {
     }
 
     @Test
-    void updateCartLineStatus_whenLineExists_updatesStatusSuccessfully() {
+    void updateCartLineStatuswhenLineExistsupdatesStatusSuccessfully() {
         Long userId = 11L;
         ObjectId cartId = new ObjectId();
         String productId = "PROD-UPDATE";
@@ -230,7 +230,7 @@ class CartRepositoryTest extends BaseMongoRepositoryTest {
     }
 
     @Test
-    void updateCartLineStatus_whenProductNotInCart_returnsZeroModified() {
+    void updateCartLineStatuswhenProductNotInCartreturnsZeroModified() {
         Long userId = 12L;
         ObjectId cartId = new ObjectId();
         Cart cart = createSampleCartWithId(cartId, userId, false);
@@ -245,7 +245,7 @@ class CartRepositoryTest extends BaseMongoRepositoryTest {
     }
 
     @Test
-    void updateCartLineStatus_updatesCorrectLineInMultiLineCart() {
+    void updateCartLineStatusupdatesCorrectLineInMultiLineCart() {
         Long userId = 13L;
         ObjectId cartId = new ObjectId();
         String targetProductId = "PROD-TARGET";

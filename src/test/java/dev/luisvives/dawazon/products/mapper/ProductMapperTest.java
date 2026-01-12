@@ -81,7 +81,7 @@ class ProductMapperTest {
     }
 
     @Test
-    void constructor_whenStorageServiceProvided_createsProductMapper() {
+    void constructorwhenStorageServiceProvidedcreatesProductMapper() {
         // Given
         StorageService mockStorageService = mock(StorageService.class);
 
@@ -93,7 +93,7 @@ class ProductMapperTest {
     }
 
     @Test
-    void modelToGenericResponseDTO_whenValidProduct_convertsSuccessfully() {
+    void modelToGenericResponseDTOwhenValidProductconvertsSuccessfully() {
         // Given
         when(storageService.getUrl("image1.jpg")).thenReturn("http://example.com/image1.jpg");
         when(storageService.getUrl("image2.jpg")).thenReturn("http://example.com/image2.jpg");
@@ -127,7 +127,7 @@ class ProductMapperTest {
     }
 
     @Test
-    void modelToGenericResponseDTO_whenProductWithNoImages_returnsEmptyImageList() {
+    void modelToGenericResponseDTOwhenProductWithNoImagesreturnsEmptyImageList() {
         // Given
         testProduct.setImages(new ArrayList<>());
 
@@ -142,7 +142,6 @@ class ProductMapperTest {
 
     @Test
     void postPutDTOToModel_whenValidDTO_convertsSuccessfully() {
-        // Given
         PostProductRequestDto dto = PostProductRequestDto.builder()
                 .id("PROD-002")
                 .name("Mouse")
@@ -153,10 +152,8 @@ class ProductMapperTest {
                 .creatorId(2L)
                 .build();
 
-        // When
         Product result = productMapper.postPutDTOToModel(dto);
 
-        // Then
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo("PROD-002");
         assertThat(result.getName()).isEqualTo("Mouse");
@@ -166,18 +163,15 @@ class ProductMapperTest {
         assertThat(result.getCreatorId()).isEqualTo(2L);
         assertThat(result.getImages()).isEmpty();
         assertThat(result.getComments()).isEmpty();
-        assertThat(result.getCategory()).isNull(); // Category debe establecerse en el servicio
+        assertThat(result.getCategory()).isNull();
     }
 
     @Test
-    void commentToCommentDto_whenValidComment_convertsSuccessfully() {
-        // Given
+    void commentToCommentDtowhenValidCommentconvertsSuccessfully() {
         String userName = "John Doe";
 
-        // When
         CommentDto result = productMapper.commentToCommentDto(testComment, userName);
 
-        // Then
         assertThat(result).isNotNull();
         assertThat(result.getComment()).isEqualTo("Great product!");
         assertThat(result.getUserName()).isEqualTo("John Doe");
@@ -186,8 +180,7 @@ class ProductMapperTest {
     }
 
     @Test
-    void commentToCommentDto_whenNotVerifiedComment_convertsCorrectly() {
-        // Given
+    void commentToCommentDtowhenNotVerifiedCommentconvertsCorrectly() {
         Comment unverifiedComment = Comment.builder()
                 .userId(200L)
                 .content("Average product")
@@ -196,10 +189,8 @@ class ProductMapperTest {
                 .build();
         String userName = "Jane Smith";
 
-        // When
         CommentDto result = productMapper.commentToCommentDto(unverifiedComment, userName);
 
-        // Then
         assertThat(result).isNotNull();
         assertThat(result.getComment()).isEqualTo("Average product");
         assertThat(result.getUserName()).isEqualTo("Jane Smith");
@@ -208,17 +199,14 @@ class ProductMapperTest {
     }
 
     @Test
-    void pageToDTO_whenValidPage_convertsSuccessfully() {
-        // Given
+    void pageToDTOwhenValidPageconvertsSuccessfully() {
         List<Product> products = List.of(testProduct);
         Page<Product> page = new PageImpl<>(products, PageRequest.of(0, 10), 1);
         String sortBy = "name";
         String direction = "asc";
 
-        // When
         PageResponseDTO<Product> result = productMapper.pageToDTO(page, sortBy, direction);
 
-        // Then
         assertThat(result).isNotNull();
         assertThat(result.getContent()).hasSize(1);
         assertThat(result.getContent().get(0)).isEqualTo(testProduct);
@@ -235,14 +223,11 @@ class ProductMapperTest {
     }
 
     @Test
-    void pageToDTO_whenEmptyPage_returnsEmptyDTO() {
-        // Given
+    void pageToDTOwhenEmptyPagereturnsEmptyDTO() {
         Page<Product> emptyPage = new PageImpl<>(new ArrayList<>(), PageRequest.of(0, 10), 0);
 
-        // When
         PageResponseDTO<Product> result = productMapper.pageToDTO(emptyPage, "price", "desc");
 
-        // Then
         assertThat(result).isNotNull();
         assertThat(result.getContent()).isEmpty();
         assertThat(result.getTotalElements()).isZero();
@@ -250,25 +235,21 @@ class ProductMapperTest {
     }
 
     @Test
-    void modelToGenericResponseDTO_whenMultipleComments_includesAllComments() {
-        // Given
+    void modelToGenericResponseDTOwhenMultipleCommentsincludesAllComments() {
         when(storageService.getUrl(anyString())).thenReturn("http://example.com/image.jpg");
 
         CommentDto comment1 = CommentDto.builder().comment("Comment 1").userName("User1").build();
         CommentDto comment2 = CommentDto.builder().comment("Comment 2").userName("User2").build();
         List<CommentDto> commentDtos = List.of(comment1, comment2);
 
-        // When
         GenericProductResponseDto result = productMapper.modelToGenericResponseDTO(testProduct, commentDtos);
 
-        // Then
         assertThat(result.getComments()).hasSize(2);
         assertThat(result.getComments()).containsExactly(comment1, comment2);
     }
 
     @Test
-    void postPutDTOToModel_verifiesImagesAndCommentsAreInitializedAsEmptyLists() {
-        // Given
+    void postPutDTOToModelverifiesImagesAndCommentsAreInitializedAsEmptyLists() {
         PostProductRequestDto dto = PostProductRequestDto.builder()
                 .id("PROD-003")
                 .name("Keyboard")
@@ -279,10 +260,8 @@ class ProductMapperTest {
                 .creatorId(3L)
                 .build();
 
-        // When
         Product result = productMapper.postPutDTOToModel(dto);
 
-        // Then
         assertThat(result.getImages()).isNotNull();
         assertThat(result.getImages()).isEmpty();
         assertThat(result.getComments()).isNotNull();

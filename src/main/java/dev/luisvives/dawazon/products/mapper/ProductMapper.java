@@ -38,7 +38,7 @@ public class ProductMapper {
     /**
      * Constructor con inyección de dependencias.
      *
-     * @param storageService Servicio de almacenamiento de archivos
+     * @param storageService Servicio de almacenamiento de archivos.
      */
     @Autowired
     public ProductMapper(StorageService storageService) {
@@ -52,9 +52,9 @@ public class ProductMapper {
      * utilizando el {@link StorageService}.
      * </p>
      *
-     * @param productoFound Producto a convertir
-     * @param commentsFound Lista de comentarios ya transformados a DTO
-     * @return DTO con la información del producto y URLs completas de imágenes
+     * @param productoFound Producto a convertir.
+     * @param commentsFound Lista de comentarios ya transformados a DTO.
+     * @return DTO con la información del producto y URLs completas de imágenes.
      */
     public GenericProductResponseDto modelToGenericResponseDTO(Product productoFound, List<CommentDto> commentsFound) {
         List<String> imageUrls = productoFound.getImages().stream()
@@ -78,8 +78,8 @@ public class ProductMapper {
      * La categoría no se asigna en este método, debe establecerse en el servicio.
      * </p>
      *
-     * @param productoDto DTO con los datos del producto
-     * @return Producto construido a partir del DTO (sin categoría asignada)
+     * @param productoDto DTO con los datos del producto.
+     * @return Producto construido a partir del DTO (sin categoría asignada).
      */
     public Product postPutDTOToModel(PostProductRequestDto productoDto) {
         return Product.builder()
@@ -101,9 +101,9 @@ public class ProductMapper {
      * Transforma el ID de usuario en el comentario a un nombre de usuario legible.
      * </p>
      *
-     * @param comment  Comentario a convertir
-     * @param userName Nombre del usuario que realizó el comentario
-     * @return DTO del comentario con nombre de usuario
+     * @param comment  Comentario a convertir.
+     * @param userName Nombre del usuario que realizó el comentario.
+     * @return DTO del comentario con nombre de usuario.
      */
     public CommentDto commentToCommentDto(Comment comment, String userName) {
         return CommentDto.builder()
@@ -122,16 +122,15 @@ public class ProductMapper {
      * y dirección de ordenamiento.
      * </p>
      *
-     * @param page      Página de productos
-     * @param sortBy    Campo por el que se ordenó
-     * @param direction Dirección de ordenamiento (asc/desc)
-     * @return DTO de respuesta paginada
+     * @param page      Página de productos.
+     * @param sortBy    Campo por el que se ordenó.
+     * @param direction Dirección de ordenamiento (asc/desc).
+     * @return DTO de respuesta paginada.
      */
     public PageResponseDTO<Product> pageToDTO(Page<Product> page, String sortBy, String direction) {
         return new PageResponseDTO<>(
                 page.getContent()
                         .stream()
-                        .map(it -> it)
                         .toList(),
                 page.getTotalPages(),
                 page.getTotalElements(),
