@@ -128,7 +128,7 @@ public class AuthController {
      * @param model Modelo de Spring MVC.
      * @return Vista de cambio de contraseña.
      */
-    @PreAuthorize("hasAnyAuthority()")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/auth/me/changepassword")
     public String change(Model model){
         log.info("change");
@@ -148,7 +148,7 @@ public class AuthController {
      * @param id      ID del usuario actual.
      * @return Redirección a la página principal.
      */
-    @PreAuthorize("hasAnyAuthority()")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/auth/me/changepassword")
     public String changePasswordSubmit(Model model,
             @ModelAttribute("usuario")UserChangePasswordDto usuario,

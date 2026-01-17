@@ -24,12 +24,12 @@
                 </tr>
             </thead>
             <tbody>
-                {% if users is empty %}
+                {% if users.content is empty %}
                 <tr>
                     <td colspan="6" class="text-center text-muted">No se encontraron usuarios. </td>
                 </tr>
                 {% else %}
-                {% for user in users %}
+                {% for user in users.content %}
                 <tr>
                     <td>
                         {% if user.avatar %}
@@ -80,6 +80,69 @@
             </tbody>
         </table>
     </div>
+
+    {# Pagination Section #}
+    {% if not users.empty and users.totalPages > 1 %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <nav aria-label="Navegación de páginas">
+                <ul class="pagination justify-content-center">
+                    {# First Page Button #}
+                    <li class="page-item {% if users.first %}disabled{% endif %}">
+                        <a class="page-link"
+                            href="?page=0{% if param.sortBy %}&sortBy={{ param.sortBy }}{% endif %}{% if param.direction %}&direction={{ param.direction }}{% endif %}{% if param.userNameOrEmail %}&userNameOrEmail={{ param.userNameOrEmail }}{% endif %}"
+                            aria-label="Primera">
+                            <span aria-hidden="true">&laquo;&laquo;</span>
+                        </a>
+                    </li>
+
+                    {# Previous Page Button #}
+                    <li class="page-item {% if users.first %}disabled{% endif %}">
+                        <a class="page-link"
+                            href="?page={{ users.number - 1 }}{% if param.sortBy %}&sortBy={{ param.sortBy }}{% endif %}{% if param.direction %}&direction={{ param.direction }}{% endif %}{% if param.userNameOrEmail %}&userNameOrEmail={{ param.userNameOrEmail }}{% endif %}"
+                            aria-label="Anterior">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    {# Current Page Info #}
+                    <li class="page-item active">
+                        <span class="page-link">
+                            Página {{ users.number + 1 }} de {{ users.totalPages }}
+                        </span>
+                    </li>
+
+                    {# Next Page Button #}
+                    <li class="page-item {% if users.last %}disabled{% endif %}">
+                        <a class="page-link"
+                            href="?page={{ users.number + 1 }}{% if param.sortBy %}&sortBy={{ param.sortBy }}{% endif %}{% if param.direction %}&direction={{ param.direction }}{% endif %}{% if param.userNameOrEmail %}&userNameOrEmail={{ param.userNameOrEmail }}{% endif %}"
+                            aria-label="Siguiente">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+
+                    {# Last Page Button #}
+                    <li class="page-item {% if users.last %}disabled{% endif %}">
+                        <a class="page-link"
+                            href="?page={{ users.totalPages - 1 }}{% if param.sortBy %}&sortBy={{ param.sortBy }}{% endif %}{% if param.direction %}&direction={{ param.direction }}{% endif %}{% if param.userNameOrEmail %}&userNameOrEmail={{ param.userNameOrEmail }}{% endif %}"
+                            aria-label="Última">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    {# Optional: Show total results info #}
+    <div class="row">
+        <div class="col-12 text-center text-muted">
+            <small>
+                Mostrando {{ users.numberOfElements }} de {{ users.totalElements }} usuarios
+            </small>
+        </div>
+    </div>
+    {% endif %}
 </main>
 <script>
 

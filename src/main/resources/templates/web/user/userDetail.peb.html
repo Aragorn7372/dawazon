@@ -75,14 +75,14 @@
     <div class="action-buttons admin-actions" style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;">
 
         <a href="/auth/me/users" class="btn-gradient"
-           style="text-decoration:  none; display: flex; justify-content: center; align-items:  center; background-color: #e7e7e7; color: #333; box-shadow: none; width: 200px;">
+            style="text-decoration:  none; display: flex; justify-content: center; align-items:  center; background-color: #e7e7e7; color: #333; box-shadow: none; width: 200px;">
             Volver a la lista
         </a>
 
         {% if isHimSelf or isAdmin %}
         <a href="{% if isHimSelf %}/auth/me/edit{% else %}/auth/me/users/edit/{{user.id}}{% endif %}"
-           class="btn-gradient"
-           style="text-decoration: none; display: flex; justify-content: center; align-items: center; width: 200px;">
+            class="btn-gradient"
+            style="text-decoration: none; display: flex; justify-content: center; align-items: center; width: 200px;">
             Editar Usuario
         </a>
         {% endif %}

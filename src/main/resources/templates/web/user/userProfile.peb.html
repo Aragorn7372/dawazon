@@ -29,9 +29,9 @@
                 <label class="form-label fw-bold">Teléfono</label>
                 <p class="form-control-plaintext">
                     {% if user.telefono %}
-                        {{ user.telefono }}
+                    {{ user.telefono }}
                     {% else %}
-                        No especificado
+                    No especificado
                     {% endif %}
                 </p>
             </div>
@@ -40,9 +40,9 @@
                 <label class="form-label fw-bold">Cliente</label>
                 <p class="form-control-plaintext">
                     {% if user.client.name %}
-                        {{ user.client.name }}
+                    {{ user.client.name }}
                     {% else %}
-                        No especificado
+                    No especificado
                     {% endif %}
                 </p>
             </div>
@@ -51,9 +51,9 @@
                 <label class="form-label fw-bold">Calle</label>
                 <p class="form-control-plaintext">
                     {% if user.client.address.street %}
-                        {{ user.client.address.street }}
+                    {{ user.client.address.street }}
                     {% else %}
-                        No especificado
+                    No especificado
                     {% endif %}
                 </p>
             </div>
@@ -62,9 +62,9 @@
                 <label class="form-label fw-bold">Ciudad</label>
                 <p class="form-control-plaintext">
                     {% if user.client.address.city %}
-                        {{ user.client.address.city }}
+                    {{ user.client.address.city }}
                     {% else %}
-                        No especificado
+                    No especificado
                     {% endif %}
                 </p>
             </div>
@@ -73,9 +73,9 @@
                 <label class="form-label fw-bold">Código Postal</label>
                 <p class="form-control-plaintext">
                     {% if user.client.address.postalCode %}
-                        {{ user.client.address.postalCode }}
+                    {{ user.client.address.postalCode }}
                     {% else %}
-                        No especificado
+                    No especificado
                     {% endif %}
                 </p>
             </div>
@@ -84,9 +84,9 @@
                 <label class="form-label fw-bold">Provincia</label>
                 <p class="form-control-plaintext">
                     {% if user.client.address.province %}
-                        {{ user.client.address.province }}
+                    {{ user.client.address.province }}
                     {% else %}
-                        No especificado
+                    No especificado
                     {% endif %}
                 </p>
             </div>
@@ -113,6 +113,13 @@
         {% elseif isAdmin %}
         <a href="/auth/me/users/edit/{{ user.id }}" class="btn-gradient" style="text-decoration: none; display: flex; justify-content: center; align-items: center; padding: 10px 20px;">
             <i class="bi bi-pencil-fill me-2"></i> Editar Usuario
+        </a>
+        {% endif %}
+
+        {% if currentUser.id == user.id %}
+        <a href="/auth/me/changepassword" class="btn-gradient"
+            style="text-decoration: none; display: flex; justify-content: center; align-items: center; padding: 10px 20px;">
+            <i class="bi bi-key-fill me-2"></i> Cambiar Contraseña
         </a>
         {% endif %}
 
