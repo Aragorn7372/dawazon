@@ -117,7 +117,7 @@
         {% endif %}
 
         {% if currentUser.id == user.id %}
-        <a href="/auth/me/changepassword" class="btn-gradient"
+        <a href="/auth/me/changepassword" data-testid="contraseña" class="btn-gradient"
             style="text-decoration: none; display: flex; justify-content: center; align-items: center; padding: 10px 20px;">
             <i class="bi bi-key-fill me-2"></i> Cambiar Contraseña
         </a>
