@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\fryfe\\Desktop\\dawazon\\testE2EDawazon\\testE2EDawazon\\testE2EDawazon.csproj": {}
+    "C:\\Users\\Aragorn\\Desktop\\dawazon\\testE2EDawazon\\testE2EDawazon\\testE2EDawazon.csproj": {}
   },
   "projects": {
-    "C:\\Users\\fryfe\\Desktop\\dawazon\\testE2EDawazon\\testE2EDawazon\\testE2EDawazon.csproj": {
+    "C:\\Users\\Aragorn\\Desktop\\dawazon\\testE2EDawazon\\testE2EDawazon\\testE2EDawazon.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\fryfe\\Desktop\\dawazon\\testE2EDawazon\\testE2EDawazon\\testE2EDawazon.csproj",
+        "projectUniqueName": "C:\\Users\\Aragorn\\Desktop\\dawazon\\testE2EDawazon\\testE2EDawazon\\testE2EDawazon.csproj",
         "projectName": "testE2EDawazon",
-        "projectPath": "C:\\Users\\fryfe\\Desktop\\dawazon\\testE2EDawazon\\testE2EDawazon\\testE2EDawazon.csproj",
-        "packagesPath": "C:\\Users\\fryfe\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\fryfe\\Desktop\\dawazon\\testE2EDawazon\\testE2EDawazon\\obj\\",
+        "projectPath": "C:\\Users\\Aragorn\\Desktop\\dawazon\\testE2EDawazon\\testE2EDawazon\\testE2EDawazon.csproj",
+        "packagesPath": "C:\\Users\\Aragorn\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Aragorn\\Desktop\\dawazon\\testE2EDawazon\\testE2EDawazon\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\fryfe\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Aragorn\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -85,7 +85,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
