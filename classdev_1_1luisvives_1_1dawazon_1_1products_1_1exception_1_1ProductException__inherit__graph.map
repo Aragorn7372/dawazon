@@ -1,0 +1,9 @@
+<map id="dev.luisvives.dawazon.products.exception.ProductException" name="dev.luisvives.dawazon.products.exception.ProductException">
+<area shape="rect" id="Node000001" title=" " alt="" coords="244,37,545,77"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="593,5,895,45"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="559,40,593,36,593,42,559,45"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="593,69,895,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="559,70,593,73,593,78,559,75"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,45,196,70"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="210,55,244,55,244,60,210,60"/>
+</map>

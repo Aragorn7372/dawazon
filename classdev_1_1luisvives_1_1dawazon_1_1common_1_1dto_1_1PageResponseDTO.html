@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Dawazon: Referencia de la plantilla de la clase dev.luisvives.dawazon.common.dto.PageResponseDTO&lt; T &gt;</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Dawazon<span id="projectnumber">&#160;0.1</span>
+   </div>
+   <div id="projectbrief">Tienda bien bacana</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>dev</b></li><li class="navelem"><b>luisvives</b></li><li class="navelem"><a class="el" href="namespacedev_1_1luisvives_1_1dawazon.html">dawazon</a></li><li class="navelem"><b>common</b></li><li class="navelem"><a class="el" href="namespacedev_1_1luisvives_1_1dawazon_1_1common_1_1dto.html">dto</a></li><li class="navelem"><a class="el" href="classdev_1_1luisvives_1_1dawazon_1_1common_1_1dto_1_1PageResponseDTO.html">PageResponseDTO</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="classdev_1_1luisvives_1_1dawazon_1_1common_1_1dto_1_1PageResponseDTO-members.html">Lista de todos los miembros</a>  </div>
+  <div class="headertitle"><div class="title">Referencia de la plantilla de la clase dev.luisvives.dawazon.common.dto.PageResponseDTO&lt; T &gt;</div></div>
+</div><!--header-->
+<div class="contents">
+<a name="details" id="details"></a><h2 class="groupheader">Descripción detallada</h2>
+<div class="textblock"><p>DTO genérico que representa una respuesta paginada de cualquier entidad. </p>
+<p>Contiene tanto la lista de productos de la página actual como información de paginación, incluyendo número de páginas, tamaño de página, orden, etc. </p>
+<p><b>Campos:</b> </p><ul>
+<li>
+<b>content</b> (<code>List&lt;T&gt;</code>): Lista de productos de la página actual. </li>
+<li>
+<b>totalPages</b> (<code>int</code>): Número total de páginas disponibles. </li>
+<li>
+<b>totalElements</b> (<code>long</code>): Número total de productos. </li>
+<li>
+<b>pageSize</b> (<code>int</code>): Cantidad de productos por página. </li>
+<li>
+<b>pageNumber</b> (<code>int</code>): Número de la página actual (comenzando en 0). </li>
+<li>
+<b>totalPageElements</b> (<code>int</code>): Número de productos en la página actual (puede ser menor que <code>pageSize</code> si es la última página). </li>
+<li>
+<b>empty</b> (<code>boolean</code>): Indica si la página está vacía (sin resultados). </li>
+<li>
+<b>first</b> (<code>boolean</code>): Indica si esta es la primera página (<code>pageNumber == 0</code>). </li>
+<li>
+<b>last</b> (<code>boolean</code>): Indica si esta es la última página (<code>pageNumber == totalPages - 1</code>). </li>
+<li>
+<b>sortBy</b> (<code>String</code>): Campo por el que se ordenan los productos (por ejemplo, "id", "nombre" o "precio"). </li>
+<li>
+<b>direction</b> (<code>String</code>): Dirección del orden: "asc" (ascendente) o "desc" (descendente). </li>
+</ul>
+<dl class="params"><dt>Parámetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">&lt;T&gt;</td><td>Tipo de los productos contenidos en la lista <code>content</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><hr/>La documentación de esta clase está generada del siguiente archivo:<ul>
+<li>/home/runner/work/dawazon/dawazon/src/main/java/dev/luisvives/dawazon/common/dto/<a class="el" href="PageResponseDTO_8java.html">PageResponseDTO.java</a></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

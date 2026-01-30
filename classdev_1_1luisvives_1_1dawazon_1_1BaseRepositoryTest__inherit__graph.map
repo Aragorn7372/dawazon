@@ -1,0 +1,9 @@
+<map id="dev.luisvives.dawazon.BaseRepositoryTest" name="dev.luisvives.dawazon.BaseRepositoryTest">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,69,211,109"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="259,5,560,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="216,64,314,43,315,48,217,69"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="259,69,560,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="224,87,259,87,259,92,224,92"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="269,133,549,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="217,110,315,131,314,136,216,115"/>
+</map>

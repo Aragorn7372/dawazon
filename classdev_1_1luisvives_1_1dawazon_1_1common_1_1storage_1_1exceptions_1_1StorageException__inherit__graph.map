@@ -1,0 +1,11 @@
+<map id="dev.luisvives.dawazon.common.storage.exceptions.StorageException" name="dev.luisvives.dawazon.common.storage.exceptions.StorageException">
+<area shape="rect" id="Node000001" title=" " alt="" coords="195,69,557,109"/>
+<area shape="rect" id="Node000003" href="$classdev_1_1luisvives_1_1dawazon_1_1common_1_1storage_1_1exceptions_1_1StorageBadRequest.html" title=" " alt="" coords="605,5,968,45"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="518,65,657,43,658,48,519,70"/>
+<area shape="rect" id="Node000004" href="$classdev_1_1luisvives_1_1dawazon_1_1common_1_1storage_1_1exceptions_1_1StorageInternal.html" title=" " alt="" coords="605,69,968,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="571,87,605,87,605,92,571,92"/>
+<area shape="rect" id="Node000005" href="$classdev_1_1luisvives_1_1dawazon_1_1common_1_1storage_1_1exceptions_1_1StorageNotFound.html" title=" " alt="" coords="605,133,968,173"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="519,109,658,131,657,136,518,114"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,77,147,102"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,87,194,87,194,92,160,92"/>
+</map>

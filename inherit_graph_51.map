@@ -1,0 +1,15 @@
+<map id="Gráfico de jerarquía de clases" name="Gráfico de jerarquía de clases">
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,77,147,102"/>
+<area shape="rect" id="Node000001" href="$classdev_1_1luisvives_1_1dawazon_1_1cart_1_1exceptions_1_1CartException.html" title=" " alt="" coords="237,5,515,45"/>
+<area shape="poly" id="edge12_Node000000_Node000001" title=" " alt="" coords="133,70,194,55,253,43,254,48,195,60,134,75"/>
+<area shape="rect" id="Node000002" href="$classdev_1_1luisvives_1_1dawazon_1_1common_1_1storage_1_1exceptions_1_1StorageException.html" title=" " alt="" coords="195,69,557,109"/>
+<area shape="poly" id="edge13_Node000000_Node000002" title=" " alt="" coords="160,87,194,87,194,92,160,92"/>
+<area shape="rect" id="Node000006" href="$classdev_1_1luisvives_1_1dawazon_1_1users_1_1exceptions_1_1UserException.html" title=" " alt="" coords="233,133,519,173"/>
+<area shape="poly" id="edge17_Node000000_Node000006" title=" " alt="" coords="134,103,195,119,254,131,253,136,194,124,133,108"/>
+<area shape="rect" id="Node000003" href="$classdev_1_1luisvives_1_1dawazon_1_1common_1_1storage_1_1exceptions_1_1StorageBadRequest.html" title=" " alt="" coords="605,5,968,45"/>
+<area shape="poly" id="edge14_Node000002_Node000003" title=" " alt="" coords="518,65,657,43,658,48,519,70"/>
+<area shape="rect" id="Node000004" href="$classdev_1_1luisvives_1_1dawazon_1_1common_1_1storage_1_1exceptions_1_1StorageInternal.html" title=" " alt="" coords="605,69,968,109"/>
+<area shape="poly" id="edge15_Node000002_Node000004" title=" " alt="" coords="571,87,605,87,605,92,571,92"/>
+<area shape="rect" id="Node000005" href="$classdev_1_1luisvives_1_1dawazon_1_1common_1_1storage_1_1exceptions_1_1StorageNotFound.html" title=" " alt="" coords="605,133,968,173"/>
+<area shape="poly" id="edge16_Node000002_Node000005" title=" " alt="" coords="519,109,658,131,657,136,518,114"/>
+</map>
