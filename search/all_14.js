@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['rápido_0',['🚀 Inicio Rápido',['../index.html#autotoc_md25',1,'']]],
+  ['readme_2emd_1',['README.md',['../README_8md.html',1,'']]],
+  ['recibido_2',['RECIBIDO',['../enumdev_1_1luisvives_1_1dawazon_1_1cart_1_1models_1_1Status.html#a567cc9b27f7a5e8933760ecbf7c54095',1,'dev::luisvives::dawazon::cart::models::Status']]],
+  ['recomendada_3',['Atribución Recomendada',['../md__2home_2runner_2work_2dawazon_2dawazon_2TERMS__OF__USE.html#autotoc_md96',1,'']]],
+  ['recomendado_4',['3. 🔔 Declarar Cambios (Recomendado)',['../md__2home_2runner_2work_2dawazon_2dawazon_2TERMS__OF__USE.html#autotoc_md92',1,'']]],
+  ['redisconfig_5',['RedisConfig',['../classdev_1_1luisvives_1_1dawazon_1_1common_1_1config_1_1RedisConfig.html',1,'dev::luisvives::dawazon::common::config']]],
+  ['redisconfig_2ejava_6',['RedisConfig.java',['../RedisConfig_8java.html',1,'']]],
+  ['register_7',['register',['../classdev_1_1luisvives_1_1dawazon_1_1users_1_1controller_1_1AuthController.html#ae3bd130c7760c00456e44727e44efdcc',1,'dev.luisvives.dawazon.users.controller.AuthController.register(Model model)'],['../classdev_1_1luisvives_1_1dawazon_1_1users_1_1controller_1_1AuthController.html#a38607b4fba90b18e1d281c87a456abb7',1,'dev.luisvives.dawazon.users.controller.AuthController.register(@Valid @ModelAttribute UserRegisterDto registerDto, BindingResult bindingResult, Model model)'],['../interfacedev_1_1luisvives_1_1dawazon_1_1users_1_1service_1_1AuthService.html#a3eeaceb0d9ff5d6c8faf0ff53ed37c6f',1,'dev.luisvives.dawazon.users.service.AuthService.register()'],['../classdev_1_1luisvives_1_1dawazon_1_1users_1_1service_1_1AuthServiceImpl.html#aaeaac207404dfa9f15e41a1bd0ed4711',1,'dev.luisvives.dawazon.users.service.AuthServiceImpl.register()']]],
+  ['registradas_8',['🏷️ Marcas Registradas',['../md__2home_2runner_2work_2dawazon_2dawazon_2TERMS__OF__USE.html#autotoc_md87',1,'']]],
+  ['removecartline_9',['removeCartLine',['../interfacedev_1_1luisvives_1_1dawazon_1_1cart_1_1repository_1_1CartRepository.html#aba7e9751ffb83e030c0ea01dc93717b1',1,'dev::luisvives::dawazon::cart::repository::CartRepository']]],
+  ['removefav_10',['removefav',['../classdev_1_1luisvives_1_1dawazon_1_1users_1_1controller_1_1UserController.html#af71e768a86ab1be65461241ab799ccb2',1,'dev.luisvives.dawazon.users.controller.UserController.removeFav()'],['../interfacedev_1_1luisvives_1_1dawazon_1_1users_1_1service_1_1FavService.html#a67c7080c22932af1516f3e4d46afb79a',1,'dev.luisvives.dawazon.users.service.FavService.removeFav()'],['../classdev_1_1luisvives_1_1dawazon_1_1users_1_1service_1_1FavServiceImpl.html#a1407a030bcf0a65284301ad03dda0586',1,'dev.luisvives.dawazon.users.service.FavServiceImpl.removeFav()']]],
+  ['removeproduct_11',['removeproduct',['../interfacedev_1_1luisvives_1_1dawazon_1_1cart_1_1service_1_1CartService.html#ae16c8bb3f1c2fca2d1f3389c41220a4e',1,'dev.luisvives.dawazon.cart.service.CartService.removeProduct()'],['../classdev_1_1luisvives_1_1dawazon_1_1cart_1_1service_1_1CartServiceImpl.html#a94f67ea8be05481dadee3e716220dbb7',1,'dev.luisvives.dawazon.cart.service.CartServiceImpl.removeProduct()']]],
+  ['removetocart_12',['removeToCart',['../classdev_1_1luisvives_1_1dawazon_1_1users_1_1controller_1_1UserController.html#a83d944f19428589fbf9ea57a396cd1c6',1,'dev::luisvives::dawazon::users::controller::UserController']]],
+  ['reporte_20de_20cobertura_13',['5️⃣ Generar reporte de cobertura',['../index.html#autotoc_md21',1,'']]],
+  ['reporte_20de_20cobertura_20jacoco_14',['📊 Reporte de Cobertura (JaCoCo)',['../index.html#autotoc_md66',1,'']]],
+  ['repositorio_15',['1️⃣ Clonar el repositorio',['../index.html#autotoc_md17',1,'']]],
+  ['requerida_16',['Atribución Requerida',['../md__2home_2runner_2work_2dawazon_2dawazon_2TERMS__OF__USE.html#autotoc_md95',1,'']]],
+  ['requisitos_20previos_17',['📋 Requisitos Previos',['../index.html#autotoc_md13',1,'']]],
+  ['responsabilidad_18',['responsabilidad',['../md__2home_2runner_2work_2dawazon_2dawazon_2TERMS__OF__USE.html#autotoc_md98',1,'🛡️ Descargo de Responsabilidad'],['../md__2home_2runner_2work_2dawazon_2dawazon_2TERMS__OF__USE.html#autotoc_md86',1,'🛡️ Responsabilidad']]],
+  ['restorestock_19',['restoreStock',['../classdev_1_1luisvives_1_1dawazon_1_1cart_1_1service_1_1CartServiceImpl.html#abc3b502baf2591513ac9915a68f28021',1,'dev::luisvives::dawazon::cart::service::CartServiceImpl']]],
+  ['resumen_20visual_20',['✍️ Resumen Visual',['../md__2home_2runner_2work_2dawazon_2dawazon_2TERMS__OF__USE.html#autotoc_md115',1,'']]],
+  ['role_21',['Role',['../enumdev_1_1luisvives_1_1dawazon_1_1users_1_1models_1_1Role.html',1,'dev::luisvives::dawazon::users::models']]],
+  ['role_2ejava_22',['Role.java',['../Role_8java.html',1,'']]],
+  ['roles_20y_20funcionalidades_23',['👥 Roles y Funcionalidades',['../index.html#autotoc_md31',1,'']]]
+];

@@ -1,11 +1,12 @@
 var indexSectionsWithContent =
 {
-  0: "abcdefghilmoprstuv",
+  0: "123456abcdefghijlmoprstuvy¿⚖⚙⚠✅✍✨🌐🎯🏗🏷🐳👤👥💼📁📄📊📋📖📚📜📝📞📦🔄🔌🔍🔐🔒🔔🔧🚀🚫🛍🛒🛠🛡🤝🧪",
   1: "abcdefgiloprstu",
   2: "d",
   3: "abcdefgiloprstu",
   4: "abcdefghilmoprstuv",
-  5: "aceimpru"
+  5: "aceimpru",
+  6: "dltuy📜🛒"
 };
 
 var indexSectionNames =
@@ -15,7 +16,8 @@ var indexSectionNames =
   2: "namespaces",
   3: "files",
   4: "functions",
-  5: "variables"
+  5: "variables",
+  6: "pages"
 };
 
 var indexSectionLabels =
@@ -25,6 +27,7 @@ var indexSectionLabels =
   2: "Espacios de nombres",
   3: "Archivos",
   4: "Funciones",
-  5: "Variables"
+  5: "Variables",
+  6: "Páginas"
 };
 

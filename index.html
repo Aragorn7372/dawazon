@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Dawazon: Página principal</title>
+<title>Dawazon: 🛒 Dawazon</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -69,10 +69,553 @@ $(function() {
 </div>
 </div>
 
-<div class="header">
-  <div class="headertitle"><div class="title">Dawazon documentación</div></div>
+<div><div class="header">
+  <div class="headertitle"><div class="title">🛒 Dawazon </div></div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><p><a class="anchor" id="md__2home_2runner_2work_2dawazon_2dawazon_2README"></a> </p><div align="center"></div><div align="center"><img src="https://img.shields.io/badge/Java-25-orange?style=for-the-badge&amp;logo=openjdk" alt="Java" class="inline"/> <img src="https://img.shields.io/badge/Spring%20Boot-3.5.8-brightgreen?style=for-the-badge&amp;logo=spring" alt="Spring Boot" class="inline"/> <img src="https://img.shields.io/badge/Gradle-9.1.0-02303A?style=for-the-badge&amp;logo=gradle" alt="Gradle" class="inline"/> <img src="https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&amp;logo=docker" alt="Docker" class="inline"/> <img src="https://img.shields.io/badge/PostgreSQL-12-316192?style=for-the-badge&amp;logo=postgresql" alt="PostgreSQL" class="inline"/> <img src="https://img.shields.io/badge/MongoDB-5.0-47A248?style=for-the-badge&amp;logo=mongodb" alt="MongoDB" class="inline"/> <img src="https://img.shields.io/badge/Redis-7-DC382D?style=for-the-badge&amp;logo=redis" alt="Redis" class="inline"/></div><div align="center"><b>Tienda basada en Amazon bien bacana - Plataforma de e-commerce con arquitectura híbrida</b></div><div align="center">🚀 Características • 📖 Instalación • 🐳 Docker • 🔌 API</div><div align="center"></div><hr  />
+<h1><a class="anchor" id="autotoc_md2"></a>
+📋 Tabla de Contenidos</h1>
+<ul>
+<li>Características</li>
+<li>Stack Tecnológico</li>
+<li>Requisitos Previos</li>
+<li>Instalación y Configuración</li>
+<li>Despliegue con Docker</li>
+<li>Arquitectura</li>
+<li>Roles y Funcionalidades</li>
+<li>Endpoints de la Aplicación</li>
+<li>Estructura del Proyecto</li>
+</ul>
+<hr  />
+<h1><a class="anchor" id="autotoc_md4"></a>
+✨ Características</h1>
+<h2><a class="anchor" id="autotoc_md5"></a>
+🛍️ Gestión de Usuarios</h2>
+<ul>
+<li>✅ Autenticación con Spring Security</li>
+<li>✅ Registro y login seguro</li>
+<li>✅ Gestión de perfiles</li>
+<li>✅ Sistema multi-rol (USER, MANAGER, ADMIN)</li>
+<li>✅ Cambio de contraseña</li>
+<li>✅ Subida de avatar</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md6"></a>
+📦 Gestión de Productos</h2>
+<ul>
+<li>✅ Catálogo completo con MongoDB</li>
+<li>✅ Imágenes multimedia</li>
+<li>✅ Búsqueda y filtros</li>
+<li>✅ Filtros por categoría</li>
+<li>✅ Sistema de comentarios</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md7"></a>
+🛒 Gestión de Carrito y Ventas</h2>
+<ul>
+<li>✅ Carrito de compras</li>
+<li>✅ Historial de ventas</li>
+<li>✅ Panel de administración de ventas</li>
+<li>✅ Cancelación de pedidos</li>
+<li>✅ Edición de líneas de venta (ADMIN)</li>
+<li>✅ Cálculo de ganancias</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md8"></a>
+🔧 Características Técnicas</h2>
+<ul>
+<li>✅ Caché con Redis</li>
+<li>✅ Docker Compose multi-servicio</li>
+<li>✅ Testing con Testcontainers</li>
+<li>✅ Cobertura de código con JaCoCo</li>
+<li>✅ Documentación con Dokka</li>
+<li>✅ Plantillas con Pebble</li>
+<li>✅ Validación de datos</li>
+</ul>
+<hr  />
+<h1><a class="anchor" id="autotoc_md10"></a>
+🛠️ Stack Tecnológico</h1>
+<div class="fragment"><div class="line">┌─────────────────────────────────────────────────────────────┐</div>
+<div class="line">│                                                             │</div>
+<div class="line">│  ☕ Java 25      🌱 Spring Boot 3.5.8    🔧 Gradle 9.1.0  │</div>
+<div class="line">│                                                             │</div>
+<div class="line">│  🐘 PostgreSQL   🍃 MongoDB   🔴 Redis   🐳 Docker        │</div>
+<div class="line">│                                                             │</div>
+<div class="line">│  🍂 Pebble       📊 JaCoCo    📖 Dokka   🔒 JWT           │</div>
+<div class="line">│                                                             │</div>
+<div class="line">└─────────────────────────────────────────────────────────────┘</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md11"></a>
+Tecnologías Principales</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Categoría   </th><th class="markdownTableHeadNone">Tecnologías    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><b>Backend</b>   </td><td class="markdownTableBodyNone">Java 25, Spring Boot 3.5.8, Spring Security, Spring Data JPA    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><b>Frontend</b>   </td><td class="markdownTableBodyNone">Pebble 3.2.2, HTML5, CSS3, JavaScript    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><b>Bases de Datos</b>   </td><td class="markdownTableBodyNone">PostgreSQL 12 (Usuarios, Carritos), MongoDB 5.0 (Productos), Redis 7 (Caché)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><b>Autenticación</b>   </td><td class="markdownTableBodyNone">JWT 4.4.0, Spring Security 6    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><b>API</b>   </td><td class="markdownTableBodyNone">REST con Spring MVC    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><b>Pagos</b>   </td><td class="markdownTableBodyNone">Stripe Java SDK 24.0.0    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><b>Build &amp; Deploy</b>   </td><td class="markdownTableBodyNone">Gradle 9.1.0, Docker, Docker Compose    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><b>Testing</b>   </td><td class="markdownTableBodyNone">JUnit 5, Testcontainers, Mockito    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><b>Documentación</b>   </td><td class="markdownTableBodyNone">Dokka 2.1.0, JaCoCo    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><b>Email</b>   </td><td class="markdownTableBodyNone">Spring Mail   </td></tr>
+</table>
+<hr  />
+<h1><a class="anchor" id="autotoc_md13"></a>
+📋 Requisitos Previos</h1>
+<p>Antes de comenzar, asegúrate de tener instalado:</p>
+<ul>
+<li>☕ <b>Java JDK 25</b> (<a href="https://www.oracle.com/java/technologies/downloads/">Descargar</a>)</li>
+<li>🔧 <b>Gradle 9.1.0</b> (o usa el wrapper <code>./gradlew</code>)</li>
+<li>🐳 <b>Docker</b> (&gt;= 20.x) y <b>Docker Compose</b> (&gt;= 2.x)</li>
+<li>🐘 <b>Git</b></li>
+</ul>
+<h2><a class="anchor" id="autotoc_md14"></a>
+🔍 Verificar instalación</h2>
+<div class="fragment"><div class="line">java --version    # Debe mostrar Java 25</div>
+<div class="line">gradle --version  # Debe mostrar Gradle 9.1.0</div>
+<div class="line">docker --version  # Verificar Docker</div>
+<div class="line">docker-compose --version  # Verificar Docker Compose</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md16"></a>
+🚀 Instalación y Configuración</h1>
+<h2><a class="anchor" id="autotoc_md17"></a>
+1️⃣ Clonar el repositorio</h2>
+<div class="fragment"><div class="line">git clone https://github.com/Aragorn7372/dawazon.git</div>
+<div class="line">cd dawazon</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md18"></a>
+2️⃣ Configurar Variables de Entorno</h2>
+<p>Crea un archivo <code>.env</code> en la raíz del proyecto:</p>
+<div class="fragment"><div class="line"># Database Configuration</div>
+<div class="line">DATABASE_USER=admin</div>
+<div class="line">DATABASE_PASSWORD=admin123</div>
+<div class="line"> </div>
+<div class="line"># PostgreSQL</div>
+<div class="line">POSTGRES_DATABASE=dawazon_db</div>
+<div class="line">POSTGRES_PORT=5432</div>
+<div class="line"> </div>
+<div class="line"># MongoDB</div>
+<div class="line">MONGO_DATABASE=dawazon_mongo</div>
+<div class="line">MONGO_PORT=27017</div>
+<div class="line"> </div>
+<div class="line"># Redis</div>
+<div class="line">REDIS_PASSWORD=redis_secure_password</div>
+<div class="line">REDIS_PORT=6379</div>
+<div class="line"> </div>
+<div class="line"># JWT</div>
+<div class="line">JWT_SECRET=tu_secreto_super_seguro_aqui</div>
+<div class="line">JWT_EXPIRATION=86400000</div>
+<div class="line"> </div>
+<div class="line"># Stripe</div>
+<div class="line">STRIPE_API_KEY=sk_test_tu_clave_aqui</div>
+<div class="line">STRIPE_WEBHOOK_SECRET=whsec_tu_webhook_secret</div>
+<div class="line"> </div>
+<div class="line"># Email Configuration</div>
+<div class="line">MAIL_HOST=smtp.gmail.com</div>
+<div class="line">MAIL_PORT=587</div>
+<div class="line">MAIL_USERNAME=tu_email@gmail.com</div>
+<div class="line">MAIL_PASSWORD=tu_app_password</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md19"></a>
+3️⃣ Compilar el proyecto</h2>
+<div class="fragment"><div class="line"># Con Gradle Wrapper (recomendado)</div>
+<div class="line">./gradlew clean build</div>
+<div class="line"> </div>
+<div class="line"># O con Gradle instalado globalmente</div>
+<div class="line">gradle clean build</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md20"></a>
+4️⃣ Ejecutar tests</h2>
+<div class="fragment"><div class="line">./gradlew test</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md21"></a>
+5️⃣ Generar reporte de cobertura</h2>
+<div class="fragment"><div class="line">./gradlew jacocoTestReport</div>
+</div><!-- fragment --><p>📊 <b>Reporte disponible en</b>: <code>build/reports/jacoco/test/html/index.html</code></p>
+<h2><a class="anchor" id="autotoc_md22"></a>
+6️⃣ Generar documentación</h2>
+<div class="fragment"><div class="line">./gradlew dokkaHtml</div>
+</div><!-- fragment --><p>📖 <b>Documentación disponible en</b>: <code>build/dokka/html/index.html</code></p>
+<hr  />
+<h1><a class="anchor" id="autotoc_md24"></a>
+🐳 Despliegue con Docker</h1>
+<h2><a class="anchor" id="autotoc_md25"></a>
+🚀 Inicio Rápido</h2>
+<div class="fragment"><div class="line"># Construir y levantar todos los servicios</div>
+<div class="line">docker-compose up -d</div>
+<div class="line"> </div>
+<div class="line"># Ver logs en tiempo real</div>
+<div class="line">docker-compose logs -f</div>
+<div class="line"> </div>
+<div class="line"># Detener servicios</div>
+<div class="line">docker-compose down</div>
+<div class="line"> </div>
+<div class="line"># Detener y eliminar volúmenes</div>
+<div class="line">docker-compose down -v</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md26"></a>
+🌐 Servicios Disponibles</h2>
+<p>Una vez desplegado, accede a:</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Servicio   </th><th class="markdownTableHeadNone">URL   </th><th class="markdownTableHeadNone">Descripción   </th><th class="markdownTableHeadNone">Puerto    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">🏠 <b>Frontend Principal</b>   </td><td class="markdownTableBodyNone"><code><a href="http://localhost">http://localhost</a></code>   </td><td class="markdownTableBodyNone">Aplicación web   </td><td class="markdownTableBodyNone">80    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">🚀 <b>API REST</b>   </td><td class="markdownTableBodyNone"><code><a href="http://localhost/">http://localhost/</a></code>   </td><td class="markdownTableBodyNone">Endpoints REST y vistas   </td><td class="markdownTableBodyNone">-    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">📊 <b>JaCoCo Reports</b>   </td><td class="markdownTableBodyNone">Dentro del contenedor   </td><td class="markdownTableBodyNone">Cobertura de código   </td><td class="markdownTableBodyNone">-    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">📖 <b>Documentación Dokka</b>   </td><td class="markdownTableBodyNone">Dentro del contenedor   </td><td class="markdownTableBodyNone">Docs técnicas   </td><td class="markdownTableBodyNone">-    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">🐘 <b>PostgreSQL</b>   </td><td class="markdownTableBodyNone"><code>localhost:5432</code>   </td><td class="markdownTableBodyNone">Base de datos SQL   </td><td class="markdownTableBodyNone">5432    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">🍃 <b>MongoDB</b>   </td><td class="markdownTableBodyNone"><code>localhost:27017</code>   </td><td class="markdownTableBodyNone">Base de datos NoSQL   </td><td class="markdownTableBodyNone">27017    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">🔴 <b>Redis</b>   </td><td class="markdownTableBodyNone"><code>localhost:6379</code>   </td><td class="markdownTableBodyNone">Caché y sesiones   </td><td class="markdownTableBodyNone">6379   </td></tr>
+</table>
+<hr  />
+<h1><a class="anchor" id="autotoc_md28"></a>
+🏗️ Arquitectura</h1>
+<div class="fragment"><div class="line">┌─────────────────────────────────────────────────────────────┐</div>
+<div class="line">│                    Spring Boot Application                  │</div>
+<div class="line">│                         (Puerto 80)                         │</div>
+<div class="line">└────────┬────────────────────────────────────────────────────┘</div>
+<div class="line">         │</div>
+<div class="line">    ┌────▼───────────────────────────────────────────┐</div>
+<div class="line">    │         Spring Boot MVC Application            │</div>
+<div class="line">    │  ┌──────────┐  ┌──────────┐  ┌──────────┐      │</div>
+<div class="line">    │  │Controller│  │ Service  │  │Repository│      │</div>
+<div class="line">    │  └─────┬────┘  └─────┬────┘  └─────┬────┘      │</div>
+<div class="line">    │  ┌─────▼─────────────▼─────────────▼────┐      │</div>
+<div class="line">    │  │    Security Layer (Spring Security)  │      │</div>
+<div class="line">    │  └──────────────────────────────────────┘      │</div>
+<div class="line">    │  ┌──────────┐  ┌──────────┐  ┌─────────┐       │</div>
+<div class="line">    │  │  Pebble  │  │  Cache   │  │ Storage │       │</div>
+<div class="line">    │  │Templates │  │  Manager │  │ Service │       │</div>
+<div class="line">    │  └──────────┘  └──────────┘  └─────────┘       │</div>
+<div class="line">    └─────┬────────────┬────────────┬────────────────┘</div>
+<div class="line">          │            │            │</div>
+<div class="line">    ┌─────▼─────┐ ┌───▼──────┐ ┌──▼─────┐</div>
+<div class="line">    │PostgreSQL │ │ MongoDB  │ │ Redis  │</div>
+<div class="line">    │(Usuarios, │ │(Productos│ │(Cache) │</div>
+<div class="line">    │ Carritos) │ │Comentario│ │        │</div>
+<div class="line">    └───────────┘ └──────────┘ └────────┘</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md29"></a>
+🔄 Flujo de Datos</h2>
+<ol type="1">
+<li><b>Cliente</b> → <code>Spring Boot MVC</code> (puerto 80)</li>
+<li><b>Spring Boot</b> → Procesamiento con arquitectura en capas:<ul>
+<li><code>Controller</code> → Recibe HTTP requests y renderiza vistas Pebble</li>
+<li><code>Service</code> → Lógica de negocio y validaciones</li>
+<li><code>Repository</code> → Acceso a datos</li>
+</ul>
+</li>
+<li><b>Cache Layer</b> → Redis intercepta consultas frecuentes</li>
+<li><b>Data Layer</b> →<ul>
+<li>PostgreSQL para usuarios y carritos</li>
+<li>MongoDB para productos y comentarios</li>
+</ul>
+</li>
+<li><b>Response</b> → Renderizado de plantillas Pebble → Cliente</li>
+</ol>
+<hr  />
+<h1><a class="anchor" id="autotoc_md31"></a>
+👥 Roles y Funcionalidades</h1>
+<h2><a class="anchor" id="autotoc_md32"></a>
+🛍️ Usuario (USER)</h2>
+<h3><a class="anchor" id="autotoc_md33"></a>
+Autenticación</h3>
+<ul>
+<li>✅ Registro con validación (<code>/auth/signup</code>)</li>
+<li>✅ Login seguro (<code>/auth/signin</code>)</li>
+<li>✅ Cambio de contraseña (<code>/auth/me/changepassword</code>)</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md34"></a>
+Perfil</h3>
+<ul>
+<li>✅ Ver perfil (<code>/auth/me</code>)</li>
+<li>✅ Editar perfil (<code>/auth/me/edit</code>)</li>
+<li>✅ Actualizar avatar</li>
+<li>✅ Gestionar datos personales</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md35"></a>
+Productos</h3>
+<ul>
+<li>✅ Ver catálogo completo (<code>/</code>, <code>/products</code>)</li>
+<li>✅ Búsqueda y filtros por nombre y categoría</li>
+<li>✅ Ver detalles de productos (<code>/products/{id}</code>)</li>
+<li>✅ Añadir comentarios (<code>/products/{id}/comentarios</code>)</li>
+<li>✅ Gestión de favoritos</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md36"></a>
+Carrito y Compras</h3>
+<ul>
+<li>✅ Gestión de carrito de compras</li>
+<li>✅ Ver historial de compras</li>
+</ul>
+<hr  />
+<h2><a class="anchor" id="autotoc_md38"></a>
+📊 Manager (MANAGER)</h2>
+<h3><a class="anchor" id="autotoc_md39"></a>
+Todas las funcionalidades de USER +</h3>
+<h3><a class="anchor" id="autotoc_md40"></a>
+Gestión de Productos</h3>
+<ul>
+<li>✅ Acceso a funcionalidades de gestión de inventario</li>
+</ul>
+<hr  />
+<h2><a class="anchor" id="autotoc_md42"></a>
+⚙️ Administrador (ADMIN)</h2>
+<h3><a class="anchor" id="autotoc_md43"></a>
+Todas las funcionalidades de MANAGER +</h3>
+<h3><a class="anchor" id="autotoc_md44"></a>
+Gestión de Productos</h3>
+<ul>
+<li>✅ Editar productos (<code>/products/edit/{id}</code>)</li>
+<li>✅ Actualizar información de productos</li>
+<li>✅ Subir imágenes de productos</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md45"></a>
+Gestión de Ventas</h3>
+<ul>
+<li>✅ Ver todas las ventas (<code>/admin/ventas</code>)</li>
+<li>✅ Ver detalles de venta (<code>/admin/ventas/{ventaId}/{productId}</code>)</li>
+<li>✅ Cancelar ventas (<code>/admin/ventas/cancel/{ventaId}/{productId}</code>)</li>
+<li>✅ Editar líneas de venta (<code>/admin/ventas/edit/{ventaId}/{productId}</code>)</li>
+<li>✅ Calcular ganancias totales</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md46"></a>
+Gestión de Usuarios</h3>
+<ul>
+<li>✅ Ver todos los usuarios (<code>/admin/users</code>)</li>
+<li>✅ Crear usuarios</li>
+<li>✅ Editar usuarios</li>
+<li>✅ Eliminar usuarios</li>
+<li>✅ Asignar roles</li>
+</ul>
+<hr  />
+<h1><a class="anchor" id="autotoc_md48"></a>
+🔌 Endpoints de la Aplicación</h1>
+<h2><a class="anchor" id="autotoc_md49"></a>
+🔐 Autenticación</h2>
+<div class="fragment"><div class="line">GET    /auth/signin                # Formulario de login</div>
+<div class="line">GET    /auth/signup                # Formulario de registro</div>
+<div class="line">POST   /auth/signup                # Procesar registro</div>
+<div class="line">GET    /auth/me/changepassword     # Formulario cambio de contraseña [USER]</div>
+<div class="line">POST   /auth/me/changepassword     # Procesar cambio de contraseña [USER]</div>
+</div><!-- fragment --><hr  />
+<h2><a class="anchor" id="autotoc_md51"></a>
+👤 Usuarios</h2>
+<div class="fragment"><div class="line"># Perfil propio</div>
+<div class="line">GET    /auth/me                    # Ver mi perfil [USER]</div>
+<div class="line">GET    /auth/me/edit               # Formulario editar perfil [USER]</div>
+<div class="line">POST   /auth/me/edit               # Actualizar mi perfil [USER]</div>
+<div class="line">GET    /auth/me/delete             # Eliminar mi cuenta [USER]</div>
+<div class="line"> </div>
+<div class="line"># Favoritos</div>
+<div class="line">GET    /auth/me/fav                # Mis favoritos [USER]</div>
+<div class="line">POST   /auth/me/fav/{id}           # Añadir a favoritos [USER]</div>
+<div class="line">DELETE /auth/me/fav/{id}           # Quitar de favoritos [USER]</div>
+<div class="line"> </div>
+<div class="line"># Historial de compras</div>
+<div class="line">GET    /auth/me/purchase           # Mis compras [USER]</div>
+<div class="line">GET    /auth/me/purchase/{id}      # Detalle de compra [USER]</div>
+<div class="line"> </div>
+<div class="line"># Administración (ADMIN)</div>
+<div class="line">GET    /admin/users                # Listar usuarios [ADMIN]</div>
+<div class="line">GET    /admin/users/{id}           # Ver usuario [ADMIN]</div>
+<div class="line">POST   /admin/users                # Crear usuario [ADMIN]</div>
+<div class="line">POST   /admin/users/edit           # Actualizar usuario [ADMIN]</div>
+<div class="line">GET    /admin/users/delete/{id}    # Eliminar usuario [ADMIN]</div>
+</div><!-- fragment --><hr  />
+<h2><a class="anchor" id="autotoc_md53"></a>
+📦 Productos</h2>
+<div class="fragment"><div class="line"># Público</div>
+<div class="line">GET    /                           # Página principal con productos</div>
+<div class="line">GET    /products                   # Listar productos</div>
+<div class="line">GET    /products/                  # Listar productos (alternativo)</div>
+<div class="line">GET    /products/{id}              # Ver detalle de producto</div>
+<div class="line"> </div>
+<div class="line"># Búsqueda y filtros</div>
+<div class="line">GET    /products? name=             # Búsqueda por nombre</div>
+<div class="line">GET    /products?categoria=        # Filtrar por categoría</div>
+<div class="line">GET    /products?page=&amp;size=       # Paginación</div>
+<div class="line">GET    /products? sortBy=&amp;direction= # Ordenación</div>
+<div class="line"> </div>
+<div class="line"># Comentarios (USER)</div>
+<div class="line">POST   /products/{id}/comentarios  # Añadir comentario [USER]</div>
+<div class="line"> </div>
+<div class="line"># Administración (ADMIN)</div>
+<div class="line">GET    /products/edit/{id}         # Formulario editar producto [ADMIN]</div>
+<div class="line">POST   /products/edit/             # Actualizar producto [ADMIN]</div>
+</div><!-- fragment --><hr  />
+<h2><a class="anchor" id="autotoc_md55"></a>
+🛒 Carrito</h2>
+<div class="fragment"><div class="line">GET    /cart                       # Ver mi carrito [USER]</div>
+<div class="line">POST   /cart/add                   # Añadir producto [USER]</div>
+<div class="line">POST   /cart/update                # Actualizar cantidad [USER]</div>
+<div class="line">POST   /cart/remove                # Eliminar producto [USER]</div>
+<div class="line">POST   /cart/checkout              # Finalizar compra [USER]</div>
+</div><!-- fragment --><hr  />
+<h2><a class="anchor" id="autotoc_md57"></a>
+📋 Ventas (Admin)</h2>
+<div class="fragment"><div class="line">GET    /admin/ventas               # Listar todas las ventas [ADMIN]</div>
+<div class="line">GET    /admin/ventas/{ventaId}/{productId}  # Detalle de venta [ADMIN]</div>
+<div class="line">GET    /admin/ventas/cancel/{ventaId}/{productId}  # Cancelar venta [ADMIN]</div>
+<div class="line">GET    /admin/ventas/edit/{ventaId}/{productId}    # Formulario editar venta [ADMIN]</div>
+<div class="line">POST   /admin/venta/edit           # Actualizar línea de venta [ADMIN]</div>
+</div><!-- fragment --><hr  />
+<h2><a class="anchor" id="autotoc_md59"></a>
+📁 Almacenamiento</h2>
+<div class="fragment"><div class="line">GET    /files/{filename}           # Obtener archivo subido (imágenes, etc.)</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md61"></a>
+📁 Estructura del Proyecto</h1>
+<div class="fragment"><div class="line">dawazon/</div>
+<div class="line">├── 📁 src/</div>
+<div class="line">│   ├── 📁 main/</div>
+<div class="line">│   │   ├── 📁 java/dev/luisvives/dawazon/</div>
+<div class="line">│   │   │   ├── 📁 cart/                      # Módulo de Carrito</div>
+<div class="line">│   │   │   │   ├── 📁 controller/</div>
+<div class="line">│   │   │   │   │   └── AdminPurchasedController.java</div>
+<div class="line">│   │   │   │   ├── 📁 dto/</div>
+<div class="line">│   │   │   │   ├── 📁 mapper/</div>
+<div class="line">│   │   │   │   ├── 📁 models/</div>
+<div class="line">│   │   │   │   ├── 📁 repository/</div>
+<div class="line">│   │   │   │   └── 📁 service/</div>
+<div class="line">│   │   │   │       └── CartServiceImpl.java</div>
+<div class="line">│   │   │   │</div>
+<div class="line">│   │   │   ├── 📁 common/                    # Componentes comunes</div>
+<div class="line">│   │   │   │   ├── 📁 controller/</div>
+<div class="line">│   │   │   │   │   └── GlobalFuncionController.java  # ControllerAdvice</div>
+<div class="line">│   │   │   │   └── 📁 storage/</div>
+<div class="line">│   │   │   │       ├── 📁 controller/</div>
+<div class="line">│   │   │   │       │   └── StorageController.java</div>
+<div class="line">│   │   │   │       └── 📁 service/</div>
+<div class="line">│   │   │   │           └── StorageService.java</div>
+<div class="line">│   │   │   │</div>
+<div class="line">│   │   │   ├── 📁 config/                    # Configuración</div>
+<div class="line">│   │   │   │   ├── SecurityConfig.java</div>
+<div class="line">│   │   │   │   ├── CacheConfig.java</div>
+<div class="line">│   │   │   │   └── ... </div>
+<div class="line">│   │   │   │</div>
+<div class="line">│   │   │   ├── 📁 products/                  # Módulo de Productos</div>
+<div class="line">│   │   │   │   ├── 📁 controller/</div>
+<div class="line">│   │   │   │   │   └── ProductsController.java</div>
+<div class="line">│   │   │   │   ├── 📁 dto/</div>
+<div class="line">│   │   │   │   │   └── PostProductRequestDto.java</div>
+<div class="line">│   │   │   │   ├── 📁 mapper/</div>
+<div class="line">│   │   │   │   │   └── ProductMapper.java</div>
+<div class="line">│   │   │   │   ├── 📁 models/</div>
+<div class="line">│   │   │   │   │   ├── Product.java</div>
+<div class="line">│   │   │   │   │   └── Comment.java</div>
+<div class="line">│   │   │   │   ├── 📁 repository/</div>
+<div class="line">│   │   │   │   └── 📁 service/</div>
+<div class="line">│   │   │   │       ├── ProductService.java</div>
+<div class="line">│   │   │   │       └── ProductServiceImpl.java</div>
+<div class="line">│   │   │   │</div>
+<div class="line">│   │   │   ├── 📁 users/                     # Módulo de Usuarios</div>
+<div class="line">│   │   │   │   ├── 📁 controller/</div>
+<div class="line">│   │   │   │   │   ├── AuthController.java</div>
+<div class="line">│   │   │   │   │   └── UserController.java</div>
+<div class="line">│   │   │   │   ├── 📁 dto/</div>
+<div class="line">│   │   │   │   │   ├── UserRegisterDto.java</div>
+<div class="line">│   │   │   │   │   ├── UserRequestDto.java</div>
+<div class="line">│   │   │   │   │   └── UserChangePasswordDto.java</div>
+<div class="line">│   │   │   │   ├── 📁 mapper/</div>
+<div class="line">│   │   │   │   │   └── UserMapper.java</div>
+<div class="line">│   │   │   │   ├── 📁 models/</div>
+<div class="line">│   │   │   │   │   ├── User.java</div>
+<div class="line">│   │   │   │   │   └── Role.java</div>
+<div class="line">│   │   │   │   ├── 📁 repository/</div>
+<div class="line">│   │   │   │   ├── 📁 service/</div>
+<div class="line">│   │   │   │   │   ├── AuthService.java</div>
+<div class="line">│   │   │   │   │   ├── UserService.java</div>
+<div class="line">│   │   │   │   │   └── FavService.java</div>
+<div class="line">│   │   │   │   └── 📁 exceptions/</div>
+<div class="line">│   │   │   │</div>
+<div class="line">│   │   │   └── DawazonApplication.java       # Clase principal</div>
+<div class="line">│   │   │</div>
+<div class="line">│   │   └── 📁 resources/</div>
+<div class="line">│   │       ├── application.properties</div>
+<div class="line">│   │       └── 📁 templates/                 # Plantillas Pebble</div>
+<div class="line">│   │           └── 📁 web/</div>
+<div class="line">│   │               ├── 📁 auth/</div>
+<div class="line">│   │               ├── 📁 cart/</div>
+<div class="line">│   │               ├── 📁 productos/</div>
+<div class="line">│   │               └── 📁 user/</div>
+<div class="line">│   │</div>
+<div class="line">│   └── 📁 test/</div>
+<div class="line">│       └── 📁 java/</div>
+<div class="line">│           └── (tests con Testcontainers)</div>
+<div class="line">│</div>
+<div class="line">├── 📁 database/                              # Scripts DB</div>
+<div class="line">│   ├── init.sql                              # Schema PostgreSQL</div>
+<div class="line">│   └── tienda.js                             # Collections MongoDB</div>
+<div class="line">│</div>
+<div class="line">├── 📁 storage-dir/                           # Almacenamiento</div>
+<div class="line">│   └── 📁 uploads/                           # Imágenes subidas</div>
+<div class="line">│</div>
+<div class="line">├── 📁 custom/                                # Personalizaciones</div>
+<div class="line">│   └── 📁 report/</div>
+<div class="line">│       └── report.css                        # CSS personalizado JaCoCo</div>
+<div class="line">│</div>
+<div class="line">├── 📁 proxy/                                 # Configuración NGINX (si existe)</div>
+<div class="line">├── 📁 gradle/                                # Gradle wrapper</div>
+<div class="line">├── 📄 docker-compose.yml                     # Orquestación Docker</div>
+<div class="line">├── 📄 dockerfile                             # Dockerfile multi-stage</div>
+<div class="line">├── 📄 build.gradle.kts                       # Build Gradle</div>
+<div class="line">├── 📄 settings.gradle.kts                    # Settings Gradle</div>
+<div class="line">├── 📄 gradlew                                # Gradle wrapper script</div>
+<div class="line">├── 📄 .env                                   # Variables de entorno</div>
+<div class="line">├── 📄 .gitignore</div>
+<div class="line">├── 📄 LICENCE</div>
+<div class="line">├── 📄 TERMS_OF_USE.md</div>
+<div class="line">└── 📄 README.md</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md63"></a>
+🧪 Testing</h1>
+<h2><a class="anchor" id="autotoc_md64"></a>
+Ejecutar tests unitarios</h2>
+<div class="fragment"><div class="line"># Todos los tests</div>
+<div class="line">./gradlew test</div>
+<div class="line"> </div>
+<div class="line"># Con reporte de cobertura</div>
+<div class="line">./gradlew test jacocoTestReport</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md65"></a>
+Tests con Testcontainers</h2>
+<p>El proyecto utiliza <b>Testcontainers</b> para levantar contenedores reales de PostgreSQL, MongoDB y Redis durante los tests.</p>
+<h2><a class="anchor" id="autotoc_md66"></a>
+📊 Reporte de Cobertura (JaCoCo)</h2>
+<div class="fragment"><div class="line"># Generar reporte</div>
+<div class="line">./gradlew test jacocoTestReport</div>
+<div class="line"> </div>
+<div class="line"># Abrir en navegador</div>
+<div class="line">open build/reports/jacoco/test/html/index.html  # macOS</div>
+<div class="line">xdg-open build/reports/jacoco/test/html/index.html  # Linux</div>
+<div class="line">start build/reports/jacoco/test/html/index.html  # Windows</div>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md67"></a>
+Exclusiones configuradas</h3>
+<p>Los siguientes paquetes están excluidos del reporte:</p><ul>
+<li><code>config/**</code> - Configuraciones de Spring</li>
+<li><code>email/**</code> - Servicios de email</li>
+<li><code>notificaciones/**</code> - Sistema de notificaciones</li>
+<li><code>handler/**</code> - Exception handlers</li>
+</ul>
+<hr  />
+<h1><a class="anchor" id="autotoc_md69"></a>
+📄 Licencia</h1>
+<p>Este proyecto está bajo la licencia especificada en el archivo <code>LICENCE</code>.</p>
+<hr  />
+<h1><a class="anchor" id="autotoc_md71"></a>
+📞 Contacto</h1>
+<p><b>Repositorio</b>: <a href="https://github.com/Aragorn7372/dawazon">https://github.com/Aragorn7372/dawazon</a> </p>
+</div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
